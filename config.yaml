@@ -1,0 +1,10 @@
+web:
+    port: 3000
+    dir: "gen"
+browsers:
+    - type: firefox
+      port: 7000
+    - type: chrome
+      port: 7001
+#    - type: servo
+#      port: 7002
