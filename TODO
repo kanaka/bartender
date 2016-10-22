@@ -1,0 +1,6 @@
+- Each trial in a separate directory within gen
+    - filename using hooked reporter function (:trial)
+    - gen/UUID/trial_1.png
+- Label shrink files
+    - filename using hooked reporter function (:??)
+    - gen/UUID/shrink_10.png

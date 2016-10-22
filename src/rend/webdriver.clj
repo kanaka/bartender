@@ -4,11 +4,14 @@
 
 (def browser-state (atom {}))
 
+(defn addr [cfg]
+  (let [host (get cfg :host "localhost")
+        port (:port cfg)]
+    (str "http://" host ":" port)))
+
 (defn status [browser]
-  (let [host (get browser :host "localhost")
-        port (:port browser)
-        opts {}
-        url (str "http://" host ":" port "/status")
+  (let [url (str (addr browser) "/status")
+        opts {:headers {"Host" (str "localhost:" (:port browser))}}
         {:keys [status error body] :as resp} @(http/get url opts)]
 ;    (prn :status status :error error :body body :resp resp)
     (if (or (< status 200) (> status 299))
@@ -18,11 +21,11 @@
       (json/read-str body :key-fn keyword))))
 
 (defn init-session [browser desired]
-  (let [host (get browser :host "localhost")
-        port (:port browser)
+  (let [url (str (addr browser) "/session")
         body (json/write-str {:desiredCapabilities (or desired {})})
-        opts {:body body}
-        url (str "http://" host ":" port "/session")
+        opts {:headers {"Host" (str "localhost:" (:port browser))}
+              :body body}
+;        _ (prn :init-session :url url :opts opts)
         {:keys [status error body] :as resp} @(http/post url opts)]
 ;    (prn :status status :error error :body body :resp resp)
     (if (or (< status 200) (> status 299))
@@ -42,10 +45,8 @@
 (defn GET [browser path]
   (let [session (get-session browser)
         session-id (:sessionId session)
-        host (get browser :host "localhost")
-        port (:port browser)
-        opts {}
-        url (str "http://" host ":" port "/session/" session-id "/" path)
+        url (str (addr browser) "/session/" session-id "/" path)
+        opts {:headers {"Host" (str "localhost:" (:port browser))}}
         {:keys [status error body] :as resp} @(http/get url opts)]
 ;    (prn :get :status status :error error :body body :resp resp)
     (if (or (< status 200) (> status 299))
@@ -57,11 +58,11 @@
 (defn POST [browser path data]
   (let [session (get-session browser)
         session-id (:sessionId session)
-        host (get browser :host "localhost")
-        port (:port browser)
+        url (str (addr browser) "/session/" session-id "/" path)
         body (json/write-str data)
-        opts {:body body}
-        url (str "http://" host ":" port "/session/" session-id "/" path)
+        opts {:headers {"Host" (str "localhost:" (:port browser))}
+              :body body}
+;        _ (prn :post :url url :opts opts)
         {:keys [status error body] :as resp} @(http/post url opts)]
 ;    (prn :post :status status :error error :body body :resp resp)
     (if (or (< status 200) (> status 299))

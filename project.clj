@@ -11,12 +11,14 @@
                  [clj-yaml "0.4.0"]
                  [org.clojure/data.json "0.2.6"]
                  [org.clojure/data.codec "0.1.0"]
+                 [pandect "0.6.0"]
                  [compojure "1.5.1"]
                  [ring/ring-core "1.5.0"]
-                 [ring/ring-jetty-adapter "1.5.0"]]
+                 [ring/ring-jetty-adapter "1.5.0"]
+
+                 [net.mikera/imagez "0.11.0"]]
 
   :source-paths ["src"]
 
   :main rend.cli
-
   )
