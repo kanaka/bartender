@@ -67,8 +67,8 @@
 (defn rend-check [opts check-fn report-fn]
   (let [{:keys [iterations seed max-size]
          :or {:iterations 10
-                   :seed 1
-                   :max-size 50}} opts
+              :seed 1
+              :max-size 50}} opts
         p (prop/for-all* [html] check-fn)]
     (tc/quick-check iterations p
                     :seed seed

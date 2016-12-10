@@ -5,11 +5,24 @@ to validate web browser rendering.
 
 ## Usage
 
-- Start the webdriver capable browsers that are to be tested
-- Update `config.yaml` with browser webdriver connection information
-- Start testing:
+* Prerequisites:
+  * Install libopencv-dev:
 ```
-lein run config.yaml
+sudo apt-get install libopencv-dev
+```
+
+  * Generate the opencv maven artifactrs:
+```
+make deps
+```
+
+* Start the webdriver capable browsers that are to be tested
+
+* Update `config.yaml` with browser webdriver connection information
+
+* Start testing:
+```
+lein run config.yaml sessions.edn
 ```
 
 ## License

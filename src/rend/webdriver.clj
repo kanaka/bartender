@@ -14,13 +14,13 @@
         opts {:headers {"Host" (str "localhost:" (:port browser))}}
         {:keys [status error body] :as resp} @(http/get url opts)]
 ;    (prn :status status :error error :body body :resp resp)
-    (if (or (< status 200) (> status 299))
+    (if (or error (< status 200) (> status 299))
       (if error
         (throw (Exception. error))
         (throw (Exception. body)))
       (json/read-str body :key-fn keyword))))
 
-(defn init-session [browser desired]
+(defn- init-session* [browser desired]
   (let [url (str (addr browser) "/session")
         body (json/write-str {:desiredCapabilities (or desired {})})
         opts {:headers {"Host" (str "localhost:" (:port browser))}
@@ -28,13 +28,19 @@
 ;        _ (prn :init-session :url url :opts opts)
         {:keys [status error body] :as resp} @(http/post url opts)]
 ;    (prn :status status :error error :body body :resp resp)
-    (if (or (< status 200) (> status 299))
+    (if (or error (< status 200) (> status 299))
       (if error
         (throw (Exception. error))
         (throw (Exception. body)))
       (let [session (json/read-str body :key-fn keyword)]
-        (swap! browser-state assoc browser session)
-        session))))
+        (swap! browser-state assoc browser session)))))
+
+(defn init-session [browser desired]
+  (let [sessions @browser-state
+        session (get sessions  browser)]
+    (if session
+      sessions
+      (init-session* browser desired))))
 
 (defn get-session [browser]
   (let [session (get @browser-state browser)]
@@ -49,7 +55,7 @@
         opts {:headers {"Host" (str "localhost:" (:port browser))}}
         {:keys [status error body] :as resp} @(http/get url opts)]
 ;    (prn :get :status status :error error :body body :resp resp)
-    (if (or (< status 200) (> status 299))
+    (if (or error (< status 200) (> status 299))
       (if error
         (throw (Exception. error))
         (throw (Exception. body)))
@@ -65,7 +71,7 @@
 ;        _ (prn :post :url url :opts opts)
         {:keys [status error body] :as resp} @(http/post url opts)]
 ;    (prn :post :status status :error error :body body :resp resp)
-    (if (or (< status 200) (> status 299))
+    (if (or error (< status 200) (> status 299))
       (if error
         (throw (Exception. error))
         (throw (Exception. body)))

@@ -2,6 +2,10 @@ quick-check:
     iterations: 5
     seed: 1
     max-size: 50
+compare:
+#    method: SQDIFF
+    method: SQDIFF_NORMED
+    threshold: 0.00002
 web:
     host: 192.168.2.3
     port: 3000
@@ -13,6 +17,6 @@ browsers:
     - type: chrome
       host: 192.168.2.3
       port: 7001
-#    - type: servo
-#      host: 192.168.2.3
-#      port: 7002
+    - type: servo
+      host: 192.168.2.3
+      port: 7002
