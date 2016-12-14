@@ -11,6 +11,21 @@
 (def simple-keyword
   (gen/fmap #(keyword %1) simple-name))
 
+(def image-path
+  (gen/frequency
+    [[10 (gen/return "/gen/static/Books-aj.svg_aj_ashton_01g_32x32.png")]
+     [5  (gen/return "/gen/static/Books-aj.svg_aj_ashton_01g.png")]
+     [10 (gen/return "/gen/static/B_stop.svg")]
+     [5  (gen/return "/gen/static/Eilat_-_Dolphin_reef_100x67.jpg")]
+     [2  (gen/return "/gen/static/Eilat_-_Dolphin_reef_300x200.jpg")]
+     [1  (gen/return "/gen/static/Eilat_-_Dolphin_reef_600x400.jpg")]
+     [10 (gen/return "/gen/static/SpaceX_Kestrel_engine2_25x24.gif")]
+     [3  (gen/return "/gen/static/SpaceX_Kestrel_engine2.gif")]]))
+
+(def img
+  (gen/let [src image-path]
+    (gen/return [:img {:src src}])))
+
 (def tag-name
   (gen/frequency
     [[100 (gen/return :div)]
@@ -38,15 +53,17 @@
 
 (defn tag
   [inner]
-  (gen/let [t tag-name
-            a (gen/map attr-name attr-value)]
-    (gen/fmap #(apply vector t a %) (gen/vector inner))))
+  (gen/frequency
+    [[20  img]
+     [100 (gen/let [t tag-name
+                    a (gen/map attr-name attr-value)]
+            (gen/fmap #(apply vector t a %) (gen/vector inner)))]]))
 
 (def content
   (gen/recursive-gen tag gen/string-alphanumeric))
 
 (def body
-  (gen/tuple (gen/return :body) (gen/return {:style "background:#0080ff;"}) content))
+  (gen/tuple (gen/return :body) (gen/return {:style "background:#1289ef;"}) content))
 
 (def html
   (gen/tuple (gen/return :html) body))
