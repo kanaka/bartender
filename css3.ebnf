@@ -1,0 +1,60 @@
+syntax = property (<space> property)* <opt-space>?
+
+property = non-terminal <'='> component-value
+
+<non-terminal> = <opt-space> non-property-type <opt-space>
+               | <opt-space> property-type     <opt-space>
+
+<component-value> = <opt-space> component-value-single
+                  / <opt-space> component-value-multiplied
+                  / <opt-space> component-value-multiple
+
+component-value-multiplied = component-value-single multiplier
+
+component-value-single = literal
+                       / keyword-value
+                       / non-property-type
+                       / property-type
+                       / brackets
+
+keyword-value     = identifier
+non-property-type = <'<'> identifier <'>'>
+property-type     = <"<'"> identifier <"'>">
+brackets          = <'['> component-value <opt-space> <']'> bang?
+
+component-value-multiple = adjacent
+                         | double-amp
+                         | single-pipe
+                         | double-pipe
+
+adjacent    = component-value (<space> component-value)*
+            | component-value (',' <space> component-value)*
+double-amp  = component-value (<opt-space> <'&&'> <opt-space> component-value)*
+single-pipe = component-value (<opt-space> <'|'>  <opt-space> component-value)*
+double-pipe = component-value (<opt-space> <'||'> <opt-space> component-value)*
+
+multiplier = question
+           | asterisk
+           | plus
+           | braces
+           | hash 
+           | hash-braces
+
+hash-braces = <hash> braces
+
+question  = <'?'>
+asterisk  = <'*'>
+plus      = <'+'>
+braces    = bracesA | bracesA-B | bracesA-
+bracesA   = <'{'> digit+ <'}'>
+bracesA-B = <'{'> digit+ <','> digit+ <'}'>
+bracesA-  = <'{'> digit+ <',}'>
+hash      = <'#'>
+bang      = <'!'>
+
+digit = #'[0-9]'
+literal = #'[-a-zA-Z0-9\u0028\u0029,/]+'
+        | <"'"> #'[-a-zA-Z0-9\u0028\u0029,/\u005B\u005D]' <"'">
+<identifier> = #'[a-zA-Z][-a-zA-Z0-9]*(?:\u0028\u0029)?(?x) #identifier'
+opt-space = #'\s*'
+space = #'\s+'
