@@ -1,0 +1,3 @@
+<'font-feature-settings'> = normal | <feature-tag-value>#
+
+<feature-tag-value> = <string> [ <integer> | on | off ]?

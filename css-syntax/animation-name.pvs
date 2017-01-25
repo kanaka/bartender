@@ -1,0 +1,3 @@
+<'animation-name'> = [ none | <keyframes-name> ]#
+
+<keyframes-name> = <custom-ident> | <string>

@@ -1,0 +1,4 @@
+<'column-rule-style'> = <br-style>
+
+<br-style> = none | hidden | dotted | dashed | solid | double | groove | ridge | inset | outset
+

@@ -1,0 +1,3 @@
+<'border-bottom-left-radius'> = <length-percentage>{1,2}
+
+<length-percentage> = <length> | <percentage>

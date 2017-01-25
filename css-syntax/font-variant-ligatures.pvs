@@ -1,0 +1,6 @@
+<'font-variant-ligatures'> = normal | none | [ <common-lig-values> || <discretionary-lig-values> || <historical-lig-values> || <contextual-alt-values> ]
+
+<common-lig-values> = [ common-ligatures | no-common-ligatures ]
+<discretionary-lig-values> = [ discretionary-ligatures | no-discretionary-ligatures ]
+<historical-lig-values> = [ historical-ligatures | no-historical-ligatures ]
+<contextual-alt-values> = [ contextual | no-contextual ]

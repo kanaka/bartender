@@ -1,0 +1,3 @@
+<'animation-direction'> = <single-animation-direction>#
+
+<single-animation-direction> = normal | reverse | alternate | alternate-reverse

@@ -1,0 +1,50 @@
+<'mask'> = <mask-layer>#
+
+<mask-layer> = <mask-reference> <masking-mode>? || <position> [ / <bg-size> ]? || <repeat-style> || <geometry-box> || [ <geometry-box> | no-clip ] || <compositing-operator>
+
+<mask-reference> = none | <image> | <mask-source>
+<masking-mode> = alpha | luminance | match-source
+<position> = [[ left | center | right | top | bottom | <length-percentage> ] | [ left | center | right | <length-percentage> ] [ top | center | bottom | <length-percentage> ] | [ center | [ left | right ] <length-percentage>? ] && [ center | [ top | bottom ] <length-percentage>? ]]
+<bg-size> = [ <length-percentage> | auto ]{1,2} | cover | contain
+<repeat-style> = repeat-x | repeat-y | [ repeat | space | round | no-repeat ]{1,2}
+<geometry-box> = <shape-box> | fill-box | stroke-box | view-box
+<compositing-operator> = add | subtract | intersect | exclude
+
+<image> = <url> | <image()> | <image-set()> | <element()> | <cross-fade()> | <gradient>
+<mask-source> = <url>
+<length-percentage> = <length> | <percentage>
+<shape-box> = <box> | margin-box
+
+<image()> = image( [ [ <image> | <string> ]? , <color>? ]! )
+<image-set()> = image-set( <image-set-option># )
+<element()> = element( <id-selector> )
+<cross-fade()> = cross-fade( <cf-mixing-image> , <cf-final-image>? )
+<gradient> = <linear-gradient()> | <repeating-linear-gradient()> | <radial-gradient()> | <repeating-radial-gradient()>
+<box> = border-box | padding-box | content-box
+
+<color> = <rgb()> | <rgba()> | <hsl()> | <hsla()> | <hex-color> | <named-color> | currentcolor | <deprecated-system-color>
+<image-set-option> = [ <image> | <string> ] <resolution>
+<cf-mixing-image> = <percentage>? && <image>
+<cf-final-image> = <image> | <color>
+<linear-gradient()> = linear-gradient( [ <angle> | to <side-or-corner> ]? , <color-stop-list> )
+<repeating-linear-gradient()> = repeating-linear-gradient( [ <angle> | to <side-or-corner> ]? , <color-stop-list> )
+<radial-gradient()> = radial-gradient( [ <ending-shape> || <size> ]? [ at <position> ]? , <color-stop-list> )
+<repeating-radial-gradient()> = repeating-radial-gradient( [ <ending-shape> || <size> ]? [ at <position> ]? , <color-stop-list> )
+
+<rgb()> = rgb( <rgb-component>#{3} )
+<rgba()> = rgba( <rgb-component>#{3} , <alpha-value> )
+<hsl()> = hsl( <hue>, <percentage>, <percentage> )
+<hsla()> = hsla( <hue>, <percentage>, <percentage>, <alpha-value> )
+<named-color> = transparent | aliceblue | antiquewhite | aqua | aquamarine | azure | beige | bisque | black | blanchedalmond | blue | blueviolet | brown | burlywood | cadetblue | chartreuse | chocolate | coral | cornflowerblue | cornsilk | crimson | cyan | darkblue | darkcyan | darkgoldenrod | darkgray | darkgreen | darkgrey | darkkhaki | darkmagenta | darkolivegreen | darkorange | darkorchid | darkred | darksalmon | darkseagreen | darkslateblue | darkslategray | darkslategrey | darkturquoise | darkviolet | deeppink | deepskyblue | dimgray | dimgrey | dodgerblue | firebrick | floralwhite | forestgreen | fuchsia | gainsboro | ghostwhite | gold | goldenrod | gray | green | greenyellow | grey | honeydew | hotpink | indianred | indigo | ivory | khaki | lavender | lavenderblush | lawngreen | lemonchiffon | lightblue | lightcoral | lightcyan | lightgoldenrodyellow | lightgray | lightgreen | lightgrey | lightpink | lightsalmon | lightseagreen | lightskyblue | lightslategray | lightslategrey | lightsteelblue | lightyellow | lime | limegreen | linen | magenta | maroon | mediumaquamarine | mediumblue | mediumorchid | mediumpurple | mediumseagreen | mediumslateblue | mediumspringgreen | mediumturquoise | mediumvioletred | midnightblue | mintcream | mistyrose | moccasin | navajowhite | navy | oldlace | olive | olivedrab | orange | orangered | orchid | palegoldenrod | palegreen | paleturquoise | palevioletred | papayawhip | peachpuff | peru | pink | plum | powderblue | purple | rebeccapurple | red | rosybrown | royalblue | saddlebrown | salmon | sandybrown | seagreen | seashell | sienna | silver | skyblue | slateblue | slategray | slategrey | snow | springgreen | steelblue | tan | teal | thistle | tomato | turquoise | violet | wheat | white | whitesmoke | yellow | yellowgreen
+<deprecated-system-color> = ActiveBorder | ActiveCaption | AppWorkspace | Background | ButtonFace | ButtonHighlight | ButtonShadow | ButtonText | CaptionText | GrayText | Highlight | HighlightText | InactiveBorder | InactiveCaption | InactiveCaptionText | InfoBackground | InfoText | Menu | MenuText | Scrollbar | ThreeDDarkShadow | ThreeDFace | ThreeDHighlight | ThreeDLightShadow | ThreeDShadow | Window | WindowFrame | WindowText
+<side-or-corner> = [ left | right ] || [ top | bottom ]
+<color-stop-list> = <color-stop>{2,}
+<ending-shape> = circle | ellipse
+<size> = closest-side | farthest-side | closest-corner | farthest-corner | <length> | <length-percentage>{2}
+
+
+<rgb-component> = <integer> | <percentage>
+<alpha-value> = <number>
+<hue> = <number>
+<color-stop> = <color> <length-percentage>?
+

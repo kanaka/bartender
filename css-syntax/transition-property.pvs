@@ -1,0 +1,3 @@
+<'transition-property'> = none | <single-transition-property>#
+
+<single-transition-property> = all | <custom-ident>

@@ -1,0 +1,1 @@
+<'unicode-bidi'> = normal | embed | isolate | bidi-override | isolate-override | plaintext

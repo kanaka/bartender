@@ -1,0 +1,5 @@
+<'list-style-type'> = <counter-style> | <string> | none
+
+<counter-style> = <counter-style-name> | symbols()
+
+<counter-style-name> = <custom-ident>

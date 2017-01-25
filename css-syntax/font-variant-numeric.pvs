@@ -1,0 +1,5 @@
+<'font-variant-numeric'> = normal | [ <numeric-figure-values> || <numeric-spacing-values> || <numeric-fraction-values> || ordinal || slashed-zero ]
+
+<numeric-figure-values> = [ lining-nums | oldstyle-nums ]
+<numeric-spacing-values> = [ proportional-nums | tabular-nums ]
+<numeric-fraction-values> = [ diagonal-fractions | stacked-fractions ]

@@ -1,0 +1,3 @@
+<'mask-composite'> = <compositing-operator>#
+
+<compositing-operator> = add | subtract | intersect | exclude

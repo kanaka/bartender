@@ -1,0 +1,2 @@
+<'text-emphasis'> = <'text-emphasis-style'> || <'text-emphasis-color'>
+

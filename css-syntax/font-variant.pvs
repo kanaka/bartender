@@ -1,0 +1,12 @@
+<'font-variant'> = normal | none | [ <common-lig-values> || <discretionary-lig-values> || <historical-lig-values> || <contextual-alt-values> || stylistic( <feature-value-name> ) || historical-forms || styleset( <feature-value-name># ) || character-variant( <feature-value-name># ) || swash( <feature-value-name> ) || ornaments( <feature-value-name> ) || annotation( <feature-value-name> ) || [ small-caps | all-small-caps | petite-caps | all-petite-caps | unicase | titling-caps ] || <numeric-figure-values> || <numeric-spacing-values> || <numeric-fraction-values> || ordinal || slashed-zero || <east-asian-variant-values> || <east-asian-width-values> || ruby ]
+
+<common-lig-values> = [ common-ligatures | no-common-ligatures ]
+<discretionary-lig-values> = [ discretionary-ligatures | no-discretionary-ligatures ]
+<historical-lig-values> = [ historical-ligatures | no-historical-ligatures ]
+<contextual-alt-values> = [ contextual | no-contextual ]
+<feature-value-name> = <custom-ident>
+<numeric-figure-values> = [ lining-nums | oldstyle-nums ]
+<numeric-spacing-values> = [ proportional-nums | tabular-nums ]
+<numeric-fraction-values> = [ diagonal-fractions | stacked-fractions ]
+<east-asian-variant-values> = [ jis78 | jis83 | jis90 | jis04 | simplified | traditional ]
+<east-asian-width-values> = [ full-width | proportional-width ]

@@ -1,0 +1,2 @@
+<'text-overflow'> = [ clip | ellipsis | <string> ]{1,2}
+

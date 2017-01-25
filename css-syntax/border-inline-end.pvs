@@ -1,0 +1,14 @@
+<'border-inline-end'> = <'border-width'> || <'border-style'> || <'color'>
+
+<color> = <rgb()> | <rgba()> | <hsl()> | <hsla()> | <hex-color> | <named-color> | currentcolor | <deprecated-system-color>
+
+<rgb()> = rgb( <rgb-component>#{3} )
+<rgba()> = rgba( <rgb-component>#{3} , <alpha-value> )
+<hsl()> = hsl( <hue>, <percentage>, <percentage> )
+<hsla()> = hsla( <hue>, <percentage>, <percentage>, <alpha-value> )
+<named-color> = <ident>
+<deprecated-system-color> = ActiveBorder | ActiveCaption | AppWorkspace | Background | ButtonFace | ButtonHighlight | ButtonShadow | ButtonText | CaptionText | GrayText | Highlight | HighlightText | InactiveBorder | InactiveCaption | InactiveCaptionText | InfoBackground | InfoText | Menu | MenuText | Scrollbar | ThreeDDarkShadow | ThreeDFace | ThreeDHighlight | ThreeDLightShadow | ThreeDShadow | Window | WindowFrame | WindowText
+
+<rgb-component> = <integer> | <percentage>
+<alpha-value> = <number>
+<hue> = <number>

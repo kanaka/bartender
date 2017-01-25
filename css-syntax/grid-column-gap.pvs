@@ -1,0 +1,3 @@
+<'grid-column-gap'> = <length-percentage>
+
+<length-percentage> = <length> | <percentage>
