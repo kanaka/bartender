@@ -111,7 +111,7 @@
 (defn parsed-tree->items [tree]
   (assert (= :syntax (first tree))
           "Parse tree did not start with :syntax")
-  (assert (every? #(and (vector? %) (= :property (first %)))
+  (assert (every? #(and (vector? %) (= :property-def (first %)))
                   (drop 1 tree))
           "Parse tree contained invalid property")
   (for [prop (drop 1 tree)]
@@ -119,10 +119,8 @@
           name (second (second prop))
           data (nth prop 2)]
       (condp = ptype
-        :property-type
-        [(str "'" name "'") data]
-        :non-property-type
-        [name data]))))
+        :property     [(str "'" name "'") data]
+        :non-property [name data]))))
 
 (defn parsed-tree->map [tree]
   (let [items (parsed-tree->items tree)]
@@ -138,3 +136,75 @@
         left
         (throw (Exception. (str "Values conflict: " left " " right)))))
     (map parsed-tree->map trees)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; (def tx (parsed-tree->map (css3-parser (slurp "./css-syntax/transition.pvs"))))
+
+(declare component component-multiplied component-single components
+         double-amp single-pipe double-pipe adjacent)
+
+(defn component [tree indent]
+  (condp = (first tree)
+    :component-single     (component-single (second tree) indent)
+    :component-multiplied (component-multiplied (drop 1 tree) indent)
+    :components           (components (second tree) indent)))
+
+(defn component-single [tree indent]
+  (let [pre (apply str (repeat indent "  "))]
+    (condp = (first tree)
+      :literal       (str pre "(gen/return \"" (second tree) "\")")
+      :keyword-value (str pre "(gen/return \"" (second tree) "\")")
+      :non-property  (str pre "(gen/return gen-nonprop-" (second tree) ")")
+      :property      (str pre "(gen/return gen-prop-" (second tree) ")")
+      :brackets      (component (second tree) indent))))
+
+(defn component-multiplied [[tree multiplier] indent]
+  (let [pre (apply str (repeat indent "  "))]
+    (str pre "GEN/multiplier")))
+
+(defn components [tree indent]
+  (condp = (first tree)
+    :double-amp  (double-amp  (drop 1 tree) indent)
+    :single-pipe (single-pipe (drop 1 tree) indent)
+    :double-pipe (double-pipe (drop 1 tree) indent)
+    :adjacent    (adjacent    (drop 1 tree) indent)))
+
+(defn double-amp [tree indent]
+  (str (apply str (repeat indent "  "))
+       "GEN/double-amp"))
+
+(defn single-pipe [tree indent]
+  (let [pre (apply str (repeat indent "  "))]
+    (str pre "(gen/frequency [\n"
+         (clojure.string/join
+           "\n"
+           (for [t tree]
+             (str pre "  [100\n" (component t (+ 2 indent)) "]")))
+         "])")))
+
+(defn double-pipe [tree indent]
+  (str (apply str (repeat indent "  "))
+       "GEN/double-pipe"))
+
+(defn adjacent [tree indent]
+  (let [pre (apply str (repeat indent "  "))]
+    (str pre "(gen/tuple\n"
+         (clojure.string/join
+           "\n"
+           (for [t tree]
+             (component t (+ 1 indent))))
+         ")")))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defn generator-name [k]
+  (if (= \' (first k))
+    (str "gen-prop-" (clojure.string/replace k #"'" ""))
+    (str "gen-nonprop-" k)))
+
+(defn map->generators [m]
+  (apply str
+         (for [[k v] m]
+           (str "(def " (generator-name k) "\n"
+                (component v 1) ")\n\n"))))

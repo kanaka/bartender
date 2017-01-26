@@ -1,37 +1,36 @@
-syntax = property (<space> property)* <opt-space>?
+syntax = property-def (<space> property-def)* <opt-space>?
 
-property = non-terminal <'='> component-value
+property-def = non-terminal <'='> <opt-space> component
 
-<non-terminal> = <opt-space> non-property-type <opt-space>
-               | <opt-space> property-type     <opt-space>
+<non-terminal> = <opt-space> non-property <opt-space>
+               | <opt-space> property     <opt-space>
 
-<component-value> = <opt-space> component-value-single
-                  / <opt-space> component-value-multiplied
-                  / <opt-space> component-value-multiple
+<component> = component-single
+            / component-multiplied
+            / components
 
-component-value-multiplied = component-value-single multiplier
+component-single = literal
+                 / keyword-value
+                 / non-property
+                 / property
+                 / brackets
 
-component-value-single = literal
-                       / keyword-value
-                       / non-property-type
-                       / property-type
-                       / brackets
+component-multiplied = component-single multiplier
 
-keyword-value     = identifier
-non-property-type = <'<'> identifier <'>'>
-property-type     = <"<'"> identifier <"'>">
-brackets          = <'['> component-value <opt-space> <']'> bang?
+components = adjacent
+           | double-amp
+           | single-pipe
+           | double-pipe
 
-component-value-multiple = adjacent
-                         | double-amp
-                         | single-pipe
-                         | double-pipe
+keyword-value = identifier
+non-property  = <'<'> identifier <'>'>
+property      = <"<'"> identifier <"'>">
+brackets      = <'['> <opt-space> component <opt-space> <']'> bang?
 
-adjacent    = component-value (<space> component-value)*
-            | component-value (',' <space> component-value)*
-double-amp  = component-value (<opt-space> <'&&'> <opt-space> component-value)*
-single-pipe = component-value (<opt-space> <'|'>  <opt-space> component-value)*
-double-pipe = component-value (<opt-space> <'||'> <opt-space> component-value)*
+double-amp  = (<opt-space> component <opt-space> <'&&'> <opt-space>)+ component
+single-pipe = (<opt-space> component <opt-space> <'|'>  <opt-space>)+ component
+double-pipe = (<opt-space> component <opt-space> <'||'> <opt-space>)+ component
+adjacent    = (<opt-space> component ','? <space>)+ component
 
 multiplier = question
            | asterisk
