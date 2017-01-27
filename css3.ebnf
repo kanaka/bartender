@@ -1,13 +1,23 @@
 syntax = property-def (<space> property-def)* <opt-space>?
 
-property-def = non-terminal <'='> <opt-space> component
+property-def = non-terminal <'='> <opt-space> single-pipe
 
 <non-terminal> = <opt-space> non-property <opt-space>
                | <opt-space> property     <opt-space>
 
-<component> = component-single
-            / component-multiplied
-            / components
+single-pipe = adjacent (<space> <'|'> <space> <opt-space> adjacent)*
+
+adjacent    = (<opt-space> components comma? <space>)* components
+
+components = double-amp
+           | double-pipe
+
+double-amp  = (<opt-space> component <space> <'&&'> <space>)* component
+double-pipe = (<opt-space> component <space> <'||'> <space>)* component
+
+
+component = component-single
+          | component-multiplied
 
 component-single = literal
                  / keyword-value
@@ -17,20 +27,10 @@ component-single = literal
 
 component-multiplied = component-single multiplier
 
-components = adjacent
-           | double-amp
-           | single-pipe
-           | double-pipe
-
 keyword-value = identifier
 non-property  = <'<'> identifier <'>'>
 property      = <"<'"> identifier <"'>">
-brackets      = <'['> <opt-space> component <opt-space> <']'> bang?
-
-double-amp  = (<opt-space> component <opt-space> <'&&'> <opt-space>)+ component
-single-pipe = (<opt-space> component <opt-space> <'|'>  <opt-space>)+ component
-double-pipe = (<opt-space> component <opt-space> <'||'> <opt-space>)+ component
-adjacent    = (<opt-space> component ','? <space>)+ component
+brackets      = <'['> <opt-space> single-pipe <opt-space> <']'> bang?
 
 multiplier = question
            | asterisk
@@ -52,6 +52,7 @@ hash      = <'#'>
 bang      = <'!'>
 
 digit = #'[0-9]'
+comma = ','
 literal = #'[-a-zA-Z0-9\u0028\u0029,/]+'
         | <"'"> #'[-a-zA-Z0-9\u0028\u0029,/\u005B\u005D]' <"'">
 <identifier> = #'[a-zA-Z][-a-zA-Z0-9]*(?:\u0028\u0029)?(?x) #identifier'
