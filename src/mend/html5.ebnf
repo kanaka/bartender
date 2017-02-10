@@ -1,0 +1,40 @@
+element = empty-tag <opt-space>
+        | start-tag content end-tag <opt-space>
+
+
+empty-tag = <'<'> name (<space> attribute)* <opt-space> <'/>'>
+          | <'<'> name-unclosed (<space> attribute)* <opt-space> <'>'>
+
+start-tag = <'<'> name (<space> attribute)* <opt-space> <'>'>
+(* WARN: recurses to element *)
+(* content   = char-data? ((element | reference | CDSect | PI | comment) char-data?)* *)
+content   = char-data? ((element | reference | comment) char-data?)*
+end-tag   = <'</'> name <opt-space> <'>'>
+
+
+attribute       = name <eq> attribute-value
+attribute-value = <'"'> (#'[^<&"]*' | reference)* <'"'>
+                | <"'"> (#"[^<&']*" | reference)* <"'">
+
+(* char-data = #'[^<&]'* !(#'[^<&]'* ']]>' #'[^<&]'* ) *)
+char-data = #'[^<&]*'
+
+reference     = entity-ref
+              | char-ref-dec
+              | char-ref-hex
+entity-ref    = <'&'> name <';'>
+char-ref-dec  = <'&#'> #'[0-9]+' <';'>
+char-ref-hex  = <'&#x'> #'[0-9A-Fa-f]+' <';'>
+
+name            = #'[A-Za-z_:][A-Za-z_:\-.0-9]*'
+name-unclosed   = 'meta'
+                | 'link'
+                | 'br'
+
+comment = <'<!--'> #'(?:[^-]|-[^-])*' <'-->'>
+
+
+eq = <opt-space> '=' <opt-space>
+opt-space = #'\s*'
+space = #'\s+'
+

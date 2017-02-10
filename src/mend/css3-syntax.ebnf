@@ -1,6 +1,7 @@
-syntax = property-def (<space> property-def)* <opt-space>?
+assignments = assignment (<space> assignment)* <opt-space>?
+(*assignments = assignment (<delimeter> assignment)* <opt-space>? *)
 
-property-def = non-terminal <'='> <opt-space> single-pipe
+assignment = non-terminal <'='> <opt-space> single-pipe
 
 <non-terminal> = <opt-space> non-property <opt-space>
                | <opt-space> property     <opt-space>
@@ -44,7 +45,9 @@ hash-braces = <hash> braces
 question  = <'?'>
 asterisk  = <'*'>
 plus      = <'+'>
-braces    = bracesA | bracesA-B | bracesA-
+braces    = bracesA
+          | bracesA-B
+          | bracesA-
 bracesA   = <'{'> digit+ <'}'>
 bracesA-B = <'{'> digit+ <','> digit+ <'}'>
 bracesA-  = <'{'> digit+ <',}'>
@@ -53,6 +56,7 @@ bang      = <'!'>
 
 digit = #'[0-9]'
 comma = ','
+delimeter = <opt-space> ';' <opt-space>
 literal = #'[-a-zA-Z0-9\u0028\u0029,/]+'
         | <"'"> #'[-a-zA-Z0-9\u0028\u0029,/\u005B\u005D]' <"'">
 <identifier> = #'[a-zA-Z][-a-zA-Z0-9]*(?:\u0028\u0029)?(?x) #identifier'

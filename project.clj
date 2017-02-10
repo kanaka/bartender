@@ -4,7 +4,8 @@
   :license {:name "Mozilla Public License version 2"
             :url "https://www.mozilla.org/en-US/MPL/2.0/"}
 
-  :dependencies [[org.clojure/clojure "1.7.0"]
+  :dependencies [[org.clojure/clojure "1.9.0-alpha14"]
+                 [org.clojure/test.check "0.9.0"]
                  [hiccup "1.0.5"]
                  [http-kit "2.2.0"]
                  [org.clojure/data.json "0.2.6"]
@@ -15,5 +16,6 @@
 
   :source-paths ["src"]
 
-  :main mend.cli
+  ;;:main mend.html
+  :main mend.css
   )
