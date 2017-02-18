@@ -1,16 +1,20 @@
 (ns mend.css
   (:require [mend.util :as util]
-            [clojure.test.check.generators :as gen]
+            [alandipert.kahn :as kahn]
             [clojure.string :as string]
             [instaparse.core :as insta]
-            [clojure.java.io :as io]))
+            [clojure.java.io :as io]
+
+            ;; Not actually used here, but convenient for testing
+            [clojure.pprint :refer [pprint]]
+            [clojure.test.check.generators :as gen]))
 
 ;; https://developer.mozilla.org/en-US/docs/Web/CSS/Value_definition_syntax
 ;; https://www.smashingmagazine.com/2016/05/understanding-the-css-property-value-syntax/
 ;; https://www.w3.org/TR/CSS21/grammar.html
 
 ;; TODO: global properties (inherit, etc)
-(def css3-syntax-parser (insta/parser (slurp "src/mend/css3-syntax.ebnf")))
+(def css3-syntax-parser (insta/parser (slurp "data/css-pvs.ebnf")))
 
 (defn parsed-tree->items [tree]
   (assert (= :assignments (first tree))
@@ -45,8 +49,8 @@
 
 
 (comment
-  (def bs (css3-syntax-parser (slurp "./css-syntax/box-shadow.pvs")))
-  (def tx (css3-syntax-parser (slurp "./css-syntax/transition.pvs")))
+  (def bs (css3-syntax-parser (slurp "./data/css-syntax/box-shadow.pvs")))
+  (def tx (css3-syntax-parser (slurp "./data/css-syntax/transition.pvs")))
   (merge-maps (map parsed-tree->map [bs tx]))
 )
 
@@ -183,21 +187,8 @@
 (defn prefix [ns]
   (str
 "(ns " ns "
-   (:require [clojure.test.check.generators :as gen]))\n"
-"
-(defn flatten-text* [tree]
-  (lazy-seq
-    (cond
-      (= \"\" tree)                       (list)
-      (or (number? tree) (string? tree))  (list tree \" \")
-      :else                               (mapcat flatten-text* tree))))
-
-(defn flatten-text [tree]
-  (clojure.string/trimr
-    (clojure.string/replace
-      (apply str (flatten-text* tree))
-      #\" +\" \" \")))
-
+   (:require [mend.util :as util]
+             [clojure.test.check.generators :as gen]))
 
 ;; Some base generators/types that are assumed
 
@@ -248,7 +239,7 @@
 (def gen-nonprop-string
   (->> (gen/tuple gen/char-alpha (gen/vector gen/char-alphanumeric))
        (gen/fmap (fn [[c cs]] (apply str (cons c cs))))))
-(def gen-nonprop-custom-ident (gen/return \"gen_custom_ident\"))
+(def gen-nonprop-custom-ident (gen/return \"TODO_custom_ident\"))
 (def gen-nonprop-angle (gen/return \"90\"))
 (def gen-nonprop-padding-left (gen/return \"10\"))
 (def gen-nonprop-width (gen/return \"10\"))
@@ -258,49 +249,49 @@
 (def gen-nonprop-border-image-width (gen/return \"20\"))
 (def gen-nonprop-border-image-outset (gen/return \"30\"))
 (def gen-nonprop-border-image-repeat (gen/return \"40\"))
-(def gen-nonprop-flex (gen/return \"gen_flex\"))
-(def gen-nonprop-flex-direction (gen/return \"gen_flex_direction\"))
-(def gen-nonprop-flex-wrap (gen/return \"gen_flex_wrap\"))
-(def gen-nonprop-text-emphasis-style (gen/return \"gen_text_emphasis_style\"))
-(def gen-nonprop-text-emphasis-color (gen/return \"gen_text_emphasis_color\"))
-(def gen-nonprop-left (gen/return \"gen_left\"))
+(def gen-nonprop-flex (gen/return \"TODO_flex\"))
+(def gen-nonprop-flex-direction (gen/return \"TODO_flex_direction\"))
+(def gen-nonprop-flex-wrap (gen/return \"TODO_flex_wrap\"))
+(def gen-nonprop-text-emphasis-style (gen/return \"TODO_text_emphasis_style\"))
+(def gen-nonprop-text-emphasis-color (gen/return \"TODO_text_emphasis_color\"))
+(def gen-nonprop-left (gen/return \"TODO_left\"))
 (def gen-nonprop-border-width (gen/return \"20\"))
-(def gen-nonprop-border-style (gen/return \"gen_border_style\"))
-(def gen-nonprop-outline-color (gen/return \"gen_outline_color\"))
-(def gen-nonprop-outline-style (gen/return \"gen_outline_style\"))
+(def gen-nonprop-border-style (gen/return \"TODO_border_style\"))
+(def gen-nonprop-outline-color (gen/return \"TODO_outline_color\"))
+(def gen-nonprop-outline-style (gen/return \"TODO_outline_style\"))
 (def gen-nonprop-outline-width (gen/return \"50\"))
 (def gen-nonprop-x (gen/return \"11\"))
 (def gen-nonprop-y (gen/return \"11\"))
-(def gen-nonprop-time (gen/return \"gen_time\"))
-(def gen-nonprop-grid-template (gen/return \"gen_grid_template\"))
-(def gen-nonprop-grid-template-rows (gen/return \"gen_grid_template_rows\"))
-(def gen-nonprop-grid-template-columns (gen/return \"gen_grid_template_columns\"))
-(def gen-nonprop-grid-auto-rows (gen/return \"gen_grid_auto_rows\"))
-(def gen-nonprop-grid-auto-columns (gen/return \"gen_grid_auto_columns\"))
-(def gen-nonprop-grid-row-gap (gen/return \"gen_grid_row_gap\"))
-(def gen-nonprop-grid-column-gap (gen/return \"gen_grid_column_gap\"))
-(def gen-nonprop-column-width (gen/return \"gen_column_width\"))
-(def gen-nonprop-column-count (gen/return \"gen_column_count\"))
-(def gen-nonprop-column-rule-width (gen/return \"gen_column_rule_width\"))
-(def gen-nonprop-column-rule-style (gen/return \"gen_column_rule_style\"))
-(def gen-nonprop-column-rule-color (gen/return \"gen_column_rule_color\"))
-(def gen-nonprop-font-style (gen/return \"gen_font_style\"))
-(def gen-nonprop-font-weight (gen/return \"gen_font_weight\"))
-(def gen-nonprop-font-stretch (gen/return \"gen_font_stretch\"))
-(def gen-nonprop-font-size (gen/return \"gen_font_size\"))
-(def gen-nonprop-line-height (gen/return \"gen_line_height\"))
-(def gen-nonprop-font-family (gen/return \"gen_font_family\"))
-(def gen-nonprop-list-line-style (gen/return \"gen_list_line_style\"))
-(def gen-nonprop-list-style-type (gen/return \"gen_list_style_type\"))
-(def gen-nonprop-list-style-position (gen/return \"gen_list_style_position\"))
-(def gen-nonprop-list-style-image (gen/return \"gen_list_style_image\"))
-(def gen-nonprop-resolution (gen/return \"gen_resolution\"))
-(def gen-nonprop-margin-left (gen/return \"gen_margin_left\"))
-(def gen-nonprop-min-width (gen/return \"gen_min_width\"))
-(def gen-nonprop-text-decoration-line (gen/return \"gen_text-decoration-line\"))
-(def gen-nonprop-text-decoration-style (gen/return \"gen_text-decoration-style\"))
-(def gen-nonprop-text-decoration-color (gen/return \"gen_text-decoration-color\"))
-(def gen-nonprop-background-color (gen/return \"gen_background-color\"))
+(def gen-nonprop-time (gen/return \"TODO_time\"))
+(def gen-nonprop-grid-template (gen/return \"TODO_grid_template\"))
+(def gen-nonprop-grid-template-rows (gen/return \"TODO_grid_template_rows\"))
+(def gen-nonprop-grid-template-columns (gen/return \"TODO_grid_template_columns\"))
+(def gen-nonprop-grid-auto-rows (gen/return \"TODO_grid_auto_rows\"))
+(def gen-nonprop-grid-auto-columns (gen/return \"TODO_grid_auto_columns\"))
+(def gen-nonprop-grid-row-gap (gen/return \"TODO_grid_row_gap\"))
+(def gen-nonprop-grid-column-gap (gen/return \"TODO_grid_column_gap\"))
+(def gen-nonprop-column-width (gen/return \"TODO_column_width\"))
+(def gen-nonprop-column-count (gen/return \"TODO_column_count\"))
+(def gen-nonprop-column-rule-width (gen/return \"TODO_column_rule_width\"))
+(def gen-nonprop-column-rule-style (gen/return \"TODO_column_rule_style\"))
+(def gen-nonprop-column-rule-color (gen/return \"TODO_column_rule_color\"))
+(def gen-nonprop-font-style (gen/return \"TODO_font_style\"))
+(def gen-nonprop-font-weight (gen/return \"TODO_font_weight\"))
+(def gen-nonprop-font-stretch (gen/return \"TODO_font_stretch\"))
+(def gen-nonprop-font-size (gen/return \"TODO_font_size\"))
+(def gen-nonprop-line-height (gen/return \"TODO_line_height\"))
+(def gen-nonprop-font-family (gen/return \"TODO_font_family\"))
+(def gen-nonprop-list-line-style (gen/return \"TODO_list_line_style\"))
+(def gen-nonprop-list-style-type (gen/return \"TODO_list_style_type\"))
+(def gen-nonprop-list-style-position (gen/return \"TODO_list_style_position\"))
+(def gen-nonprop-list-style-image (gen/return \"TODO_list_style_image\"))
+(def gen-nonprop-resolution (gen/return \"TODO_resolution\"))
+(def gen-nonprop-margin-left (gen/return \"TODO_margin_left\"))
+(def gen-nonprop-min-width (gen/return \"TODO_min_width\"))
+(def gen-nonprop-text-decoration-line (gen/return \"TODO_text-decoration-line\"))
+(def gen-nonprop-text-decoration-style (gen/return \"TODO_text-decoration-style\"))
+(def gen-nonprop-text-decoration-color (gen/return \"TODO_text-decoration-color\"))
+(def gen-nonprop-background-color (gen/return \"TODO_background-color\"))
 
 
 ;; Generated generators
@@ -309,11 +300,11 @@
 
 (defn value-generator-def [k v]
   (str "(def gen-" (generator-name k) "\n"
-       "  (gen/fmap flatten-text\n"
+       "  (gen/fmap util/flatten-text\n"
        (single-pipe (drop 1 v) 2) "))"))
 
 (defn assignment-generator [m]
-  (str "(def gen-assignment\n"
+  (str "(def gen-css-assignment\n"
        "  (gen/frequency [\n"
        (string/join
          "\n"
@@ -326,7 +317,7 @@
 
 (defn map->ns [ns m]
   (let [prop-deps (util/tree-deps m)
-        prop-order (util/topology-sort prop-deps)
+        prop-order (reverse (kahn/kahn-sort-throws prop-deps))
         gen-strs (for [p prop-order]
                    (value-generator-def p (get m p)))
         ]
@@ -335,18 +326,18 @@
          "\n\n"
          (assignment-generator m)
          "\n\n"
-         "(def gen-assignments\n"
+         "(def gen-css-assignments\n"
          "  (gen/fmap #(clojure.string/join \"; \" %)\n"
-         "            (gen/vector gen-assignment)))\n"
+         "            (gen/vector gen-css-assignment)))\n"
          "\n\n"
          )))
 
 (comment
-  (def bs-pvs (slurp "css-syntax/box-shadow.pvs"))
+  (def bs-pvs (slurp "./data/css-syntax/box-shadow.pvs"))
   (def bs-tree (css3-syntax-parser bs-pvs))
   (def bs-map (parsed-tree->map bs-tree))
-  (def bs-ns (map->ns "mend.box-shadow-generators" bs-map))
-  (spit "src/mend/box_shadow_generators.clj" bs-ns)
+  (def bs-ns (map->ns "rend.box-shadow-generators" bs-map))
+  (spit "src/rend/box_shadow_generators.clj" bs-ns)
 )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -386,15 +377,18 @@
     trees))
 
 (comment
-  (def override-tree (css3-syntax-parser (slurp "css-syntax/_OVERRIDES_.pvs")))
+  (def override-tree (css3-syntax-parser (slurp "./data/css-syntax/_OVERRIDES_.pvs")))
   (def override-map (parsed-tree->map override-tree))
 
-  (def css-trees (load-pvs-files "css-syntax/" (concat special broken)))
+  ;; The following takes 7 seconds
+  (def css-trees (load-pvs-files "./data/css-syntax/" (concat special broken)))
   (def css-maps (map parsed-tree->map css-trees))
   (def css-map (check-and-merge-maps css-maps override-map))
 
-  (def css-ns (map->ns "mend.css-generators" css-map))
-  (spit "src/mend/css_generators.clj" css-ns)
-  (require '[mend.css-generators :as css-gen] :reload)
-  (pprint (gen/sample css-gen/gen-prop-box-shadow 10))
+  ;; The following takes 12 seconds
+  (def css-ns (map->ns "rend.css-generators" css-map))
+  (spit "src/rend/css_generators.clj" css-ns)
+
+  (require '[rend.css-generators :as css-gen] :reload)
+  (pprint (gen/sample css-gen/gen-css-assignments 10))
 )

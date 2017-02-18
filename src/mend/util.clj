@@ -1,6 +1,6 @@
 (ns mend.util
   (:require [clojure.set :refer [union]]
-            [alandipert.kahn :as kahn]))
+            [clojure.walk :refer [postwalk]]))
 
 
 (defn tree-matches
@@ -25,22 +25,13 @@
              {k2 #{k1}}
              {k2 #{}}))))
 
-;; From: http://stackoverflow.com/a/22800080/471795
-(defn topology-sort
-  "Takes a dependency map like {:a #{:b :c} ...} where :b and :c are
-  the dependencies of :a. Returns a list where the items with no
-  dependencies on them appear first in the list and later items can
-  only depend on earlier values in the list. Throws an exception if
-  the dependency graph if cyclic."
-  [m] 
-  (let [sorted (kahn/kahn-sort-throws m)]
-    (prn :sorted sorted)
-    (assert sorted
-            (str "Graph is cyclic and cannot be sorted"))
-    (reverse sorted)))
-
 (defn select-indexes [coll idxs]
   (keep-indexed #(when ((set idxs) %1) %2) coll))
+
+(defn remove-key
+  "Walk a tree removing every key/value where key match k"
+  [tree k]
+  (postwalk #(if (and (vector? %) (= k (first %))) nil %) tree))
 
 
 (comment
@@ -55,7 +46,63 @@
 (tree-deps ttree)
 ;=>{:a #{:b :c} :b #{:c} :c #{}}
 
-(topology-sort (tree-deps ttree))
-;=>([:c] [:b] [:a])
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defn flatten-text*
+  "Take a tree (sequences hierarchy) and flattens it all the way to
+  a single sequence of numbers and strings. Empty values are removed."
+  [tree]
+  (lazy-seq
+    (cond
+      (or (number? tree) (string? tree))  (list tree)
+      (empty? tree)                       (list)
+      :else                               (mapcat flatten-text* tree))))
+
+(defn flatten-text
+  "Take a tree (sequences hierarchy) and flattens it all the way to
+  a single string (optionally separated by sep). Empty values are
+  removed."
+  [tree & [sep]]
+  (clojure.string/replace
+    (apply str (if sep
+                 (interpose sep (flatten-text* tree))
+                 (flatten-text* tree)))
+    #" +" " "))
+
+(comment
+
+(flatten-text ["foo" "" [[nil "bar"] "baz" ["qux"]]])
+;=>"foobarbazqux"
+
+(flatten-text [" "])
+;=>"foobar bazqux"
+
+(flatten-text ["foo" "" [[nil "bar"] "baz" ["qux"]]] " ")
+;=>"foo bar baz qux"
 
 )
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+(defn inner-text
+  "Takes a hickory block and extracts the text content adding
+  line-breaks where appropriate (<p> and <br>).
+  Returns a sequence of strings
+  This is not efficient (some non-TCO), but it works."
+  [root]
+  (loop [res []
+         tree root]
+    (cond
+      (nil? (seq tree)) res
+      (string? tree) [tree]
+      (sequential? tree) (recur (concat res (inner-text (first tree)))
+                                (next tree))
+      (map? tree) (if (get #{:p :br} (:tag tree))
+                    (recur (conj res "\n") (:content tree))
+                    (recur res (:content tree)))
+      :else nil)))
+

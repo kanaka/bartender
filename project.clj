@@ -6,6 +6,7 @@
 
   :dependencies [[org.clojure/clojure "1.9.0-alpha14"]
                  [org.clojure/test.check "0.9.0"]
+                 [com.gfredericks/test.chuck "0.2.7"]
                  [hiccup "1.0.5"]
                  [http-kit "2.2.0"]
                  [org.clojure/data.json "0.2.6"]
@@ -16,6 +17,9 @@
 
   :source-paths ["src"]
 
-  ;;:main mend.html
-  :main mend.css
+  ;;:main mend.css-download
+  ;;:main mend.css
+  ;;:main mend.html-download
+  :main mend.html
+  ;;:main mend.ebnf
   )

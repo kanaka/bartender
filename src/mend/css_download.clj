@@ -1,5 +1,6 @@
 (ns mend.css-download
-  (:require [org.httpkit.client :as http]
+  (:require [mend.util :as util]
+            [org.httpkit.client :as http]
             [hickory.core :as hick]
             [hickory.select :as s]
             [clojure.java.io :refer [as-file make-parents]]))
@@ -17,23 +18,6 @@
 
 (def CSS-BASE-URI "https://developer.mozilla.org")
 (def CSS-REF-PATH "/en-US/docs/Web/CSS/Reference")
-
-;; Takes a hickory block and extracts the text content adding
-;; line-breaks where appropriate (<p> and <br>).
-;; Returns a sequence of strings
-;; This is not efficient (some non-TCO), but it works.
-(defn inner-text [root]
-  (loop [res []
-         tree root]
-    (cond
-      (nil? (seq tree)) res
-      (string? tree) [tree]
-      (sequential? tree) (recur (concat res (inner-text (first tree)))
-                                (next tree))
-      (map? tree) (if (get #{:p :br} (:tag tree))
-                    (recur (conj res "\n") (:content tree))
-                    (recur res (:content tree)))
-      :else nil)))
 
 (defn get-css-keywords []
   (let [;; Get the MDN CSS reference page
@@ -69,7 +53,7 @@
 ;; lines and prepends the property starting node name.
 (defn formal-syntax [prop hickory-data]
   (let [pruned (filter #(not (re-find #"^ *where *$" %))
-                       (inner-text hickory-data))]
+                       (util/inner-text hickory-data))]
     (str (apply str "<'" prop "'> = " pruned) "\n")))
 
 (defn filter-css-properties [kws]

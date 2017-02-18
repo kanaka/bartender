@@ -1,6 +1,14 @@
 (ns mend.html
-  (:require [clojure.test.check.generators :as gen]
-            [instaparse.core :as insta]))
+  (:require [clojure.set :refer [union]]
+            [clojure.data.json :as json]
+            [clojure.string :as string]
+            [mend.ebnf :as ebnf]
+            [instaparse.core :as insta]
+
+            ;; Not actually used here, but convenient for testing
+            [clojure.pprint :refer [pprint]]
+            [clojure.test.check.generators :as gen]
+            [com.gfredericks.test.chuck :as chuck]))
 
 ;; https://developer.mozilla.org/en-US/docs/Web/HTML/Reference
 ;; https://developer.mozilla.org/en-US/docs/Web/HTML/Element
@@ -11,88 +19,186 @@
 ;;   https://www.w3.org/TR/2000/REC-xml-20001006
 ;; - HTML ebnf:
 ;;   https://github.com/lisp/de.setf.xml/blob/master/bnf/html-grammar.bnf
+;; http://w3c.github.io/html/syntax.html#void-elements
 
-(def html5-parser (insta/parser (slurp "src/mend/html5.ebnf")))
+(def HTML5-EBNF-BASE "data/html5-base.ebnf")
+(def HTML5-EBNF-ATTR-VALS "data/html5-attr-vals.ebnf")
 
-(def html5-grammar (.grammar html5-parser))
-
-(defn get-html-tags []
-  )
+(def html5-elements (json/read-str (slurp "data/html5-elements.json")))
+(def html5-attributes (json/read-str (slurp "data/html5-attributes.json")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-:char-ref-hex :char-ref-dec :attribute :space :char-data :element :eq :content :name :name-unclosed :end-tag :reference :empty-tag :opt-space :entity-ref :attribute-value :comment :start-tag
+(defn global-attributes
+  [attr-map]
+  (keep #(when (= ["Global attribute"] (val %)) (key %)) attr-map))
 
-(declare cat alt regexp element empty-tag start-tag content end-tag
-         attribute attribute-value char-data reference entity-ref
-         char-ref-dec char-ref-hex name- name-unclosed comment-)
+;; (defn non-global-attributes
+;;   [attr-map]
+;;   (into {} (filter #(not= ["Global attribute"] (val %)) attr-map)))
 
-(defn cat
-  "Each value must occur."
-  [tree indent]
-  (let [pre (apply str (repeat indent "  "))]
-    ))
+(defn elem-attr-map
+  "Takes an element map (map of elements to URL strings) and a map of
+  attributes (attributes to set of elements that use those attributes)
+  and returns a single map (elements to set of attributes valid for
+  that element). Does not include global attributes."
+  [elem-map attr-map]
+  (let [e-elems (set (keys elem-map))
+        a-elems (disj (set (flatten (vals attr-map))) "Global attribute")
+        all-elems (union e-elems a-elems)
+        base (into {} (for [e all-elems] [e []]))
+        full (apply merge-with #(vec (concat %1 %2))
+                    base
+                    (for [[k vs] attr-map
+                          v vs
+                          :when (not= "Global attribute" v)]
+                      {v [k]}))]
+    full))
 
-(defn alt
-  "One of the values must occur."
-  [tree indent]
-  (let [pre (apply str (repeat indent "  "))]
-    (str pre "(gen/one-of [\n"
-         pre "  " 123 "])")))
 
-(defn regexp
-  "A regexp"
-  []
-  )
 
-(defn element
-  ""
-  [])
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defn content
-  ""
-  [])
+;; Void tags do not have a closing tag.
+;; http://w3c.github.io/html/syntax.html#void-elements
+(def void-tags #{"area" "base" "br" "col" "embed" "hr" "img" "input"
+                 "link" "meta" "param" "source" "track" "wbr"})
+
+;; Boolean only tags can appear without an assignment value
+(def bool-attrs #{"async" "autofocus" "autoplay" "checked" "controls"
+                  "defer" "disabled" "hidden" "ismap" "loop" "muted"})
+
+;; Only appear once and in specific order
+;; TODO: handle title
+(def special-elems #{"html" "head" "title" "body"})
+
+;; TODO: handle data-* global attribute
+(def special-attrs #{"data-*"})
+
+
+(defn ebnf-tag-rhs
+  [tag-name]
+  (if (void-tags tag-name)
+    [;; void tag (no end-tag)
+     (str "<'<'> '" tag-name "' "
+          "(<space> " tag-name "-attribute)* "
+          "<opt-space> <'>'> <opt-space>")]
+    [;; empty tag (i.e. <tag ... />)
+     (str "<'<'> '" tag-name "' "
+          "(<space> " tag-name "-attribute)* "
+          "<opt-space> <'/>'> <opt-space>")
+     ;; full tag (i.e. <tag ...> ... </tag>)
+     (str "<'<'> '" tag-name "' "
+          "(<space> " tag-name "-attribute)* "
+          "<opt-space> <'>'> (element | content)* "
+          "<'</'> '" tag-name "' "
+          "<opt-space> <'>'> <opt-space>")]))
+
+(defn ebnf-element
+  [tag-names]
+  (let [lhs "element "
+        pre "        "]
+    (str
+      lhs "= "
+      (string/join
+        (str "\n" pre "| ")
+        (mapcat ebnf-tag-rhs tag-names)))))
+
+(defn ebnf-tag-attrs
+  [tag-name attrs & append]
+  (let [lhs (str tag-name "-attribute ")
+        pre (apply str (repeat (count lhs) " "))]
+    (str
+      lhs "= "
+      (string/join
+        (str "\n" pre "| ")
+        (concat
+          (for [a attrs]
+            (if (bool-attrs a)
+              (str
+                "'" a "'")
+              (str
+                "'" a "=\"' attr-val-" a " '\"'")))
+          append)))))
+
+(defn ebnf-elements-attributes
+  [elem-map attr-map]
+  (let [attr-map (apply dissoc attr-map special-attrs)
+        elems-attrs (elem-attr-map elem-map attr-map)
+        elements (sort (keys (apply dissoc elems-attrs special-elems)))]
+    (str
+      (ebnf-element elements)
+      "\n\n"
+      (ebnf-tag-attrs "global" (global-attributes attr-map))
+      "\n\n"
+      (string/join
+        "\n"
+        (map (fn [[t a]] (ebnf-tag-attrs t a "global-attribute"))
+             (sort elems-attrs))))))
+
+;; TODO: head should accept other things
+(def ebnf-prefix
+"(* This is generated by src/mend/html5.clj *)
+
+html = <'<'> 'html' <opt-space> <'>'> head? body <'</'> 'html' <opt-space> <'>'> <opt-space>
+
+head = <'<'> 'head' <opt-space> <'>'> title? <'</'> 'head' <opt-space> <'>'> <opt-space>
+
+title = <'<'> 'title' (<space> title-attribute)* <opt-space> <'>'> content* <'</'> 'title' <opt-space> <'>'> <opt-space>
+
+body = <'<'> 'body' (<space> body-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'body' <opt-space> <'>'> <opt-space>
+
+
+")
+
+(defn ebnf-all
+  [elem-map attr-map]
+  (str
+    ebnf-prefix
+    (ebnf-elements-attributes elem-map attr-map)
+    (slurp HTML5-EBNF-BASE)
+    (slurp HTML5-EBNF-ATTR-VALS)))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defn prefix [ns]
+(defn prefix [ns css-ns]
   (str
 "(ns " ns "
-   (:require [clojure.test.check.generators :as gen]))\n"
-"
-(defn flatten-text* [tree]
-  (lazy-seq
-    (cond
-      (= \"\" tree)                       (list)
-      (or (number? tree) (string? tree))  (list tree \" \")
-      :else                               (mapcat flatten-text* tree))))
-
-(defn flatten-text [tree]
-  (clojure.string/trimr
-    (clojure.string/replace
-      (apply str (flatten-text* tree))
-      #\" +\" \" \")))
-
-
-;; Same base generators/types that are assumed
-
-(def gen-nonprop-integer gen/int)
-
-(def gen-nonprop-length gen/pos-int)
+   (:require [clojure.test.check.generators :as gen]
+             [com.gfredericks.test.chuck.generators :as chuck]
+             [mend.util :as util]
+             [" css-ns " :refer [gen-css-assignments]]))
 
 "))
 
+(defn replace-css-gen
+  "Replace the stub CSS value generator with real one."
+  [grammar]
+  (assoc grammar
+         :attr-val-style
+         {:tag :nt :keyword :css-assignments}))
 
-(defn map->generators [m]
-  (apply
-    str
-    (for [[k v] m]
-      (cond
-        (= :cat (:tag v))   (cat v indent)
-        (= :alt (:tag v))   (alt v indent)
-        (= :regex (:tag v)) (regex v indent)
-        (= :element k)      (element v indent)
-        (= :content k)      (content v indent)))))
+(defn grammar->ns
+  [ns css-ns grammar]
+  (let [g (replace-css-gen grammar)]
+    (str (prefix ns css-ns)
+         (ebnf/grammar->generators g))))
 
-(defn map->ns [ns m]
-  (str (prefix ns) (map->generators m)))
+
+(comment
+
+  (spit "data/html5.ebnf" (ebnf-all html5-elements html5-attributes))
+
+  ;; The following each take 4-6 seconds
+  (def html5-grammar (ebnf/load-grammar (slurp "data/html5.ebnf")))
+  (def html5-ns (grammar->ns "rend.html5-generators" "rend.css-generators" html5-grammar))
+
+  (spit "src/rend/html5_generators.clj" html5-ns)
+
+  (require '[rend.html5-generators :as html5-gen] :reload)
+  (pprint (gen/sample html5-gen/gen-html 10))
+
+)
+
+

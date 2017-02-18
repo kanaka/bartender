@@ -1,23 +1,33 @@
-element = empty-tag <opt-space>
-        | start-tag content end-tag <opt-space>
+(*
+element = simple-tag <opt-space>
+        | start-tag (element | content)* end-tag <opt-space>
 
-
+simple-tag = void-tag
+           | empty-tag
+void-tag  = <'<'> void-tags (<space> attribute)* <opt-space> <'>'>
 empty-tag = <'<'> name (<space> attribute)* <opt-space> <'/>'>
-          | <'<'> name-unclosed (<space> attribute)* <opt-space> <'>'>
 
 start-tag = <'<'> name (<space> attribute)* <opt-space> <'>'>
-(* WARN: recurses to element *)
-(* content   = char-data? ((element | reference | CDSect | PI | comment) char-data?)* *)
-content   = char-data? ((element | reference | comment) char-data?)*
 end-tag   = <'</'> name <opt-space> <'>'>
+*)
 
+
+content = char-data
+        | reference
+        | comment
 
 attribute       = name <eq> attribute-value
+(*
 attribute-value = <'"'> (#'[^<&"]*' | reference)* <'"'>
                 | <"'"> (#"[^<&']*" | reference)* <"'">
+*)
+attribute-value = <'"'> (#'[A-Za-z0-9_<>/\\ .]*' | reference)* <'"'>
+                | <"'"> (#"[A-Za-z0-9_<>/\\ .]*" | reference)* <"'">
 
-(* char-data = #'[^<&]'* !(#'[^<&]'* ']]>' #'[^<&]'* ) *)
-char-data = #'[^<&]*'
+(*
+char-data = #'[^<&]'* !(#'[^<&]'* ']]>' #'[^<&]'* )
+*)
+char-data = #'[A-Za-z0-9_<>/\\ .]*'
 
 reference     = entity-ref
               | char-ref-dec
@@ -26,12 +36,12 @@ entity-ref    = <'&'> name <';'>
 char-ref-dec  = <'&#'> #'[0-9]+' <';'>
 char-ref-hex  = <'&#x'> #'[0-9A-Fa-f]+' <';'>
 
-name            = #'[A-Za-z_:][A-Za-z_:\-.0-9]*'
-name-unclosed   = 'meta'
-                | 'link'
-                | 'br'
+name      = #'[A-Za-z_:][A-Za-z_:\-.0-9]*'
 
+(*
 comment = <'<!--'> #'(?:[^-]|-[^-])*' <'-->'>
+*)
+comment = <'<!--'> #'(?:[A-Za-z0-9_<>/\\ .]|-[A-Za-z0-9_<>/\\ .])*' <'-->'>
 
 
 eq = <opt-space> '=' <opt-space>
