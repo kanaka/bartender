@@ -5,7 +5,7 @@
             :url "https://www.mozilla.org/en-US/MPL/2.0/"}
 
   :dependencies [[org.clojure/clojure "1.9.0-alpha14"]
-                 [org.clojure/test.check "0.9.0"]
+                 [org.clojure/test.check "0.9.1-SNAPSHOT"]
                  [com.gfredericks/test.chuck "0.2.7"]
                  [hiccup "1.0.5"]
                  [http-kit "2.2.0"]
@@ -20,6 +20,6 @@
   ;;:main mend.css-download
   ;;:main mend.css
   ;;:main mend.html-download
-  :main mend.html
-  ;;:main mend.ebnf
+  ;;:main mend.html
+  :main mend.ebnf
   )

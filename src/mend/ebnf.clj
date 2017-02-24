@@ -4,6 +4,7 @@
             [alandipert.kahn :as kahn]
             [clojure.java.io :refer [as-file]]
             [mend.util :as util]
+            [clojure.walk :as walk]
 
             ;; Not actually used here, but convenient for testing
             [clojure.pprint :refer [pprint]]
@@ -17,6 +18,8 @@
   (util/remove-key (.grammar (insta/parser ebnf-text)) :red))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Create test.check generators for sub-trees of an
+;; instaparse grammar rule
 
 (declare gen-ROUTE)
 
@@ -48,8 +51,8 @@
            "])"))))
 
 (defn gen-regexp
-  "Value must match regexp.
-  For common space value \\s* and \\s+ generate zero and 1 space respectively."
+  "Value must match regexp. For common space value \\s* and \\s+
+  generate zero and 1 space respectively."
   [ctx tree indent]
   (let [re (:regexp tree)
         pre (apply str (repeat indent "  "))]
@@ -123,63 +126,54 @@
     (assert f (str "No generator found for " tag))
     (f ctx tree indent)))
 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Create generators for full instaparse grammar including
+;; immediately recursive grammars.
+
+
+(defn prune-rule-recursion
+  "Prune a grammar rule of the recursive parts. Identify the smallest
+  optional branches of the rule which are recursive and prune/remove
+  them."
+  [k tree]
+  (let [parent? (fn [t] (util/tree-matches
+                          #(= % {:tag :nt :keyword k}) t))]
+    (walk/postwalk
+      (fn [node]
+        (if (and (map? node) (parent? node))
+          ;; Prune/rewrite the matches sub-trees
+          (condp = (:tag node)
+            :alt  {:tag :alt
+                   :parsers (filter #(not (parent? %))
+                                    (:parsers node))}
+            :star {:tag :epsilon}
+            :opt  {:tag :epsilon}
+            node)
+          node))
+      tree)))
+
+(defn prune-grammar-recursion
+  "The test.check gen-recursive generator takes a recursive generator
+  and a non-recursive generator as options. For directly recursive
+  grammar rules, a version of the rule without the recursion (smallest
+  optional part of the rule that recurses is removed) is used for the
+  non-recursive part of gen-recursive and the full recursive rule is
+  used for the recursive generator to recursive-gen."
+  [grammar]
+  (into {} (for [[k rule] grammar]
+             [k (prune-rule-recursion k rule)])))
+
 ;;;;;;
-
-
-;; Grammar rewrites for recursion:
-;; foo = 'abc' foo?
-;;     v
-;; foo = 'abc'
-;;     | 'abc' foo
-;;
-;;
-;; foo = 'abc' foo*
-;;     v
-;; foo = 'abc'
-;;     | 'abc' foo+
-
-
-;; (defn gen-cat-recursive
-;;   [k v indent]
-;;   (let [pre (apply str (repeat indent "  "))]
-;;     (str pre "(gen/recursive-gen\n"
-;;          pre "  (fn [inner]\n"
-;;          (gen-ROUTE k v (+ 2 indent)) ")\n"
-;;          pre "  (gen/return \"\"))")))
-;;
-;; (defn gen-alt-recursive
-;;   [k v indent]
-;;   (let [pre (apply str (repeat indent "  "))
-;;         recur? (fn [tree] (if (seq (util/tree-matches
-;;                                      (fn [x] (= k x)) tree))
-;;                             true
-;;                             false))
-;;         vs (group-by recur? (:parsers v))]
-;;     (assert (> (count vs) 1)
-;;             "Recursive tree doesn't have non-recursive alternative")
-;;     (str pre "(gen/recursive-gen\n"
-;;          pre "  (fn [inner]\n"
-;;          (gen-alt k {:tag :alt :parsers (vs true)} (+ 2 indent))
-;;          ")\n"
-;;          (gen-alt k {:tag :alt :parsers (vs false)} (+ 1 indent))
-;;          ")")))
-;;
-;; (defn gen-rule-body
-;;   [k v indent]
-;;   (if (util/tree-matches #(= k %) v)
-;;     (case (:tag v)
-;;       ;;:cat (gen-cat-recursive k v indent)
-;;       :alt (gen-alt-recursive k v indent))
-;;     (gen-ROUTE k v indent)))
 
 (defn gen-rule-body
   [k v indent]
   (let [pre (apply str (repeat indent "  "))]
-    (if (util/tree-matches #(= k %) (dissoc v :red))
+    (if (util/tree-matches #(= k %) v)
       (str pre "(gen/recursive-gen\n"
            pre "  (fn [inner]\n"
            (gen-ROUTE k v (+ 2 indent)) ")\n"
-           pre "  (gen/return \"\"))")
+           (gen-ROUTE k (prune-rule-recursion k v) (+ 1 indent)) ")")
       (str (gen-ROUTE k v indent)))))
 
 (defn gen-rule
@@ -194,14 +188,14 @@
   [grammar]
   (let [deps (util/tree-deps grammar)
         pruned-deps (kahn/remove-direct-recursive deps)
-        cycles (kahn/cyclic pruned-deps)
         _ (assert (empty? (kahn/mutually-recursive pruned-deps))
                   (str "Mutually recursive generators unsupported:"
                        (kahn/mutually-recursive pruned-deps)))
         ordered-nodes (reverse (kahn/kahn-sort-throws pruned-deps))]
     (string/join
       "\n\n"
-      (for [k ordered-nodes] (gen-rule k (get grammar k) 0)))))
+      (for [k ordered-nodes]
+        (gen-rule k (get grammar k) 0)))))
 
 (comment
 
@@ -210,7 +204,7 @@
 
 )
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;
 
 (defn prefix [ns]
   (str
