@@ -183,7 +183,7 @@ body = <'<'> 'body' (<space> body-attribute)* <opt-space> <'>'> (element | conte
   [ns css-ns grammar]
   (let [g (replace-css-gen grammar)]
     (str (prefix ns css-ns)
-         (ebnf/grammar->generators g))))
+         (ebnf/grammar->generator-defs g))))
 
 
 (comment
