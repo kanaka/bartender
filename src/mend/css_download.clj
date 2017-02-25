@@ -75,3 +75,16 @@
             (let [pdata (get-formal-syntax-hickory path)
                   text (formal-syntax prop pdata)]
               (spit (str outdir "/" prop ".pvs") text))))))))
+
+(comment
+
+(def css-kws (get-css-keywords))
+(count css-kws)
+(count (filter-css-properties css-kws))
+
+(def ts-hick (get-formal-syntax-hickory "/en-US/docs/Web/CSS/text-shadow"))
+(println (formal-syntax "text-shadow" ts-hick))
+
+(get-all-css-properties "data/css-syntax/")
+
+)
