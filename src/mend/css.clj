@@ -4,6 +4,7 @@
             [clojure.string :as string]
             [instaparse.core :as insta]
             [clojure.java.io :as io]
+            [clojure.tools.cli :refer [parse-opts]]
 
             ;; Not actually used here, but convenient for testing
             [clojure.pprint :refer [pprint]]
@@ -300,8 +301,7 @@
 
 (defn value-generator-def [k v]
   (str "(def gen-" (generator-name k) "\n"
-       "  (gen/fmap util/flatten-text\n"
-       (single-pipe (drop 1 v) 2) "))"))
+       (single-pipe (drop 1 v) 1) ")"))
 
 (defn assignment-generator [m]
   (str "(def gen-css-assignment\n"
@@ -311,7 +311,7 @@
          (for [[k v] m
                :when (= \' (first k))
                :let [p (string/replace k #"'" "")]]
-           (str "    [100 (gen/fmap #(str \"" p ": \" %)"
+           (str "    [100 (gen/tuple (gen/return \"" p ": \")"
                 " gen-" (generator-name k) ")]")))
        "\n    ]))"))
 
@@ -327,8 +327,9 @@
          (assignment-generator m)
          "\n\n"
          "(def gen-css-assignments\n"
-         "  (gen/fmap #(clojure.string/join \"; \" %)\n"
-         "            (gen/vector gen-css-assignment)))\n"
+         "  (gen/fmap util/flatten-text\n"
+         "    (gen/fmap #(interpose \"; \" %)\n"
+         "              (gen/vector gen-css-assignment))))\n"
          "\n\n"
          )))
 
@@ -355,40 +356,73 @@
 
 (def OVERRIDES-FILE "_OVERRIDES_.pvs")
 
-(defn load-pvs-files
-  [dir & [skip]]
+(defn pvs-file-set
+  [dir]
   (let [d (io/file dir)
         all-files (file-seq d)
         pvs-files (filter #(re-matches #".*\.pvs$" (.getName %)) all-files)
         ;; Skip the overrides files
-        skip-set (conj (set skip) OVERRIDES-FILE)
-        files (vec (filter #(not (skip-set (.getName %))) pvs-files))
-        _ (println (str "Loading " (count files)
-                        " syntax trees (skipping "
-                        (- (count pvs-files) (count files)) ")"))
-        trees (map #(css3-syntax-parser (slurp %)) files)
+        skip-files (concat special broken [OVERRIDES-FILE])
+        skip-set (set skip-files)
+        files (vec (filter #(not (skip-set (.getName %)))
+                           pvs-files))]
+    files))
+
+(defn load-pvs-files
+  [files]
+  (let [trees (map #(css3-syntax-parser (slurp %)) files)
         fails (keep-indexed #(when (insta/failure? %2)
-                                      [(.getName (get files %1)) %2])
-                                   trees)]
+                               [(.getName (get files %1)) %2])
+                            trees)]
     ;(prn :fails fails)
     (assert (not (seq fails))
             (str "Failed to parse files: " (vec (map first fails))
                  "\n\nErrors:\n" (vec fails)))
     trees))
 
+(defn pr-err
+  [& args]
+  (binding [*out* *err*]
+    (apply println args)))
+
+(def cli-options
+  [[nil "--pvs-dir" "Directory with CSS property value syntax files"
+    :default "./data/css-syntax/"]
+   [nil "--namespace NAMESPACE" "Name of namespace to generate"
+    :default "test.css-generators"]])
+
+(defn opt-errors [opts]
+  (when (:errors opts)
+    (map pr-err (:errors opts))
+    (System/exit 2))
+  opts)
+
+(defn css-ns [pvs-dir nsname]
+  (let [overrides-file (slurp (str pvs-dir "/" OVERRIDES-FILE))
+        override-tree (css3-syntax-parser overrides-file)
+        override-map (parsed-tree->map override-tree)
+
+        pvs-files (pvs-file-set pvs-dir)
+        ;; The following takes 7 seconds
+        _ (pr-err "Loading and parsing CSS PVS grammar files")
+        css-trees (load-pvs-files pvs-files)
+        css-maps (map parsed-tree->map css-trees)
+        _ (pr-err "Validating and merging CSS PVS grammars")
+        css-map (check-and-merge-maps css-maps override-map)
+
+        ;; The following takes 12 seconds
+        _ (pr-err "Converting CSS PVS grammars to generators")
+        ns-str (map->ns nsname css-map)]
+    ns-str))
+
+(defn -main [& args]
+  (let [opts (:options (opt-errors (parse-opts args cli-options)))]
+    (println (css-ns (:pvs-dir opts) (:namespace opts)))))
+
 (comment
-  (def override-tree (css3-syntax-parser (slurp "./data/css-syntax/_OVERRIDES_.pvs")))
-  (def override-map (parsed-tree->map override-tree))
-
-  ;; The following takes 7 seconds
-  (def css-trees (load-pvs-files "./data/css-syntax/" (concat special broken)))
-  (def css-maps (map parsed-tree->map css-trees))
-  (def css-map (check-and-merge-maps css-maps override-map))
-
-  ;; The following takes 12 seconds
-  (def css-ns (map->ns "rend.css-generators" css-map))
-  (spit "src/rend/css_generators.clj" css-ns)
-
+  (spit (pvs-files->ns "./data/css-syntax" "rend.css-generators")
+        "src/rend.css-genreators.clj")
   (require '[rend.css-generators :as css-gen] :reload)
   (pprint (gen/sample css-gen/gen-css-assignments 10))
 )
+

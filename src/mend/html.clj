@@ -152,6 +152,8 @@ body = <'<'> 'body' (<space> body-attribute)* <opt-space> <'>'> (element | conte
 ")
 
 (defn ebnf-all
+  "Takes an element map and an attribute map and return an EBNF
+  grammar as a string that represents the full HTML5 EBNF syntax."
   [elem-map attr-map]
   (str
     ebnf-prefix
@@ -186,19 +188,43 @@ body = <'<'> 'body' (<space> body-attribute)* <opt-space> <'>'> (element | conte
          (ebnf/grammar->generator-defs g))))
 
 
+(defn pr-err
+  [& args]
+  (binding [*out* *err*]
+    (apply println args)))
+
+(def cli-options
+  [[nil "--namespace NAMESPACE" "Name of namespace to generate"
+    :default "test.html5-generators"]
+   [nil "--css-namespace CSS-NAMESPACE" "Name of the CSS namespace to include"
+    :default "test.css-generators"]])
+
+(defn opt-errors [opts]
+  (when (:errors opts)
+    (map pr-err (:errors opts))
+    (System/exit 2))
+  opts)
+
+(defn html5-ns [nsname css-ns]
+  (let [html5-ebnf-str (ebnf-all html5-elements html5-attributes)
+
+        ;; The following each take 4-6 seconds
+        _ (pr-err "Converting HTML5 grammar to generators") 
+        html5-grammar (ebnf/load-grammar html5-ebnf-str)
+        ns-str (grammar->ns nsname css-ns html5-grammar)]
+    ns-str))
+
+(defn -main [& args]
+  (let [opts (:options (opt-errors (parse-opts args cli-options)))]
+    (println (html5-ns (:pvs-dir opts) (:namespace opts)))))
+
 (comment
 
-  (spit "data/html5.ebnf" (ebnf-all html5-elements html5-attributes))
-
-  ;; The following each take 4-6 seconds
-  (def html5-grammar (ebnf/load-grammar (slurp "data/html5.ebnf")))
-  (def html5-ns (grammar->ns "rend.html5-generators" "rend.css-generators" html5-grammar))
-
-  (spit "src/rend/html5_generators.clj" html5-ns)
+  (spit "src/rend/html5_generators.clj"
+        (html5-ns "rend.html5-generators" "rend.css-generators"))
 
   (require '[rend.html5-generators :as html5-gen] :reload)
   (pprint (gen/sample html5-gen/gen-html 10))
 
 )
-
 
