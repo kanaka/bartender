@@ -5,6 +5,7 @@
             [clojure.java.io :refer [as-file]]
             [mend.util :as util]
             [clojure.walk :as walk]
+            [clojure.edn :as edn]
 
             [clojure.java.io :as io]
             [clojure.tools.cli :refer [parse-opts]]
@@ -35,26 +36,39 @@
   [ctx tree indent]
   (let [pre (apply str (repeat indent "  "))]
     (if (= 1 (count (-> tree :parsers)))
-      (gen-ROUTE ctx (-> tree :parsers first) indent)
+      (gen-ROUTE (update-in ctx [:path] conj 0)
+                 (-> tree :parsers first) indent)
       (str pre "(gen/tuple\n"
            (string/join
              "\n"
-	     (for [t (-> tree :parsers)]
-	       (gen-ROUTE ctx t (+ 1 indent))))
+             (for [[t idx] (zipmap (-> tree :parsers) (range))
+                   :let [ctx (update-in ctx [:path] conj idx)]]
+               (gen-ROUTE ctx t (+ 1 indent))))
            ")"))))
 
 
 (defn- gen-alt
   "One of the values must occur."
   [ctx tree indent]
-  (let [pre (apply str (repeat indent "  "))]
+  (let [pre (apply str (repeat indent "  "))
+        weights-res (:weights-res ctx)]
     (if (= 1 (count (-> tree :parsers)))
-      (gen-ROUTE ctx (-> tree :parsers first) indent)
+      (gen-ROUTE (update-in ctx [:path] conj 0)
+                 (-> tree :parsers first) indent)
       (str pre "(gen/frequency [\n"
            (string/join
              "\n"
-	     (for [t (-> tree :parsers)]
-               (str pre "  [100\n" (gen-ROUTE ctx t (+ 2 indent)) "]")))
+	     (for [[t idx] (zipmap (-> tree :parsers) (range))
+                   :let [ctx (update-in ctx [:path] conj idx)
+                         pw (get (:weights ctx) (:path ctx))
+                         weight (if pw pw 100)
+                         wcomment (when pw
+                                    "    ;; *** adjusted by config ***")]]
+               (do
+                 (when weights-res
+                   (swap! weights-res assoc (:path ctx) weight))
+                 (str pre "  [" weight wcomment "\n"
+                      (gen-ROUTE ctx t (+ 2 indent)) "]"))))
            "])"))))
 
 (defn- gen-regexp
@@ -109,7 +123,7 @@
   [ctx tree indent]
   (let [pre (apply str (repeat indent "  "))
         kw (:keyword tree)]
-    (str pre (if (= ctx kw)
+    (str pre (if (= (:cur-nt ctx) kw)
                "inner"
                (str "gen-" (name kw))))))
 
@@ -128,10 +142,16 @@
 
 (defn- gen-ROUTE
   [ctx tree indent]
-  (let [tag (:tag tree)
-        f (get tag-to-gen (:tag tree))]
+  (let [pre (apply str (repeat indent "  "))
+        tag (:tag tree)
+        f (get tag-to-gen (:tag tree))
+        ;; Update path
+        ctx (update-in ctx [:path] conj tag)]
     (assert f (str "No generator found for " tag))
-    (f ctx tree indent)))
+    (str (if (:debug ctx)
+           (str pre ";; path: " (:path ctx) "\n")
+           "")
+         (f ctx tree indent))))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -176,14 +196,15 @@
 (defn- gen-rule-body
   "Takes a rule name, rule grammar and indent level and returns the
   text of a generator for the rule body."
-  [k v indent]
-  (let [pre (apply str (repeat indent "  "))]
+  [ctx k v indent]
+  (let [pre (apply str (repeat indent "  "))
+        ctx (assoc ctx :cur-nt k :path [k])]
     (if (util/tree-matches #(= k %) v)
       (str pre "(gen/recursive-gen\n"
            pre "  (fn [inner]\n"
-           (gen-ROUTE k v (+ 2 indent)) ")\n"
-           (gen-ROUTE k (prune-rule-recursion k v) (+ 1 indent)) ")")
-      (str (gen-ROUTE k v indent)))))
+           (gen-ROUTE ctx v (+ 2 indent)) ")\n"
+           (gen-ROUTE ctx (prune-rule-recursion k v) (+ 1 indent)) ")")
+      (str (gen-ROUTE ctx v indent)))))
 
 (defn- check-and-order-rules
   "Takes an instaparse grammar and returns a sequence of the rule
@@ -203,44 +224,51 @@
 
 (defn grammar->generator-defs
   "Takes an grammar (loaded using load-grammar) and returns the text
-  of top-level defines (defs) for all the rules."
-  [grammar]
-  (let [ordered-rules (check-and-order-rules grammar)]
+  of top-level defines (defs) for all the rules. If the :start is
+  specified in the ctx then this the name of the rule to use as the
+  starting rule of the grammar. If :start is not specified then the
+  first rule in the grammar file is used as the starting rule. Only
+  the start rule flattens the generated values into a final string."
+  [ctx grammar]
+  (let [ordered-rules (check-and-order-rules grammar)
+       start (or (:start ctx) (:start (meta grammar)))]
     (string/join
       "\n\n"
       (for [k ordered-rules
             :let [v (get grammar k)]]
-        (str "(def gen-" (name k) "\n"
-             "  (gen/fmap util/flatten-text\n"
-             (gen-rule-body k v 2)
-             "))")))))
+        (if (= start k)
+          (str "(def gen-" (name k) "\n"
+               "  (gen/fmap util/flatten-text\n"
+               (gen-rule-body ctx k v 2) "))")
+          (str "(def gen-" (name k) "\n"
+               (gen-rule-body ctx k v 1) ")"))))))
 
 (defn grammar->generator-let
   "Takes an grammar (loaded using load-grammar) and returns the text
   of a Clojure let block that defines all the rules and returns the
   start rule. The returned text/code can then be read and eval'd to
-  return a generator. If the start is specified then this the name of
-  the rule to use as the starting rule of the grmmar. If start is not
-  specified then the first rule in the grammar file is used as the
-  starting rule."
-  [grammar & [start]]
+  return a generator. If the :start is specified in the ctx then this
+  the name of the rule to use as the starting rule of the grammar. If
+  :start is not specified then the first rule in the grammar file is
+  used as the starting rule."
+  [ctx grammar]
   (let [ordered-rules (check-and-order-rules grammar)
-        start (or start (:start (meta grammar)))]
+        start (or (:start ctx) (:start (meta grammar)))]
     (str "(let ["
          (string/join
            "\n\n      "
            (for [k ordered-rules
                  :let [v (get grammar k)]]
              (str "gen-" (name k) "\n"
-                  (gen-rule-body k v 3))))
+                  (gen-rule-body ctx k v 3))))
          "]\n"
          "  (gen/fmap util/flatten-text\n"
          "    gen-" (name start)  "))")))
 
 (defn- grammar->generator
-  [grammar & [start]]
+  [ctx grammar]
   (binding [*ns* (create-ns 'mend.ebnf)]
-    (eval (read-string (grammar->generator-let grammar start)))))
+    (eval (read-string (grammar->generator-let ctx grammar)))))
 
 (defn ebnf-gen
   "Takes an path to an EBNF grammar file and return a test.check
@@ -248,43 +276,92 @@
   to use as the starting rule of the grmmar. If start is not specified
   then the first rule in the grammar file is used as the starting
   rule."
-  [ebnf & [start]]
-  (grammar->generator (load-grammar ebnf) (keyword start)))
+  ([ebnf] (ebnf-gen {} ebnf))
+  ([ctx ebnf] (if (map? ebnf)
+                (grammar->generator ctx ebnf)
+                (grammar->generator ctx (load-grammar ebnf)))))
 
 
 (comment
+  (println (grammar->generator-let {} (load-grammar (slurp "test/recur3.ebnf"))))
+
   (def ebnf-generator (ebnf-gen (slurp "test/recur3.ebnf")))
   (pprint (gen/sample ebnf-generator 10))
 )
 
 ;;;;;;
 
-(defn- prefix [ns]
+(defn- prefix [ctx]
   (str
-"(ns " ns "
+"(ns " (:namespace ctx) "
   (:require [clojure.test.check.generators :as gen]
             [com.gfredericks.test.chuck.generators :as chuck]
             [mend.util :as util]))
 
 "))
 
-(defn grammar->ns [ns grammar]
-  (str (prefix ns) (grammar->generator-defs grammar)))
+(defn grammar->ns
+  [ctx grammar]
+  (assert (:namespace ctx) ":namespace required in ctx")
+  (str (prefix ctx) (grammar->generator-defs ctx grammar)))
 
 (comment
   (def ebnf-grammar (load-grammar (slurp "test/recur1.ebnf")))
-  (spit "joel/gen.clj" (grammar->ns "joel.gen" ebnf-grammar))
+  (spit "joel/gen.clj" (grammar->ns {:namespace "joel.gen"}
+                                    ebnf-grammar))
 )
+
+(defn run-tests
+  [ctx raw-cmd samples]
+  (loop [results []
+         samples samples]
+    (let [samp (first samples)
+          samples (next samples)
+          temp-file (java.io.File/createTempFile "ebnf" ".data")
+          temp-writer (io/writer temp-file)
+          tpath (.getCanonicalPath ^java.io.File temp-file)
+          cmd (if (seq (keep #(re-find #"%" %) raw-cmd))
+                (map #(string/replace % #"%" tpath) raw-cmd)
+                (conj raw-cmd tpath))
+          res (try
+                (println "Running:" (string/join " " cmd))
+                (.write temp-writer samp)
+                (.flush temp-writer)
+                (apply sh cmd)
+                (finally
+                  (.delete temp-file)))
+          results (conj results (:exit res))]
+      (println "Result:"
+              (if (= 0 (:exit res))
+                "Pass"
+                (str "Fail (exit code " (:exit res) ")")))
+      (if samples
+        (recur results samples)
+        (if (every? zero? results)
+          true
+          false)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Command line usage of ebnf
 
+(defn pr-err
+  [& args]
+  (binding [*out* *err*]
+    (apply println args)
+    (flush)))
+
 (def cli-options
-  [[nil "--start START" "Starting grammar rule"]])
+  [[nil "--weights WEIGHTS"
+    "An EDN data file containing frequency weights (map of ctx path to weight value) to use (default weight is 100)."
+    :default {}
+    :parse-fn #(edn/read-string (slurp %))]
+   [nil "--weights-output WEIGHTS-OUTPUT" "Write all resulting frequency weights out the file."]
+   [nil "--start START" "Starting grammar rule"]])
 
 (def cmd-options
-  {"clj-let" []
-   "clj-ns" [[nil "--namespace NAMESPACE" "Name of namespace to generate"]]
+  {"clj-let" [[nil "--debug" "Add debug comments to generated code"]]
+   "clj-ns" [[nil "--debug" "Add debug comments to generated code"]
+             [nil "--namespace NAMESPACE" "Name of namespace to generate"]]
    "gen" [[nil "--samples SAMPLES" "Number of samples to generate"
            :default 10]]
    "test" [[nil "--iterations ITERATIONS" "Test iterations"
@@ -292,83 +369,65 @@
 
 (defn opt-errors [opts]
   (when (:errors opts)
-    (map println (:errors opts))
+    (doall (map pr-err (:errors opts)))
     (System/exit 2))
   opts)
 
 (defn usage []
-  (println "ebnf [GLOBAL-OPTS] <EBNF-FILE> clj-let [LET-OPTS]")
-  (println "ebnf [GLOBAL-OPTS] <EBNF-FILE> clj-ns [NS-OPTS]")
-  (println "ebnf [GLOBAL-OPTS] <EBNF-FILE> gen [GEN-OPTS]")
-  (println "ebnf [GLOBAL-OPTS] <EBNF-FILE> test [TEST-OPTS] -- <CMD>")
+  (pr-err "ebnf [GLOBAL-OPTS] clj-let <EBNF-FILE> [LET-OPTS]")
+  (pr-err "ebnf [GLOBAL-OPTS] clj-ns  <EBNF-FILE> [NS-OPTS]")
+  (pr-err "ebnf [GLOBAL-OPTS] gen     <EBNF-FILE> [GEN-OPTS]")
+  (pr-err "ebnf [GLOBAL-OPTS] test    <EBNF-FILE> [TEST-OPTS] -- <CMD>")
   (System/exit 2))
 
 (defn -main
   [& args]
   (let [top-opts (opt-errors (parse-opts args
-                                     cli-options :in-order true))
-        [ebnf cmd & cmd-args] (:arguments top-opts)
+                                         cli-options :in-order true))
+        [cmd ebnf & cmd-args] (:arguments top-opts)
+        _ (when (not (and ebnf
+                          cmd
+                          (#{"clj-let" "clj-ns" "gen" "test"} cmd)))
+            (usage))
         cmd-opts (opt-errors (parse-opts cmd-args
                                          (concat cli-options
                                                  (cmd-options cmd))
                                          :in-order true))
         opts (merge (:options top-opts) (:options cmd-opts))
-        start (opts :start)]
+        ctx (merge {:weights-res (atom {})}
+                   (select-keys opts [:debug :start :namespace :weights]))
+        ebnf-grammar (load-grammar (slurp ebnf))
 
-    ;(prn :opts opts)
+        ;_ (prn :ctx ctx)
 
-    (when (not (and ebnf
-                    cmd
-                    (#{"clj-let" "clj-ns" "gen" "test"} cmd)))
-      (usage))
-
-    (condp = cmd
-      "clj-let"
-      (println
-        (grammar->generator-let
-          (load-grammar (slurp ebnf)) start))
-
-      "clj-ns"
-      (let [nsname (:namespace opts)]
-        (when (not nsname)
-          (println "--namespace NAMESPACE required")
+        ;; Some additional sanity checks not captured by the CLI parser
+        (when (and (= cmd "clj-ns")
+                   (not (:namespace ctx)))
+          (pr-err "--namespace NAMESPACE required")
           (System/exit 2))
-        (println
-          (grammar->ns nsname (load-grammar (slurp ebnf)))))
 
-      "gen"
-      (doseq [samp (gen/sample (ebnf-gen (slurp ebnf) start) 
-                               (:samples opts))]
-        (prn samp))
+        res (condp = cmd
+              "clj-let"
+              (println (grammar->generator-let ctx ebnf-grammar))
 
-      "test"
-      (loop [results []
-             samples (gen/sample (ebnf-gen (slurp ebnf) start) 
-                                 (:iterations opts))]
-        (let [samp (first samples)
-              samples (next samples)
-              temp-file (java.io.File/createTempFile "ebnf" ".data")
-              temp-writer (io/writer temp-file)
-              tpath (.getCanonicalPath ^java.io.File temp-file)
-              raw-cmd (:arguments cmd-opts)
-              cmd (if (seq (keep #(re-find #"%" %) raw-cmd))
-                    (map #(string/replace % #"%" tpath) raw-cmd)
-                    (conj raw-cmd tpath))
-              res (try
-                    (println "Running:" (string/join " " cmd))
-                    (.write temp-writer samp)
-                    (.flush temp-writer)
-                    (apply sh cmd)
-                    (finally
-                      (.delete temp-file)))
-              results (conj results (:exit res))]
-          (println "Result:"
-                   (if (= 0 (:exit res))
-                     "Pass"
-                     (str "Fail (exit code " (:exit res) ")")))
-          (if samples
-            (recur results samples)
-            (if (every? zero? results)
-              (System/exit 0)
-              (System/exit 1))))))))
-        
+              "clj-ns"
+              (println (grammar->ns ctx ebnf-grammar))
+
+              "gen"
+              (doseq [samp (gen/sample (ebnf-gen ctx ebnf-grammar)
+                                       (:samples opts))]
+                (prn samp))
+
+              "test"
+              (let [samples (gen/sample (ebnf-gen ctx ebnf-grammar)
+                                        (:iterations opts))]
+                (run-tests ctx (:arguments cmd-opts) samples)))]
+
+    (when (:weights-output opts)
+      (spit (:weights-output opts)
+            (with-out-str (pprint (into (sorted-map) @(:weights-res ctx))))))
+
+    (if (= false res)
+      (System/exit 1)
+      (System/exit 0))))
+
