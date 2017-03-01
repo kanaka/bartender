@@ -19,11 +19,11 @@
 
   :source-paths ["src"]
 
-  :profiles {:ebnf {:main mend.ebnf}
-             :css  {:main mend.css}
-             :html {:main mend.html}}
+  :profiles {:ebnf  {:main mend.ebnf}
+             :css3  {:main mend.css3}
+             :html5 {:main mend.html5}}
 
-  ;;:main mend.css-download
-  ;;:main mend.html-download
+  ;;:main mend.css3-download
+  ;;:main mend.html5-download
   :main mend.ebnf
   )

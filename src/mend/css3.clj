@@ -1,4 +1,4 @@
-(ns mend.css
+(ns mend.css3
   (:require [mend.util :as util]
             [alandipert.kahn :as kahn]
             [clojure.string :as string]
@@ -327,7 +327,7 @@
          (assignment-generator m)
          "\n\n"
          "(def gen-css-assignments\n"
-         "  (gen/fmap util/flatten-text\n"
+         "  (gen/fmap #(util/flatten-text % \" \")\n"
          "    (gen/fmap #(interpose \"; \" %)\n"
          "              (gen/vector gen-css-assignment))))\n"
          "\n\n"

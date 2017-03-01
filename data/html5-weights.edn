@@ -1,0 +1,16 @@
+{
+ ;; increase style attribute 
+ [:global-attribute :alt 13] 10000,
+
+ ;; decrease bgcolor attribute
+ [:colgroup-attribute :alt 1] 10,
+ [:col-attribute :alt 1] 10,
+ [:body-attribute :alt 1] 10,
+ [:table-attribute :alt 1] 10,
+ [:tbody-attribute :alt 1] 10,
+ [:tr-attribute :alt 1] 10,
+ [:th-attribute :alt 1] 10,
+ [:td-attribute :alt 1] 10,
+ [:tfoot-attribute :alt 1] 10,
+ [:marquee-attribute :alt 1] 10
+}

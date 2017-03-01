@@ -1,4 +1,4 @@
-(ns mend.html
+(ns mend.html5
   (:require [clojure.set :refer [union]]
             [clojure.data.json :as json]
             [clojure.string :as string]
@@ -249,6 +249,8 @@ body = <'<'> 'body' (<space> body-attribute)* <opt-space> <'>'> (element | conte
 
   (spit "src/rend/html5_generators.clj"
         (html5-ns "rend.html5-generators" "rend.css-generators"))
+
+  ;; lein with-profile html5 run --namespace rend.html5-generators --css-namespace rend.css3-generators --weights data/html5-weights.edn --weights-output data/html5-weights-output.edn --ebnf-output data/html5.ebnf > src/rend/html5_generators.clj
 
   (require '[rend.html5-generators :as html5-gen] :reload)
   (pprint (gen/sample html5-gen/gen-html 10))
