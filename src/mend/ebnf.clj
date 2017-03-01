@@ -18,6 +18,12 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(defn pr-err
+  [& args]
+  (binding [*out* *err*]
+    (apply println args)
+    (flush)))
+
 (defn load-grammar
   [ebnf]
   (let [parser (insta/parser ebnf)]
@@ -41,7 +47,7 @@
       (str pre "(gen/tuple\n"
            (string/join
              "\n"
-             (for [[t idx] (zipmap (-> tree :parsers) (range))
+             (for [[idx t] (map-indexed vector (-> tree :parsers))
                    :let [ctx (update-in ctx [:path] conj idx)]]
                (gen-ROUTE ctx t (+ 1 indent))))
            ")"))))
@@ -58,7 +64,7 @@
       (str pre "(gen/frequency [\n"
            (string/join
              "\n"
-	     (for [[t idx] (zipmap (-> tree :parsers) (range))
+	     (for [[idx t] (map-indexed vector (-> tree :parsers))
                    :let [ctx (update-in ctx [:path] conj idx)
                          pw (get (:weights ctx) (:path ctx))
                          weight (if pw pw 100)
@@ -344,14 +350,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Command line usage of ebnf
 
-(defn pr-err
-  [& args]
-  (binding [*out* *err*]
-    (apply println args)
-    (flush)))
-
 (def cli-options
-  [[nil "--weights WEIGHTS"
+  [[nil "--debug" "Add debug comments to generated code"]
+   [nil "--weights WEIGHTS"
     "An EDN data file containing frequency weights (map of ctx path to weight value) to use (default weight is 100)."
     :default {}
     :parse-fn #(edn/read-string (slurp %))]
@@ -359,9 +360,8 @@
    [nil "--start START" "Starting grammar rule"]])
 
 (def cmd-options
-  {"clj-let" [[nil "--debug" "Add debug comments to generated code"]]
-   "clj-ns" [[nil "--debug" "Add debug comments to generated code"]
-             [nil "--namespace NAMESPACE" "Name of namespace to generate"]]
+  {"clj-let" []
+   "clj-ns" [[nil "--namespace NAMESPACE" "Name of namespace to generate"]]
    "gen" [[nil "--samples SAMPLES" "Number of samples to generate"
            :default 10]]
    "test" [[nil "--iterations ITERATIONS" "Test iterations"
@@ -379,6 +379,11 @@
   (pr-err "ebnf [GLOBAL-OPTS] gen     <EBNF-FILE> [GEN-OPTS]")
   (pr-err "ebnf [GLOBAL-OPTS] test    <EBNF-FILE> [TEST-OPTS] -- <CMD>")
   (System/exit 2))
+
+(defn save-weights [ctx file]
+  (when file
+    (spit file (with-out-str (pprint (into (sorted-map)
+                                           @(:weights-res ctx)))))))
 
 (defn -main
   [& args]
@@ -401,10 +406,10 @@
         ;_ (prn :ctx ctx)
 
         ;; Some additional sanity checks not captured by the CLI parser
-        (when (and (= cmd "clj-ns")
-                   (not (:namespace ctx)))
-          (pr-err "--namespace NAMESPACE required")
-          (System/exit 2))
+        _ (when (and (= cmd "clj-ns")
+                     (not (:namespace ctx)))
+            (pr-err "--namespace NAMESPACE required")
+            (System/exit 2))
 
         res (condp = cmd
               "clj-let"
@@ -423,9 +428,9 @@
                                         (:iterations opts))]
                 (run-tests ctx (:arguments cmd-opts) samples)))]
 
-    (when (:weights-output opts)
-      (spit (:weights-output opts)
-            (with-out-str (pprint (into (sorted-map) @(:weights-res ctx))))))
+    (when-let [wfile (:weights-output opts)]
+      (pr-err "Saving weights to" wfile)
+      (save-weights ctx (:weights-output wfile)))
 
     (if (= false res)
       (System/exit 1)
