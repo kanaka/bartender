@@ -5,6 +5,8 @@
             [mend.ebnf :as ebnf]
             [instaparse.core :as insta]
 
+            [clojure.tools.cli :refer [parse-opts]]
+
             ;; Not actually used here, but convenient for testing
             [clojure.pprint :refer [pprint]]
             [clojure.test.check.generators :as gen]
@@ -28,6 +30,12 @@
 (def html5-attributes (json/read-str (slurp "data/html5-attributes.json")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defn pr-err
+  [& args]
+  (binding [*out* *err*]
+    (apply println args)
+    (flush)))
 
 (defn global-attributes
   [attr-map]
@@ -113,7 +121,7 @@
       (string/join
         (str "\n" pre "| ")
         (concat
-          (for [a attrs]
+          (for [a (sort attrs)]
             (if (bool-attrs a)
               (str
                 "'" a "'")
@@ -133,8 +141,8 @@
       "\n\n"
       (string/join
         "\n"
-        (map (fn [[t a]] (ebnf-tag-attrs t a "global-attribute"))
-             (sort elems-attrs))))))
+        (for [[t a] (sort elems-attrs)]
+          (ebnf-tag-attrs t a "global-attribute"))))))
 
 ;; TODO: head should accept other things
 (def ebnf-prefix
@@ -164,13 +172,13 @@ body = <'<'> 'body' (<space> body-attribute)* <opt-space> <'>'> (element | conte
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defn prefix [ns css-ns]
+(defn prefix [ctx]
   (str
-"(ns " ns "
+"(ns " (:namespace ctx) "
    (:require [clojure.test.check.generators :as gen]
              [com.gfredericks.test.chuck.generators :as chuck]
              [mend.util :as util]
-             [" css-ns " :refer [gen-css-assignments]]))
+             [" (:css-namespace ctx) " :refer [gen-css-assignments]]))
 
 "))
 
@@ -182,22 +190,22 @@ body = <'<'> 'body' (<space> body-attribute)* <opt-space> <'>'> (element | conte
          {:tag :nt :keyword :css-assignments}))
 
 (defn grammar->ns
-  [ns css-ns grammar]
+  [ctx grammar]
   (let [g (replace-css-gen grammar)]
-    (str (prefix ns css-ns)
-         (ebnf/grammar->generator-defs g))))
+    (str (prefix ctx)
+         (ebnf/grammar->generator-defs ctx g))))
 
-
-(defn pr-err
-  [& args]
-  (binding [*out* *err*]
-    (apply println args)))
 
 (def cli-options
-  [[nil "--namespace NAMESPACE" "Name of namespace to generate"
-    :default "test.html5-generators"]
-   [nil "--css-namespace CSS-NAMESPACE" "Name of the CSS namespace to include"
-    :default "test.css-generators"]])
+  (vec
+    (concat
+      ebnf/cli-options
+      [[nil "--namespace NAMESPACE"
+        "Name of namespace to generate"]
+       [nil "--css-namespace CSS-NAMESPACE"
+        "Name of the CSS namespace to require"]
+       [nil "--ebnf-output EBNF-OUTPUT"
+        "Write intermediate EBNF to file"]])))
 
 (defn opt-errors [opts]
   (when (:errors opts)
@@ -205,18 +213,37 @@ body = <'<'> 'body' (<space> body-attribute)* <opt-space> <'>'> (element | conte
     (System/exit 2))
   opts)
 
-(defn html5-ns [nsname css-ns]
-  (let [html5-ebnf-str (ebnf-all html5-elements html5-attributes)
+(defn html5-ns [opts]
+  (let [ctx (merge {:weights-res (atom {})}
+                   (select-keys opts [:namespace :css-namespace :weights]))
+        html5-ebnf-str (ebnf-all html5-elements html5-attributes)
 
         ;; The following each take 4-6 seconds
-        _ (pr-err "Converting HTML5 grammar to generators") 
+        _ (pr-err "Loading HTML5 grammar")
         html5-grammar (ebnf/load-grammar html5-ebnf-str)
-        ns-str (grammar->ns nsname css-ns html5-grammar)]
+        _ (pr-err "Converting HTML5 grammar to generators")
+        ns-str (grammar->ns ctx html5-grammar)]
+
+    (when-let [efile (:ebnf-output opts)]
+      (pr-err "Saving EBNF to" efile)
+      (spit efile html5-ebnf-str))
+
+    (when-let [wfile (:weights-output opts)]
+      (pr-err "Saving weights to" wfile)
+      (ebnf/save-weights ctx (:weights-output opts)))
+
     ns-str))
 
 (defn -main [& args]
   (let [opts (:options (opt-errors (parse-opts args cli-options)))]
-    (println (html5-ns (:pvs-dir opts) (:namespace opts)))))
+    (when (not (:namespace opts))
+      (pr-err "--namespace NAMESPACE required")
+      (System/exit 2))
+    (when (not (:css-namespace opts))
+      (pr-err "--css-namespace CSS-NAMESPACE required")
+      (System/exit 2))
+
+    (println (html5-ns opts))))
 
 (comment
 

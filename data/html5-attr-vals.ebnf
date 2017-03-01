@@ -1,4 +1,8 @@
-(* Definitions for HTML tag attribute values *)
+(*
+Definitions for HTML tag attribute values
+This file is lovingly hand-crafted (i.e. hard-coded) based on data
+from MDN.
+*)
 
 content-type = '.jpg'
              | '.png'
