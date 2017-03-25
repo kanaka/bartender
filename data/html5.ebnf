@@ -6,7 +6,7 @@ head = <'<'> 'head' <opt-space> <'>'> title? <'</'> 'head' <opt-space> <'>'> <op
 
 title = <'<'> 'title' (<space> title-attribute)* <opt-space> <'>'> content* <'</'> 'title' <opt-space> <'>'> <opt-space>
 
-body = <'<'> 'body' (<space> body-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'body' <opt-space> <'>'> <opt-space>
+body = <'<'> 'body style="background: #1289ef"' (<space> body-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'body' <opt-space> <'>'> <opt-space>
 
 
 element = <'<'> 'a' (<space> a-attribute)* <opt-space> <'/>'> <opt-space>
@@ -258,30 +258,30 @@ element = <'<'> 'a' (<space> a-attribute)* <opt-space> <'/>'> <opt-space>
         | <'<'> 'xmp' (<space> xmp-attribute)* <opt-space> <'/>'> <opt-space>
         | <'<'> 'xmp' (<space> xmp-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'xmp' <opt-space> <'>'> <opt-space>
 
-global-attribute = 'lang="' attr-val-lang '"'
-                 | 'dropzone="' attr-val-dropzone '"'
+global-attribute = 'accesskey="' attr-val-accesskey '"'
                  | 'class="' attr-val-class '"'
-                 | 'slot="' attr-val-slot '"'
-                 | 'id="' attr-val-id '"'
-                 | 'style="' attr-val-style '"'
-                 | 'dir="' attr-val-dir '"'
-                 | 'contextmenu="' attr-val-contextmenu '"'
-                 | 'draggable="' attr-val-draggable '"'
-                 | 'title="' attr-val-title '"'
                  | 'contenteditable="' attr-val-contenteditable '"'
-                 | 'accesskey="' attr-val-accesskey '"'
+                 | 'contextmenu="' attr-val-contextmenu '"'
+                 | 'dir="' attr-val-dir '"'
+                 | 'draggable="' attr-val-draggable '"'
+                 | 'dropzone="' attr-val-dropzone '"'
                  | 'hidden'
+                 | 'id="' attr-val-id '"'
                  | 'itemprop="' attr-val-itemprop '"'
+                 | 'lang="' attr-val-lang '"'
+                 | 'slot="' attr-val-slot '"'
                  | 'spellcheck="' attr-val-spellcheck '"'
+                 | 'style="' attr-val-style '"'
                  | 'tabindex="' attr-val-tabindex '"'
+                 | 'title="' attr-val-title '"'
 
-a-attribute = 'media="' attr-val-media '"'
-            | 'shape="' attr-val-shape '"'
-            | 'download="' attr-val-download '"'
-            | 'ping="' attr-val-ping '"'
-            | 'hreflang="' attr-val-hreflang '"'
+a-attribute = 'download="' attr-val-download '"'
             | 'href="' attr-val-href '"'
+            | 'hreflang="' attr-val-hreflang '"'
+            | 'media="' attr-val-media '"'
+            | 'ping="' attr-val-ping '"'
             | 'rel="' attr-val-rel '"'
+            | 'shape="' attr-val-shape '"'
             | 'target="' attr-val-target '"'
             | global-attribute
 abbr-attribute = global-attribute
@@ -289,28 +289,28 @@ acronym-attribute = global-attribute
 address-attribute = global-attribute
 applet-attribute = 'align="' attr-val-align '"'
                  | 'alt="' attr-val-alt '"'
-                 | 'codebase="' attr-val-codebase '"'
                  | 'code="' attr-val-code '"'
+                 | 'codebase="' attr-val-codebase '"'
                  | global-attribute
-area-attribute = 'media="' attr-val-media '"'
+area-attribute = 'alt="' attr-val-alt '"'
                | 'coords="' attr-val-coords '"'
-               | 'shape="' attr-val-shape '"'
                | 'download="' attr-val-download '"'
-               | 'ping="' attr-val-ping '"'
-               | 'hreflang="' attr-val-hreflang '"'
                | 'href="' attr-val-href '"'
-               | 'alt="' attr-val-alt '"'
+               | 'hreflang="' attr-val-hreflang '"'
+               | 'media="' attr-val-media '"'
+               | 'ping="' attr-val-ping '"'
                | 'rel="' attr-val-rel '"'
+               | 'shape="' attr-val-shape '"'
                | 'target="' attr-val-target '"'
                | global-attribute
 article-attribute = global-attribute
 aside-attribute = global-attribute
-audio-attribute = 'loop'
-                | 'autoplay'
+audio-attribute = 'autoplay'
                 | 'buffered="' attr-val-buffered '"'
-                | 'src="' attr-val-src '"'
-                | 'preload="' attr-val-preload '"'
                 | 'controls'
+                | 'loop'
+                | 'preload="' attr-val-preload '"'
+                | 'src="' attr-val-src '"'
                 | global-attribute
 b-attribute = global-attribute
 base-attribute = 'href="' attr-val-href '"'
@@ -330,15 +330,15 @@ body-attribute = 'bgcolor="' attr-val-bgcolor '"'
                | global-attribute
 br-attribute = global-attribute
 button-attribute = 'autofocus'
-                 | 'form="' attr-val-form '"'
-                 | 'name="' attr-val-name '"'
-                 | 'value="' attr-val-value '"'
-                 | 'type="' attr-val-type '"'
-                 | 'formaction="' attr-val-formaction '"'
                  | 'disabled'
+                 | 'form="' attr-val-form '"'
+                 | 'formaction="' attr-val-formaction '"'
+                 | 'name="' attr-val-name '"'
+                 | 'type="' attr-val-type '"'
+                 | 'value="' attr-val-value '"'
                  | global-attribute
-canvas-attribute = 'width="' attr-val-width '"'
-                 | 'height="' attr-val-height '"'
+canvas-attribute = 'height="' attr-val-height '"'
+                 | 'width="' attr-val-width '"'
                  | global-attribute
 caption-attribute = 'align="' attr-val-align '"'
                   | global-attribute
@@ -346,18 +346,18 @@ center-attribute = global-attribute
 cite-attribute = global-attribute
 code-attribute = global-attribute
 col-attribute = 'align="' attr-val-align '"'
-              | 'span="' attr-val-span '"'
               | 'bgcolor="' attr-val-bgcolor '"'
+              | 'span="' attr-val-span '"'
               | global-attribute
 colgroup-attribute = 'align="' attr-val-align '"'
-                   | 'span="' attr-val-span '"'
                    | 'bgcolor="' attr-val-bgcolor '"'
+                   | 'span="' attr-val-span '"'
                    | global-attribute
-command-attribute = 'radiogroup="' attr-val-radiogroup '"'
-                  | 'type="' attr-val-type '"'
+command-attribute = 'checked'
                   | 'disabled'
-                  | 'checked'
                   | 'icon="' attr-val-icon '"'
+                  | 'radiogroup="' attr-val-radiogroup '"'
+                  | 'type="' attr-val-type '"'
                   | global-attribute
 content-attribute = global-attribute
 data-attribute = global-attribute
@@ -376,29 +376,29 @@ dl-attribute = global-attribute
 dt-attribute = global-attribute
 element-attribute = global-attribute
 em-attribute = global-attribute
-embed-attribute = 'width="' attr-val-width '"'
-                | 'height="' attr-val-height '"'
+embed-attribute = 'height="' attr-val-height '"'
                 | 'src="' attr-val-src '"'
                 | 'type="' attr-val-type '"'
+                | 'width="' attr-val-width '"'
                 | global-attribute
-fieldset-attribute = 'form="' attr-val-form '"'
+fieldset-attribute = 'disabled'
+                   | 'form="' attr-val-form '"'
                    | 'name="' attr-val-name '"'
-                   | 'disabled'
                    | global-attribute
 figcaption-attribute = global-attribute
 figure-attribute = global-attribute
 font-attribute = 'color="' attr-val-color '"'
                | global-attribute
 footer-attribute = global-attribute
-form-attribute = 'autocomplete="' attr-val-autocomplete '"'
+form-attribute = 'accept="' attr-val-accept '"'
                | 'accept-charset="' attr-val-accept-charset '"'
-               | 'method="' attr-val-method '"'
-               | 'enctype="' attr-val-enctype '"'
-               | 'name="' attr-val-name '"'
-               | 'accept="' attr-val-accept '"'
                | 'action="' attr-val-action '"'
-               | 'target="' attr-val-target '"'
+               | 'autocomplete="' attr-val-autocomplete '"'
+               | 'enctype="' attr-val-enctype '"'
+               | 'method="' attr-val-method '"'
+               | 'name="' attr-val-name '"'
                | 'novalidate="' attr-val-novalidate '"'
+               | 'target="' attr-val-target '"'
                | global-attribute
 frame-attribute = global-attribute
 frameset-attribute = global-attribute
@@ -412,54 +412,54 @@ hr-attribute = 'align="' attr-val-align '"'
 html-attribute = 'manifest="' attr-val-manifest '"'
                | global-attribute
 i-attribute = global-attribute
-iframe-attribute = 'seamless="' attr-val-seamless '"'
-                 | 'width="' attr-val-width '"'
-                 | 'align="' attr-val-align '"'
+iframe-attribute = 'align="' attr-val-align '"'
                  | 'height="' attr-val-height '"'
-                 | 'src="' attr-val-src '"'
                  | 'name="' attr-val-name '"'
                  | 'sandbox="' attr-val-sandbox '"'
+                 | 'seamless="' attr-val-seamless '"'
+                 | 'src="' attr-val-src '"'
                  | 'srcdoc="' attr-val-srcdoc '"'
+                 | 'width="' attr-val-width '"'
                  | global-attribute
-img-attribute = 'width="' attr-val-width '"'
-              | 'align="' attr-val-align '"'
-              | 'ismap'
-              | 'height="' attr-val-height '"'
-              | 'srcset="' attr-val-srcset '"'
-              | 'border="' attr-val-border '"'
-              | 'src="' attr-val-src '"'
-              | 'usemap="' attr-val-usemap '"'
+img-attribute = 'align="' attr-val-align '"'
               | 'alt="' attr-val-alt '"'
+              | 'border="' attr-val-border '"'
+              | 'height="' attr-val-height '"'
+              | 'ismap'
               | 'sizes="' attr-val-sizes '"'
+              | 'src="' attr-val-src '"'
+              | 'srcset="' attr-val-srcset '"'
+              | 'usemap="' attr-val-usemap '"'
+              | 'width="' attr-val-width '"'
               | global-attribute
-input-attribute = 'readonly="' attr-val-readonly '"'
-                | 'autosave="' attr-val-autosave '"'
-                | 'autofocus'
-                | 'min="' attr-val-min '"'
-                | 'width="' attr-val-width '"'
+input-attribute = 'accept="' attr-val-accept '"'
+                | 'alt="' attr-val-alt '"'
                 | 'autocomplete="' attr-val-autocomplete '"'
-                | 'list="' attr-val-list '"'
-                | 'height="' attr-val-height '"'
-                | 'placeholder="' attr-val-placeholder '"'
+                | 'autofocus'
+                | 'autosave="' attr-val-autosave '"'
+                | 'checked'
+                | 'dirname="' attr-val-dirname '"'
+                | 'disabled'
                 | 'form="' attr-val-form '"'
+                | 'formaction="' attr-val-formaction '"'
+                | 'height="' attr-val-height '"'
+                | 'list="' attr-val-list '"'
                 | 'max="' attr-val-max '"'
-                | 'src="' attr-val-src '"'
+                | 'maxlength="' attr-val-maxlength '"'
+                | 'min="' attr-val-min '"'
+                | 'multiple="' attr-val-multiple '"'
                 | 'name="' attr-val-name '"'
+                | 'pattern="' attr-val-pattern '"'
+                | 'placeholder="' attr-val-placeholder '"'
+                | 'readonly="' attr-val-readonly '"'
+                | 'required="' attr-val-required '"'
+                | 'size="' attr-val-size '"'
+                | 'src="' attr-val-src '"'
+                | 'step="' attr-val-step '"'
+                | 'type="' attr-val-type '"'
                 | 'usemap="' attr-val-usemap '"'
                 | 'value="' attr-val-value '"'
-                | 'accept="' attr-val-accept '"'
-                | 'alt="' attr-val-alt '"'
-                | 'dirname="' attr-val-dirname '"'
-                | 'required="' attr-val-required '"'
-                | 'maxlength="' attr-val-maxlength '"'
-                | 'pattern="' attr-val-pattern '"'
-                | 'type="' attr-val-type '"'
-                | 'size="' attr-val-size '"'
-                | 'formaction="' attr-val-formaction '"'
-                | 'disabled'
-                | 'checked'
-                | 'step="' attr-val-step '"'
-                | 'multiple="' attr-val-multiple '"'
+                | 'width="' attr-val-width '"'
                 | global-attribute
 ins-attribute = 'cite="' attr-val-cite '"'
               | 'datetime="' attr-val-datetime '"'
@@ -467,22 +467,22 @@ ins-attribute = 'cite="' attr-val-cite '"'
 isindex-attribute = global-attribute
 kbd-attribute = global-attribute
 keygen-attribute = 'autofocus'
-                 | 'form="' attr-val-form '"'
-                 | 'name="' attr-val-name '"'
                  | 'challenge="' attr-val-challenge '"'
                  | 'disabled'
+                 | 'form="' attr-val-form '"'
                  | 'keytype="' attr-val-keytype '"'
+                 | 'name="' attr-val-name '"'
                  | global-attribute
-label-attribute = 'form="' attr-val-form '"'
-                | 'for="' attr-val-for '"'
+label-attribute = 'for="' attr-val-for '"'
+                | 'form="' attr-val-form '"'
                 | global-attribute
 legend-attribute = global-attribute
 li-attribute = 'value="' attr-val-value '"'
              | global-attribute
-link-attribute = 'media="' attr-val-media '"'
+link-attribute = 'href="' attr-val-href '"'
                | 'hreflang="' attr-val-hreflang '"'
                | 'integrity="' attr-val-integrity '"'
-               | 'href="' attr-val-href '"'
+               | 'media="' attr-val-media '"'
                | 'rel="' attr-val-rel '"'
                | 'sizes="' attr-val-sizes '"'
                | global-attribute
@@ -491,50 +491,50 @@ main-attribute = global-attribute
 map-attribute = 'name="' attr-val-name '"'
               | global-attribute
 mark-attribute = global-attribute
-marquee-attribute = 'loop'
-                  | 'bgcolor="' attr-val-bgcolor '"'
+marquee-attribute = 'bgcolor="' attr-val-bgcolor '"'
+                  | 'loop'
                   | global-attribute
 menu-attribute = 'type="' attr-val-type '"'
                | global-attribute
 menuitem-attribute = global-attribute
-meta-attribute = 'http-equiv="' attr-val-http-equiv '"'
-               | 'name="' attr-val-name '"'
+meta-attribute = 'charset="' attr-val-charset '"'
                | 'content="' attr-val-content '"'
-               | 'charset="' attr-val-charset '"'
+               | 'http-equiv="' attr-val-http-equiv '"'
+               | 'name="' attr-val-name '"'
                | global-attribute
-meter-attribute = 'low="' attr-val-low '"'
-                | 'min="' attr-val-min '"'
+meter-attribute = 'form="' attr-val-form '"'
                 | 'high="' attr-val-high '"'
-                | 'form="' attr-val-form '"'
+                | 'low="' attr-val-low '"'
                 | 'max="' attr-val-max '"'
-                | 'value="' attr-val-value '"'
+                | 'min="' attr-val-min '"'
                 | 'optimum="' attr-val-optimum '"'
+                | 'value="' attr-val-value '"'
                 | global-attribute
 multicol-attribute = global-attribute
 nav-attribute = global-attribute
 nextid-attribute = global-attribute
 noembed-attribute = global-attribute
 noscript-attribute = global-attribute
-object-attribute = 'width="' attr-val-width '"'
-                 | 'height="' attr-val-height '"'
-                 | 'form="' attr-val-form '"'
-                 | 'border="' attr-val-border '"'
-                 | 'name="' attr-val-name '"'
-                 | 'usemap="' attr-val-usemap '"'
-                 | 'type="' attr-val-type '"'
+object-attribute = 'border="' attr-val-border '"'
                  | 'data="' attr-val-data '"'
+                 | 'form="' attr-val-form '"'
+                 | 'height="' attr-val-height '"'
+                 | 'name="' attr-val-name '"'
+                 | 'type="' attr-val-type '"'
+                 | 'usemap="' attr-val-usemap '"'
+                 | 'width="' attr-val-width '"'
                  | global-attribute
 ol-attribute = 'reversed="' attr-val-reversed '"'
              | 'start="' attr-val-start '"'
              | global-attribute
 optgroup-attribute = 'disabled'
                    | global-attribute
-option-attribute = 'selected="' attr-val-selected '"'
+option-attribute = 'disabled'
+                 | 'selected="' attr-val-selected '"'
                  | 'value="' attr-val-value '"'
-                 | 'disabled'
                  | global-attribute
-output-attribute = 'form="' attr-val-form '"'
-                 | 'for="' attr-val-for '"'
+output-attribute = 'for="' attr-val-for '"'
+                 | 'form="' attr-val-form '"'
                  | 'name="' attr-val-name '"'
                  | global-attribute
 p-attribute = global-attribute
@@ -555,30 +555,30 @@ rtc-attribute = global-attribute
 ruby-attribute = global-attribute
 s-attribute = global-attribute
 samp-attribute = global-attribute
-script-attribute = 'defer'
-                 | 'src="' attr-val-src '"'
-                 | 'async'
-                 | 'integrity="' attr-val-integrity '"'
-                 | 'type="' attr-val-type '"'
-                 | 'language="' attr-val-language '"'
+script-attribute = 'async'
                  | 'charset="' attr-val-charset '"'
+                 | 'defer'
+                 | 'integrity="' attr-val-integrity '"'
+                 | 'language="' attr-val-language '"'
+                 | 'src="' attr-val-src '"'
+                 | 'type="' attr-val-type '"'
                  | global-attribute
 section-attribute = global-attribute
 select-attribute = 'autofocus'
+                 | 'disabled'
                  | 'form="' attr-val-form '"'
+                 | 'multiple="' attr-val-multiple '"'
                  | 'name="' attr-val-name '"'
                  | 'required="' attr-val-required '"'
                  | 'size="' attr-val-size '"'
-                 | 'disabled'
-                 | 'multiple="' attr-val-multiple '"'
                  | global-attribute
 shadow-attribute = global-attribute
 slot-attribute = global-attribute
 small-attribute = global-attribute
 source-attribute = 'media="' attr-val-media '"'
+                 | 'sizes="' attr-val-sizes '"'
                  | 'src="' attr-val-src '"'
                  | 'type="' attr-val-type '"'
-                 | 'sizes="' attr-val-sizes '"'
                  | global-attribute
 spacer-attribute = global-attribute
 span-attribute = global-attribute
@@ -592,42 +592,42 @@ sub-attribute = global-attribute
 summary-attribute = global-attribute
 sup-attribute = global-attribute
 table-attribute = 'align="' attr-val-align '"'
+                | 'bgcolor="' attr-val-bgcolor '"'
                 | 'border="' attr-val-border '"'
                 | 'summary="' attr-val-summary '"'
-                | 'bgcolor="' attr-val-bgcolor '"'
                 | global-attribute
 tbody-attribute = 'align="' attr-val-align '"'
                 | 'bgcolor="' attr-val-bgcolor '"'
                 | global-attribute
 td-attribute = 'align="' attr-val-align '"'
-             | 'colspan="' attr-val-colspan '"'
-             | 'rowspan="' attr-val-rowspan '"'
              | 'bgcolor="' attr-val-bgcolor '"'
+             | 'colspan="' attr-val-colspan '"'
              | 'headers="' attr-val-headers '"'
+             | 'rowspan="' attr-val-rowspan '"'
              | global-attribute
 template-attribute = global-attribute
-textarea-attribute = 'readonly="' attr-val-readonly '"'
-                   | 'autofocus'
-                   | 'placeholder="' attr-val-placeholder '"'
-                   | 'form="' attr-val-form '"'
-                   | 'wrap="' attr-val-wrap '"'
-                   | 'name="' attr-val-name '"'
-                   | 'dirname="' attr-val-dirname '"'
-                   | 'required="' attr-val-required '"'
-                   | 'maxlength="' attr-val-maxlength '"'
+textarea-attribute = 'autofocus'
                    | 'cols="' attr-val-cols '"'
-                   | 'rows="' attr-val-rows '"'
+                   | 'dirname="' attr-val-dirname '"'
                    | 'disabled'
+                   | 'form="' attr-val-form '"'
+                   | 'maxlength="' attr-val-maxlength '"'
+                   | 'name="' attr-val-name '"'
+                   | 'placeholder="' attr-val-placeholder '"'
+                   | 'readonly="' attr-val-readonly '"'
+                   | 'required="' attr-val-required '"'
+                   | 'rows="' attr-val-rows '"'
+                   | 'wrap="' attr-val-wrap '"'
                    | global-attribute
 tfoot-attribute = 'align="' attr-val-align '"'
                 | 'bgcolor="' attr-val-bgcolor '"'
                 | global-attribute
 th-attribute = 'align="' attr-val-align '"'
-             | 'colspan="' attr-val-colspan '"'
-             | 'scope="' attr-val-scope '"'
-             | 'rowspan="' attr-val-rowspan '"'
              | 'bgcolor="' attr-val-bgcolor '"'
+             | 'colspan="' attr-val-colspan '"'
              | 'headers="' attr-val-headers '"'
+             | 'rowspan="' attr-val-rowspan '"'
+             | 'scope="' attr-val-scope '"'
              | global-attribute
 thead-attribute = 'align="' attr-val-align '"'
                 | global-attribute
@@ -637,26 +637,26 @@ title-attribute = global-attribute
 tr-attribute = 'align="' attr-val-align '"'
              | 'bgcolor="' attr-val-bgcolor '"'
              | global-attribute
-track-attribute = 'srclang="' attr-val-srclang '"'
+track-attribute = 'default="' attr-val-default '"'
+                | 'kind="' attr-val-kind '"'
                 | 'label="' attr-val-label '"'
                 | 'src="' attr-val-src '"'
-                | 'kind="' attr-val-kind '"'
-                | 'default="' attr-val-default '"'
+                | 'srclang="' attr-val-srclang '"'
                 | global-attribute
 tt-attribute = global-attribute
 u-attribute = global-attribute
 ul-attribute = global-attribute
 var-attribute = global-attribute
-video-attribute = 'loop'
-                | 'width="' attr-val-width '"'
-                | 'height="' attr-val-height '"'
-                | 'muted'
-                | 'autoplay'
+video-attribute = 'autoplay'
                 | 'buffered="' attr-val-buffered '"'
-                | 'src="' attr-val-src '"'
-                | 'preload="' attr-val-preload '"'
-                | 'poster="' attr-val-poster '"'
                 | 'controls'
+                | 'height="' attr-val-height '"'
+                | 'loop'
+                | 'muted'
+                | 'poster="' attr-val-poster '"'
+                | 'preload="' attr-val-preload '"'
+                | 'src="' attr-val-src '"'
+                | 'width="' attr-val-width '"'
                 | global-attribute
 wbr-attribute = global-attribute
 xmp-attribute = global-attribute(*
@@ -709,7 +709,11 @@ eq = <opt-space> '=' <opt-space>
 opt-space = #'\s*'
 space = #'\s+'
 
-(* Definitions for HTML tag attribute values *)
+(*
+Definitions for HTML tag attribute values
+This file is lovingly hand-crafted (i.e. hard-coded) based on data
+from MDN: https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes
+*)
 
 content-type = '.jpg'
              | '.png'
@@ -717,14 +721,43 @@ content-type = '.jpg'
              | 'audio/*'
              | 'video/*'
              | 'image/*'
-char-encoding = 'UTF8'
+(* From IANA preferred MIME Names: https://www.iana.org/assignments/character-sets/character-sets.xhtml *)
+char-encoding = 'UTF-8'
+              | 'UTF8'
+              | 'UTF8'
+              | 'ISO-8859-8-I' (* this is UTF-8 still *)
+              | 'US-ASCII'
+              | 'ISO-8859-1' (* latin1 *)
+TODO-color = #"#[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]"
+           | 'black'
+           | 'silver'
+           | 'gray'
+           | 'white'
+           | 'maroon'
+           | 'red'
+           | 'purple'
+           | 'fuchsia'
+           | 'green'
+           | 'lime'
+           | 'olive'
+           | 'yellow'
+           | 'navy'
+           | 'blue'
+           | 'teal'
+           | 'aqua'
+TODO-uri = 'http://TODO.com/TODO/TODO'
+         | 'https://TODO.com/TODO/TODO'
+TODO-width = '0'
+           | #"[0-9]"
+           | #"[0-9][0-9]"
+           | #"[0-9][0-9][0-9]"
 
 
 attr-val-accept = content-type (, <opt-space> content-type)*
 attr-val-accept-charset = 'UNKNOWN'
                         | char-encoding (<space> char-encoding)*
 attr-val-accesskey = #'[A-za-z]'+
-attr-val-action = 'TODO_action'
+attr-val-action = TODO-uri
 attr-val-align = 'left'
                | 'right'
                | 'center'
@@ -733,7 +766,7 @@ attr-val-align = 'left'
                | 'top'
                | 'middle'
                | 'bottom'
-attr-val-alt = 'TODO_alt'
+attr-val-alt = 'TODO: this is alternate text'
 attr-val-async = ''
 attr-val-autocomplete = 'off'
                       | 'on'
@@ -785,17 +818,17 @@ attr-val-autocomplete = 'off'
 attr-val-autofocus = ''
 attr-val-autoplay = ''
 attr-val-autosave = 'TODO_autosave'
-attr-val-bgcolor = 'TODO_bgcolor'
-attr-val-border = 'TODO_border'
+attr-val-bgcolor = TODO-color (* Deprecated *)
+attr-val-border = TODO-width (* Deprecated *)
 attr-val-buffered = 'TODO_buffered'
 attr-val-challenge = 'TODO_challenge'
-attr-val-charset = 'TODO_charset'
+attr-val-charset = char-encoding
 attr-val-checked = ''
 attr-val-cite = 'TODO_cite'
 attr-val-class = 'TODO_class'
 attr-val-code = 'TODO_code'
 attr-val-codebase = 'TODO_codebase'
-attr-val-color = 'TODO_color'
+attr-val-color = 'TODO_color' (* Deprecated *)
 attr-val-cols = 'TODO_cols'
 attr-val-colspan = 'TODO_colspan'
 attr-val-content = 'TODO_content'
@@ -825,7 +858,7 @@ attr-val-for = 'TODO_for'
 attr-val-form = 'TODO_form'
 attr-val-formaction = 'TODO_formaction'
 attr-val-headers = 'TODO_headers'
-attr-val-height = 'TODO_height'
+attr-val-height = 'TODO_height' (* Deprecated *)
 attr-val-hidden = ''
 attr-val-high = 'TODO_high'
 attr-val-href = 'TODO_href'
@@ -920,5 +953,5 @@ attr-val-type = 'button'
               | 'week'
 attr-val-usemap = 'TODO_usemap'
 attr-val-value = 'TODO_value'
-attr-val-width = 'TODO_width'
+attr-val-width = 'TODO_width' (* Deprecated *)
 attr-val-wrap = 'TODO_wrap'

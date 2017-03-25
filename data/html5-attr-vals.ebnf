@@ -1,7 +1,7 @@
 (*
 Definitions for HTML tag attribute values
 This file is lovingly hand-crafted (i.e. hard-coded) based on data
-from MDN.
+from MDN: https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes
 *)
 
 content-type = '.jpg'
@@ -10,14 +10,43 @@ content-type = '.jpg'
              | 'audio/*'
              | 'video/*'
              | 'image/*'
-char-encoding = 'UTF8'
+(* From IANA preferred MIME Names: https://www.iana.org/assignments/character-sets/character-sets.xhtml *)
+char-encoding = 'UTF-8'
+              | 'UTF8'
+              | 'UTF8'
+              | 'ISO-8859-8-I' (* this is UTF-8 still *)
+              | 'US-ASCII'
+              | 'ISO-8859-1' (* latin1 *)
+TODO-color = #"#[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]"
+           | 'black'
+           | 'silver'
+           | 'gray'
+           | 'white'
+           | 'maroon'
+           | 'red'
+           | 'purple'
+           | 'fuchsia'
+           | 'green'
+           | 'lime'
+           | 'olive'
+           | 'yellow'
+           | 'navy'
+           | 'blue'
+           | 'teal'
+           | 'aqua'
+TODO-uri = 'http://TODO.com/TODO/TODO'
+         | 'https://TODO.com/TODO/TODO'
+TODO-width = '0'
+           | #"[0-9]"
+           | #"[0-9][0-9]"
+           | #"[0-9][0-9][0-9]"
 
 
 attr-val-accept = content-type (, <opt-space> content-type)*
 attr-val-accept-charset = 'UNKNOWN'
                         | char-encoding (<space> char-encoding)*
 attr-val-accesskey = #'[A-za-z]'+
-attr-val-action = 'TODO_action'
+attr-val-action = TODO-uri
 attr-val-align = 'left'
                | 'right'
                | 'center'
@@ -26,7 +55,7 @@ attr-val-align = 'left'
                | 'top'
                | 'middle'
                | 'bottom'
-attr-val-alt = 'TODO_alt'
+attr-val-alt = 'TODO: this is alternate text'
 attr-val-async = ''
 attr-val-autocomplete = 'off'
                       | 'on'
@@ -78,17 +107,17 @@ attr-val-autocomplete = 'off'
 attr-val-autofocus = ''
 attr-val-autoplay = ''
 attr-val-autosave = 'TODO_autosave'
-attr-val-bgcolor = 'TODO_bgcolor'
-attr-val-border = 'TODO_border'
+attr-val-bgcolor = TODO-color (* Deprecated *)
+attr-val-border = TODO-width (* Deprecated *)
 attr-val-buffered = 'TODO_buffered'
 attr-val-challenge = 'TODO_challenge'
-attr-val-charset = 'TODO_charset'
+attr-val-charset = char-encoding
 attr-val-checked = ''
 attr-val-cite = 'TODO_cite'
 attr-val-class = 'TODO_class'
 attr-val-code = 'TODO_code'
 attr-val-codebase = 'TODO_codebase'
-attr-val-color = 'TODO_color'
+attr-val-color = 'TODO_color' (* Deprecated *)
 attr-val-cols = 'TODO_cols'
 attr-val-colspan = 'TODO_colspan'
 attr-val-content = 'TODO_content'
@@ -118,7 +147,7 @@ attr-val-for = 'TODO_for'
 attr-val-form = 'TODO_form'
 attr-val-formaction = 'TODO_formaction'
 attr-val-headers = 'TODO_headers'
-attr-val-height = 'TODO_height'
+attr-val-height = 'TODO_height' (* Deprecated *)
 attr-val-hidden = ''
 attr-val-high = 'TODO_high'
 attr-val-href = 'TODO_href'
@@ -213,5 +242,5 @@ attr-val-type = 'button'
               | 'week'
 attr-val-usemap = 'TODO_usemap'
 attr-val-value = 'TODO_value'
-attr-val-width = 'TODO_width'
+attr-val-width = 'TODO_width' (* Deprecated *)
 attr-val-wrap = 'TODO_wrap'

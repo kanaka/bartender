@@ -14,6 +14,7 @@
                  [http-kit "2.2.0"]
                  [hickory "0.7.0"]
                  [instaparse "1.4.5"]
+                 [com.rpl/specter "1.0.0"]
 
                  [org.clojure/tools.cli "0.3.5"]]
 
