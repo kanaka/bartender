@@ -25,6 +25,7 @@ component-single = literal
                  / non-property
                  / property
                  / brackets
+                 / block
 
 component-multiplied = component-single multiplier
 
@@ -32,6 +33,7 @@ keyword-value = identifier
 non-property  = <'<'> identifier <'>'>
 property      = <"<'"> identifier <"'>">
 brackets      = <'['> <opt-space> single-pipe <opt-space> <']'> bang?
+block         = '{' <space> adjacent <space> '}'
 
 multiplier = question
            | asterisk
@@ -57,8 +59,8 @@ bang      = <'!'>
 digit = #'[0-9]'
 comma = ','
 delimeter = <opt-space> ';' <opt-space>
-literal = #'[-a-zA-Z0-9\u0028\u0029,/]+'
-        | <"'"> #'[-a-zA-Z0-9\u0028\u0029,/\u005B\u005D]' <"'">
-<identifier> = #'[a-zA-Z][-a-zA-Z0-9]*(?:\u0028\u0029)?(?x) #identifier'
+literal = #'[-a-zA-Z0-9\u0028\u0029,/:;%]+'
+        | <"'"> #'[-a-zA-Z0-9\u0028\u0029,/\u005B\u005D\u002A\u002B\u003C\u003E\u003D]' <"'">
+<identifier> = #'@?[-a-zA-Z][-a-zA-Z0-9]*(?:\u0028\u0029)?(?x) #identifier'
 opt-space = #'\s*'
 space = #'\s+'

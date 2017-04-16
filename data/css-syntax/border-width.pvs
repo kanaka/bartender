@@ -1,3 +1,0 @@
-<'border-width'> = <br-width>{1,4}
-
-<br-width> = <length> | thin | medium | thick

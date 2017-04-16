@@ -1,3 +1,0 @@
-<'border-bottom-right-radius'> = <length-percentage>{1,2}
-
-<length-percentage> = <length> | <percentage>

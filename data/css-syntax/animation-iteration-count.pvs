@@ -1,3 +1,0 @@
-<'animation-iteration-count'> = <single-animation-iteration-count>#
-
-<single-animation-iteration-count> = infinite | <number>

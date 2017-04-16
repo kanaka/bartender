@@ -1,3 +1,0 @@
-<'grid-area'> = <grid-line> [ / <grid-line> ]{0,3}
-
-<grid-line> = auto | <custom-ident> | [ <integer> && <custom-ident>? ] | [ span && [ <integer> || <custom-ident> ] ]

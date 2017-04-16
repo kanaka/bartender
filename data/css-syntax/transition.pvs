@@ -1,6 +1,0 @@
-<'transition'> = <single-transition>#
-
-<single-transition> = [ none | <single-transition-property> ] || <time> || <single-transition-timing-function> || <time>
-
-<single-transition-property> = all | <custom-ident>
-<single-transition-timing-function> = ease | linear | ease-in | ease-out | ease-in-out | step-start | step-end | steps( <integer> [, [ start | end ] ]? ) | cubic-bezier( <number>, <number>, <number>, <number> )

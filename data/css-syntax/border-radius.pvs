@@ -1,3 +1,0 @@
-<'border-radius'> = <length-percentage>{1,4} [ / <length-percentage>{1,4} ]?
-
-<length-percentage> = <length> | <percentage>

@@ -1,3 +1,0 @@
-<'grid-row-end'> = <grid-line>
-
-<grid-line> = auto | <custom-ident> | [ <integer> && <custom-ident>? ] | [ span && [ <integer> || <custom-ident> ] ]

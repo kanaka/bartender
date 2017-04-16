@@ -37,6 +37,9 @@
 (def gen-nonprop-length (gen/fmap (fn [[i l]] (str i l))
                                   (gen/tuple gen/pos-int gen-length-unit)))
 
+(def gen-nonprop-dimension (gen/return "TODO_dimension"))
+(def gen-nonprop-ratio (gen/return "TODO_ratio"))
+
 (def gen-nonprop-hex-color3 misc-gen/hex-color3)
 (def gen-nonprop-hex-color6 misc-gen/hex-color6)
 
@@ -55,10 +58,13 @@
   (->> (gen/tuple gen/char-alpha (gen/vector gen/char-alphanumeric))
        (gen/fmap (fn [[c cs]] (apply str (cons c cs))))))
 (def gen-nonprop-custom-ident (gen/return "TODO_custom_ident"))
+(def gen-nonprop-custom-property-name (gen/return "TODO_custom_property"))
+(def gen-nonprop-ident (gen/return "TODO_ident"))
 (def gen-nonprop-angle (gen/return "90"))
 (def gen-nonprop-padding-left (gen/return "10"))
 (def gen-nonprop-width (gen/return "10"))
 (def gen-nonprop-max-width (gen/return "10"))
+(def gen-nonprop-border-radius (gen/return "TODO_border_radius"))
 (def gen-nonprop-border-image-source (gen/return "border_image_source"))
 (def gen-nonprop-border-image-slice (gen/return "border_image_slice"))
 (def gen-nonprop-border-image-width (gen/return "20"))
@@ -70,8 +76,12 @@
 (def gen-nonprop-text-emphasis-style (gen/return "TODO_text_emphasis_style"))
 (def gen-nonprop-text-emphasis-color (gen/return "TODO_text_emphasis_color"))
 (def gen-nonprop-left (gen/return "TODO_left"))
+(def gen-nonprop-top (gen/return "TODO_top"))
+(def gen-nonprop-right (gen/return "TODO_right"))
+(def gen-nonprop-bottom (gen/return "TODO_bottom"))
 (def gen-nonprop-border-width (gen/return "20"))
 (def gen-nonprop-border-style (gen/return "TODO_border_style"))
+(def gen-nonprop-outline-radius (gen/return "TODO_outline_radius"))
 (def gen-nonprop-outline-color (gen/return "TODO_outline_color"))
 (def gen-nonprop-outline-style (gen/return "TODO_outline_style"))
 (def gen-nonprop-outline-width (gen/return "50"))
@@ -96,7 +106,6 @@
 (def gen-nonprop-font-size (gen/return "TODO_font_size"))
 (def gen-nonprop-line-height (gen/return "TODO_line_height"))
 (def gen-nonprop-font-family (gen/return "TODO_font_family"))
-(def gen-nonprop-list-line-style (gen/return "TODO_list_line_style"))
 (def gen-nonprop-list-style-type (gen/return "TODO_list_style_type"))
 (def gen-nonprop-list-style-position (gen/return "TODO_list_style_position"))
 (def gen-nonprop-list-style-image (gen/return "TODO_list_style_image"))
@@ -107,25 +116,79 @@
 (def gen-nonprop-text-decoration-style (gen/return "TODO_text-decoration-style"))
 (def gen-nonprop-text-decoration-color (gen/return "TODO_text-decoration-color"))
 (def gen-nonprop-background-color (gen/return "TODO_background-color"))
+(def gen-nonprop-declaration-list (gen/return "TODO_declaration_list"))
+(def gen-nonprop-declaration-value (gen/return "TODO_declaration_value"))
+(def gen-nonprop-name-repeat (gen/return "TODO_name_repeat"))
+(def gen-nonprop-flex-grow (gen/return "TODO_flex_grow"))
+(def gen-nonprop-flex-shrink (gen/return "TODO_flex_shrink"))
+(def gen-nonprop-flex-basis (gen/return "TODO_flex_basis"))
+(def gen-nonprop-function-token (gen/return "TODO_flex_function_token"))
+(def gen-nonprop-any-value (gen/return "TODO_any_value"))
+(def gen-nonprop-offset-position (gen/return "TODO_offset_position"))
+(def gen-nonprop-offset-path (gen/return "TODO_offset_path"))
+(def gen-nonprop-offset-distance (gen/return "TODO_offset_distance"))
+(def gen-nonprop-offset-rotate (gen/return "TODO_offset_rotate"))
+(def gen-nonprop-offset-anchor (gen/return "TODO_offset_anchor"))
+(def gen-nonprop-attr-name (gen/return "TODO_attr_name"))
+(def gen-nonprop-attr-fallback (gen/return "TODO_attr_fallback"))
+(def gen-nonprop-clip-style (gen/return "TODO_clip_style"))
+(def gen-nonprop-frequency (gen/return "TODO_frequency"))
+(def gen-nonprop-an-plus-b  (gen/return "TODO_an_plus_b"))
 
+(def gen-nonprop-mask-image (gen/return "TODO_mask_image"))
+(def gen-nonprop-mask-repeat (gen/return "TODO_mask_repeat"))
+(def gen-nonprop-mask-attachment (gen/return "TODO_mask_attachment"))
+(def gen-nonprop-mask-origin (gen/return "TODO_mask_origin"))
+(def gen-nonprop-mask-clip (gen/return "TODO_mask_clip"))
+
+(def gen-func-path (gen/return "TODO_func_path"))
 
 ;; Generated generators
 
-(def gen-nonprop-rgb-component
+(def gen-nonprop-alpha-value
   (gen/frequency [
     [100
-      gen-nonprop-integer]
+      gen-nonprop-number]
     [100
       gen-nonprop-percentage]]))
 
 (def gen-func-rgb
-  (gen/tuple
-    (gen/return "rgb(")
-    (gen/fmap #(interpose " , " %)
-      (gen/vector 
-        gen-nonprop-rgb-component
-        3))
-    (gen/return ")")))
+  (gen/frequency [
+    [100
+      (gen/tuple
+        (gen/return "rgb(")
+        (gen/tuple
+          (gen/frequency [
+            [100
+              (gen/vector 
+                gen-nonprop-percentage
+                3)]
+            [100
+              (gen/vector 
+                gen-nonprop-number
+                3)]])
+          (gen/one-of [(gen/return "")
+            (gen/tuple
+              (gen/return "/")
+              gen-nonprop-alpha-value)])))]
+    [100
+      (gen/tuple
+        (gen/tuple
+          (gen/frequency [
+            [100
+              (gen/fmap #(interpose " , " %)
+                (gen/vector 
+                  gen-nonprop-percentage
+                  3))]
+            [100
+              (gen/fmap #(interpose " , " %)
+                (gen/vector 
+                  gen-nonprop-number
+                  3))]])
+          (gen/return ",")
+          (gen/one-of [(gen/return "")
+            gen-nonprop-alpha-value]))
+        (gen/return ")"))]]))
 
 (def gen-nonprop-deprecated-system-color
   (gen/frequency [
@@ -187,32 +250,63 @@
       (gen/return "WindowText")]]))
 
 (def gen-nonprop-hue
-  gen-nonprop-number)
-
-(def gen-nonprop-alpha-value
-  gen-nonprop-number)
+  (gen/frequency [
+    [100
+      gen-nonprop-number]
+    [100
+      gen-nonprop-angle]]))
 
 (def gen-func-hsla
-  (gen/tuple
-    (gen/return "hsla(")
-    gen-nonprop-hue
-    (gen/return ",")
-    gen-nonprop-percentage
-    (gen/return ",")
-    gen-nonprop-percentage
-    (gen/return ",")
-    gen-nonprop-alpha-value
-    (gen/return ")")))
+  (gen/frequency [
+    [100
+      (gen/tuple
+        (gen/return "hsla(")
+        (gen/tuple
+          gen-nonprop-hue
+          gen-nonprop-percentage
+          gen-nonprop-percentage
+          (gen/one-of [(gen/return "")
+            (gen/tuple
+              (gen/return "/")
+              gen-nonprop-alpha-value)])))]
+    [100
+      (gen/tuple
+        (gen/tuple
+          gen-nonprop-hue
+          (gen/return ",")
+          gen-nonprop-percentage
+          (gen/return ",")
+          gen-nonprop-percentage
+          (gen/return ",")
+          (gen/one-of [(gen/return "")
+            gen-nonprop-alpha-value]))
+        (gen/return ")"))]]))
 
 (def gen-func-hsl
-  (gen/tuple
-    (gen/return "hsl(")
-    gen-nonprop-hue
-    (gen/return ",")
-    gen-nonprop-percentage
-    (gen/return ",")
-    gen-nonprop-percentage
-    (gen/return ")")))
+  (gen/frequency [
+    [100
+      (gen/tuple
+        (gen/return "hsl(")
+        (gen/tuple
+          gen-nonprop-hue
+          gen-nonprop-percentage
+          gen-nonprop-percentage
+          (gen/one-of [(gen/return "")
+            (gen/tuple
+              (gen/return "/")
+              gen-nonprop-alpha-value)])))]
+    [100
+      (gen/tuple
+        (gen/tuple
+          gen-nonprop-hue
+          (gen/return ",")
+          gen-nonprop-percentage
+          (gen/return ",")
+          gen-nonprop-percentage
+          (gen/return ",")
+          (gen/one-of [(gen/return "")
+            gen-nonprop-alpha-value]))
+        (gen/return ")"))]]))
 
 (def gen-nonprop-named-color
   (gen/frequency [
@@ -516,15 +610,42 @@
       (gen/return "yellowgreen")]]))
 
 (def gen-func-rgba
-  (gen/tuple
-    (gen/return "rgba(")
-    (gen/fmap #(interpose " , " %)
-      (gen/vector 
-        gen-nonprop-rgb-component
-        3))
-    (gen/return ",")
-    gen-nonprop-alpha-value
-    (gen/return ")")))
+  (gen/frequency [
+    [100
+      (gen/tuple
+        (gen/return "rgba(")
+        (gen/tuple
+          (gen/frequency [
+            [100
+              (gen/vector 
+                gen-nonprop-percentage
+                3)]
+            [100
+              (gen/vector 
+                gen-nonprop-number
+                3)]])
+          (gen/one-of [(gen/return "")
+            (gen/tuple
+              (gen/return "/")
+              gen-nonprop-alpha-value)])))]
+    [100
+      (gen/tuple
+        (gen/tuple
+          (gen/frequency [
+            [100
+              (gen/fmap #(interpose " , " %)
+                (gen/vector 
+                  gen-nonprop-percentage
+                  3))]
+            [100
+              (gen/fmap #(interpose " , " %)
+                (gen/vector 
+                  gen-nonprop-number
+                  3))]])
+          (gen/return ",")
+          (gen/one-of [(gen/return "")
+            gen-nonprop-alpha-value]))
+        (gen/return ")"))]]))
 
 (def gen-nonprop-color
   (gen/frequency [
@@ -585,24 +706,72 @@
     [100
       (gen/return "view-box")]]))
 
+(def gen-nonprop-feature-value-declaration
+  (gen/tuple
+    gen-nonprop-custom-ident
+    (gen/return ":")
+    (gen/such-that not-empty (gen/vector
+      gen-nonprop-integer))
+    (gen/return ";")))
+
+(def gen-nonprop-feature-value-declaration-list
+  gen-nonprop-feature-value-declaration)
+
+(def gen-nonprop-feature-type
+  (gen/frequency [
+    [100
+      (gen/return "@stylistic")]
+    [100
+      (gen/return "@historical-forms")]
+    [100
+      (gen/return "@styleset")]
+    [100
+      (gen/return "@character-variant")]
+    [100
+      (gen/return "@swash")]
+    [100
+      (gen/return "@ornaments")]
+    [100
+      (gen/return "@annotation")]]))
+
+(def gen-nonprop-feature-value-block
+  (gen/tuple
+    gen-nonprop-feature-type
+    (gen/tuple
+      (gen/return "{")
+      gen-nonprop-feature-value-declaration-list
+      (gen/return "}"))))
+
+(def gen-nonprop-pseudo-page
+  (gen/tuple
+    (gen/return ":")
+    (gen/frequency [
+      [100
+        (gen/return "left")]
+      [100
+        (gen/return "right")]
+      [100
+        (gen/return "first")]
+      [100
+        (gen/return "blank")]])))
+
+(def gen-nonprop-page-selector
+  (gen/frequency [
+    [100
+      (gen/such-that not-empty (gen/vector
+        gen-nonprop-pseudo-page))]
+    [100
+      (gen/tuple
+        gen-nonprop-ident
+        (gen/vector
+          gen-nonprop-pseudo-page))]]))
+
 (def gen-nonprop-length-percentage
   (gen/frequency [
     [100
       gen-nonprop-length]
     [100
       gen-nonprop-percentage]]))
-
-(def gen-nonprop-border-radius
-  (gen/tuple
-    (gen/vector 
-      gen-nonprop-length-percentage
-      1 4)
-    (gen/one-of [(gen/return "")
-      (gen/tuple
-        (gen/return "/")
-        (gen/vector 
-          gen-nonprop-length-percentage
-          1 4))])))
 
 (def gen-func-inset
   (gen/tuple
@@ -786,6 +955,17 @@
     [100
       (gen/return "none")]]))
 
+(def gen-prop-image-resolution
+  (gen/let [lst (gen/tuple 
+                  (gen/let [cnt (gen/choose 1 2)
+                            lst (gen/tuple 
+                                  (gen/return "from-image")
+                                  gen-nonprop-resolution)]
+                    (take cnt (shuffle lst)))
+                  (gen/one-of [(gen/return "")
+                    (gen/return "snap")]))]
+    (shuffle lst)))
+
 (def gen-prop-text-overflow
   (gen/vector 
     (gen/frequency [
@@ -796,6 +976,9 @@
       [100
         gen-nonprop-string]])
     1 2))
+
+(def gen-prop--moz-outline-radius-bottomright
+  gen-nonprop-outline-radius)
 
 (def gen-prop-border-top-left-radius
   (gen/vector 
@@ -817,6 +1000,19 @@
       (gen/return "proportional-nums")]
     [100
       (gen/return "tabular-nums")]]))
+
+(def gen-prop-user-select
+  (gen/frequency [
+    [100
+      (gen/return "auto")]
+    [100
+      (gen/return "text")]
+    [100
+      (gen/return "none")]
+    [100
+      (gen/return "contain")]
+    [100
+      (gen/return "all")]]))
 
 (def gen-prop-min-width
   (gen/frequency [
@@ -847,6 +1043,22 @@
 (def gen-prop-mask-mode
   (gen/fmap #(interpose " , " %) (gen/such-that not-empty (gen/vector
     gen-nonprop-masking-mode))))
+
+(def gen-prop--moz-outline-radius-bottomleft
+  gen-nonprop-outline-radius)
+
+(def gen-nonprop-display-legacy
+  (gen/frequency [
+    [100
+      (gen/return "inline-block")]
+    [100
+      (gen/return "inline-list-item")]
+    [100
+      (gen/return "inline-table")]
+    [100
+      (gen/return "inline-flex")]
+    [100
+      (gen/return "inline-grid")]]))
 
 (def gen-nonprop-br-width
   (gen/frequency [
@@ -889,6 +1101,33 @@
                   gen-nonprop-br-style
                   gen-nonprop-color)]
     (take cnt (shuffle lst))))
+
+(def gen-nonprop-repeat-style
+  (gen/frequency [
+    [100
+      (gen/return "repeat-x")]
+    [100
+      (gen/return "repeat-y")]
+    [100
+      (gen/vector 
+        (gen/frequency [
+          [100
+            (gen/return "repeat")]
+          [100
+            (gen/return "space")]
+          [100
+            (gen/return "round")]
+          [100
+            (gen/return "no-repeat")]])
+        1 2)]]))
+
+(def gen-prop--webkit-mask-repeat
+  (gen/tuple
+    gen-nonprop-repeat-style
+    (gen/vector
+      (gen/tuple
+        (gen/return ",")
+        gen-nonprop-repeat-style))))
 
 (def gen-nonprop-keyframes-name
   (gen/frequency [
@@ -1039,6 +1278,16 @@
     [100
       (gen/return "small-caps")]]))
 
+(def gen-prop--moz-border-top-colors
+  (gen/frequency [
+    [100
+      (gen/tuple
+        (gen/vector
+          gen-nonprop-color)
+        gen-nonprop-color)]
+    [100
+      (gen/return "none")]]))
+
 (def gen-prop-border-right
   (gen/let [cnt (gen/choose 1 3)
             lst (gen/tuple 
@@ -1046,6 +1295,26 @@
                   gen-nonprop-br-style
                   gen-nonprop-color)]
     (take cnt (shuffle lst))))
+
+(def gen-prop-background-position-x
+  (gen/fmap #(interpose " , " %) (gen/such-that not-empty (gen/vector
+    (gen/frequency [
+      [100
+        (gen/return "center")]
+      [100
+        (gen/tuple
+          (gen/one-of [(gen/return "")
+            (gen/frequency [
+              [100
+                (gen/return "left")]
+              [100
+                (gen/return "right")]
+              [100
+                (gen/return "x-start")]
+              [100
+                (gen/return "x-end")]])])
+          (gen/one-of [(gen/return "")
+            gen-nonprop-length-percentage]))]])))))
 
 (def gen-prop-max-inline-size
   gen-nonprop-max-width)
@@ -1062,6 +1331,19 @@
       (gen/return "max-content")]
     [100
       (gen/return "auto")]]))
+
+(def gen-nonprop-generic-name
+  (gen/frequency [
+    [100
+      (gen/return "serif")]
+    [100
+      (gen/return "sans-serif")]
+    [100
+      (gen/return "cursive")]
+    [100
+      (gen/return "fantasy")]
+    [100
+      (gen/return "monospace")]]))
 
 (def gen-prop-border-image
   (gen/tuple
@@ -1087,6 +1369,13 @@
                             gen-nonprop-border-image-outset)]])])
                     gen-nonprop-border-image-repeat)]
       (take cnt (shuffle lst)))))
+
+(def gen-nonprop-display-box
+  (gen/frequency [
+    [100
+      (gen/return "contents")]
+    [100
+      (gen/return "none")]]))
 
 (def gen-nonprop-single-animation-fill-mode
   (gen/frequency [
@@ -1147,25 +1436,6 @@
                       (gen/return "bottom")]]))]
     (take cnt (shuffle lst))))
 
-(def gen-nonprop-repeat-style
-  (gen/frequency [
-    [100
-      (gen/return "repeat-x")]
-    [100
-      (gen/return "repeat-y")]
-    [100
-      (gen/vector 
-        (gen/frequency [
-          [100
-            (gen/return "repeat")]
-          [100
-            (gen/return "space")]
-          [100
-            (gen/return "round")]
-          [100
-            (gen/return "no-repeat")]])
-        1 2)]]))
-
 (def gen-prop-background-repeat
   (gen/fmap #(interpose " , " %) (gen/such-that not-empty (gen/vector
     gen-nonprop-repeat-style))))
@@ -1173,9 +1443,30 @@
 (def gen-prop-flex-grow
   gen-nonprop-number)
 
+(def gen-prop-text-decoration-skip
+  (gen/frequency [
+    [100
+      (gen/return "none")]
+    [100
+      (gen/let [cnt (gen/choose 1 5)
+                lst (gen/tuple 
+                      (gen/return "objects")
+                      (gen/return "spaces")
+                      (gen/return "ink")
+                      (gen/return "edges")
+                      (gen/return "box-decoration"))]
+        (take cnt (shuffle lst)))]]))
+
 (def gen-prop-mask-position
   (gen/fmap #(interpose " , " %) (gen/such-that not-empty (gen/vector
     gen-nonprop-position))))
+
+(def gen-prop-overflow-clip-box
+  (gen/frequency [
+    [100
+      (gen/return "padding-box")]
+    [100
+      (gen/return "content-box")]]))
 
 (def gen-prop-text-align
   (gen/frequency [
@@ -1321,6 +1612,39 @@
     [100
       (gen/return "pre-line")]]))
 
+(def gen-nonprop-mask-position
+  (gen/tuple
+    (gen/frequency [
+      [100
+        gen-nonprop-length-percentage]
+      [100
+        (gen/return "left")]
+      [100
+        (gen/return "center")]
+      [100
+        (gen/return "right")]])
+    (gen/one-of [(gen/return "")
+      (gen/frequency [
+        [100
+          gen-nonprop-length-percentage]
+        [100
+          (gen/return "top")]
+        [100
+          (gen/return "center")]
+        [100
+          (gen/return "bottom")]])])))
+
+(def gen-prop--webkit-mask-position
+  (gen/fmap #(interpose " , " %) (gen/such-that not-empty (gen/vector
+    gen-nonprop-mask-position))))
+
+(def gen-prop-appearance
+  (gen/frequency [
+    [100
+      (gen/return "auto")]
+    [100
+      (gen/return "none")]]))
+
 (def gen-prop-margin-bottom
   (gen/frequency [
     [100
@@ -1329,6 +1653,9 @@
       gen-nonprop-percentage]
     [100
       (gen/return "auto")]]))
+
+(def gen-prop--moz-outline-radius-topleft
+  gen-nonprop-outline-radius)
 
 (def gen-prop-page-break-before
   (gen/frequency [
@@ -1362,6 +1689,49 @@
 (def gen-prop-animation-play-state
   (gen/fmap #(interpose " , " %) (gen/such-that not-empty (gen/vector
     gen-nonprop-single-animation-play-state))))
+
+(def gen-nonprop-size
+  (gen/frequency [
+    [100
+      (gen/return "closest-side")]
+    [100
+      (gen/return "farthest-side")]
+    [100
+      (gen/return "closest-corner")]
+    [100
+      (gen/return "farthest-corner")]
+    [100
+      gen-nonprop-length]
+    [100
+      (gen/vector 
+        gen-nonprop-length-percentage
+        2)]]))
+
+(def gen-prop-offset-path
+  (gen/frequency [
+    [100
+      (gen/return "none")]
+    [100
+      (gen/tuple
+        (gen/return "ray(")
+        (gen/let [lst (gen/tuple 
+                        gen-nonprop-angle
+                        (gen/one-of [(gen/return "")
+                          gen-nonprop-size])
+                        (gen/one-of [(gen/return "")
+                          (gen/return "contain")]))]
+          (shuffle lst))
+        (gen/return ")"))]
+    [100
+      gen-func-path]
+    [100
+      gen-nonprop-url]
+    [100
+      (gen/let [cnt (gen/choose 1 2)
+                lst (gen/tuple 
+                      gen-nonprop-basic-shape
+                      gen-nonprop-geometry-box)]
+        (take cnt (shuffle lst)))]]))
 
 (def gen-prop-column-count
   (gen/frequency [
@@ -1592,8 +1962,6 @@
       [100
         gen-nonprop-quote]
       [100
-        (gen/return "document-url")]
-      [100
         gen-nonprop-target]
       [100
         gen-func-leader]]))))
@@ -1625,6 +1993,14 @@
 
 (def gen-prop-offset-inline-start
   gen-nonprop-left)
+
+(def gen-prop--webkit-border-before
+  (gen/let [cnt (gen/choose 1 3)
+            lst (gen/tuple 
+                  gen-nonprop-border-width
+                  gen-nonprop-border-style
+                  gen-nonprop-color)]
+    (take cnt (shuffle lst))))
 
 (def gen-prop-border
   (gen/let [cnt (gen/choose 1 3)
@@ -1675,6 +2051,52 @@
       gen-nonprop-percentage]
     [100
       (gen/return "auto")]]))
+
+(def gen-nonprop-feature-value-name
+  gen-nonprop-custom-ident)
+
+(def gen-prop-font-variant-alternates
+  (gen/frequency [
+    [100
+      (gen/return "normal")]
+    [100
+      (gen/tuple
+        (gen/return "stylistic(")
+        gen-nonprop-feature-value-name
+        (gen/let [cnt (gen/choose 1 3)
+                  lst (gen/tuple 
+                        (gen/return ")")
+                        (gen/return "historical-forms")
+                        (gen/return "styleset("))]
+          (take cnt (shuffle lst)))
+        (gen/fmap #(interpose " , " %) (gen/such-that not-empty (gen/vector
+          gen-nonprop-feature-value-name)))
+        (gen/let [cnt (gen/choose 1 2)
+                  lst (gen/tuple 
+                        (gen/return ")")
+                        (gen/return "character-variant("))]
+          (take cnt (shuffle lst)))
+        (gen/fmap #(interpose " , " %) (gen/such-that not-empty (gen/vector
+          gen-nonprop-feature-value-name)))
+        (gen/let [cnt (gen/choose 1 2)
+                  lst (gen/tuple 
+                        (gen/return ")")
+                        (gen/return "swash("))]
+          (take cnt (shuffle lst)))
+        gen-nonprop-feature-value-name
+        (gen/let [cnt (gen/choose 1 2)
+                  lst (gen/tuple 
+                        (gen/return ")")
+                        (gen/return "ornaments("))]
+          (take cnt (shuffle lst)))
+        gen-nonprop-feature-value-name
+        (gen/let [cnt (gen/choose 1 2)
+                  lst (gen/tuple 
+                        (gen/return ")")
+                        (gen/return "annotation("))]
+          (take cnt (shuffle lst)))
+        gen-nonprop-feature-value-name
+        (gen/return ")"))]]))
 
 (def gen-prop-margin
   (gen/vector 
@@ -1727,12 +2149,97 @@
     [100
       (gen/return "region")]]))
 
+(def gen-nonprop-mf-name
+  gen-nonprop-ident)
+
+(def gen-nonprop-mf-value
+  (gen/frequency [
+    [100
+      gen-nonprop-number]
+    [100
+      gen-nonprop-dimension]
+    [100
+      gen-nonprop-ident]
+    [100
+      gen-nonprop-ratio]]))
+
+(def gen-nonprop-mf-range
+  (gen/frequency [
+    [100
+      (gen/tuple
+        gen-nonprop-mf-name
+        (gen/one-of [(gen/return "")
+          (gen/frequency [
+            [100
+              (gen/return "<")]
+            [100
+              (gen/return ">")]])])
+        (gen/one-of [(gen/return "")
+          (gen/return "=")])
+        gen-nonprop-mf-value)]
+    [100
+      (gen/tuple
+        gen-nonprop-mf-value
+        (gen/one-of [(gen/return "")
+          (gen/frequency [
+            [100
+              (gen/return "<")]
+            [100
+              (gen/return ">")]])])
+        (gen/one-of [(gen/return "")
+          (gen/return "=")])
+        gen-nonprop-mf-name)]
+    [100
+      (gen/tuple
+        gen-nonprop-mf-value
+        (gen/return "<")
+        (gen/one-of [(gen/return "")
+          (gen/return "=")])
+        gen-nonprop-mf-name
+        (gen/return "<")
+        (gen/one-of [(gen/return "")
+          (gen/return "=")])
+        gen-nonprop-mf-value)]
+    [100
+      (gen/tuple
+        gen-nonprop-mf-value
+        (gen/return ">")
+        (gen/one-of [(gen/return "")
+          (gen/return "=")])
+        gen-nonprop-mf-name
+        (gen/return ">")
+        (gen/one-of [(gen/return "")
+          (gen/return "=")])
+        gen-nonprop-mf-value)]]))
+
 (def gen-prop-list-style-position
   (gen/frequency [
     [100
       (gen/return "inside")]
     [100
       (gen/return "outside")]]))
+
+(def gen-nonprop-keyframe-selector
+  (gen/frequency [
+    [100
+      (gen/return "from")]
+    [100
+      (gen/return "to")]
+    [100
+      gen-nonprop-percentage]]))
+
+(def gen-nonprop-keyframe-block
+  (gen/tuple
+    (gen/fmap #(interpose " , " %) (gen/such-that not-empty (gen/vector
+      gen-nonprop-keyframe-selector)))
+    (gen/tuple
+      (gen/return "{")
+      gen-nonprop-declaration-list
+      (gen/return "}"))))
+
+(def gen-nonprop-keyframe-block-list
+  (gen/such-that not-empty (gen/vector
+    gen-nonprop-keyframe-block)))
 
 (def gen-nonprop-mask-source
   gen-nonprop-url)
@@ -1768,25 +2275,14 @@
     [100
       (gen/return "scale-down")]]))
 
-(def gen-nonprop-size
-  (gen/frequency [
-    [100
-      (gen/return "closest-side")]
-    [100
-      (gen/return "farthest-side")]
-    [100
-      (gen/return "closest-corner")]
-    [100
-      (gen/return "farthest-corner")]
-    [100
-      gen-nonprop-length]
-    [100
-      (gen/vector 
-        gen-nonprop-length-percentage
-        2)]]))
-
 (def gen-prop-grid-column-start
   gen-nonprop-grid-line)
+
+(def gen-func-saturate
+  (gen/tuple
+    (gen/return "saturate(")
+    gen-nonprop-number-percentage
+    (gen/return ")")))
 
 (def gen-nonprop-track-size
   (gen/frequency [
@@ -1846,6 +2342,26 @@
     [100
       gen-nonprop-auto-track-list]]))
 
+(def gen-prop-ruby-merge
+  (gen/frequency [
+    [100
+      (gen/return "separate")]
+    [100
+      (gen/return "collapse")]
+    [100
+      (gen/return "auto")]]))
+
+(def gen-prop--webkit-mask-repeat-x
+  (gen/frequency [
+    [100
+      (gen/return "repeat")]
+    [100
+      (gen/return "no-repeat")]
+    [100
+      (gen/return "space")]
+    [100
+      (gen/return "round")]]))
+
 (def gen-prop-height
   (gen/frequency [
     [100
@@ -1872,6 +2388,9 @@
       (gen/return "fit-content")]
     [100
       (gen/return "auto")]]))
+
+(def gen-prop--webkit-text-stroke-color
+  gen-nonprop-color)
 
 (def gen-prop-border-inline-start-color
   gen-nonprop-color)
@@ -1902,6 +2421,19 @@
 
 (def gen-prop-outline-offset
   gen-nonprop-length)
+
+(def gen-prop-box-align
+  (gen/frequency [
+    [100
+      (gen/return "start")]
+    [100
+      (gen/return "center")]
+    [100
+      (gen/return "end")]
+    [100
+      (gen/return "baseline")]
+    [100
+      (gen/return "stretch")]]))
 
 (def gen-prop-text-emphasis-style
   (gen/frequency [
@@ -1939,11 +2471,153 @@
     [100
       (gen/return "auto")]]))
 
+(def gen-nonprop-display-internal
+  (gen/frequency [
+    [100
+      (gen/return "table-row-group")]
+    [100
+      (gen/return "table-header-group")]
+    [100
+      (gen/return "table-footer-group")]
+    [100
+      (gen/return "table-row")]
+    [100
+      (gen/return "table-cell")]
+    [100
+      (gen/return "table-column-group")]
+    [100
+      (gen/return "table-column")]
+    [100
+      (gen/return "table-caption")]
+    [100
+      (gen/return "ruby-base")]
+    [100
+      (gen/return "ruby-text")]
+    [100
+      (gen/return "ruby-base-container")]
+    [100
+      (gen/return "ruby-text-container")]]))
+
 (def gen-prop-background-color
   gen-nonprop-color)
 
 (def gen-prop-flex-shrink
   gen-nonprop-number)
+
+(def gen-nonprop-numeric-fraction-values
+  (gen/frequency [
+    [100
+      (gen/return "diagonal-fractions")]
+    [100
+      (gen/return "stacked-fractions")]]))
+
+(def gen-nonprop-east-asian-width-values
+  (gen/frequency [
+    [100
+      (gen/return "full-width")]
+    [100
+      (gen/return "proportional-width")]]))
+
+(def gen-nonprop-numeric-figure-values
+  (gen/frequency [
+    [100
+      (gen/return "lining-nums")]
+    [100
+      (gen/return "oldstyle-nums")]]))
+
+(def gen-nonprop-east-asian-variant-values
+  (gen/frequency [
+    [100
+      (gen/return "jis78")]
+    [100
+      (gen/return "jis83")]
+    [100
+      (gen/return "jis90")]
+    [100
+      (gen/return "jis04")]
+    [100
+      (gen/return "simplified")]
+    [100
+      (gen/return "traditional")]]))
+
+(def gen-prop-font-variant
+  (gen/frequency [
+    [100
+      (gen/return "normal")]
+    [100
+      (gen/return "none")]
+    [100
+      (gen/tuple
+        (gen/let [cnt (gen/choose 1 5)
+                  lst (gen/tuple 
+                        gen-nonprop-common-lig-values
+                        gen-nonprop-discretionary-lig-values
+                        gen-nonprop-historical-lig-values
+                        gen-nonprop-contextual-alt-values
+                        (gen/return "stylistic("))]
+          (take cnt (shuffle lst)))
+        gen-nonprop-feature-value-name
+        (gen/let [cnt (gen/choose 1 3)
+                  lst (gen/tuple 
+                        (gen/return ")")
+                        (gen/return "historical-forms")
+                        (gen/return "styleset("))]
+          (take cnt (shuffle lst)))
+        (gen/fmap #(interpose " , " %) (gen/such-that not-empty (gen/vector
+          gen-nonprop-feature-value-name)))
+        (gen/let [cnt (gen/choose 1 2)
+                  lst (gen/tuple 
+                        (gen/return ")")
+                        (gen/return "character-variant("))]
+          (take cnt (shuffle lst)))
+        (gen/fmap #(interpose " , " %) (gen/such-that not-empty (gen/vector
+          gen-nonprop-feature-value-name)))
+        (gen/let [cnt (gen/choose 1 2)
+                  lst (gen/tuple 
+                        (gen/return ")")
+                        (gen/return "swash("))]
+          (take cnt (shuffle lst)))
+        gen-nonprop-feature-value-name
+        (gen/let [cnt (gen/choose 1 2)
+                  lst (gen/tuple 
+                        (gen/return ")")
+                        (gen/return "ornaments("))]
+          (take cnt (shuffle lst)))
+        gen-nonprop-feature-value-name
+        (gen/let [cnt (gen/choose 1 2)
+                  lst (gen/tuple 
+                        (gen/return ")")
+                        (gen/return "annotation("))]
+          (take cnt (shuffle lst)))
+        gen-nonprop-feature-value-name
+        (gen/let [cnt (gen/choose 1 10)
+                  lst (gen/tuple 
+                        (gen/return ")")
+                        (gen/frequency [
+                          [100
+                            (gen/return "small-caps")]
+                          [100
+                            (gen/return "all-small-caps")]
+                          [100
+                            (gen/return "petite-caps")]
+                          [100
+                            (gen/return "all-petite-caps")]
+                          [100
+                            (gen/return "unicase")]
+                          [100
+                            (gen/return "titling-caps")]])
+                        gen-nonprop-numeric-figure-values
+                        gen-nonprop-numeric-spacing-values
+                        gen-nonprop-numeric-fraction-values
+                        (gen/return "ordinal")
+                        (gen/return "slashed-zero")
+                        gen-nonprop-east-asian-variant-values
+                        gen-nonprop-east-asian-width-values
+                        (gen/return "ruby"))]
+          (take cnt (shuffle lst))))]]))
+
+(def gen-prop--webkit-border-before-width
+  gen-nonprop-border-width)
 
 (def gen-func-scale
   (gen/tuple
@@ -2133,6 +2807,10 @@
     [100
       gen-nonprop-transform-list]]))
 
+(def gen-nonprop-feature-value-block-list
+  (gen/such-that not-empty (gen/vector
+    gen-nonprop-feature-value-block)))
+
 (def gen-prop-break-inside
   (gen/frequency [
     [100
@@ -2230,6 +2908,15 @@
       [100
         (gen/return "grabbing")]])))
 
+(def gen-prop-scroll-snap-type-y
+  (gen/frequency [
+    [100
+      (gen/return "none")]
+    [100
+      (gen/return "mandatory")]
+    [100
+      (gen/return "proximity")]]))
+
 (def gen-nonprop-generic-family
   (gen/frequency [
     [100
@@ -2257,6 +2944,35 @@
       (gen/return "inline-start")]
     [100
       (gen/return "inline-end")]]))
+
+(def gen-func-sepia
+  (gen/tuple
+    (gen/return "sepia(")
+    gen-nonprop-number-percentage
+    (gen/return ")")))
+
+(def gen-func-invert
+  (gen/tuple
+    (gen/return "invert(")
+    gen-nonprop-number-percentage
+    (gen/return ")")))
+
+(def gen-prop-contain
+  (gen/frequency [
+    [100
+      (gen/return "none")]
+    [100
+      (gen/return "strict")]
+    [100
+      (gen/return "content")]
+    [100
+      (gen/let [cnt (gen/choose 1 4)
+                lst (gen/tuple 
+                      (gen/return "size")
+                      (gen/return "layout")
+                      (gen/return "style")
+                      (gen/return "paint"))]
+        (take cnt (shuffle lst)))]]))
 
 (def gen-nonprop-bg-size
   (gen/frequency [
@@ -2286,14 +3002,12 @@
 
 (def gen-nonprop-mask-layer
   (gen/tuple
-    gen-nonprop-mask-reference
     (gen/let [cnt (gen/choose 1 2)
               lst (gen/tuple 
-                    (gen/one-of [(gen/return "")
-                      gen-nonprop-masking-mode])
+                    gen-nonprop-mask-reference
                     gen-nonprop-position)]
       (take cnt (shuffle lst)))
-    (gen/let [cnt (gen/choose 1 5)
+    (gen/let [cnt (gen/choose 1 6)
               lst (gen/tuple 
                     (gen/one-of [(gen/return "")
                       (gen/tuple
@@ -2306,7 +3020,8 @@
                         gen-nonprop-geometry-box]
                       [100
                         (gen/return "no-clip")]])
-                    gen-nonprop-compositing-operator)]
+                    gen-nonprop-compositing-operator
+                    gen-nonprop-masking-mode)]
       (take cnt (shuffle lst)))))
 
 (def gen-prop-mask
@@ -2326,28 +3041,6 @@
     [100
       (gen/return "wavy")]]))
 
-(def gen-nonprop-east-asian-width-values
-  (gen/frequency [
-    [100
-      (gen/return "full-width")]
-    [100
-      (gen/return "proportional-width")]]))
-
-(def gen-nonprop-east-asian-variant-values
-  (gen/frequency [
-    [100
-      (gen/return "jis78")]
-    [100
-      (gen/return "jis83")]
-    [100
-      (gen/return "jis90")]
-    [100
-      (gen/return "jis04")]
-    [100
-      (gen/return "simplified")]
-    [100
-      (gen/return "traditional")]]))
-
 (def gen-prop-font-variant-east-asian
   (gen/frequency [
     [100
@@ -2359,6 +3052,43 @@
                       gen-nonprop-east-asian-width-values
                       (gen/return "ruby"))]
         (take cnt (shuffle lst)))]]))
+
+(def gen-prop-display-outside
+  (gen/frequency [
+    [100
+      (gen/return "block-level")]
+    [100
+      (gen/return "inline-level")]
+    [100
+      (gen/return "run-in")]
+    [100
+      (gen/return "contents")]
+    [100
+      (gen/return "none")]
+    [100
+      (gen/return "table-row-group")]
+    [100
+      (gen/return "table-header-group")]
+    [100
+      (gen/return "table-footer-group")]
+    [100
+      (gen/return "table-row")]
+    [100
+      (gen/return "table-cell")]
+    [100
+      (gen/return "table-column-group")]
+    [100
+      (gen/return "table-column")]
+    [100
+      (gen/return "table-caption")]
+    [100
+      (gen/return "ruby-base")]
+    [100
+      (gen/return "ruby-text")]
+    [100
+      (gen/return "ruby-base-container")]
+    [100
+      (gen/return "ruby-text-container")]]))
 
 (def gen-prop-writing-mode
   (gen/frequency [
@@ -2380,9 +3110,10 @@
       gen-nonprop-length-percentage])))
 
 (def gen-nonprop-color-stop-list
-  (gen/vector 
-    gen-nonprop-color-stop
-    2 20))
+  (gen/fmap #(interpose " , " %)
+    (gen/vector 
+      gen-nonprop-color-stop
+      2 20)))
 
 (def gen-func-repeating-linear-gradient
   (gen/tuple
@@ -2398,6 +3129,17 @@
     (gen/return ",")
     gen-nonprop-color-stop-list
     (gen/return ")")))
+
+(def gen-prop-offset-rotate
+  (gen/let [cnt (gen/choose 1 2)
+            lst (gen/tuple 
+                  (gen/frequency [
+                    [100
+                      (gen/return "auto")]
+                    [100
+                      (gen/return "reverse")]])
+                  gen-nonprop-angle)]
+    (take cnt (shuffle lst))))
 
 (def gen-prop-hyphens
   (gen/frequency [
@@ -2415,12 +3157,51 @@
 (def gen-prop-outline-width
   gen-nonprop-br-width)
 
+(def gen-nonprop-line-name-list
+  (gen/such-that not-empty (gen/vector
+    (gen/frequency [
+      [100
+        gen-nonprop-line-names]
+      [100
+        gen-nonprop-name-repeat]]))))
+
 (def gen-prop-empty-cells
   (gen/frequency [
     [100
       (gen/return "show")]
     [100
       (gen/return "hide")]]))
+
+(def gen-prop--ms-overflow-style
+  (gen/frequency [
+    [100
+      (gen/return "auto")]
+    [100
+      (gen/return "none")]
+    [100
+      (gen/return "scrollbar")]
+    [100
+      (gen/return "-ms-autohiding-scrollbar")]]))
+
+(def gen-prop--webkit-mask-origin
+  (gen/tuple
+    (gen/frequency [
+      [100
+        (gen/return "padding")]
+      [100
+        (gen/return "border")]
+      [100
+        (gen/return "content")]])
+    (gen/vector
+      (gen/tuple
+        (gen/return ",")
+        (gen/frequency [
+          [100
+            (gen/return "border")]
+          [100
+            (gen/return "padding")]
+          [100
+            (gen/return "content")]])))))
 
 (def gen-prop-mask-type
   (gen/frequency [
@@ -2439,6 +3220,15 @@
       (gen/return "scroll")]
     [100
       (gen/return "auto")]]))
+
+(def gen-prop-text-size-adjust
+  (gen/frequency [
+    [100
+      (gen/return "none")]
+    [100
+      (gen/return "auto")]
+    [100
+      gen-nonprop-percentage]]))
 
 (def gen-prop-grid
   (gen/frequency [
@@ -2478,6 +3268,12 @@
       gen-nonprop-percentage]
     [100
       (gen/return "auto")]]))
+
+(def gen-func-opacity
+  (gen/tuple
+    (gen/return "opacity(")
+    gen-nonprop-number-percentage
+    (gen/return ")")))
 
 (def gen-prop-table-layout
   (gen/frequency [
@@ -2573,11 +3369,20 @@
         (gen/return "auto")]])
     1 4))
 
+(def gen-prop-box-ordinal-group
+  gen-nonprop-integer)
+
 (def gen-prop-shape-margin
   gen-nonprop-length-percentage)
 
 (def gen-prop-padding-block-end
   gen-nonprop-padding-left)
+
+(def gen-func-grayscale
+  (gen/tuple
+    (gen/return "grayscale(")
+    gen-nonprop-number-percentage
+    (gen/return ")")))
 
 (def gen-prop-shape-outside
   (gen/frequency [
@@ -2592,60 +3397,71 @@
     [100
       gen-nonprop-image]]))
 
-(def gen-prop-display
+(def gen-nonprop-display-inside
   (gen/frequency [
     [100
-      (gen/return "none")]
+      (gen/return "flow")]
     [100
-      (gen/return "inline")]
-    [100
-      (gen/return "block")]
-    [100
-      (gen/return "list-item")]
-    [100
-      (gen/return "inline-list-item")]
-    [100
-      (gen/return "inline-block")]
-    [100
-      (gen/return "inline-table")]
+      (gen/return "flow-root")]
     [100
       (gen/return "table")]
     [100
-      (gen/return "table-cell")]
-    [100
-      (gen/return "table-column")]
-    [100
-      (gen/return "table-column-group")]
-    [100
-      (gen/return "table-footer-group")]
-    [100
-      (gen/return "table-header-group")]
-    [100
-      (gen/return "table-row")]
-    [100
-      (gen/return "table-row-group")]
-    [100
       (gen/return "flex")]
-    [100
-      (gen/return "inline-flex")]
     [100
       (gen/return "grid")]
     [100
-      (gen/return "inline-grid")]
+      (gen/return "subgrid")]
     [100
-      (gen/return "run-in")]
+      (gen/return "ruby")]]))
+
+(def gen-nonprop-display-outside
+  (gen/frequency [
     [100
-      (gen/return "ruby")]
+      (gen/return "block")]
     [100
-      (gen/return "ruby-base")]
+      (gen/return "inline")]
     [100
-      (gen/return "ruby-text")]
+      (gen/return "run-in")]]))
+
+(def gen-nonprop-display-listitem
+  (gen/let [lst (gen/tuple 
+                  (gen/return "list-item")
+                  (gen/one-of [(gen/return "")
+                    gen-nonprop-display-outside])
+                  (gen/one-of [(gen/return "")
+                    (gen/frequency [
+                      [100
+                        (gen/return "flow")]
+                      [100
+                        (gen/return "flow-root")]])]))]
+    (shuffle lst)))
+
+(def gen-prop-display
+  (gen/frequency [
     [100
-      (gen/return "ruby-base-container")]
+      (gen/let [cnt (gen/choose 1 2)
+                lst (gen/tuple 
+                      gen-nonprop-display-outside
+                      gen-nonprop-display-inside)]
+        (take cnt (shuffle lst)))]
     [100
-      (gen/return "ruby-text-container")]
+      gen-nonprop-display-listitem]
     [100
-      (gen/return "contents")]]))
+      gen-nonprop-display-internal]
+    [100
+      gen-nonprop-display-box]
+    [100
+      gen-nonprop-display-legacy]]))
+
+(def gen-prop--moz-border-right-colors
+  (gen/frequency [
+    [100
+      (gen/tuple
+        (gen/vector
+          gen-nonprop-color)
+        gen-nonprop-color)]
+    [100
+      (gen/return "none")]]))
 
 (def gen-nonprop-single-transition-property
   (gen/frequency [
@@ -2726,6 +3542,16 @@
     [100
       (gen/return "auto")]]))
 
+(def gen-prop--moz-border-bottom-colors
+  (gen/frequency [
+    [100
+      (gen/tuple
+        (gen/vector
+          gen-nonprop-color)
+        gen-nonprop-color)]
+    [100
+      (gen/return "none")]]))
+
 (def gen-prop-border-left-color
   gen-nonprop-color)
 
@@ -2741,6 +3567,17 @@
       (gen/return "sticky")]
     [100
       (gen/return "fixed")]]))
+
+(def gen-prop--webkit-mask-repeat-y
+  (gen/frequency [
+    [100
+      (gen/return "repeat")]
+    [100
+      (gen/return "no-repeat")]
+    [100
+      (gen/return "space")]
+    [100
+      (gen/return "round")]]))
 
 (def gen-prop-ruby-align
   (gen/frequency [
@@ -2760,20 +3597,6 @@
     [100
       (gen/such-that not-empty (gen/vector
         gen-nonprop-custom-ident))]]))
-
-(def gen-nonprop-numeric-fraction-values
-  (gen/frequency [
-    [100
-      (gen/return "diagonal-fractions")]
-    [100
-      (gen/return "stacked-fractions")]]))
-
-(def gen-nonprop-numeric-figure-values
-  (gen/frequency [
-    [100
-      (gen/return "lining-nums")]
-    [100
-      (gen/return "oldstyle-nums")]]))
 
 (def gen-prop-font-variant-numeric
   (gen/frequency [
@@ -2796,6 +3619,32 @@
     [100
       gen-nonprop-width]]))
 
+(def gen-prop--webkit-mask-position-y
+  (gen/fmap #(interpose " , " %) (gen/such-that not-empty (gen/vector
+    (gen/frequency [
+      [100
+        gen-nonprop-length-percentage]
+      [100
+        (gen/return "top")]
+      [100
+        (gen/return "center")]
+      [100
+        (gen/return "bottom")]])))))
+
+(def gen-prop-flex
+  (gen/frequency [
+    [100
+      (gen/return "none")]
+    [100
+      (gen/tuple
+        gen-nonprop-flex-grow
+        (gen/let [cnt (gen/choose 1 2)
+                  lst (gen/tuple 
+                        (gen/one-of [(gen/return "")
+                          gen-nonprop-flex-shrink])
+                        gen-nonprop-flex-basis)]
+          (take cnt (shuffle lst))))]]))
+
 (def gen-prop-overflow-wrap
   (gen/frequency [
     [100
@@ -2805,6 +3654,20 @@
 
 (def gen-prop-border-top-color
   gen-nonprop-color)
+
+(def gen-nonprop-general-enclosed
+  (gen/frequency [
+    [100
+      (gen/tuple
+        gen-nonprop-function-token
+        gen-nonprop-any-value
+        (gen/return ")"))]
+    [100
+      (gen/tuple
+        (gen/return "(")
+        gen-nonprop-ident
+        gen-nonprop-any-value
+        (gen/return ")"))]]))
 
 (def gen-prop-align-self
   (gen/frequency [
@@ -2821,7 +3684,29 @@
     [100
       (gen/return "stretch")]]))
 
+(def gen-nonprop-shape
+  (gen/tuple
+    (gen/return "rect(")
+    gen-nonprop-top
+    (gen/return ",")
+    gen-nonprop-right
+    (gen/return ",")
+    gen-nonprop-bottom
+    (gen/return ",")
+    gen-nonprop-left
+    (gen/return ")")))
+
+(def gen-prop-clip
+  (gen/frequency [
+    [100
+      gen-nonprop-shape]
+    [100
+      (gen/return "auto")]]))
+
 (def gen-prop-border-block-start-color
+  gen-nonprop-color)
+
+(def gen-prop--webkit-border-before-color
   gen-nonprop-color)
 
 (def gen-prop-overflow-y
@@ -2904,8 +3789,37 @@
     [100
       gen-nonprop-length-percentage]]))
 
+(def gen-prop-background-position-y
+  (gen/fmap #(interpose " , " %) (gen/such-that not-empty (gen/vector
+    (gen/frequency [
+      [100
+        (gen/return "center")]
+      [100
+        (gen/tuple
+          (gen/one-of [(gen/return "")
+            (gen/frequency [
+              [100
+                (gen/return "top")]
+              [100
+                (gen/return "bottom")]
+              [100
+                (gen/return "y-start")]
+              [100
+                (gen/return "y-end")]])])
+          (gen/one-of [(gen/return "")
+            gen-nonprop-length-percentage]))]])))))
+
 (def gen-prop-widows
   gen-nonprop-integer)
+
+(def gen-nonprop-symbol
+  (gen/frequency [
+    [100
+      gen-nonprop-string]
+    [100
+      gen-nonprop-image]
+    [100
+      gen-nonprop-ident]]))
 
 (def gen-nonprop-cf-mixing-image
   (gen/let [lst (gen/tuple 
@@ -2913,6 +3827,14 @@
                     gen-nonprop-percentage])
                   gen-nonprop-image)]
     (shuffle lst)))
+
+(def gen-prop--webkit-mask-image
+  (gen/tuple
+    gen-nonprop-mask-image
+    (gen/vector
+      (gen/tuple
+        (gen/return ",")
+        gen-nonprop-mask-image))))
 
 (def gen-nonprop-explicit-track-list
   (gen/tuple
@@ -2967,6 +3889,8 @@
     [100
       (gen/return "space-around")]
     [100
+      (gen/return "space-evenly")]
+    [100
       (gen/return "stretch")]]))
 
 (def gen-prop-grid-column-end
@@ -2975,6 +3899,17 @@
 (def gen-prop-grid-auto-columns
   (gen/such-that not-empty (gen/vector
     gen-nonprop-track-size)))
+
+(def gen-prop--moz-user-input
+  (gen/frequency [
+    [100
+      (gen/return "auto")]
+    [100
+      (gen/return "none")]
+    [100
+      (gen/return "enabled")]
+    [100
+      (gen/return "disabled")]]))
 
 (def gen-prop-transition-duration
   (gen/fmap #(interpose " , " %) (gen/such-that not-empty (gen/vector
@@ -3021,6 +3956,25 @@
         (take cnt (shuffle lst)))]
     [100
       (gen/return "manipulation")]]))
+
+(def gen-prop-offset
+  (gen/tuple
+    (gen/tuple
+      (gen/one-of [(gen/return "")
+        gen-nonprop-offset-position])
+      (gen/one-of [(gen/return "")
+        (gen/tuple
+          gen-nonprop-offset-path
+          (gen/one-of [(gen/return "")
+            (gen/let [cnt (gen/choose 1 2)
+                      lst (gen/tuple 
+                            gen-nonprop-offset-distance
+                            gen-nonprop-offset-rotate)]
+              (take cnt (shuffle lst)))]))]))
+    (gen/one-of [(gen/return "")
+      (gen/tuple
+        (gen/return "/")
+        gen-nonprop-offset-anchor)])))
 
 (def gen-prop-mask-repeat
   (gen/fmap #(interpose " , " %) (gen/such-that not-empty (gen/vector
@@ -3093,6 +4047,85 @@
 (def gen-prop-text-emphasis-color
   gen-nonprop-color)
 
+(def gen-nonprop-type-or-unit
+  (gen/frequency [
+    [100
+      (gen/return "string")]
+    [100
+      (gen/return "integer")]
+    [100
+      (gen/return "color")]
+    [100
+      (gen/return "url")]
+    [100
+      (gen/return "integer")]
+    [100
+      (gen/return "number")]
+    [100
+      (gen/return "length")]
+    [100
+      (gen/return "angle")]
+    [100
+      (gen/return "time")]
+    [100
+      (gen/return "frequency")]
+    [100
+      (gen/return "em")]
+    [100
+      (gen/return "ex")]
+    [100
+      (gen/return "px")]
+    [100
+      (gen/return "rem")]
+    [100
+      (gen/return "vw")]
+    [100
+      (gen/return "vh")]
+    [100
+      (gen/return "vmin")]
+    [100
+      (gen/return "vmax")]
+    [100
+      (gen/return "mm")]
+    [100
+      (gen/return "q")]
+    [100
+      (gen/return "cm")]
+    [100
+      (gen/return "in")]
+    [100
+      (gen/return "pt")]
+    [100
+      (gen/return "pc")]
+    [100
+      (gen/return "deg")]
+    [100
+      (gen/return "grad")]
+    [100
+      (gen/return "rad")]
+    [100
+      (gen/return "ms")]
+    [100
+      (gen/return "s")]
+    [100
+      (gen/return "Hz")]
+    [100
+      (gen/return "kHz")]
+    [100
+      (gen/return "%")]]))
+
+(def gen-func-attr
+  (gen/tuple
+    (gen/return "attr(")
+    gen-nonprop-attr-name
+    (gen/one-of [(gen/return "")
+      gen-nonprop-type-or-unit])
+    (gen/one-of [(gen/return "")
+      (gen/tuple
+        (gen/return ",")
+        gen-nonprop-attr-fallback)])
+    (gen/return ")")))
+
 (def gen-prop-border-inline-end-width
   gen-nonprop-border-width)
 
@@ -3100,6 +4133,13 @@
   (gen/vector 
     gen-nonprop-length-percentage
     1 2))
+
+(def gen-prop--webkit-text-stroke
+  (gen/let [cnt (gen/choose 1 2)
+            lst (gen/tuple 
+                  gen-nonprop-length
+                  gen-nonprop-color)]
+    (take cnt (shuffle lst))))
 
 (def gen-prop-font-variant-caps
   (gen/frequency [
@@ -3128,6 +4168,13 @@
 (def gen-prop-background-image
   (gen/fmap #(interpose " , " %) (gen/such-that not-empty (gen/vector
     gen-nonprop-bg-image))))
+
+(def gen-prop-offset-position
+  (gen/frequency [
+    [100
+      (gen/return "auto")]
+    [100
+      gen-nonprop-position]]))
 
 (def gen-nonprop-ending-shape
   (gen/frequency [
@@ -3181,6 +4228,34 @@
     [100
       gen-nonprop-number]]))
 
+(def gen-prop--moz-orient
+  (gen/frequency [
+    [100
+      (gen/return "inline")]
+    [100
+      (gen/return "block")]
+    [100
+      (gen/return "horizontal")]
+    [100
+      (gen/return "vertical")]]))
+
+(def gen-prop--webkit-box-reflect
+  (gen/tuple
+    (gen/one-of [(gen/return "")
+      (gen/frequency [
+        [100
+          (gen/return "above")]
+        [100
+          (gen/return "below")]
+        [100
+          (gen/return "right")]
+        [100
+          (gen/return "left")]])])
+    (gen/one-of [(gen/return "")
+      gen-nonprop-length])
+    (gen/one-of [(gen/return "")
+      gen-nonprop-image])))
+
 (def gen-prop-animation-delay
   (gen/fmap #(interpose " , " %) (gen/such-that not-empty (gen/vector
     gen-nonprop-time))))
@@ -3190,6 +4265,18 @@
 
 (def gen-prop-border-block-end-style
   gen-nonprop-border-style)
+
+(def gen-prop--moz-outline-radius
+  (gen/tuple
+    (gen/vector 
+      gen-nonprop-outline-radius
+      1 4)
+    (gen/one-of [(gen/return "")
+      (gen/tuple
+        (gen/return "/")
+        (gen/vector 
+          gen-nonprop-outline-radius
+          1 4))])))
 
 (def gen-prop-border-block-start-style
   gen-nonprop-border-style)
@@ -3239,6 +4326,16 @@
         gen-nonprop-grid-line)
       0 3)))
 
+(def gen-prop-scroll-snap-points-y
+  (gen/frequency [
+    [100
+      (gen/return "none")]
+    [100
+      (gen/tuple
+        (gen/return "repeat(")
+        gen-nonprop-length-percentage
+        (gen/return ")"))]]))
+
 (def gen-prop-quotes
   (gen/frequency [
     [100
@@ -3254,6 +4351,56 @@
     gen-nonprop-br-width
     1 4))
 
+(def gen-prop-display-inside
+  (gen/frequency [
+    [100
+      (gen/return "auto")]
+    [100
+      (gen/return "block")]
+    [100
+      (gen/return "table")]
+    [100
+      (gen/return "flex")]
+    [100
+      (gen/return "grid")]
+    [100
+      (gen/return "ruby")]]))
+
+(def gen-prop-vertical-align
+  (gen/frequency [
+    [100
+      (gen/return "baseline")]
+    [100
+      (gen/return "sub")]
+    [100
+      (gen/return "super")]
+    [100
+      (gen/return "text-top")]
+    [100
+      (gen/return "text-bottom")]
+    [100
+      (gen/return "middle")]
+    [100
+      (gen/return "top")]
+    [100
+      (gen/return "bottom")]
+    [100
+      gen-nonprop-percentage]
+    [100
+      gen-nonprop-length]]))
+
+(def gen-prop--webkit-mask-position-x
+  (gen/fmap #(interpose " , " %) (gen/such-that not-empty (gen/vector
+    (gen/frequency [
+      [100
+        gen-nonprop-length-percentage]
+      [100
+        (gen/return "left")]
+      [100
+        (gen/return "center")]
+      [100
+        (gen/return "right")]])))))
+
 (def gen-prop-border-color
   (gen/vector 
     gen-nonprop-color
@@ -3265,6 +4412,13 @@
       gen-nonprop-length]
     [100
       (gen/return "normal")]]))
+
+(def gen-nonprop-time-percentage
+  (gen/frequency [
+    [100
+      gen-nonprop-time]
+    [100
+      gen-nonprop-percentage]]))
 
 (def gen-prop-counter-reset
   (gen/frequency [
@@ -3280,12 +4434,37 @@
 (def gen-prop-padding-inline-end
   gen-nonprop-padding-left)
 
+(def gen-prop--moz-image-region
+  (gen/frequency [
+    [100
+      gen-nonprop-shape]
+    [100
+      (gen/return "auto")]]))
+
 (def gen-prop-font-size-adjust
   (gen/frequency [
     [100
       (gen/return "none")]
     [100
       gen-nonprop-number]]))
+
+(def gen-func-fit-content
+  (gen/tuple
+    (gen/return "fit-content(")
+    (gen/frequency [
+      [100
+        gen-nonprop-length]
+      [100
+        gen-nonprop-percentage]])
+    (gen/return ")")))
+
+(def gen-prop--webkit-mask-clip
+  (gen/tuple
+    gen-nonprop-clip-style
+    (gen/vector
+      (gen/tuple
+        (gen/return ",")
+        gen-nonprop-clip-style))))
 
 (def gen-prop-overflow
   (gen/frequency [
@@ -3330,6 +4509,16 @@
   (gen/fmap #(interpose " , " %) (gen/such-that not-empty (gen/vector
     gen-nonprop-single-animation))))
 
+(def gen-prop-scroll-snap-points-x
+  (gen/frequency [
+    [100
+      (gen/return "none")]
+    [100
+      (gen/tuple
+        (gen/return "repeat(")
+        gen-nonprop-length-percentage
+        (gen/return ")"))]]))
+
 (def gen-nonprop-shadow
   (gen/let [lst (gen/tuple 
                   (gen/one-of [(gen/return "")
@@ -3353,6 +4542,15 @@
 (def gen-prop-background-clip
   (gen/fmap #(interpose " , " %) (gen/such-that not-empty (gen/vector
     gen-nonprop-box))))
+
+(def gen-prop-box-suppress
+  (gen/frequency [
+    [100
+      (gen/return "show")]
+    [100
+      (gen/return "discard")]
+    [100
+      (gen/return "hide")]]))
 
 (def gen-prop-background-size
   (gen/fmap #(interpose " , " %) (gen/such-that not-empty (gen/vector
@@ -3454,6 +4652,13 @@
       (gen/return "auto")]
     [100
       gen-nonprop-integer]]))
+
+(def gen-nonprop-frequency-percentage
+  (gen/frequency [
+    [100
+      gen-nonprop-frequency]
+    [100
+      gen-nonprop-percentage]]))
 
 (def gen-prop-right
   (gen/frequency [
@@ -3578,6 +4783,53 @@
 (def gen-prop-min-inline-size
   gen-nonprop-min-width)
 
+(def gen-nonprop-namespace-prefix
+  gen-nonprop-ident)
+
+(def gen-nonprop-page-selector-list
+  (gen/one-of [(gen/return "")
+    (gen/fmap #(interpose " , " %) (gen/such-that not-empty (gen/vector
+      gen-nonprop-page-selector)))]))
+
+(def gen-func-drop-shadow
+  (gen/tuple
+    (gen/return "drop-shadow(")
+    (gen/vector 
+      gen-nonprop-length
+      2 3)
+    (gen/one-of [(gen/return "")
+      gen-nonprop-color])
+    (gen/return ")")))
+
+(def gen-func-var
+  (gen/tuple
+    (gen/return "var(")
+    gen-nonprop-custom-property-name
+    (gen/one-of [(gen/return "")
+      (gen/tuple
+        (gen/return ",")
+        gen-nonprop-declaration-value)])
+    (gen/return ")")))
+
+(def gen-prop-font-variation-settings
+  (gen/frequency [
+    [100
+      (gen/return "normal")]
+    [100
+      (gen/fmap #(interpose " , " %) (gen/such-that not-empty (gen/vector
+        (gen/tuple
+          gen-nonprop-string
+          gen-nonprop-number))))]]))
+
+(def gen-nonprop-nth
+  (gen/frequency [
+    [100
+      gen-nonprop-an-plus-b]
+    [100
+      (gen/return "even")]
+    [100
+      (gen/return "odd")]]))
+
 (def gen-prop-border-image-outset
   (gen/vector 
     (gen/frequency [
@@ -3601,6 +4853,9 @@
         gen-nonprop-geometry-box]
       [100
         (gen/return "no-clip")]])))))
+
+(def gen-prop-offset-distance
+  gen-nonprop-length-percentage)
 
 (def gen-prop-offset-block-start
   gen-nonprop-left)
@@ -3626,6 +4881,12 @@
       (gen/return "isolate-override")]
     [100
       (gen/return "plaintext")]]))
+
+(def gen-func-brightness
+  (gen/tuple
+    (gen/return "brightness(")
+    gen-nonprop-number-percentage
+    (gen/return ")")))
 
 (def gen-prop-grid-row-gap
   gen-nonprop-length-percentage)
@@ -3670,6 +4931,12 @@
   (gen/fmap #(interpose " , " %) (gen/such-that not-empty (gen/vector
     gen-nonprop-bg-size))))
 
+(def gen-func-hue-rotate
+  (gen/tuple
+    (gen/return "hue-rotate(")
+    gen-nonprop-angle
+    (gen/return ")")))
+
 (def gen-prop-image-orientation
   (gen/frequency [
     [100
@@ -3681,6 +4948,49 @@
         (gen/one-of [(gen/return "")
           gen-nonprop-angle])
         (gen/return "flip"))]]))
+
+(def gen-func-contrast
+  (gen/tuple
+    (gen/return "contrast(")
+    gen-nonprop-number-percentage
+    (gen/return ")")))
+
+(def gen-func-blur
+  (gen/tuple
+    (gen/return "blur(")
+    gen-nonprop-length
+    (gen/return ")")))
+
+(def gen-nonprop-filter-function
+  (gen/frequency [
+    [100
+      gen-func-blur]
+    [100
+      gen-func-brightness]
+    [100
+      gen-func-contrast]
+    [100
+      gen-func-drop-shadow]
+    [100
+      gen-func-grayscale]
+    [100
+      gen-func-hue-rotate]
+    [100
+      gen-func-invert]
+    [100
+      gen-func-opacity]
+    [100
+      gen-func-sepia]
+    [100
+      gen-func-saturate]]))
+
+(def gen-nonprop-filter-function-list
+  (gen/such-that not-empty (gen/vector
+    (gen/frequency [
+      [100
+        gen-nonprop-filter-function]
+      [100
+        gen-nonprop-url]]))))
 
 (def gen-prop-border-top-width
   gen-nonprop-br-width)
@@ -3703,6 +5013,26 @@
     gen-nonprop-color-stop-list
     (gen/return ")")))
 
+(def gen-prop-initial-letter-align
+  (gen/frequency [
+    [100
+      (gen/return "auto")]
+    [100
+      (gen/return "alphabetic")]
+    [100
+      (gen/return "hanging")]
+    [100
+      (gen/return "ideographic")]]))
+
+(def gen-prop--moz-user-modify
+  (gen/frequency [
+    [100
+      (gen/return "read-only")]
+    [100
+      (gen/return "read-write")]
+    [100
+      (gen/return "write-only")]]))
+
 (def gen-prop-counter-increment
   (gen/frequency [
     [100
@@ -3713,6 +5043,41 @@
             gen-nonprop-integer]))))]
     [100
       (gen/return "none")]]))
+
+(def gen-nonprop-page-margin-box-type
+  (gen/frequency [
+    [100
+      (gen/return "@top-left-corner")]
+    [100
+      (gen/return "@top-left")]
+    [100
+      (gen/return "@top-center")]
+    [100
+      (gen/return "@top-right")]
+    [100
+      (gen/return "@top-right-corner")]
+    [100
+      (gen/return "@bottom-left-corner")]
+    [100
+      (gen/return "@bottom-left")]
+    [100
+      (gen/return "@bottom-center")]
+    [100
+      (gen/return "@bottom-right")]
+    [100
+      (gen/return "@bottom-right-corner")]
+    [100
+      (gen/return "@left-top")]
+    [100
+      (gen/return "@left-middle")]
+    [100
+      (gen/return "@left-bottom")]
+    [100
+      (gen/return "@right-top")]
+    [100
+      (gen/return "@right-middle")]
+    [100
+      (gen/return "@right-bottom")]]))
 
 (def gen-prop-opacity
   gen-nonprop-number)
@@ -3758,6 +5123,26 @@
       (gen/fmap #(interpose " , " %) (gen/such-that not-empty (gen/vector
         gen-nonprop-shadow)))]]))
 
+(def gen-prop-filter
+  (gen/frequency [
+    [100
+      (gen/return "none")]
+    [100
+      gen-nonprop-filter-function-list]]))
+
+(def gen-prop--moz-window-shadow
+  (gen/frequency [
+    [100
+      (gen/return "default")]
+    [100
+      (gen/return "menu")]
+    [100
+      (gen/return "tooltip")]
+    [100
+      (gen/return "sheet")]
+    [100
+      (gen/return "none")]]))
+
 (def gen-prop-line-height
   (gen/frequency [
     [100
@@ -3769,12 +5154,30 @@
     [100
       gen-nonprop-percentage]]))
 
+(def gen-prop--moz-float-edge
+  (gen/frequency [
+    [100
+      (gen/return "border-box")]
+    [100
+      (gen/return "content-box")]
+    [100
+      (gen/return "margin-box")]
+    [100
+      (gen/return "padding-box")]]))
+
 (def gen-prop-border-image-source
   (gen/frequency [
     [100
       (gen/return "none")]
     [100
       gen-nonprop-image]]))
+
+(def gen-prop--moz-text-blink
+  (gen/frequency [
+    [100
+      (gen/return "none")]
+    [100
+      (gen/return "blink")]]))
 
 (def gen-prop-perspective
   (gen/frequency [
@@ -3788,6 +5191,13 @@
     gen-nonprop-grid-row-gap
     (gen/one-of [(gen/return "")
       gen-nonprop-grid-column-gap])))
+
+(def gen-prop--moz-binding
+  (gen/frequency [
+    [100
+      gen-nonprop-url]
+    [100
+      (gen/return "none")]]))
 
 (def gen-nonprop-bg-layer
   (gen/tuple
@@ -3812,6 +5222,229 @@
 (def gen-prop-mask-composite
   (gen/fmap #(interpose " , " %) (gen/such-that not-empty (gen/vector
     gen-nonprop-compositing-operator))))
+
+(def gen-prop--moz-appearance
+  (gen/frequency [
+    [100
+      (gen/return "none")]
+    [100
+      (gen/return "button")]
+    [100
+      (gen/return "button-arrow-down")]
+    [100
+      (gen/return "button-arrow-next")]
+    [100
+      (gen/return "button-arrow-previous")]
+    [100
+      (gen/return "button-arrow-up")]
+    [100
+      (gen/return "button-bevel")]
+    [100
+      (gen/return "button-focus")]
+    [100
+      (gen/return "caret")]
+    [100
+      (gen/return "checkbox")]
+    [100
+      (gen/return "checkbox-container")]
+    [100
+      (gen/return "checkbox-label")]
+    [100
+      (gen/return "checkmenuitem")]
+    [100
+      (gen/return "dualbutton")]
+    [100
+      (gen/return "groupbox")]
+    [100
+      (gen/return "listbox")]
+    [100
+      (gen/return "listitem")]
+    [100
+      (gen/return "menuarrow")]
+    [100
+      (gen/return "menubar")]
+    [100
+      (gen/return "menucheckbox")]
+    [100
+      (gen/return "menuimage")]
+    [100
+      (gen/return "menuitem")]
+    [100
+      (gen/return "menuitemtext")]
+    [100
+      (gen/return "menulist")]
+    [100
+      (gen/return "menulist-button")]
+    [100
+      (gen/return "menulist-text")]
+    [100
+      (gen/return "menulist-textfield")]
+    [100
+      (gen/return "menupopup")]
+    [100
+      (gen/return "menuradio")]
+    [100
+      (gen/return "menuseparator")]
+    [100
+      (gen/return "meterbar")]
+    [100
+      (gen/return "meterchunk")]
+    [100
+      (gen/return "progressbar")]
+    [100
+      (gen/return "progressbar-vertical")]
+    [100
+      (gen/return "progresschunk")]
+    [100
+      (gen/return "progresschunk-vertical")]
+    [100
+      (gen/return "radio")]
+    [100
+      (gen/return "radio-container")]
+    [100
+      (gen/return "radio-label")]
+    [100
+      (gen/return "radiomenuitem")]
+    [100
+      (gen/return "range")]
+    [100
+      (gen/return "range-thumb")]
+    [100
+      (gen/return "resizer")]
+    [100
+      (gen/return "resizerpanel")]
+    [100
+      (gen/return "scale-horizontal")]
+    [100
+      (gen/return "scalethumbend")]
+    [100
+      (gen/return "scalethumb-horizontal")]
+    [100
+      (gen/return "scalethumbstart")]
+    [100
+      (gen/return "scalethumbtick")]
+    [100
+      (gen/return "scalethumb-vertical")]
+    [100
+      (gen/return "scale-vertical")]
+    [100
+      (gen/return "scrollbarbutton-down")]
+    [100
+      (gen/return "scrollbarbutton-left")]
+    [100
+      (gen/return "scrollbarbutton-right")]
+    [100
+      (gen/return "scrollbarbutton-up")]
+    [100
+      (gen/return "scrollbarthumb-horizontal")]
+    [100
+      (gen/return "scrollbarthumb-vertical")]
+    [100
+      (gen/return "scrollbartrack-horizontal")]
+    [100
+      (gen/return "scrollbartrack-vertical")]
+    [100
+      (gen/return "searchfield")]
+    [100
+      (gen/return "separator")]
+    [100
+      (gen/return "sheet")]
+    [100
+      (gen/return "spinner")]
+    [100
+      (gen/return "spinner-downbutton")]
+    [100
+      (gen/return "spinner-textfield")]
+    [100
+      (gen/return "spinner-upbutton")]
+    [100
+      (gen/return "splitter")]
+    [100
+      (gen/return "statusbar")]
+    [100
+      (gen/return "statusbarpanel")]
+    [100
+      (gen/return "tab")]
+    [100
+      (gen/return "tabpanel")]
+    [100
+      (gen/return "tabpanels")]
+    [100
+      (gen/return "tab-scroll-arrow-back")]
+    [100
+      (gen/return "tab-scroll-arrow-forward")]
+    [100
+      (gen/return "textfield")]
+    [100
+      (gen/return "textfield-multiline")]
+    [100
+      (gen/return "toolbar")]
+    [100
+      (gen/return "toolbarbutton")]
+    [100
+      (gen/return "toolbarbutton-dropdown")]
+    [100
+      (gen/return "toolbargripper")]
+    [100
+      (gen/return "toolbox")]
+    [100
+      (gen/return "tooltip")]
+    [100
+      (gen/return "treeheader")]
+    [100
+      (gen/return "treeheadercell")]
+    [100
+      (gen/return "treeheadersortarrow")]
+    [100
+      (gen/return "treeitem")]
+    [100
+      (gen/return "treeline")]
+    [100
+      (gen/return "treetwisty")]
+    [100
+      (gen/return "treetwistyopen")]
+    [100
+      (gen/return "treeview")]
+    [100
+      (gen/return "-moz-mac-unified-toolbar")]
+    [100
+      (gen/return "-moz-win-borderless-glass")]
+    [100
+      (gen/return "-moz-win-browsertabbar-toolbox")]
+    [100
+      (gen/return "-moz-win-communicationstext")]
+    [100
+      (gen/return "-moz-win-communications-toolbox")]
+    [100
+      (gen/return "-moz-win-exclude-glass")]
+    [100
+      (gen/return "-moz-win-glass")]
+    [100
+      (gen/return "-moz-win-mediatext")]
+    [100
+      (gen/return "-moz-win-media-toolbox")]
+    [100
+      (gen/return "-moz-window-button-box")]
+    [100
+      (gen/return "-moz-window-button-box-maximized")]
+    [100
+      (gen/return "-moz-window-button-close")]
+    [100
+      (gen/return "-moz-window-button-maximize")]
+    [100
+      (gen/return "-moz-window-button-minimize")]
+    [100
+      (gen/return "-moz-window-button-restore")]
+    [100
+      (gen/return "-moz-window-frame-bottom")]
+    [100
+      (gen/return "-moz-window-frame-left")]
+    [100
+      (gen/return "-moz-window-frame-right")]
+    [100
+      (gen/return "-moz-window-titlebar")]
+    [100
+      (gen/return "-moz-window-titlebar-maximized")]]))
 
 (def gen-prop-font-style
   (gen/frequency [
@@ -3878,7 +5511,9 @@
     [100
       (gen/return "space-between")]
     [100
-      (gen/return "space-around")]]))
+      (gen/return "space-around")]
+    [100
+      (gen/return "space-evenly")]]))
 
 (def gen-prop-border-block-end-color
   gen-nonprop-color)
@@ -3910,12 +5545,90 @@
     [100
       (gen/return "preserve-3d")]]))
 
+(def gen-prop-box-flex
+  gen-nonprop-number)
+
 (def gen-prop-column-span
   (gen/frequency [
     [100
       (gen/return "none")]
     [100
       (gen/return "all")]]))
+
+(def gen-prop-scroll-snap-type-x
+  (gen/frequency [
+    [100
+      (gen/return "none")]
+    [100
+      (gen/return "mandatory")]
+    [100
+      (gen/return "proximity")]]))
+
+(def gen-prop-azimuth
+  (gen/frequency [
+    [100
+      gen-nonprop-angle]
+    [100
+      (gen/let [cnt (gen/choose 1 2)
+                lst (gen/tuple 
+                      (gen/frequency [
+                        [100
+                          (gen/return "left-side")]
+                        [100
+                          (gen/return "far-left")]
+                        [100
+                          (gen/return "left")]
+                        [100
+                          (gen/return "center-left")]
+                        [100
+                          (gen/return "center")]
+                        [100
+                          (gen/return "center-right")]
+                        [100
+                          (gen/return "right")]
+                        [100
+                          (gen/return "far-right")]
+                        [100
+                          (gen/return "right-side")]])
+                      (gen/return "behind"))]
+        (take cnt (shuffle lst)))]
+    [100
+      (gen/return "leftwards")]
+    [100
+      (gen/return "rightwards")]]))
+
+(def gen-nonprop-composite-style
+  (gen/frequency [
+    [100
+      (gen/return "clear")]
+    [100
+      (gen/return "copy")]
+    [100
+      (gen/return "source-over")]
+    [100
+      (gen/return "source-in")]
+    [100
+      (gen/return "source-out")]
+    [100
+      (gen/return "source-atop")]
+    [100
+      (gen/return "destination-over")]
+    [100
+      (gen/return "destination-in")]
+    [100
+      (gen/return "destination-out")]
+    [100
+      (gen/return "destination-atop")]
+    [100
+      (gen/return "xor")]]))
+
+(def gen-prop--webkit-mask-composite
+  (gen/tuple
+    gen-nonprop-composite-style
+    (gen/vector
+      (gen/tuple
+        (gen/return ",")
+        gen-nonprop-composite-style))))
 
 (def gen-prop-border-inline-end-color
   gen-nonprop-color)
@@ -3928,8 +5641,21 @@
                   gen-nonprop-color)]
     (take cnt (shuffle lst))))
 
+(def gen-nonprop-mf-plain
+  (gen/tuple
+    gen-nonprop-mf-name
+    (gen/return ":")
+    gen-nonprop-mf-value))
+
 (def gen-prop-order
   gen-nonprop-integer)
+
+(def gen-prop-backdrop-filter
+  (gen/frequency [
+    [100
+      (gen/return "none")]
+    [100
+      gen-nonprop-filter-function-list]]))
 
 (def gen-prop-break-after
   (gen/frequency [
@@ -3958,6 +5684,14 @@
     [100
       (gen/return "region")]]))
 
+(def gen-nonprop-page-margin-box
+  (gen/tuple
+    gen-nonprop-page-margin-box-type
+    (gen/tuple
+      (gen/return "{")
+      gen-nonprop-declaration-list
+      (gen/return "}"))))
+
 (def gen-prop-list-style-type
   (gen/frequency [
     [100
@@ -3967,8 +5701,25 @@
     [100
       (gen/return "none")]]))
 
+(def gen-prop--webkit-border-before-style
+  gen-nonprop-border-style)
+
+(def gen-nonprop-viewport-length
+  (gen/frequency [
+    [100
+      (gen/return "auto")]
+    [100
+      gen-nonprop-length-percentage]]))
+
 (def gen-prop-margin-inline-start
   gen-nonprop-margin-left)
+
+(def gen-prop--moz-stack-sizing
+  (gen/frequency [
+    [100
+      (gen/return "ignore")]
+    [100
+      (gen/return "stretch-to-fit")]]))
 
 (def gen-prop-border-left-style
   gen-nonprop-br-style)
@@ -4033,6 +5784,20 @@
     [100
       gen-func-repeating-radial-gradient]]))
 
+(def gen-prop-offset-anchor
+  (gen/frequency [
+    [100
+      (gen/return "auto")]
+    [100
+      gen-nonprop-position]]))
+
+(def gen-prop--webkit-touch-callout
+  (gen/frequency [
+    [100
+      (gen/return "default")]
+    [100
+      (gen/return "none")]]))
+
 (def gen-prop-padding
   (gen/vector 
     (gen/frequency [
@@ -4048,6 +5813,23 @@
       (gen/return "visible")]
     [100
       (gen/return "hidden")]]))
+
+(def gen-prop-display-list
+  (gen/frequency [
+    [100
+      (gen/return "none")]
+    [100
+      (gen/return "list-item")]]))
+
+(def gen-prop--moz-force-broken-image-icon
+  gen-nonprop-integer)
+
+(def gen-prop-marker-offset
+  (gen/frequency [
+    [100
+      gen-nonprop-length]
+    [100
+      (gen/return "auto")]]))
 
 (def gen-prop-border-inline-start-style
   gen-nonprop-border-style)
@@ -4082,6 +5864,9 @@
     [100
       gen-nonprop-percentage]]))
 
+(def gen-prop--webkit-tap-highlight-color
+  gen-nonprop-color)
+
 (def gen-prop-border-bottom-width
   gen-nonprop-br-width)
 
@@ -4090,6 +5875,41 @@
 
 (def gen-prop-border-inline-start-width
   gen-nonprop-border-width)
+
+(def gen-nonprop-mf-boolean
+  gen-nonprop-mf-name)
+
+(def gen-func-minmax
+  (gen/tuple
+    (gen/return "minmax(")
+    (gen/frequency [
+      [100
+        gen-nonprop-length]
+      [100
+        gen-nonprop-percentage]
+      [100
+        gen-nonprop-flex]
+      [100
+        (gen/return "min-content")]
+      [100
+        (gen/return "max-content")]
+      [100
+        (gen/return "auto")]])
+    (gen/return ",")
+    (gen/frequency [
+      [100
+        gen-nonprop-length]
+      [100
+        gen-nonprop-percentage]
+      [100
+        gen-nonprop-flex]
+      [100
+        (gen/return "min-content")]
+      [100
+        (gen/return "max-content")]
+      [100
+        (gen/return "auto")]])
+    (gen/return ")")))
 
 (def gen-prop-padding-bottom
   (gen/frequency [
@@ -4105,6 +5925,15 @@
     [100
       (gen/return "border-box")]]))
 
+(def gen-prop-box-direction
+  (gen/frequency [
+    [100
+      (gen/return "normal")]
+    [100
+      (gen/return "reverse")]
+    [100
+      (gen/return "inherit")]]))
+
 (def gen-prop-animation-iteration-count
   (gen/fmap #(interpose " , " %) (gen/such-that not-empty (gen/vector
     gen-nonprop-single-animation-iteration-count))))
@@ -4112,6 +5941,16 @@
 (def gen-prop-transition-timing-function
   (gen/fmap #(interpose " , " %) (gen/such-that not-empty (gen/vector
     gen-nonprop-single-transition-timing-function))))
+
+(def gen-nonprop-angle-percentage
+  (gen/frequency [
+    [100
+      gen-nonprop-angle]
+    [100
+      gen-nonprop-percentage]]))
+
+(def gen-prop--webkit-text-fill-color
+  gen-nonprop-color)
 
 (def gen-prop-background-position
   (gen/fmap #(interpose " , " %) (gen/such-that not-empty (gen/vector
@@ -4129,8 +5968,24 @@
           gen-nonprop-length-percentage
           1 4))])))
 
+(def gen-prop--moz-border-left-colors
+  (gen/frequency [
+    [100
+      (gen/tuple
+        (gen/vector
+          gen-nonprop-color)
+        gen-nonprop-color)]
+    [100
+      (gen/return "none")]]))
+
 (def gen-prop-grid-row-end
   gen-nonprop-grid-line)
+
+(def gen-prop-box-flex-group
+  gen-nonprop-integer)
+
+(def gen-prop--moz-outline-radius-topright
+  gen-nonprop-outline-radius)
 
 (def gen-prop-scroll-behavior
   (gen/frequency [
@@ -4155,6 +6010,17 @@
       (gen/return "fit-content")]
     [100
       (gen/return "fill-available")]]))
+
+(def gen-prop-box-pack
+  (gen/frequency [
+    [100
+      (gen/return "start")]
+    [100
+      (gen/return "center")]
+    [100
+      (gen/return "end")]
+    [100
+      (gen/return "justify")]]))
 
 (def gen-prop-border-inline-end-style
   gen-nonprop-border-style)
@@ -4211,6 +6077,13 @@
     [100
       (gen/return "none")]]))
 
+(def gen-prop-box-lines
+  (gen/frequency [
+    [100
+      (gen/return "single")]
+    [100
+      (gen/return "multiple")]]))
+
 (def gen-prop-text-shadow
   (gen/frequency [
     [100
@@ -4259,6 +6132,19 @@
     [100
       gen-nonprop-percentage]]))
 
+(def gen-prop-box-orient
+  (gen/frequency [
+    [100
+      (gen/return "horizontal")]
+    [100
+      (gen/return "vertical")]
+    [100
+      (gen/return "inline-axis")]
+    [100
+      (gen/return "block-axis")]
+    [100
+      (gen/return "inherit")]]))
+
 (def gen-prop-background
   (gen/tuple
     (gen/vector
@@ -4294,6 +6180,19 @@
     [100
       (gen/return "invert")]]))
 
+(def gen-prop--webkit-mask
+  (gen/tuple
+    gen-nonprop-mask-image
+    (gen/vector
+      (gen/let [cnt (gen/choose 1 5)
+                lst (gen/tuple 
+                      gen-nonprop-mask-repeat
+                      gen-nonprop-mask-attachment
+                      gen-nonprop-mask-position
+                      gen-nonprop-mask-origin
+                      gen-nonprop-mask-clip)]
+        (take cnt (shuffle lst))))))
+
 (def gen-prop-border-block-end
   (gen/let [cnt (gen/choose 1 3)
             lst (gen/tuple 
@@ -4302,8 +6201,45 @@
                   gen-nonprop-color)]
     (take cnt (shuffle lst))))
 
+(def gen-prop-initial-letter
+  (gen/frequency [
+    [100
+      (gen/return "normal")]
+    [100
+      (gen/tuple
+        gen-nonprop-number
+        (gen/one-of [(gen/return "")
+          gen-nonprop-integer]))]]))
+
 (def gen-prop-margin-block-start
   gen-nonprop-margin-left)
+
+(def gen-prop--moz-user-focus
+  (gen/frequency [
+    [100
+      (gen/return "ignore")]
+    [100
+      (gen/return "normal")]
+    [100
+      (gen/return "select-after")]
+    [100
+      (gen/return "select-before")]
+    [100
+      (gen/return "select-menu")]
+    [100
+      (gen/return "select-same")]
+    [100
+      (gen/return "select-all")]
+    [100
+      (gen/return "none")]]))
+
+(def gen-prop--webkit-mask-attachment
+  (gen/tuple
+    gen-nonprop-attachment
+    (gen/vector
+      (gen/tuple
+        (gen/return ",")
+        gen-nonprop-attachment))))
 
 (def gen-prop-border-bottom-color
   gen-nonprop-color)
@@ -4329,61 +6265,90 @@
       (gen/fmap #(interpose " , " %) (gen/such-that not-empty (gen/vector
         gen-nonprop-single-transition-property)))]]))
 
+(def gen-prop--webkit-text-stroke-width
+  gen-nonprop-length)
+
 (def gen-prop-margin-block-end
   gen-nonprop-margin-left)
 
 (def gen-css-assignment
   (gen/frequency [
     [100 (gen/tuple (gen/return "margin-block-end: ") gen-prop-margin-block-end)]
+    [100 (gen/tuple (gen/return "-webkit-text-stroke-width: ") gen-prop--webkit-text-stroke-width)]
     [100 (gen/tuple (gen/return "transition-property: ") gen-prop-transition-property)]
     [100 (gen/tuple (gen/return "word-break: ") gen-prop-word-break)]
     [100 (gen/tuple (gen/return "background-origin: ") gen-prop-background-origin)]
     [100 (gen/tuple (gen/return "border-bottom-color: ") gen-prop-border-bottom-color)]
+    [100 (gen/tuple (gen/return "-webkit-mask-attachment: ") gen-prop--webkit-mask-attachment)]
+    [100 (gen/tuple (gen/return "-moz-user-focus: ") gen-prop--moz-user-focus)]
     [100 (gen/tuple (gen/return "margin-block-start: ") gen-prop-margin-block-start)]
+    [100 (gen/tuple (gen/return "initial-letter: ") gen-prop-initial-letter)]
     [100 (gen/tuple (gen/return "border-block-end: ") gen-prop-border-block-end)]
+    [100 (gen/tuple (gen/return "-webkit-mask: ") gen-prop--webkit-mask)]
     [100 (gen/tuple (gen/return "outline-color: ") gen-prop-outline-color)]
     [100 (gen/tuple (gen/return "border-block-start: ") gen-prop-border-block-start)]
     [100 (gen/tuple (gen/return "ruby-position: ") gen-prop-ruby-position)]
     [100 (gen/tuple (gen/return "border-block-start-width: ") gen-prop-border-block-start-width)]
     [100 (gen/tuple (gen/return "background: ") gen-prop-background)]
+    [100 (gen/tuple (gen/return "box-orient: ") gen-prop-box-orient)]
     [100 (gen/tuple (gen/return "padding-top: ") gen-prop-padding-top)]
     [100 (gen/tuple (gen/return "align-items: ") gen-prop-align-items)]
     [100 (gen/tuple (gen/return "text-shadow: ") gen-prop-text-shadow)]
+    [100 (gen/tuple (gen/return "box-lines: ") gen-prop-box-lines)]
     [100 (gen/tuple (gen/return "list-style-image: ") gen-prop-list-style-image)]
     [100 (gen/tuple (gen/return "page-break-inside: ") gen-prop-page-break-inside)]
     [100 (gen/tuple (gen/return "columns: ") gen-prop-columns)]
     [100 (gen/tuple (gen/return "text-emphasis-position: ") gen-prop-text-emphasis-position)]
     [100 (gen/tuple (gen/return "text-align-last: ") gen-prop-text-align-last)]
     [100 (gen/tuple (gen/return "border-inline-end-style: ") gen-prop-border-inline-end-style)]
+    [100 (gen/tuple (gen/return "box-pack: ") gen-prop-box-pack)]
     [100 (gen/tuple (gen/return "min-height: ") gen-prop-min-height)]
     [100 (gen/tuple (gen/return "scroll-behavior: ") gen-prop-scroll-behavior)]
+    [100 (gen/tuple (gen/return "-moz-outline-radius-topright: ") gen-prop--moz-outline-radius-topright)]
+    [100 (gen/tuple (gen/return "box-flex-group: ") gen-prop-box-flex-group)]
     [100 (gen/tuple (gen/return "grid-row-end: ") gen-prop-grid-row-end)]
+    [100 (gen/tuple (gen/return "-moz-border-left-colors: ") gen-prop--moz-border-left-colors)]
     [100 (gen/tuple (gen/return "border-radius: ") gen-prop-border-radius)]
     [100 (gen/tuple (gen/return "background-position: ") gen-prop-background-position)]
+    [100 (gen/tuple (gen/return "-webkit-text-fill-color: ") gen-prop--webkit-text-fill-color)]
     [100 (gen/tuple (gen/return "transition-timing-function: ") gen-prop-transition-timing-function)]
     [100 (gen/tuple (gen/return "animation-iteration-count: ") gen-prop-animation-iteration-count)]
+    [100 (gen/tuple (gen/return "box-direction: ") gen-prop-box-direction)]
     [100 (gen/tuple (gen/return "box-sizing: ") gen-prop-box-sizing)]
     [100 (gen/tuple (gen/return "padding-bottom: ") gen-prop-padding-bottom)]
     [100 (gen/tuple (gen/return "border-inline-start-width: ") gen-prop-border-inline-start-width)]
     [100 (gen/tuple (gen/return "border-right-width: ") gen-prop-border-right-width)]
     [100 (gen/tuple (gen/return "border-bottom-width: ") gen-prop-border-bottom-width)]
+    [100 (gen/tuple (gen/return "-webkit-tap-highlight-color: ") gen-prop--webkit-tap-highlight-color)]
     [100 (gen/tuple (gen/return "padding-left: ") gen-prop-padding-left)]
     [100 (gen/tuple (gen/return "grid-row: ") gen-prop-grid-row)]
     [100 (gen/tuple (gen/return "text-decoration: ") gen-prop-text-decoration)]
     [100 (gen/tuple (gen/return "word-spacing: ") gen-prop-word-spacing)]
     [100 (gen/tuple (gen/return "border-inline-start-style: ") gen-prop-border-inline-start-style)]
+    [100 (gen/tuple (gen/return "marker-offset: ") gen-prop-marker-offset)]
+    [100 (gen/tuple (gen/return "-moz-force-broken-image-icon: ") gen-prop--moz-force-broken-image-icon)]
+    [100 (gen/tuple (gen/return "display-list: ") gen-prop-display-list)]
     [100 (gen/tuple (gen/return "backface-visibility: ") gen-prop-backface-visibility)]
     [100 (gen/tuple (gen/return "padding: ") gen-prop-padding)]
+    [100 (gen/tuple (gen/return "-webkit-touch-callout: ") gen-prop--webkit-touch-callout)]
+    [100 (gen/tuple (gen/return "offset-anchor: ") gen-prop-offset-anchor)]
     [100 (gen/tuple (gen/return "font-stretch: ") gen-prop-font-stretch)]
     [100 (gen/tuple (gen/return "grid-auto-flow: ") gen-prop-grid-auto-flow)]
     [100 (gen/tuple (gen/return "border-left-style: ") gen-prop-border-left-style)]
+    [100 (gen/tuple (gen/return "-moz-stack-sizing: ") gen-prop--moz-stack-sizing)]
     [100 (gen/tuple (gen/return "margin-inline-start: ") gen-prop-margin-inline-start)]
+    [100 (gen/tuple (gen/return "-webkit-border-before-style: ") gen-prop--webkit-border-before-style)]
     [100 (gen/tuple (gen/return "list-style-type: ") gen-prop-list-style-type)]
     [100 (gen/tuple (gen/return "break-after: ") gen-prop-break-after)]
+    [100 (gen/tuple (gen/return "backdrop-filter: ") gen-prop-backdrop-filter)]
     [100 (gen/tuple (gen/return "order: ") gen-prop-order)]
     [100 (gen/tuple (gen/return "border-bottom: ") gen-prop-border-bottom)]
     [100 (gen/tuple (gen/return "border-inline-end-color: ") gen-prop-border-inline-end-color)]
+    [100 (gen/tuple (gen/return "-webkit-mask-composite: ") gen-prop--webkit-mask-composite)]
+    [100 (gen/tuple (gen/return "azimuth: ") gen-prop-azimuth)]
+    [100 (gen/tuple (gen/return "scroll-snap-type-x: ") gen-prop-scroll-snap-type-x)]
     [100 (gen/tuple (gen/return "column-span: ") gen-prop-column-span)]
+    [100 (gen/tuple (gen/return "box-flex: ") gen-prop-box-flex)]
     [100 (gen/tuple (gen/return "transform-style: ") gen-prop-transform-style)]
     [100 (gen/tuple (gen/return "font-family: ") gen-prop-font-family)]
     [100 (gen/tuple (gen/return "column-rule: ") gen-prop-column-rule)]
@@ -4396,11 +6361,17 @@
     [100 (gen/tuple (gen/return "block-size: ") gen-prop-block-size)]
     [100 (gen/tuple (gen/return "text-transform: ") gen-prop-text-transform)]
     [100 (gen/tuple (gen/return "font-style: ") gen-prop-font-style)]
+    [100 (gen/tuple (gen/return "-moz-appearance: ") gen-prop--moz-appearance)]
     [100 (gen/tuple (gen/return "mask-composite: ") gen-prop-mask-composite)]
+    [100 (gen/tuple (gen/return "-moz-binding: ") gen-prop--moz-binding)]
     [100 (gen/tuple (gen/return "grid-gap: ") gen-prop-grid-gap)]
     [100 (gen/tuple (gen/return "perspective: ") gen-prop-perspective)]
+    [100 (gen/tuple (gen/return "-moz-text-blink: ") gen-prop--moz-text-blink)]
     [100 (gen/tuple (gen/return "border-image-source: ") gen-prop-border-image-source)]
+    [100 (gen/tuple (gen/return "-moz-float-edge: ") gen-prop--moz-float-edge)]
     [100 (gen/tuple (gen/return "line-height: ") gen-prop-line-height)]
+    [100 (gen/tuple (gen/return "-moz-window-shadow: ") gen-prop--moz-window-shadow)]
+    [100 (gen/tuple (gen/return "filter: ") gen-prop-filter)]
     [100 (gen/tuple (gen/return "box-shadow: ") gen-prop-box-shadow)]
     [100 (gen/tuple (gen/return "grid-template-areas: ") gen-prop-grid-template-areas)]
     [100 (gen/tuple (gen/return "border-left-width: ") gen-prop-border-left-width)]
@@ -4408,6 +6379,8 @@
     [100 (gen/tuple (gen/return "grid-auto-rows: ") gen-prop-grid-auto-rows)]
     [100 (gen/tuple (gen/return "opacity: ") gen-prop-opacity)]
     [100 (gen/tuple (gen/return "counter-increment: ") gen-prop-counter-increment)]
+    [100 (gen/tuple (gen/return "-moz-user-modify: ") gen-prop--moz-user-modify)]
+    [100 (gen/tuple (gen/return "initial-letter-align: ") gen-prop-initial-letter-align)]
     [100 (gen/tuple (gen/return "min-block-size: ") gen-prop-min-block-size)]
     [100 (gen/tuple (gen/return "border-top-width: ") gen-prop-border-top-width)]
     [100 (gen/tuple (gen/return "image-orientation: ") gen-prop-image-orientation)]
@@ -4421,10 +6394,12 @@
     [100 (gen/tuple (gen/return "transition: ") gen-prop-transition)]
     [100 (gen/tuple (gen/return "column-rule-width: ") gen-prop-column-rule-width)]
     [100 (gen/tuple (gen/return "offset-block-start: ") gen-prop-offset-block-start)]
+    [100 (gen/tuple (gen/return "offset-distance: ") gen-prop-offset-distance)]
     [100 (gen/tuple (gen/return "mask-clip: ") gen-prop-mask-clip)]
     [100 (gen/tuple (gen/return "animation-direction: ") gen-prop-animation-direction)]
     [100 (gen/tuple (gen/return "offset-block-end: ") gen-prop-offset-block-end)]
     [100 (gen/tuple (gen/return "border-image-outset: ") gen-prop-border-image-outset)]
+    [100 (gen/tuple (gen/return "font-variation-settings: ") gen-prop-font-variation-settings)]
     [100 (gen/tuple (gen/return "min-inline-size: ") gen-prop-min-inline-size)]
     [100 (gen/tuple (gen/return "caption-side: ") gen-prop-caption-side)]
     [100 (gen/tuple (gen/return "orphans: ") gen-prop-orphans)]
@@ -4447,16 +6422,24 @@
     [100 (gen/tuple (gen/return "font-synthesis: ") gen-prop-font-synthesis)]
     [100 (gen/tuple (gen/return "flex-flow: ") gen-prop-flex-flow)]
     [100 (gen/tuple (gen/return "background-size: ") gen-prop-background-size)]
+    [100 (gen/tuple (gen/return "box-suppress: ") gen-prop-box-suppress)]
     [100 (gen/tuple (gen/return "background-clip: ") gen-prop-background-clip)]
+    [100 (gen/tuple (gen/return "scroll-snap-points-x: ") gen-prop-scroll-snap-points-x)]
     [100 (gen/tuple (gen/return "animation: ") gen-prop-animation)]
     [100 (gen/tuple (gen/return "overflow: ") gen-prop-overflow)]
+    [100 (gen/tuple (gen/return "-webkit-mask-clip: ") gen-prop--webkit-mask-clip)]
     [100 (gen/tuple (gen/return "font-size-adjust: ") gen-prop-font-size-adjust)]
+    [100 (gen/tuple (gen/return "-moz-image-region: ") gen-prop--moz-image-region)]
     [100 (gen/tuple (gen/return "padding-inline-end: ") gen-prop-padding-inline-end)]
     [100 (gen/tuple (gen/return "counter-reset: ") gen-prop-counter-reset)]
     [100 (gen/tuple (gen/return "column-gap: ") gen-prop-column-gap)]
     [100 (gen/tuple (gen/return "border-color: ") gen-prop-border-color)]
+    [100 (gen/tuple (gen/return "-webkit-mask-position-x: ") gen-prop--webkit-mask-position-x)]
+    [100 (gen/tuple (gen/return "vertical-align: ") gen-prop-vertical-align)]
+    [100 (gen/tuple (gen/return "display-inside: ") gen-prop-display-inside)]
     [100 (gen/tuple (gen/return "border-width: ") gen-prop-border-width)]
     [100 (gen/tuple (gen/return "quotes: ") gen-prop-quotes)]
+    [100 (gen/tuple (gen/return "scroll-snap-points-y: ") gen-prop-scroll-snap-points-y)]
     [100 (gen/tuple (gen/return "grid-area: ") gen-prop-grid-area)]
     [100 (gen/tuple (gen/return "border-spacing: ") gen-prop-border-spacing)]
     [100 (gen/tuple (gen/return "border-top-style: ") gen-prop-border-top-style)]
@@ -4464,16 +6447,21 @@
     [100 (gen/tuple (gen/return "grid-template-rows: ") gen-prop-grid-template-rows)]
     [100 (gen/tuple (gen/return "object-position: ") gen-prop-object-position)]
     [100 (gen/tuple (gen/return "border-block-start-style: ") gen-prop-border-block-start-style)]
+    [100 (gen/tuple (gen/return "-moz-outline-radius: ") gen-prop--moz-outline-radius)]
     [100 (gen/tuple (gen/return "border-block-end-style: ") gen-prop-border-block-end-style)]
     [100 (gen/tuple (gen/return "padding-block-start: ") gen-prop-padding-block-start)]
     [100 (gen/tuple (gen/return "animation-delay: ") gen-prop-animation-delay)]
+    [100 (gen/tuple (gen/return "-webkit-box-reflect: ") gen-prop--webkit-box-reflect)]
+    [100 (gen/tuple (gen/return "-moz-orient: ") gen-prop--moz-orient)]
     [100 (gen/tuple (gen/return "border-inline-start: ") gen-prop-border-inline-start)]
     [100 (gen/tuple (gen/return "border-collapse: ") gen-prop-border-collapse)]
     [100 (gen/tuple (gen/return "border-image-slice: ") gen-prop-border-image-slice)]
     [100 (gen/tuple (gen/return "flex-direction: ") gen-prop-flex-direction)]
     [100 (gen/tuple (gen/return "color: ") gen-prop-color)]
+    [100 (gen/tuple (gen/return "offset-position: ") gen-prop-offset-position)]
     [100 (gen/tuple (gen/return "background-image: ") gen-prop-background-image)]
     [100 (gen/tuple (gen/return "font-variant-caps: ") gen-prop-font-variant-caps)]
+    [100 (gen/tuple (gen/return "-webkit-text-stroke: ") gen-prop--webkit-text-stroke)]
     [100 (gen/tuple (gen/return "border-top-right-radius: ") gen-prop-border-top-right-radius)]
     [100 (gen/tuple (gen/return "border-inline-end-width: ") gen-prop-border-inline-end-width)]
     [100 (gen/tuple (gen/return "text-emphasis-color: ") gen-prop-text-emphasis-color)]
@@ -4481,16 +6469,20 @@
     [100 (gen/tuple (gen/return "mix-blend-mode: ") gen-prop-mix-blend-mode)]
     [100 (gen/tuple (gen/return "max-height: ") gen-prop-max-height)]
     [100 (gen/tuple (gen/return "mask-repeat: ") gen-prop-mask-repeat)]
+    [100 (gen/tuple (gen/return "offset: ") gen-prop-offset)]
     [100 (gen/tuple (gen/return "touch-action: ") gen-prop-touch-action)]
     [100 (gen/tuple (gen/return "word-wrap: ") gen-prop-word-wrap)]
     [100 (gen/tuple (gen/return "isolation: ") gen-prop-isolation)]
     [100 (gen/tuple (gen/return "transition-duration: ") gen-prop-transition-duration)]
+    [100 (gen/tuple (gen/return "-moz-user-input: ") gen-prop--moz-user-input)]
     [100 (gen/tuple (gen/return "grid-auto-columns: ") gen-prop-grid-auto-columns)]
     [100 (gen/tuple (gen/return "grid-column-end: ") gen-prop-grid-column-end)]
     [100 (gen/tuple (gen/return "align-content: ") gen-prop-align-content)]
     [100 (gen/tuple (gen/return "border-bottom-right-radius: ") gen-prop-border-bottom-right-radius)]
     [100 (gen/tuple (gen/return "grid-template: ") gen-prop-grid-template)]
+    [100 (gen/tuple (gen/return "-webkit-mask-image: ") gen-prop--webkit-mask-image)]
     [100 (gen/tuple (gen/return "widows: ") gen-prop-widows)]
+    [100 (gen/tuple (gen/return "background-position-y: ") gen-prop-background-position-y)]
     [100 (gen/tuple (gen/return "font-size: ") gen-prop-font-size)]
     [100 (gen/tuple (gen/return "border-right-style: ") gen-prop-border-right-style)]
     [100 (gen/tuple (gen/return "animation-timing-function: ") gen-prop-animation-timing-function)]
@@ -4499,21 +6491,29 @@
     [100 (gen/tuple (gen/return "font-variant-position: ") gen-prop-font-variant-position)]
     [100 (gen/tuple (gen/return "line-break: ") gen-prop-line-break)]
     [100 (gen/tuple (gen/return "overflow-y: ") gen-prop-overflow-y)]
+    [100 (gen/tuple (gen/return "-webkit-border-before-color: ") gen-prop--webkit-border-before-color)]
     [100 (gen/tuple (gen/return "border-block-start-color: ") gen-prop-border-block-start-color)]
+    [100 (gen/tuple (gen/return "clip: ") gen-prop-clip)]
     [100 (gen/tuple (gen/return "align-self: ") gen-prop-align-self)]
     [100 (gen/tuple (gen/return "border-top-color: ") gen-prop-border-top-color)]
     [100 (gen/tuple (gen/return "overflow-wrap: ") gen-prop-overflow-wrap)]
+    [100 (gen/tuple (gen/return "flex: ") gen-prop-flex)]
+    [100 (gen/tuple (gen/return "-webkit-mask-position-y: ") gen-prop--webkit-mask-position-y)]
     [100 (gen/tuple (gen/return "flex-basis: ") gen-prop-flex-basis)]
     [100 (gen/tuple (gen/return "font-variant-numeric: ") gen-prop-font-variant-numeric)]
     [100 (gen/tuple (gen/return "ruby-align: ") gen-prop-ruby-align)]
+    [100 (gen/tuple (gen/return "-webkit-mask-repeat-y: ") gen-prop--webkit-mask-repeat-y)]
     [100 (gen/tuple (gen/return "position: ") gen-prop-position)]
     [100 (gen/tuple (gen/return "border-left-color: ") gen-prop-border-left-color)]
+    [100 (gen/tuple (gen/return "-moz-border-bottom-colors: ") gen-prop--moz-border-bottom-colors)]
     [100 (gen/tuple (gen/return "margin-top: ") gen-prop-margin-top)]
     [100 (gen/tuple (gen/return "scroll-snap-type: ") gen-prop-scroll-snap-type)]
+    [100 (gen/tuple (gen/return "-moz-border-right-colors: ") gen-prop--moz-border-right-colors)]
     [100 (gen/tuple (gen/return "display: ") gen-prop-display)]
     [100 (gen/tuple (gen/return "shape-outside: ") gen-prop-shape-outside)]
     [100 (gen/tuple (gen/return "padding-block-end: ") gen-prop-padding-block-end)]
     [100 (gen/tuple (gen/return "shape-margin: ") gen-prop-shape-margin)]
+    [100 (gen/tuple (gen/return "box-ordinal-group: ") gen-prop-box-ordinal-group)]
     [100 (gen/tuple (gen/return "border-image-width: ") gen-prop-border-image-width)]
     [100 (gen/tuple (gen/return "padding-right: ") gen-prop-padding-right)]
     [100 (gen/tuple (gen/return "all: ") gen-prop-all)]
@@ -4526,31 +6526,44 @@
     [100 (gen/tuple (gen/return "bottom: ") gen-prop-bottom)]
     [100 (gen/tuple (gen/return "text-decoration-color: ") gen-prop-text-decoration-color)]
     [100 (gen/tuple (gen/return "grid: ") gen-prop-grid)]
+    [100 (gen/tuple (gen/return "text-size-adjust: ") gen-prop-text-size-adjust)]
     [100 (gen/tuple (gen/return "overflow-x: ") gen-prop-overflow-x)]
     [100 (gen/tuple (gen/return "mask-type: ") gen-prop-mask-type)]
+    [100 (gen/tuple (gen/return "-webkit-mask-origin: ") gen-prop--webkit-mask-origin)]
+    [100 (gen/tuple (gen/return "-ms-overflow-style: ") gen-prop--ms-overflow-style)]
     [100 (gen/tuple (gen/return "empty-cells: ") gen-prop-empty-cells)]
     [100 (gen/tuple (gen/return "outline-width: ") gen-prop-outline-width)]
     [100 (gen/tuple (gen/return "transition-delay: ") gen-prop-transition-delay)]
     [100 (gen/tuple (gen/return "hyphens: ") gen-prop-hyphens)]
+    [100 (gen/tuple (gen/return "offset-rotate: ") gen-prop-offset-rotate)]
     [100 (gen/tuple (gen/return "writing-mode: ") gen-prop-writing-mode)]
+    [100 (gen/tuple (gen/return "display-outside: ") gen-prop-display-outside)]
     [100 (gen/tuple (gen/return "font-variant-east-asian: ") gen-prop-font-variant-east-asian)]
     [100 (gen/tuple (gen/return "text-decoration-style: ") gen-prop-text-decoration-style)]
     [100 (gen/tuple (gen/return "mask: ") gen-prop-mask)]
+    [100 (gen/tuple (gen/return "contain: ") gen-prop-contain)]
     [100 (gen/tuple (gen/return "clear: ") gen-prop-clear)]
+    [100 (gen/tuple (gen/return "scroll-snap-type-y: ") gen-prop-scroll-snap-type-y)]
     [100 (gen/tuple (gen/return "cursor: ") gen-prop-cursor)]
     [100 (gen/tuple (gen/return "break-inside: ") gen-prop-break-inside)]
     [100 (gen/tuple (gen/return "transform: ") gen-prop-transform)]
+    [100 (gen/tuple (gen/return "-webkit-border-before-width: ") gen-prop--webkit-border-before-width)]
+    [100 (gen/tuple (gen/return "font-variant: ") gen-prop-font-variant)]
     [100 (gen/tuple (gen/return "flex-shrink: ") gen-prop-flex-shrink)]
     [100 (gen/tuple (gen/return "background-color: ") gen-prop-background-color)]
     [100 (gen/tuple (gen/return "margin-left: ") gen-prop-margin-left)]
     [100 (gen/tuple (gen/return "text-emphasis-style: ") gen-prop-text-emphasis-style)]
+    [100 (gen/tuple (gen/return "box-align: ") gen-prop-box-align)]
     [100 (gen/tuple (gen/return "outline-offset: ") gen-prop-outline-offset)]
     [100 (gen/tuple (gen/return "font-kerning: ") gen-prop-font-kerning)]
     [100 (gen/tuple (gen/return "flex-wrap: ") gen-prop-flex-wrap)]
     [100 (gen/tuple (gen/return "grid-column-gap: ") gen-prop-grid-column-gap)]
     [100 (gen/tuple (gen/return "max-block-size: ") gen-prop-max-block-size)]
     [100 (gen/tuple (gen/return "border-inline-start-color: ") gen-prop-border-inline-start-color)]
+    [100 (gen/tuple (gen/return "-webkit-text-stroke-color: ") gen-prop--webkit-text-stroke-color)]
     [100 (gen/tuple (gen/return "height: ") gen-prop-height)]
+    [100 (gen/tuple (gen/return "-webkit-mask-repeat-x: ") gen-prop--webkit-mask-repeat-x)]
+    [100 (gen/tuple (gen/return "ruby-merge: ") gen-prop-ruby-merge)]
     [100 (gen/tuple (gen/return "grid-template-columns: ") gen-prop-grid-template-columns)]
     [100 (gen/tuple (gen/return "grid-column-start: ") gen-prop-grid-column-start)]
     [100 (gen/tuple (gen/return "object-fit: ") gen-prop-object-fit)]
@@ -4560,11 +6573,13 @@
     [100 (gen/tuple (gen/return "break-before: ") gen-prop-break-before)]
     [100 (gen/tuple (gen/return "page-break-after: ") gen-prop-page-break-after)]
     [100 (gen/tuple (gen/return "margin: ") gen-prop-margin)]
+    [100 (gen/tuple (gen/return "font-variant-alternates: ") gen-prop-font-variant-alternates)]
     [100 (gen/tuple (gen/return "margin-right: ") gen-prop-margin-right)]
     [100 (gen/tuple (gen/return "outline: ") gen-prop-outline)]
     [100 (gen/tuple (gen/return "border-inline-end: ") gen-prop-border-inline-end)]
     [100 (gen/tuple (gen/return "max-width: ") gen-prop-max-width)]
     [100 (gen/tuple (gen/return "border: ") gen-prop-border)]
+    [100 (gen/tuple (gen/return "-webkit-border-before: ") gen-prop--webkit-border-before)]
     [100 (gen/tuple (gen/return "offset-inline-start: ") gen-prop-offset-inline-start)]
     [100 (gen/tuple (gen/return "column-width: ") gen-prop-column-width)]
     [100 (gen/tuple (gen/return "content: ") gen-prop-content)]
@@ -4577,22 +6592,30 @@
     [100 (gen/tuple (gen/return "scroll-snap-coordinate: ") gen-prop-scroll-snap-coordinate)]
     [100 (gen/tuple (gen/return "column-rule-style: ") gen-prop-column-rule-style)]
     [100 (gen/tuple (gen/return "column-count: ") gen-prop-column-count)]
+    [100 (gen/tuple (gen/return "offset-path: ") gen-prop-offset-path)]
     [100 (gen/tuple (gen/return "animation-play-state: ") gen-prop-animation-play-state)]
     [100 (gen/tuple (gen/return "text-orientation: ") gen-prop-text-orientation)]
     [100 (gen/tuple (gen/return "page-break-before: ") gen-prop-page-break-before)]
+    [100 (gen/tuple (gen/return "-moz-outline-radius-topleft: ") gen-prop--moz-outline-radius-topleft)]
     [100 (gen/tuple (gen/return "margin-bottom: ") gen-prop-margin-bottom)]
+    [100 (gen/tuple (gen/return "appearance: ") gen-prop-appearance)]
+    [100 (gen/tuple (gen/return "-webkit-mask-position: ") gen-prop--webkit-mask-position)]
     [100 (gen/tuple (gen/return "white-space: ") gen-prop-white-space)]
     [100 (gen/tuple (gen/return "text-emphasis: ") gen-prop-text-emphasis)]
     [100 (gen/tuple (gen/return "direction: ") gen-prop-direction)]
     [100 (gen/tuple (gen/return "text-align: ") gen-prop-text-align)]
+    [100 (gen/tuple (gen/return "overflow-clip-box: ") gen-prop-overflow-clip-box)]
     [100 (gen/tuple (gen/return "mask-position: ") gen-prop-mask-position)]
+    [100 (gen/tuple (gen/return "text-decoration-skip: ") gen-prop-text-decoration-skip)]
     [100 (gen/tuple (gen/return "flex-grow: ") gen-prop-flex-grow)]
     [100 (gen/tuple (gen/return "background-repeat: ") gen-prop-background-repeat)]
     [100 (gen/tuple (gen/return "font-weight: ") gen-prop-font-weight)]
     [100 (gen/tuple (gen/return "animation-fill-mode: ") gen-prop-animation-fill-mode)]
     [100 (gen/tuple (gen/return "border-image: ") gen-prop-border-image)]
     [100 (gen/tuple (gen/return "max-inline-size: ") gen-prop-max-inline-size)]
+    [100 (gen/tuple (gen/return "background-position-x: ") gen-prop-background-position-x)]
     [100 (gen/tuple (gen/return "border-right: ") gen-prop-border-right)]
+    [100 (gen/tuple (gen/return "-moz-border-top-colors: ") gen-prop--moz-border-top-colors)]
     [100 (gen/tuple (gen/return "transform-origin: ") gen-prop-transform-origin)]
     [100 (gen/tuple (gen/return "background-attachment: ") gen-prop-background-attachment)]
     [100 (gen/tuple (gen/return "tab-size: ") gen-prop-tab-size)]
@@ -4601,12 +6624,17 @@
     [100 (gen/tuple (gen/return "caret-color: ") gen-prop-caret-color)]
     [100 (gen/tuple (gen/return "padding-inline-start: ") gen-prop-padding-inline-start)]
     [100 (gen/tuple (gen/return "box-decoration-break: ") gen-prop-box-decoration-break)]
+    [100 (gen/tuple (gen/return "-webkit-mask-repeat: ") gen-prop--webkit-mask-repeat)]
     [100 (gen/tuple (gen/return "border-top: ") gen-prop-border-top)]
+    [100 (gen/tuple (gen/return "-moz-outline-radius-bottomleft: ") gen-prop--moz-outline-radius-bottomleft)]
     [100 (gen/tuple (gen/return "mask-mode: ") gen-prop-mask-mode)]
     [100 (gen/tuple (gen/return "min-width: ") gen-prop-min-width)]
+    [100 (gen/tuple (gen/return "user-select: ") gen-prop-user-select)]
     [100 (gen/tuple (gen/return "visibility: ") gen-prop-visibility)]
     [100 (gen/tuple (gen/return "border-top-left-radius: ") gen-prop-border-top-left-radius)]
+    [100 (gen/tuple (gen/return "-moz-outline-radius-bottomright: ") gen-prop--moz-outline-radius-bottomright)]
     [100 (gen/tuple (gen/return "text-overflow: ") gen-prop-text-overflow)]
+    [100 (gen/tuple (gen/return "image-resolution: ") gen-prop-image-resolution)]
     [100 (gen/tuple (gen/return "clip-path: ") gen-prop-clip-path)]
     [100 (gen/tuple (gen/return "transform-box: ") gen-prop-transform-box)]
     [100 (gen/tuple (gen/return "text-rendering: ") gen-prop-text-rendering)]

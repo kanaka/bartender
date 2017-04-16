@@ -1,4 +1,0 @@
-<'clip'> = <shape> | auto
-
-<shape> = rect(<top>, <right>, <bottom>, <left>)
-

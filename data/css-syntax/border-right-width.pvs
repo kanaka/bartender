@@ -1,3 +1,0 @@
-<'border-right-width'> = <br-width>
-
-<br-width> = <length> | thin | medium | thick

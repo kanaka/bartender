@@ -1,4 +1,0 @@
-<'animation-play-state'> = <single-animation-play-state>#
-
-<single-animation-play-state> = running | paused
-

@@ -1,3 +1,0 @@
-<'word-spacing'> = normal | <length-percentage>
-
-<length-percentage> = <length> | <percentage>

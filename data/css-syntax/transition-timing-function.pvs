@@ -1,3 +1,0 @@
-<'transition-timing-function'> = <single-transition-timing-function>#
-
-<single-transition-timing-function> = ease | linear | ease-in | ease-out | ease-in-out | step-start | step-end | steps( <integer> [, [ start | end ] ]? ) | cubic-bezier( <number>, <number>, <number>, <number> )

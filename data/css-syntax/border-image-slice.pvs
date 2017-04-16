@@ -1,3 +1,0 @@
-<'border-image-slice'> = <number-percentage>{1,4} && fill?
-
-<number-percentage> = <number> | <percentage>

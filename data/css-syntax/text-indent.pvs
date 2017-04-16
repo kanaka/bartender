@@ -1,3 +1,0 @@
-<'text-indent'> = <length-percentage> && hanging? && each-line?
-
-<length-percentage> = <length> | <percentage>

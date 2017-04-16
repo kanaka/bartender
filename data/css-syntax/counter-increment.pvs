@@ -1,1 +1,0 @@
-<'counter-increment'> = [ <custom-ident> <integer>? ]+ | none

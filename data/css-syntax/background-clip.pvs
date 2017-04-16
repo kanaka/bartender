@@ -1,3 +1,0 @@
-<'background-clip'> = <box>#
-
-<box> = border-box | padding-box | content-box

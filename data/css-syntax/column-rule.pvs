@@ -1,2 +1,0 @@
-<'column-rule'> = <'column-rule-width'> || <'column-rule-style'> || <'column-rule-color'>
-

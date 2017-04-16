@@ -1,3 +1,0 @@
-<'mask-mode'> = <masking-mode>#
-
-<masking-mode> = alpha | luminance | match-source

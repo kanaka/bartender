@@ -1,3 +1,0 @@
-<'transform-origin'> = [ <length-percentage> | left | center | right | top | bottom ] | [ [ <length-percentage> | left | center | right ] && [ <length-percentage> | top | center | bottom ] ] <length>?
-
-<length-percentage> = <length> | <percentage>

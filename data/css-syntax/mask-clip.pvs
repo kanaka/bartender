@@ -1,7 +1,0 @@
-<'mask-clip'> = [ <geometry-box> | no-clip ]#
-
-<geometry-box> = <shape-box> | fill-box | stroke-box | view-box
-
-<shape-box> = <box> | margin-box
-
-<box> = border-box | padding-box | content-box

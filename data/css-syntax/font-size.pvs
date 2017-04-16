@@ -1,5 +1,0 @@
-<'font-size'> = <absolute-size> | <relative-size> | <length-percentage>
-
-<absolute-size> = xx-small | x-small | small | medium | large | x-large | xx-large
-<relative-size> = larger | smaller
-<length-percentage> = <length> | <percentage>

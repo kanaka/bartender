@@ -1,4 +1,0 @@
-<'background-attachment'> = <attachment>#
-
-<attachment> = scroll | fixed | local
-

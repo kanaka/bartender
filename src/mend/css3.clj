@@ -1,21 +1,83 @@
 (ns mend.css3
-  (:require [mend.util :as util]
-            [alandipert.kahn :as kahn]
+  (:require [clojure.data.json :as json]
             [clojure.string :as string]
-            [instaparse.core :as insta]
             [clojure.java.io :as io]
+
+            [alandipert.kahn :as kahn]
+            [instaparse.core :as insta]
+            [mend.util :as util]
             [clojure.tools.cli :refer [parse-opts]]
 
             ;; Not actually used here, but convenient for testing
             [clojure.pprint :refer [pprint]]
             [clojure.test.check.generators :as gen]))
 
+;; TODO: global properties (inherit, initial, unset, revert)
+
 ;; https://developer.mozilla.org/en-US/docs/Web/CSS/Value_definition_syntax
 ;; https://www.smashingmagazine.com/2016/05/understanding-the-css-property-value-syntax/
 ;; https://www.w3.org/TR/CSS21/grammar.html
+;; https://github.com/mdn/data/tree/master/css
+;; https://github.com/csstree/csstree/
+;; https://csstree.github.io/docs/syntax.html
 
-;; TODO: global properties (inherit, etc)
+(def css3-properties (json/read-str (slurp "mdn_data/css/properties.json")))
+(def css3-syntaxes (json/read-str (slurp "mdn_data/css/syntaxes.json")))
+
 (def css3-syntax-parser (insta/parser (slurp "data/css-pvs.ebnf")))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defn filter-css-properties
+  "Filter properties we want (mostly just removes '--*')"
+  [props]
+  (into {} (filter (fn [[name val]]
+                     (re-find #"^[a-z-]+$" name))
+                   props)))
+
+(defn mangle-css-syntaxes
+  "Fix some bugs in the syntax definitions."
+  [syntaxes]
+  (into {} (for [[k v] syntaxes]
+             (cond
+               ;; TODO: file bug against github.com/mdn/data
+               (= v "<custom-ident>: <integer>+;")
+               [k "<custom-ident> : <integer>+ ;"]
+
+               ;; TODO: file bug against github.com/mdn/data
+               (= v "rect(<top>, <right>, <bottom>, <left>)")
+               [k "rect( <top>, <right>, <bottom>, <left> )"]
+
+               ;; Remove recursive part
+               ;; TODO: is this really intended (find W3C standard)
+               (= k "image")
+               [k "<url> | <element()>"]
+
+               ;; Drop unused syntaxes that also have recursion
+               (= k "page-body")
+               nil
+               (.startsWith k "media-")
+               nil
+               (.startsWith k "calc")
+               nil
+
+               :else
+               [k v]))))
+
+(defn pvs [properties syntaxes]
+  (let [props (filter-css-properties properties)
+        syns (mangle-css-syntaxes syntaxes)
+        ps (for [[prop {:strs [syntax]}] (sort props)]
+             (str "<'" prop "'> = " syntax "\n"))
+        ss (for [[syn syntax] (sort syns)]
+             (str "<" syn "> = " syntax "\n"))]
+    (apply str (concat ps ss))))
+
+(comment
+  (spit "data/css3.pvs" (pvs css3-properties css3-syntaxes))
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defn parsed-tree->items [tree]
   (assert (= :assignments (first tree))
@@ -38,6 +100,7 @@
             "Repeated properties")
   (into {} items)))
 
+;; TODO: remove
 (defn check-and-merge-maps [maps & [override-map]]
   (doseq [k (set (mapcat keys maps))]
     (when (and (not (contains? override-map k))
@@ -50,9 +113,9 @@
 
 
 (comment
-  (def bs (css3-syntax-parser (slurp "./data/css-syntax/box-shadow.pvs")))
-  (def tx (css3-syntax-parser (slurp "./data/css-syntax/transition.pvs")))
-  (merge-maps (map parsed-tree->map [bs tx]))
+  ;; Takes 4 seconds
+  (def parse-tree (css3-syntax-parser (slurp "data/css3.pvs")))
+  (def parse-map (parsed-tree->map parse-tree))
 )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -70,8 +133,8 @@
 
 
 (declare single-pipe adjacent components double-amp double-pipe
-         component component-single component-multiplied brackets
-         braces)
+         component component-single component-multiplied
+         brackets block braces)
 
 (defn single-pipe
   "One of the values must occur."
@@ -147,7 +210,8 @@
       :keyword-value (str pre "(gen/return \"" (second tree) "\")")
       :non-property  (str pre "gen-" (generator-name (second tree)))
       :property      (str pre "gen-" (generator-name (second tree)))
-      :brackets      (brackets (drop 1 tree) indent))))
+      :brackets      (brackets (drop 1 tree) indent)
+      :block         (block    (drop 1 tree) indent))))
 
 (defn component-multiplied [[tree multiplier] indent]
   (let [pre (apply str (repeat indent "  "))
@@ -167,6 +231,13 @@
   ;; TODO: deal with bang?
   (single-pipe (drop 1 (first tree)) indent))
 
+(defn block [tree indent]
+  (let [pre (apply str (repeat indent "  "))]
+    (str pre "(gen/tuple\n"
+         pre "  (gen/return \"{\")\n"
+         (adjacent (drop 1 (second tree)) (+ 1 indent)) "\n"
+         pre "  (gen/return \"}\"))")))
+
 (defn braces [kind single indent]
   (let [pre (apply str (repeat indent "  "))
         bmin (apply str (drop 1 (second kind)))
@@ -185,6 +256,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; TODO: split this out into separate file
 (defn prefix [ns]
   (str
 "(ns " ns "
@@ -226,6 +298,9 @@
 (def gen-nonprop-length (gen/fmap (fn [[i l]] (str i l))
                                   (gen/tuple gen/pos-int gen-length-unit)))
 
+(def gen-nonprop-dimension (gen/return \"TODO_dimension\"))
+(def gen-nonprop-ratio (gen/return \"TODO_ratio\"))
+
 (def gen-nonprop-hex-color3 misc-gen/hex-color3)
 (def gen-nonprop-hex-color6 misc-gen/hex-color6)
 
@@ -244,10 +319,13 @@
   (->> (gen/tuple gen/char-alpha (gen/vector gen/char-alphanumeric))
        (gen/fmap (fn [[c cs]] (apply str (cons c cs))))))
 (def gen-nonprop-custom-ident (gen/return \"TODO_custom_ident\"))
+(def gen-nonprop-custom-property-name (gen/return \"TODO_custom_property\"))
+(def gen-nonprop-ident (gen/return \"TODO_ident\"))
 (def gen-nonprop-angle (gen/return \"90\"))
 (def gen-nonprop-padding-left (gen/return \"10\"))
 (def gen-nonprop-width (gen/return \"10\"))
 (def gen-nonprop-max-width (gen/return \"10\"))
+(def gen-nonprop-border-radius (gen/return \"TODO_border_radius\"))
 (def gen-nonprop-border-image-source (gen/return \"border_image_source\"))
 (def gen-nonprop-border-image-slice (gen/return \"border_image_slice\"))
 (def gen-nonprop-border-image-width (gen/return \"20\"))
@@ -259,8 +337,12 @@
 (def gen-nonprop-text-emphasis-style (gen/return \"TODO_text_emphasis_style\"))
 (def gen-nonprop-text-emphasis-color (gen/return \"TODO_text_emphasis_color\"))
 (def gen-nonprop-left (gen/return \"TODO_left\"))
+(def gen-nonprop-top (gen/return \"TODO_top\"))
+(def gen-nonprop-right (gen/return \"TODO_right\"))
+(def gen-nonprop-bottom (gen/return \"TODO_bottom\"))
 (def gen-nonprop-border-width (gen/return \"20\"))
 (def gen-nonprop-border-style (gen/return \"TODO_border_style\"))
+(def gen-nonprop-outline-radius (gen/return \"TODO_outline_radius\"))
 (def gen-nonprop-outline-color (gen/return \"TODO_outline_color\"))
 (def gen-nonprop-outline-style (gen/return \"TODO_outline_style\"))
 (def gen-nonprop-outline-width (gen/return \"50\"))
@@ -285,7 +367,6 @@
 (def gen-nonprop-font-size (gen/return \"TODO_font_size\"))
 (def gen-nonprop-line-height (gen/return \"TODO_line_height\"))
 (def gen-nonprop-font-family (gen/return \"TODO_font_family\"))
-(def gen-nonprop-list-line-style (gen/return \"TODO_list_line_style\"))
 (def gen-nonprop-list-style-type (gen/return \"TODO_list_style_type\"))
 (def gen-nonprop-list-style-position (gen/return \"TODO_list_style_position\"))
 (def gen-nonprop-list-style-image (gen/return \"TODO_list_style_image\"))
@@ -296,7 +377,32 @@
 (def gen-nonprop-text-decoration-style (gen/return \"TODO_text-decoration-style\"))
 (def gen-nonprop-text-decoration-color (gen/return \"TODO_text-decoration-color\"))
 (def gen-nonprop-background-color (gen/return \"TODO_background-color\"))
+(def gen-nonprop-declaration-list (gen/return \"TODO_declaration_list\"))
+(def gen-nonprop-declaration-value (gen/return \"TODO_declaration_value\"))
+(def gen-nonprop-name-repeat (gen/return \"TODO_name_repeat\"))
+(def gen-nonprop-flex-grow (gen/return \"TODO_flex_grow\"))
+(def gen-nonprop-flex-shrink (gen/return \"TODO_flex_shrink\"))
+(def gen-nonprop-flex-basis (gen/return \"TODO_flex_basis\"))
+(def gen-nonprop-function-token (gen/return \"TODO_flex_function_token\"))
+(def gen-nonprop-any-value (gen/return \"TODO_any_value\"))
+(def gen-nonprop-offset-position (gen/return \"TODO_offset_position\"))
+(def gen-nonprop-offset-path (gen/return \"TODO_offset_path\"))
+(def gen-nonprop-offset-distance (gen/return \"TODO_offset_distance\"))
+(def gen-nonprop-offset-rotate (gen/return \"TODO_offset_rotate\"))
+(def gen-nonprop-offset-anchor (gen/return \"TODO_offset_anchor\"))
+(def gen-nonprop-attr-name (gen/return \"TODO_attr_name\"))
+(def gen-nonprop-attr-fallback (gen/return \"TODO_attr_fallback\"))
+(def gen-nonprop-clip-style (gen/return \"TODO_clip_style\"))
+(def gen-nonprop-frequency (gen/return \"TODO_frequency\"))
+(def gen-nonprop-an-plus-b  (gen/return \"TODO_an_plus_b\"))
 
+(def gen-nonprop-mask-image (gen/return \"TODO_mask_image\"))
+(def gen-nonprop-mask-repeat (gen/return \"TODO_mask_repeat\"))
+(def gen-nonprop-mask-attachment (gen/return \"TODO_mask_attachment\"))
+(def gen-nonprop-mask-origin (gen/return \"TODO_mask_origin\"))
+(def gen-nonprop-mask-clip (gen/return \"TODO_mask_clip\"))
+
+(def gen-func-path (gen/return \"TODO_func_path\"))
 
 ;; Generated generators
 
@@ -337,51 +443,16 @@
          )))
 
 (comment
-  (def bs-pvs (slurp "./data/css-syntax/box-shadow.pvs"))
-  (def bs-tree (css3-syntax-parser bs-pvs))
-  (def bs-map (parsed-tree->map bs-tree))
-  (def bs-ns (map->ns "rend.box-shadow-generators" bs-map))
-  (spit "src/rend/box_shadow_generators.clj" bs-ns)
+  ;; Takes 4 seconds
+  (def css-tree (css3-syntax-parser (slurp "data/css3.pvs")))
+  (def css-map (parsed-tree->map css-tree))
+
+  ;; The following takes 25 seconds
+  (def css-ns (map->ns "rend.css-generators" css-map))
+  (spit "src/rend/css_generators.clj" css-ns)
 )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(def special ["unset.pvs" "inherit.pvs" "revert.pvs" "initial.pvs"])
-
-(def broken ["filter.pvs"           ;; three formal syntax sections
-             "vertical-align.pvs"   ;; no formal syntax section
-             "image-resolution.pvs" ;; undefined/404
-             "ruby-merge.pvs"       ;; undefined/404
-             "font-variant-alternates.pvs" ;; legit failure to parse
-             "font-variant.pvs"     ;; legit failure to parse
-             "clip.pvs"             ;; legit failure to parse
-             ])
-
-(def OVERRIDES-FILE "_OVERRIDES_.pvs")
-
-(defn pvs-file-set
-  [dir]
-  (let [d (io/file dir)
-        all-files (file-seq d)
-        pvs-files (filter #(re-matches #".*\.pvs$" (.getName %)) all-files)
-        ;; Skip the overrides files
-        skip-files (concat special broken [OVERRIDES-FILE])
-        skip-set (set skip-files)
-        files (vec (filter #(not (skip-set (.getName %)))
-                           pvs-files))]
-    files))
-
-(defn load-pvs-files
-  [files]
-  (let [trees (map #(css3-syntax-parser (slurp %)) files)
-        fails (keep-indexed #(when (insta/failure? %2)
-                               [(.getName (get files %1)) %2])
-                            trees)]
-    ;(prn :fails fails)
-    (assert (not (seq fails))
-            (str "Failed to parse files: " (vec (map first fails))
-                 "\n\nErrors:\n" (vec fails)))
-    trees))
 
 (defn pr-err
   [& args]
@@ -389,8 +460,8 @@
     (apply println args)))
 
 (def cli-options
-  [[nil "--pvs-dir" "Directory with CSS property value syntax files"
-    :default "./data/css-syntax/"]
+  [[nil "--pvs-output" "Path for storing copy of full PVS syntax file"
+    :default "./data/css3.pvs"]
    [nil "--namespace NAMESPACE" "Name of namespace to generate"
     :default "test.css-generators"]])
 
@@ -400,33 +471,27 @@
     (System/exit 2))
   opts)
 
-(defn css-ns [pvs-dir nsname]
-  (let [overrides-file (slurp (str pvs-dir "/" OVERRIDES-FILE))
-        override-tree (css3-syntax-parser overrides-file)
-        override-map (parsed-tree->map override-tree)
+(defn css-ns [nsname pvs-output]
+  (let [pvs-text (pvs css3-properties css3-syntaxes)
+        ;; Takes 4 seconds
+        _ (pr-err "Creating full CSS PVS grammar file")
+        css-tree (css3-syntax-parser pvs-text)
+        css-map (parsed-tree->map css-tree)
 
-        pvs-files (pvs-file-set pvs-dir)
-        ;; The following takes 7 seconds
-        _ (pr-err "Loading and parsing CSS PVS grammar files")
-        css-trees (load-pvs-files pvs-files)
-        css-maps (map parsed-tree->map css-trees)
-        _ (pr-err "Validating and merging CSS PVS grammars")
-        css-map (check-and-merge-maps css-maps override-map)
-
-        ;; The following takes 12 seconds
+        ;; The following takes 20+ seconds
         _ (pr-err "Converting CSS PVS grammars to generators")
-        ns-str (map->ns nsname css-map)]
-    ns-str))
+        css-ns (map->ns nsname css-map)]
+    (when pvs-output
+      (pr-err "Saving full CSS PVS grammar file to:" pvs-output)
+      (spit pvs-output pvs-text))
+    css-ns))
 
 (defn -main [& args]
   (let [opts (:options (opt-errors (parse-opts args cli-options)))]
-    (println (css-ns (:pvs-dir opts) (:namespace opts)))))
+    (println (css-ns (:namespace opts) (:pvs-output opts)))))
 
 (comment
-  (spit (pvs-files->ns "./data/css-syntax" "rend.css-generators")
-        "src/rend.css-genreators.clj")
-
-  ;; lein with-profile css3 --namespace css3-generators
+  ;; time lein with-profile css3 run --namespace rend.css3-generators > src/rend/css3_generators.clj
 
   (require '[rend.css3-generators :as css3-gen] :reload)
   (pprint (gen/sample css3-gen/gen-css-assignments 10))

@@ -1,1 +1,0 @@
-<'margin'> = [ <length> | <percentage> | auto ]{1,4}

@@ -1,1 +1,0 @@
-<'text-decoration'> = <'text-decoration-line'> || <'text-decoration-style'> || <'text-decoration-color'>

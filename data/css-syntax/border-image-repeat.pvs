@@ -1,1 +1,0 @@
-<'border-image-repeat'> = [ stretch | repeat | round | space ]{1,2}

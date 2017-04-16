@@ -1,3 +1,0 @@
-<'grid-row-gap'> = <length-percentage>
-
-<length-percentage> = <length> | <percentage>

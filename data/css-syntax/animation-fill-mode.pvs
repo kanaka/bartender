@@ -1,4 +1,0 @@
-<'animation-fill-mode'> = <single-animation-fill-mode>#
-
-<single-animation-fill-mode> = none | forwards | backwards | both
-
