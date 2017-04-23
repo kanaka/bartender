@@ -6,7 +6,7 @@ head = <'<'> 'head' <opt-space> <'>'> title? <'</'> 'head' <opt-space> <'>'> <op
 
 title = <'<'> 'title' (<space> title-attribute)* <opt-space> <'>'> content* <'</'> 'title' <opt-space> <'>'> <opt-space>
 
-body = <'<'> 'body style="background: #1289ef"' (<space> body-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'body' <opt-space> <'>'> <opt-space>
+body = <'<'> 'body style="background: #1289ef; font: 25px/1 Ahem"' (<space> body-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'body' <opt-space> <'>'> <opt-space>
 
 
 element = <'<'> 'a' (<space> a-attribute)* <opt-space> <'/>'> <opt-space>
@@ -694,8 +694,20 @@ reference     = entity-ref
               | char-ref-dec
               | char-ref-hex
 entity-ref    = <'&'> name <';'>
-char-ref-dec  = <'&#'> #'[0-9]+' <';'>
-char-ref-hex  = <'&#x'> #'[0-9A-Fa-f]+' <';'>
+char-ref-dec  = <'&#'> #'[0-9]' <';'>
+              | <'&#'> #'[1-9][0-9]' <';'>
+              | <'&#'> #'[1-9][0-9][0-9]' <';'>
+              | <'&#'> #'[1-9][0-9][0-9][0-9]' <';'>
+              | <'&#'> #'[1-9][0-9][0-9][0-9][0-9]' <';'>
+              | <'&#'> #'[1-9][0-9][0-9][0-9][0-9][0-9]' <';'>
+              | <'&#'> #'[1][0-9][0-9][0-9][0-9][0-9][0-9]' <';'>
+char-ref-hex  = <'&#x'> #'[0-9A-F]' <';'>
+              | <'&#x'> #'[1-9A-F][0-9A-F]' <';'>
+              | <'&#x'> #'[1-9A-F][0-9A-F][0-9A-F]' <';'>
+              | <'&#x'> #'[1-9A-F][0-9A-F][0-9A-F][0-9A-F]' <';'>
+              | <'&#x'> #'[1-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F]' <';'>
+              | <'&#x'> #'[1][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F]' <';'>
+
 
 name      = #'[A-Za-z_:][A-Za-z_:\-.0-9]*'
 

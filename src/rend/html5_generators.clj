@@ -1441,16 +1441,75 @@
   gen-TODO-uri)
 
 (def gen-char-ref-dec
-  (gen/tuple
-    (gen/return "&#")
-    (chuck/string-from-regex #"[0-9]+")
-    (gen/return ";")))
+  (gen/frequency [
+    [100
+      (gen/tuple
+        (gen/return "&#")
+        (chuck/string-from-regex #"[0-9]")
+        (gen/return ";"))]
+    [100
+      (gen/tuple
+        (gen/return "&#")
+        (chuck/string-from-regex #"[1-9][0-9]")
+        (gen/return ";"))]
+    [100
+      (gen/tuple
+        (gen/return "&#")
+        (chuck/string-from-regex #"[1-9][0-9][0-9]")
+        (gen/return ";"))]
+    [100
+      (gen/tuple
+        (gen/return "&#")
+        (chuck/string-from-regex #"[1-9][0-9][0-9][0-9]")
+        (gen/return ";"))]
+    [100
+      (gen/tuple
+        (gen/return "&#")
+        (chuck/string-from-regex #"[1-9][0-9][0-9][0-9][0-9]")
+        (gen/return ";"))]
+    [100
+      (gen/tuple
+        (gen/return "&#")
+        (chuck/string-from-regex #"[1-9][0-9][0-9][0-9][0-9][0-9]")
+        (gen/return ";"))]
+    [100
+      (gen/tuple
+        (gen/return "&#")
+        (chuck/string-from-regex #"[1][0-9][0-9][0-9][0-9][0-9][0-9]")
+        (gen/return ";"))]]))
 
 (def gen-char-ref-hex
-  (gen/tuple
-    (gen/return "&#x")
-    (chuck/string-from-regex #"[0-9A-Fa-f]+")
-    (gen/return ";")))
+  (gen/frequency [
+    [100
+      (gen/tuple
+        (gen/return "&#x")
+        (chuck/string-from-regex #"[0-9A-F]")
+        (gen/return ";"))]
+    [100
+      (gen/tuple
+        (gen/return "&#x")
+        (chuck/string-from-regex #"[1-9A-F][0-9A-F]")
+        (gen/return ";"))]
+    [100
+      (gen/tuple
+        (gen/return "&#x")
+        (chuck/string-from-regex #"[1-9A-F][0-9A-F][0-9A-F]")
+        (gen/return ";"))]
+    [100
+      (gen/tuple
+        (gen/return "&#x")
+        (chuck/string-from-regex #"[1-9A-F][0-9A-F][0-9A-F][0-9A-F]")
+        (gen/return ";"))]
+    [100
+      (gen/tuple
+        (gen/return "&#x")
+        (chuck/string-from-regex #"[1-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F]")
+        (gen/return ";"))]
+    [100
+      (gen/tuple
+        (gen/return "&#x")
+        (chuck/string-from-regex #"[1][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F]")
+        (gen/return ";"))]]))
 
 (def gen-reference
   (gen/frequency [
@@ -2037,7 +2096,7 @@
   (gen/frequency [
     [100
       gen-char-data]
-    [100
+    [0    ;; ** adjusted by config ***
       gen-reference]
     [100
       gen-comment]]))
@@ -3519,7 +3578,7 @@
             gen-opt-space
             (gen/return ">")
             gen-opt-space)]
-        [100
+        [10000    ;; ** adjusted by config ***
           (gen/tuple
             (gen/return "<")
             (gen/return "div")
@@ -3530,7 +3589,7 @@
             gen-opt-space
             (gen/return "/>")
             gen-opt-space)]
-        [100
+        [10000    ;; ** adjusted by config ***
           (gen/tuple
             (gen/return "<")
             (gen/return "div")
@@ -7286,7 +7345,7 @@
           gen-opt-space
           (gen/return ">")
           gen-opt-space)]
-      [100
+      [10000    ;; ** adjusted by config ***
         (gen/tuple
           (gen/return "<")
           (gen/return "div")
@@ -7297,7 +7356,7 @@
           gen-opt-space
           (gen/return "/>")
           gen-opt-space)]
-      [100
+      [10000    ;; ** adjusted by config ***
         (gen/tuple
           (gen/return "<")
           (gen/return "div")
@@ -9752,7 +9811,7 @@
 (def gen-body
   (gen/tuple
     (gen/return "<")
-    (gen/return "body style=\"background: #1289ef\"")
+    (gen/return "body style=\"background: #1289ef; font: 25px/1 Ahem\"")
     (gen/vector
       (gen/tuple
         gen-space

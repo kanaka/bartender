@@ -168,7 +168,7 @@ head = <'<'> 'head' <opt-space> <'>'> title? <'</'> 'head' <opt-space> <'>'> <op
 
 title = <'<'> 'title' (<space> title-attribute)* <opt-space> <'>'> content* <'</'> 'title' <opt-space> <'>'> <opt-space>
 
-body = <'<'> 'body style=\"background: #1289ef\"' (<space> body-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'body' <opt-space> <'>'> <opt-space>
+body = <'<'> 'body style=\"background: #1289ef; font: 25px/1 Ahem\"' (<space> body-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'body' <opt-space> <'>'> <opt-space>
 
 
 ")
@@ -277,7 +277,7 @@ body = <'<'> 'body style=\"background: #1289ef\"' (<space> body-attribute)* <opt
   (spit "src/rend/html5_generators.clj"
         (html5-ns "rend.html5-generators" "rend.css-generators"))
 
-  ;; lein with-profile html5 run --namespace rend.html5-generators --css-namespace rend.css3-generators --weights data/html5-weights.edn --weights-output data/html5-weights-output.edn --ebnf-output data/html5.ebnf > src/rend/html5_generators.clj
+  ;; time lein with-profile html5 run --namespace rend.html5-generators --css-namespace rend.css3-generators --weights data/html5-weights.edn --weights-output data/html5-weights-output.edn --ebnf-output data/html5.ebnf > src/rend/html5_generators.clj
 
   (require '[rend.html5-generators :as html5-gen] :reload)
   (pprint (gen/sample html5-gen/gen-html 10))
