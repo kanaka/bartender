@@ -1,5 +1,6 @@
 (ns rend.cli
-  (:require [rend.generators]
+  (:require [mend.check]
+            [rend.html5-generators :as html5-gen]
             [rend.server]
             [rend.webdriver :as webdriver]
             [clj-yaml.core :as yaml]
@@ -25,6 +26,9 @@
                                        :op >}
                       "CCOEFF_NORMED" {:alg Imgproc/TM_CCOEFF_NORMED
                                        :op >}})
+
+(def RED "#ff8080")
+(def GREEN "#80ff80")
 
 (defn screenshot-page [browser path]
   (let [ss (webdriver/GET browser "screenshot")
@@ -59,28 +63,61 @@
 
 ;; Generate an HTML index page for the current test results
 (defn index-page [cfg prefix state]
-  (let [logs (:log state)]
+  (let [logs (:log state)
+        threshold (-> cfg :compare :threshold)]
     (hiccup/html
       [:html
        [:body
-        (vec (concat
-               [:table {:style "border-spacing: 0px 3px"}
-                [:tr [:th "Test"] [:th "Result"] [:th "Html"] [:th "Browsers"] [:th "Average"]]]
-               (for [i (range (count logs))
-                     :let [l (nth logs i)
-                           idx (+ 1 i)
-                           pass (:result l)]]
-                 [:tr {:style (str "background-color: #" (if pass "88ff88" "ff8888"))}
-                  [:td idx]
-                  [:td (if pass "PASS" "FAIL")]
-                  [:td [:a {:href (str "/" prefix "/" idx ".html")
-                            :title (str (hiccup/html (:html l)))} "html"]]
-                  (vec (concat
-                         [:td]
-                         (for [browser (:browsers cfg)]
-                           [:a {:style "padding-left: 2px; padding-right: 2px"
-                                :href (str "/" prefix "/" idx "_" (:type browser) ".png")} (str (:type browser))])))
-                  [:td [:a {:href (str "/" prefix "/" idx "_avg.png")} "avg"]]])))]])))
+        [:div "Threshold value: " (format "%.6f" threshold)]
+        [:br]
+        (vec
+          (concat
+            [:table {:style "border-spacing: 8px 0px"}
+             (vec
+               (concat
+                 [:tr [:th "Test"] [:th "Result"] [:th "Html"]
+                  [:th "Average"]]
+                 (for [browser (:browsers cfg)]
+                   [:th (str (:type browser))])))]
+            (for [i (range (count logs))
+                  :let [l (nth logs i)
+                        idx (+ 1 i)
+                        pass (:result l)
+                        diffs (:diffs l)
+                        violations (:violations l)]]
+              (vec
+                (concat
+                  [:tr
+                   [:td idx]
+                   [:td
+                    {:style (if pass
+                              (str "background-color: " GREEN)
+                              (str "background-color: " RED))}
+                    (if pass "PASS" "FAIL")]
+                   [:td [:a {:href (str "/" prefix
+                                        "/" idx ".html")
+                             :title (str (hiccup/html (:html l)))} "html"]]
+                   [:td [:a {:href (str "/" prefix
+                                        "/" idx "_avg.png")} "img"]]]
+                  (for [browser (:browsers cfg)
+                        :let [bdiffs (get diffs browser)]]
+                    (vec
+                      (concat
+                        [:td
+                         [:a {:style "padding-left: 2px; padding-right: 2px"
+                              :href (str "/" prefix
+                                         "/" idx "_" (:type browser) ".png")}
+                          "img"]
+                         "/ "]
+                        (interpose
+                          ", "
+                          (for [[obrowser odiff] bdiffs]
+                            [:span
+                             (when (or (get violations browser)
+                                     (get violations obrowser))
+                               {:style (str "background-color: " RED)})
+                             (str (:type obrowser) ": "
+                                  (format "%.6f" odiff))]))))))))))]])))
 
 
 (def check-page-state (atom {}))
@@ -114,6 +151,7 @@
       (let [comp-alg (get-in compare-methods [(get-in cfg [:compare :method]) :alg])
             comp-op (get-in compare-methods [(get-in cfg [:compare :method]) :op])
             threshold (get-in cfg [:compare :threshold])
+            comp-fn (fn [x] (comp-op threshold x))
             d-path (str test-prefix "_diffs.edn")
             images (into {}
                          (for [browser (:browsers cfg)]
@@ -130,27 +168,32 @@
             ; _ (println "Saving average picture to" a-path)
             _ (Highgui/imwrite a-path avg)
 
-            diffs (into {}
-                        (for [[browser img] imgs]
-                          (let [res (Mat/zeros 0 0 CvType/CV_32FC3)
-                                d (Imgproc/matchTemplate avg img res comp-alg)
-                                diff (aget (.get res 0 0) 0)]
-                            [browser diff])))
-            pixel-cnt (* (.width (first (vals imgs)))
-                         (.height (first (vals imgs))))
-            violations (filter #(comp-op threshold (val %)) diffs)]
+            diffs (into
+                    {}
+                    (for [[browser img] imgs]
+                      [browser
+                       (into
+                         {}
+                         (for [[obrowser oimg] (dissoc imgs browser)]
+                           (let [res (Mat/zeros 0 0 CvType/CV_32FC3)
+                                 d (Imgproc/matchTemplate img oimg res comp-alg)
+                                 diff (aget (.get res 0 0) 0)]
+                             [obrowser diff])))]))
+            ;; at least one difference is greater than threshold
+            violation (seq (filter comp-fn (mapcat vals (vals diffs))))
+            ;; every difference is greater than threshold
+            violations (into {} (filter #(every? comp-fn (vals (val %)))
+                                        diffs))]
         ; (println "Saving difference values to" d-path)
         (spit d-path (pr-str diffs))
 
         ;; Do the actual check
         (println "Threshold violations:" (map (comp :type first) violations))
 
-        (if (seq violations)
-          false
-          true))
+        [(not violation) diffs violations])
       (catch Throwable t
         (prn :check-page-exception t)
-        false))))
+        [false "Exception" nil]))))
 
 ;; SIDE-EFFECTS: updates :index in check-page-state atom
 (defn new-test-prefix [prefix]
@@ -160,12 +203,25 @@
 ;; SIDE-EFFECTS: updates :log in check-page-state atom
 (defn check-page [cfg prefix html]
   (let [test-prefix (new-test-prefix prefix)
-        res (check-page* cfg test-prefix html)
-        state (swap! check-page-state update-in [:log] conj {:html html :result res})]
+        [res diffs violations] (check-page* cfg test-prefix html)
+        state (swap! check-page-state update-in [:log]
+                     conj {:prefix test-prefix
+                           :html html
+                           :result res
+                           :diffs diffs
+                           :violations violations})]
     ;; Generate index page after every check
     (spit (str prefix "/index.html")
           (index-page cfg prefix state))
     res))
+
+(defn reporter
+  "Prune clojure objects from the report data and print it"
+  [r]
+  (let [r (dissoc r :property)
+        r (update-in r [:current-smallest]
+                     dissoc :function)]
+    (prn :report (dissoc r :property))))
 
 (defn load-sessions [file]
   (when (and file (.exists (clojure.java.io/as-file file)))
@@ -181,13 +237,12 @@
   (let [cfg-file (first argv)
         session-file (second argv)
         cfg (yaml/parse-string (slurp cfg-file))]
-    (when session-file 
+    (when session-file
       (println "Loading session data")
       (load-sessions session-file))
     (println "Configuration:")
     (pprint cfg)
     (rend.server/start-server cfg)
-;    (rend.generators/qc-try 42)
     (doseq [browser (:browsers cfg)]
       (println "Initializing browser session to:" browser)
       (spit session-file (prn-str (webdriver/init-session browser {}))))
@@ -198,16 +253,17 @@
                                       :id id
                                       :prefix prefix
                                       :log []})
-          qc-res (rend.generators/rend-check (:quick-check cfg {})
-                                             (fn [html] (check-page cfg prefix html))
-                                             (fn [m] (prn :report m)))
+          qc-res (mend.check/run-check
+                   (:quick-check cfg {})
+                   html5-gen/gen-html
+                   (fn [html] (check-page cfg prefix html))
+                   reporter)
           state (swap! check-page-state assoc :final-result qc-res)
           return-code (if (:result qc-res) 0 1)]
       (println "------")
       (println "Quick check results:")
       (pprint qc-res)
-      (pprint state)
-      ;;(spit (str prefix "/index.html")
-      ;;      (index-page cfg prefix state))
+      (println "Full results in:" (str prefix "/results.edn"))
+      (spit (str prefix "/results.edn") state)
       (System/exit return-code))))
 

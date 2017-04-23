@@ -8,8 +8,9 @@
 
   :injections [(clojure.lang.RT/loadLibrary org.opencv.core.Core/NATIVE_LIBRARY_NAME)]
 
-  :dependencies [[org.clojure/clojure "1.7.0"]
-                 [org.clojure/test.check "0.9.0"]
+  :dependencies [[org.clojure/clojure "1.9.0-alpha14"]
+                 [org.clojure/test.check "0.9.1-SNAPSHOT"]
+                 [com.gfredericks/test.chuck "0.2.7"]
                  [hiccup "1.0.5"]
                  [http-kit "2.2.0"]
                  [clj-yaml "0.4.0"]
