@@ -75,7 +75,8 @@
 
 (defn index-page-browser-cell [test-dir idx violations browser browser-diffs]
   [:td
-    [:table
+    [:table {:border 1
+             :style "border: 1px solid grey; border-collapse: collapse;"}
      [:tr
       (vec
         (concat
@@ -83,8 +84,10 @@
            [:a {:style "padding-left: 2px; padding-right: 2px"
                 :href (str "/" test-dir
                            "/" idx "_" (:type browser) ".png")}
-            [:img {:src (str "/" test-dir
-                             "/" idx "_" (:type browser) "_thumb.png")}]]]
+            [:span.tlink "img"]
+            [:img.thumb {:style "display: none"
+                         :src (str "/" test-dir
+                                   "/" idx "_" (:type browser) "_thumb.png")}]]]
           (for [[obrowser odiff] browser-diffs]
             [:td
              (if (or (get violations browser)
@@ -96,14 +99,14 @@
                              "_diff_" (:type browser)
                              "_" (:type obrowser)
                              ".png")}
-              [:img {:src (str "/" test-dir
-                               "/" idx
-                               "_diff_" (:type browser)
-                               "_" (:type obrowser)
-                               "_thumb.png")}]]
-             [:br]
-             (str (:type obrowser) ": "
-                  (format "%.6f" odiff))])))]]])
+              [:img.thumb {:style "display: none"
+                           :src (str "/" test-dir
+                                     "/" idx
+                                     "_diff_" (:type browser)
+                                     "_" (:type obrowser)
+                                     "_thumb.png")}]
+              [:br.thumb {:style "display: none"}]
+              (format "%.6f" odiff)]])))]]])
 
 (defn index-page-test-row [test-dir browsers logs sth]
   (let [l (nth logs sth)
@@ -128,8 +131,10 @@
          [:td {:style "vertical-align: top"}
           [:a {:href (str "/" test-dir
                           "/" idx "_avg.png")}
-           [:img {:src (str "/" test-dir
-                            "/" idx "_avg_thumb.png")}]]]
+           [:span.tlink "img"]
+           [:img.thumb {:style "display: none"
+                        :src (str "/" test-dir
+                                  "/" idx "_avg_thumb.png")}]]]
          [:td "&nbsp;"]]
         (for [browser browsers
               :let [bdiffs (get diffs browser)]]
@@ -137,15 +142,40 @@
                                    violations
                                    browser bdiffs))))))
 
+(def toggle-thumbs-js "
+  function toggle_thumbs() {
+    var toggleb = document.getElementById('toggle');
+    var thumb_display = 'none',
+        tlink_display = 'none';
+    if (toggleb.value === 'Show Thumbnails') {
+      toggleb.value = 'Hide Thumbnails'
+      thumb_display = 'inline';
+    } else {
+      toggleb.value = 'Show Thumbnails'
+      tlink_display = 'inline';
+    }
+    for (var x of document.getElementsByClassName('thumb')) {
+      x.style.display = thumb_display;
+    }
+    for (var x of document.getElementsByClassName('tlink')) {
+      x.style.display = tlink_display;
+    }
+  }")
+
 ;; Generate an HTML index page for the current test results
 (defn index-page [cfg test-dir state]
   (let [logs (:log state)
         threshold (-> cfg :compare :threshold)]
     (hiccup/html
       [:html
+       [:style "a {text-decoration: none}"]
        [:body
         [:div "Threshold value: " (format "%.6f" threshold)]
         [:br]
+        [:input#toggle {:type "button"
+                        :value "Show Thumbnails"
+                        :onclick "toggle_thumbs()"}]
+        [:br][:br]
         (vec
           (concat
             [:table {:style "border-spacing: 8px 0px"}
@@ -154,9 +184,26 @@
                  [:tr [:th "Test"] [:th "Result"] [:th "Html"]
                   [:th "Average"] [:th "&nbsp;"]]
                  (for [browser (:browsers cfg)]
-                   [:th (str (:type browser))])))]
+                   [:th (str (:type browser))])))
+               (vec
+                 (concat
+                   [:tr [:th "&nbsp;"] [:th "&nbsp;"] [:th "&nbsp;"]
+                    [:th "&nbsp;"] [:th "&nbsp;"]]
+                   (for [browser (:browsers cfg)]
+                     [:th
+                      [:table {:style "width: 100%"}
+                       (vec
+                         (concat
+                           [:tr
+                            [:td {:style "text-align: center"}
+                             (:type browser)]]
+                           (for [obrowser (:browsers cfg)
+                                 :when (not= browser obrowser)]
+                             [:td {:style "text-align: center"}
+                              (str "&Delta;" (:type obrowser))])))]])))]
             (for [i (range (count logs)) ]
-              (index-page-test-row test-dir (:browsers cfg) logs i))))]])))
+              (index-page-test-row test-dir (:browsers cfg) logs i))))
+        [:script toggle-thumbs-js]]])))
 
 
 (def check-page-state (atom {}))
