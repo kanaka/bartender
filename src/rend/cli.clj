@@ -1,6 +1,7 @@
 (ns rend.cli
   (:require [mend.check]
             [rend.html5-generators :as html5-gen]
+            [rend.image :as image]
             [rend.server]
             [rend.webdriver :as webdriver]
             [clj-yaml.core :as yaml]
@@ -8,61 +9,13 @@
             [clojure.data.codec.base64 :as base64]
             [hiccup.core :as hiccup]
             [clojure.pprint :refer [pprint]]
-            [clojure.java.shell :refer [sh]])
-  (:import [org.opencv.core Core CvType Mat Scalar]
-           [org.opencv.highgui Highgui]
-           [org.opencv.imgproc Imgproc]))
+            [clojure.java.shell :refer [sh]]
+            [clojure.math.combinatorics :refer [combinations]]))
 
 ;; TODO: move to image lib
 
-(def compare-methods {nil             {:alg Imgproc/TM_SQDIFF_NORMED ; default
-                                       :op <}
-                      "SQDIFF"        {:alg Imgproc/TM_SQDIFF
-                                       :op <}
-                      "SQDIFF_NORMED" {:alg Imgproc/TM_SQDIFF_NORMED
-                                       :op <}
-                      "CCORR"         {:alg Imgproc/TM_CCORR
-                                       :op >}
-                      "CCORR_NORMED"  {:alg Imgproc/TM_CCORR_NORMED
-                                       :op >}
-                      "CCOEFF"        {:alg Imgproc/TM_CCOEFF
-                                       :op >}
-                      "CCOEFF_NORMED" {:alg Imgproc/TM_CCOEFF_NORMED
-                                       :op >}})
-
 (def RED "#ff8080")
 (def GREEN "#80ff80")
-(def THUMB-HEIGHT 75)
-(def THUMB-WIDTH 100)
-
-(defn normalize-images [imgs]
-  (let [max-width (apply max (map #(.width %) imgs))
-        max-height (apply max (map #(.height %) imgs))]
-    (for [img imgs]
-      (let [i (Mat/zeros max-height max-width CvType/CV_32FC3)]
-        (.convertTo img i CvType/CV_32FC3)
-        (Imgproc/copyMakeBorder i i
-                                0 (- max-height (.height img))
-                                0 (- max-width (.width img))
-                                Imgproc/BORDER_REPLICATE)
-        i))))
-
-;; Based on: http://stackoverflow.com/questions/23342055/how-to-find-mean-averaging-of-pixels-of-15-consecutive-color-images-live-we
-;; Images should be normalized by normalize-images first
-(defn image-average [imgs]
-  (let [width (.width (first imgs))
-        height (.height (first imgs))
-        avg (Mat/zeros height width CvType/CV_32FC3)]
-    (doseq [img imgs]
-      (Core/add avg img avg))
-    (Core/divide avg (Scalar/all (count imgs)) avg)
-    avg))
-
-(defn image-thumbnail [img]
-  (let [res (Mat/zeros THUMB-HEIGHT THUMB-WIDTH CvType/CV_32FC3)]
-    (Imgproc/resize img res (.size res))
-    res))
-
 
 (defn screenshot-page [browser path]
   (let [ss (webdriver/GET browser "screenshot")
@@ -71,42 +24,7 @@
 ;    (println "Writing" (count png) "bytes to:" path)
     (clojure.java.io/copy png file)
     ;; TODO: can we convert PNG more directly to image?
-    (Highgui/imread path)))
-
-(defn index-page-browser-cell [test-dir idx violations browser browser-diffs]
-  [:td
-    [:table {:border 1
-             :style "border: 1px solid grey; border-collapse: collapse;"}
-     [:tr
-      (vec
-        (concat
-          [:td {:style "vertical-align: top; text-align: center"}
-           [:a {:style "padding-left: 2px; padding-right: 2px"
-                :href (str "/" test-dir
-                           "/" idx "_" (:type browser) ".png")}
-            [:span.tlink "img"]
-            [:img.thumb {:style "display: none"
-                         :src (str "/" test-dir
-                                   "/" idx "_" (:type browser) "_thumb.png")}]]]
-          (for [[obrowser odiff] browser-diffs]
-            [:td
-             (if (or (get violations browser)
-                     (get violations obrowser))
-               {:style (str "vertical-align: top; text-align: center; background-color: " RED)}
-               {:style (str "vertical-align: top; text-align: center")})
-             [:a {:href (str "/" test-dir
-                             "/" idx
-                             "_diff_" (:type browser)
-                             "_" (:type obrowser)
-                             ".png")}
-              [:img.thumb {:style "display: none"
-                           :src (str "/" test-dir
-                                     "/" idx
-                                     "_diff_" (:type browser)
-                                     "_" (:type obrowser)
-                                     "_thumb.png")}]
-              [:br.thumb {:style "display: none"}]
-              (format "%.6f" odiff)]])))]]])
+    (image/imread path)))
 
 (defn index-page-test-row [test-dir browsers logs sth]
   (let [l (nth logs sth)
@@ -128,19 +46,42 @@
                               "/" idx ".html")
                    :title (str (hiccup/html html))}
                "html"]]
+         [:td "&nbsp;"]]
+        (for [browser browsers]
+          [:td {:style "vertical-align: top; text-align: center"}
+           [:a {:style "padding-left: 2px; padding-right: 2px"
+                :href (str "/" test-dir
+                           "/" idx "_" (:type browser) ".png")}
+            [:span.tlink "png"]
+            [:img.thumb {:style "display: none"
+                         :src (str "/" test-dir
+                                   "/" idx "_" (:type browser)
+                                   "_thumb.png")}]]])
+        [[:td "&nbsp;"]
          [:td {:style "vertical-align: top"}
           [:a {:href (str "/" test-dir
                           "/" idx "_avg.png")}
-           [:span.tlink "img"]
+           [:span.tlink "png"]
            [:img.thumb {:style "display: none"
                         :src (str "/" test-dir
                                   "/" idx "_avg_thumb.png")}]]]
          [:td "&nbsp;"]]
-        (for [browser browsers
-              :let [bdiffs (get diffs browser)]]
-          (index-page-browser-cell test-dir idx
-                                   violations
-                                   browser bdiffs))))))
+        (for [[ba bb] (combinations browsers 2)
+              :let [odiff (get-in diffs [ba bb])]]
+          [:td
+           (if (or (get violations ba)
+                   (get violations bb))
+             {:style (str "vertical-align: top; text-align: center; background-color: " RED)}
+             {:style (str "vertical-align: top; text-align: center")})
+           [:a {:href (str "/" test-dir "/" idx
+                           "_diff_" (:type ba)
+                           "_" (:type bb) ".png")}
+            [:img.thumb {:style "display: none"
+                         :src (str "/" test-dir "/" idx
+                                   "_diff_" (:type ba)
+                                   "_" (:type bb) "_thumb.png")}]
+            [:br.thumb {:style "display: none"}]
+            (format "%.6f" odiff)]])))))
 
 (def toggle-thumbs-js "
   function toggle_thumbs() {
@@ -165,7 +106,8 @@
 ;; Generate an HTML index page for the current test results
 (defn index-page [cfg test-dir state]
   (let [logs (:log state)
-        threshold (-> cfg :compare :threshold)]
+        threshold (-> cfg :compare :threshold)
+        browsers (:browsers cfg)]
     (hiccup/html
       [:html
        [:style "a {text-decoration: none}"]
@@ -178,31 +120,18 @@
         [:br][:br]
         (vec
           (concat
-            [:table {:style "border-spacing: 8px 0px"}
+            [:table {:style "border-spacing: 4px 0px"}
              (vec
                (concat
                  [:tr [:th "Test"] [:th "Result"] [:th "Html"]
-                  [:th "Average"] [:th "&nbsp;"]]
-                 (for [browser (:browsers cfg)]
-                   [:th (str (:type browser))])))
-               (vec
-                 (concat
-                   [:tr [:th "&nbsp;"] [:th "&nbsp;"] [:th "&nbsp;"]
-                    [:th "&nbsp;"] [:th "&nbsp;"]]
-                   (for [browser (:browsers cfg)]
-                     [:th
-                      [:table {:style "width: 100%"}
-                       (vec
-                         (concat
-                           [:tr
-                            [:td {:style "text-align: center"}
-                             (:type browser)]]
-                           (for [obrowser (:browsers cfg)
-                                 :when (not= browser obrowser)]
-                             [:td {:style "text-align: center"}
-                              (str "&Delta;" (:type obrowser))])))]])))]
-            (for [i (range (count logs)) ]
-              (index-page-test-row test-dir (:browsers cfg) logs i))))
+                  [:th "&nbsp;"]]
+                 (for [browser browsers]
+                   [:th (str (:type browser))])
+                 [[:th "&nbsp;"] [:th "Average"] [:th "&nbsp;"]]
+                 (for [[ba bb] (combinations browsers 2)]
+                   [:th (str (:type ba) "&Delta;" (:type bb))])))]
+            (for [i (range (count logs))]
+              (index-page-test-row test-dir browsers logs i))))
         [:script toggle-thumbs-js]]])))
 
 
@@ -235,8 +164,10 @@
       ;;   image relative to the every other image.
       ;; - If any difference value is above a threshold, then that is
       ;;   a failed test
-      (let [comp-alg (get-in compare-methods [(get-in cfg [:compare :method]) :alg])
-            comp-op (get-in compare-methods [(get-in cfg [:compare :method]) :op])
+      (let [comp-alg (get-in image/compare-methods
+                             [(get-in cfg [:compare :method]) :alg])
+            comp-op (get-in image/compare-methods
+                            [(get-in cfg [:compare :method]) :op])
             threshold (get-in cfg [:compare :threshold])
             comp-fn (fn [x] (comp-op threshold x))
             d-path (str test-prefix "_diffs.edn")
@@ -247,7 +178,7 @@
                              [browser img])))
             imgs (apply assoc {}
                         (interleave (keys images)
-                                    (normalize-images (vals images))))
+                                    (image/normalize-images (vals images))))
 
             diffs (into
                     {}
@@ -256,10 +187,7 @@
                        (into
                          {}
                          (for [[obrowser oimg] (dissoc imgs browser)]
-                           (let [res (Mat/zeros 0 0 CvType/CV_32FC3)
-                                 d (Imgproc/matchTemplate img oimg res comp-alg)
-                                 diff (aget (.get res 0 0) 0)]
-                             [obrowser diff])))]))
+                           [obrowser (image/diff img oimg comp-alg)]))]))
             ;; at least one difference is greater than threshold
             violation (seq (filter comp-fn (mapcat vals (vals diffs))))
             ;; every difference is greater than threshold
@@ -268,18 +196,18 @@
 
         ; (println "Saving thumbnail for each screenshot
         (doseq [[browser img] imgs]
-          (let [thumb (image-thumbnail img)]
-            (Highgui/imwrite (str test-prefix "_"
+          (let [thumb (image/thumbnail img)]
+            (image/imwrite (str test-prefix "_"
                                   (:type browser) "_thumb.png") thumb)))
 
         ; (println "Saving difference values to" d-path)
         (spit d-path (pr-str diffs))
 
         ; (println "Saving average picture")
-        (let [avg (image-average (vals imgs))
-              thumb (image-thumbnail avg)]
-          (Highgui/imwrite (str test-prefix "_avg.png") avg)
-          (Highgui/imwrite (str test-prefix "_avg_thumb.png") thumb))
+        (let [avg (image/average (vals imgs))
+              thumb (image/thumbnail avg)]
+          (image/imwrite (str test-prefix "_avg.png") avg)
+          (image/imwrite (str test-prefix "_avg_thumb.png") thumb))
 
         ; (println "Saving difference pictures")
         (doseq [[browser img] imgs]
@@ -297,11 +225,10 @@
                   (sh "ln" "-sf"
                       (str pre2 "_thumb.png")
                       (str test-dir "/" pre "_thumb.png")))
-                (let [diff (Mat/zeros 0 0 CvType/CV_32FC3)
-                      _ (Core/absdiff img oimg diff)
-                      thumb (image-thumbnail diff)]
-                  (Highgui/imwrite (str test-dir "/" pre ".png") diff)
-                  (Highgui/imwrite (str test-dir "/" pre "_thumb.png") thumb))))))
+                (let [diff (image/absdiff img oimg)
+                      thumb (image/thumbnail diff)]
+                  (image/imwrite (str test-dir "/" pre ".png") diff)
+                  (image/imwrite (str test-dir "/" pre "_thumb.png") thumb))))))
 
         ;; Do the actual check
         (println "Threshold violations:" (map (comp :type first) violations))

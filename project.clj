@@ -20,6 +20,7 @@
                  [compojure "1.5.1"]
                  [ring/ring-core "1.5.0"]
                  [ring/ring-jetty-adapter "1.5.0"]
+                 [org.clojure/math.combinatorics "0.1.4"]
 
                  ;[net.mikera/imagez "0.11.0"]
 
