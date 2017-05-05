@@ -5,8 +5,9 @@
 (defn run-check [opts gen-to-check check-fn report-fn]
   (let [{:keys [iterations seed max-size]
 	 :or {iterations 10
-	      seed 1
-	      max-size 50}} opts
+	      ;;seed 1
+	      max-size 200
+              }} opts
 	p (prop/for-all* [gen-to-check] check-fn)]
     (tc/quick-check iterations p
 		    :seed seed

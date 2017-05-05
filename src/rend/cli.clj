@@ -48,7 +48,12 @@
                "html"]]
          [:td "&nbsp;"]]
         (for [browser browsers]
-          [:td {:style "vertical-align: top; text-align: center"}
+          [:td
+           (if (= (disj (set browsers) browser)
+                  (set (keys (get violations browser))))
+             {:style (str "vertical-align: top; text-align: center; "
+                          "background-color: " RED)}
+             {:style "vertical-align: top; text-align: center"})
            [:a {:style "padding-left: 2px; padding-right: 2px"
                 :href (str "/" test-dir
                            "/" idx "_" (:type browser) ".png")}
@@ -304,9 +309,10 @@
           state (swap! check-page-state assoc :final-result qc-res)
           return-code (if (:result qc-res) 0 1)]
       (println "------")
-      (println "Quick check results:")
+      (println (str "Quick check results (also in " test-dir "/results.edn):"))
       (pprint qc-res)
-      (println "Full results in:" (str test-dir "/results.edn"))
-      (spit (str test-dir "/results.edn") state)
+      (println (str "Full results in: " test-dir "/full-results.edn"))
+      (spit (str test-dir "/results.edn") (with-out-str (pprint qc-res)))
+      (spit (str test-dir "/full-results.edn") state)
       (System/exit return-code))))
 
