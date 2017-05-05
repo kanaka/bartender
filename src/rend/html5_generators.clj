@@ -26,13 +26,13 @@
       (gen/return "false")]]))
 
 (def gen-attr-val-tabindex
-  (gen/return "TODO_tabindex"))
+  (gen/return "STUB_tabindex"))
 
 (def gen-attr-val-slot
-  (gen/return "TODO_slot"))
+  (gen/return "STUB_slot"))
 
 (def gen-attr-val-contextmenu
-  (gen/return "TODO_contextmenu"))
+  (gen/return "STUB_contextmenu"))
 
 (def gen-attr-val-dropzone
   (gen/frequency [
@@ -47,7 +47,7 @@
   css3-gen/gen-css-assignments)
 
 (def gen-attr-val-title
-  (gen/return "TODO_title"))
+  (gen/return "STUB_title"))
 
 (def gen-attr-val-contenteditable
   (gen/frequency [
@@ -59,20 +59,20 @@
       (gen/return "false")]]))
 
 (def gen-attr-val-itemprop
-  (gen/return "TODO_itemprop"))
+  (gen/return "STUB_itemprop"))
 
 (def gen-attr-val-class
-  (gen/return "TODO_class"))
+  (gen/return "STUB_class"))
 
 (def gen-attr-val-lang
-  (gen/return "TODO_lang"))
+  (gen/return "STUB_lang"))
 
 (def gen-attr-val-accesskey
   (gen/such-that not-empty (gen/vector
     (chuck/string-from-regex #"[A-za-z]"))))
 
 (def gen-attr-val-id
-  (gen/return "TODO_id"))
+  (gen/return "STUB_id"))
 
 (def gen-attr-val-draggable
   (gen/frequency [
@@ -168,13 +168,13 @@
   (gen/return ""))
 
 (def gen-attr-val-code
-  (gen/return "TODO_code"))
+  (gen/return "STUB_code"))
 
 (def gen-attr-val-form
-  (gen/return "TODO_form"))
+  (gen/return "STUB_form"))
 
 (def gen-attr-val-keytype
-  (gen/return "TODO_keytype"))
+  (gen/return "STUB_keytype"))
 
 (def gen-hgroup-attribute
   gen-global-attribute)
@@ -192,19 +192,19 @@
   gen-global-attribute)
 
 (def gen-attr-val-default
-  (gen/return "TODO_default"))
+  (gen/return "STUB_default"))
 
 (def gen-attr-val-srclang
-  (gen/return "TODO_srclang"))
+  (gen/return "STUB_srclang"))
 
 (def gen-attr-val-src
-  (gen/return "TODO_src"))
+  (gen/return "STUB_src"))
 
 (def gen-attr-val-kind
-  (gen/return "TODO_kind"))
+  (gen/return "STUB_kind"))
 
 (def gen-attr-val-label
-  (gen/return "TODO_label"))
+  (gen/return "STUB_label"))
 
 (def gen-track-attribute
   (gen/frequency [
@@ -237,13 +237,13 @@
       gen-global-attribute]]))
 
 (def gen-attr-val-scope
-  (gen/return "TODO_scope"))
+  (gen/return "STUB_scope"))
 
 (def gen-strike-attribute
   gen-global-attribute)
 
 (def gen-attr-val-target
-  (gen/return "TODO_target"))
+  (gen/return "STUB_target"))
 
 (def gen-section-attribute
   gen-global-attribute)
@@ -252,10 +252,10 @@
   gen-global-attribute)
 
 (def gen-attr-val-width
-  (gen/return "TODO_width"))
+  (gen/return "STUB_width"))
 
 (def gen-attr-val-autosave
-  (gen/return "TODO_autosave"))
+  (gen/return "STUB_autosave"))
 
 (def gen-attr-val-align
   (gen/frequency [
@@ -339,7 +339,7 @@
       (gen/return "week")]]))
 
 (def gen-attr-val-height
-  (gen/return "TODO_height"))
+  (gen/return "STUB_height"))
 
 (def gen-embed-attribute
   (gen/frequency [
@@ -373,7 +373,7 @@
   gen-global-attribute)
 
 (def gen-attr-val-name
-  (gen/return "TODO_name"))
+  (gen/return "STUB_name"))
 
 (def gen-map-attribute
   (gen/frequency [
@@ -386,10 +386,10 @@
       gen-global-attribute]]))
 
 (def gen-attr-val-method
-  (gen/return "TODO_method"))
+  (gen/return "STUB_method"))
 
 (def gen-attr-val-content
-  (gen/return "TODO_content"))
+  (gen/return "STUB_content"))
 
 (def gen-strong-attribute
   gen-global-attribute)
@@ -401,7 +401,7 @@
   gen-global-attribute)
 
 (def gen-attr-val-cols
-  (gen/return "TODO_cols"))
+  (gen/return "STUB_cols"))
 
 (def gen-wbr-attribute
   gen-global-attribute)
@@ -413,7 +413,7 @@
   gen-global-attribute)
 
 (def gen-attr-val-datetime
-  (gen/return "TODO_datetime"))
+  (gen/return "STUB_datetime"))
 
 (def gen-time-attribute
   (gen/frequency [
@@ -437,13 +437,13 @@
       (gen/return "")]]))
 
 (def gen-attr-val-min
-  (gen/return "TODO_min"))
+  (gen/return "STUB_min"))
 
 (def gen-attr-val-value
-  (gen/return "TODO_value"))
+  (gen/return "STUB_value"))
 
 (def gen-attr-val-formaction
-  (gen/return "TODO_formaction"))
+  (gen/return "STUB_formaction"))
 
 (def gen-button-attribute
   (gen/frequency [
@@ -508,29 +508,66 @@
 (def gen-samp-attribute
   gen-global-attribute)
 
+(def gen-STUB-color
+  (gen/frequency [
+    [100
+      (chuck/string-from-regex #"#[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]")]
+    [100
+      (gen/return "black")]
+    [100
+      (gen/return "silver")]
+    [100
+      (gen/return "gray")]
+    [100
+      (gen/return "white")]
+    [100
+      (gen/return "maroon")]
+    [100
+      (gen/return "red")]
+    [100
+      (gen/return "purple")]
+    [100
+      (gen/return "fuchsia")]
+    [100
+      (gen/return "green")]
+    [100
+      (gen/return "lime")]
+    [100
+      (gen/return "olive")]
+    [100
+      (gen/return "yellow")]
+    [100
+      (gen/return "navy")]
+    [100
+      (gen/return "blue")]
+    [100
+      (gen/return "teal")]
+    [100
+      (gen/return "aqua")]]))
+
 (def gen-attr-val-buffered
-  (gen/return "TODO_buffered"))
+  (gen/return "STUB_buffered"))
 
 (def gen-attr-val-required
-  (gen/return "TODO_required"))
+  (gen/return "STUB_required"))
 
 (def gen-attr-val-integrity
-  (gen/return "TODO_integrity"))
+  (gen/return "STUB_integrity"))
 
 (def gen-dfn-attribute
   gen-global-attribute)
 
 (def gen-attr-val-start
-  (gen/return "TODO_start"))
+  (gen/return "STUB_start"))
 
 (def gen-attr-val-srcdoc
-  (gen/return "TODO_srcdoc"))
+  (gen/return "STUB_srcdoc"))
 
 (def gen-attr-val-seamless
-  (gen/return "TODO_seamless"))
+  (gen/return "STUB_seamless"))
 
 (def gen-attr-val-sandbox
-  (gen/return "TODO_sandbox"))
+  (gen/return "STUB_sandbox"))
 
 (def gen-iframe-attribute
   (gen/frequency [
@@ -578,31 +615,31 @@
       gen-global-attribute]]))
 
 (def gen-attr-val-ping
-  (gen/return "TODO_ping"))
+  (gen/return "STUB_ping"))
 
 (def gen-attr-val-download
-  (gen/return "TODO_download"))
+  (gen/return "STUB_download"))
 
 (def gen-attr-val-hreflang
-  (gen/return "TODO_hreflang"))
+  (gen/return "STUB_hreflang"))
 
 (def gen-attr-val-coords
-  (gen/return "TODO_coords"))
+  (gen/return "STUB_coords"))
 
 (def gen-attr-val-href
-  (gen/return "TODO_href"))
+  (gen/return "STUB_href"))
 
 (def gen-attr-val-rel
-  (gen/return "TODO_rel"))
+  (gen/return "STUB_rel"))
 
 (def gen-attr-val-shape
-  (gen/return "TODO_shape"))
+  (gen/return "STUB_shape"))
 
 (def gen-attr-val-alt
-  (gen/return "TODO: this is alternate text"))
+  (gen/return "STUB: this is alternate text"))
 
 (def gen-attr-val-media
-  (gen/return "TODO_media"))
+  (gen/return "STUB_media"))
 
 (def gen-area-attribute
   (gen/frequency [
@@ -659,45 +696,8 @@
     [100
       gen-global-attribute]]))
 
-(def gen-TODO-color
-  (gen/frequency [
-    [100
-      (chuck/string-from-regex #"#[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]")]
-    [100
-      (gen/return "black")]
-    [100
-      (gen/return "silver")]
-    [100
-      (gen/return "gray")]
-    [100
-      (gen/return "white")]
-    [100
-      (gen/return "maroon")]
-    [100
-      (gen/return "red")]
-    [100
-      (gen/return "purple")]
-    [100
-      (gen/return "fuchsia")]
-    [100
-      (gen/return "green")]
-    [100
-      (gen/return "lime")]
-    [100
-      (gen/return "olive")]
-    [100
-      (gen/return "yellow")]
-    [100
-      (gen/return "navy")]
-    [100
-      (gen/return "blue")]
-    [100
-      (gen/return "teal")]
-    [100
-      (gen/return "aqua")]]))
-
 (def gen-attr-val-bgcolor
-  gen-TODO-color)
+  gen-STUB-color)
 
 (def gen-tbody-attribute
   (gen/frequency [
@@ -718,7 +718,7 @@
   gen-global-attribute)
 
 (def gen-attr-val-color
-  (gen/return "TODO_color"))
+  (gen/return "STUB_color"))
 
 (def gen-font-attribute
   (gen/frequency [
@@ -734,10 +734,10 @@
   gen-global-attribute)
 
 (def gen-attr-val-challenge
-  (gen/return "TODO_challenge"))
+  (gen/return "STUB_challenge"))
 
 (def gen-attr-val-for
-  (gen/return "TODO_for"))
+  (gen/return "STUB_for"))
 
 (def gen-output-attribute
   (gen/frequency [
@@ -760,7 +760,7 @@
       gen-global-attribute]]))
 
 (def gen-attr-val-span
-  (gen/return "TODO_span"))
+  (gen/return "STUB_span"))
 
 (def gen-colgroup-attribute
   (gen/frequency [
@@ -786,13 +786,13 @@
   gen-global-attribute)
 
 (def gen-attr-val-high
-  (gen/return "TODO_high"))
+  (gen/return "STUB_high"))
 
 (def gen-attr-val-multiple
-  (gen/return "TODO_multiple"))
+  (gen/return "STUB_multiple"))
 
 (def gen-attr-val-scoped
-  (gen/return "TODO_scoped"))
+  (gen/return "STUB_scoped"))
 
 (def gen-i-attribute
   gen-global-attribute)
@@ -801,7 +801,7 @@
   gen-global-attribute)
 
 (def gen-attr-val-size
-  (gen/return "TODO_size"))
+  (gen/return "STUB_size"))
 
 (def gen-body-attribute
   (gen/frequency [
@@ -820,7 +820,7 @@
   gen-global-attribute)
 
 (def gen-attr-val-reversed
-  (gen/return "TODO_reversed"))
+  (gen/return "STUB_reversed"))
 
 (def gen-ol-attribute
   (gen/frequency [
@@ -853,7 +853,7 @@
       gen-global-attribute]]))
 
 (def gen-attr-val-list
-  (gen/return "TODO_list"))
+  (gen/return "STUB_list"))
 
 (def gen-attr-val-autocomplete
   (gen/frequency [
@@ -953,28 +953,28 @@
       (gen/return "photo")]]))
 
 (def gen-attr-val-step
-  (gen/return "TODO_step"))
+  (gen/return "STUB_step"))
 
 (def gen-attr-val-max
-  (gen/return "TODO_max"))
+  (gen/return "STUB_max"))
 
 (def gen-attr-val-pattern
-  (gen/return "TODO_pattern"))
+  (gen/return "STUB_pattern"))
 
 (def gen-attr-val-maxlength
-  (gen/return "TODO_maxlength"))
+  (gen/return "STUB_maxlength"))
 
 (def gen-attr-val-usemap
-  (gen/return "TODO_usemap"))
+  (gen/return "STUB_usemap"))
 
 (def gen-attr-val-dirname
-  (gen/return "TODO_dirname"))
+  (gen/return "STUB_dirname"))
 
 (def gen-attr-val-placeholder
-  (gen/return "TODO_placeholder"))
+  (gen/return "STUB_placeholder"))
 
 (def gen-attr-val-readonly
-  (gen/return "TODO_readonly"))
+  (gen/return "STUB_readonly"))
 
 (def gen-input-attribute
   (gen/frequency [
@@ -1112,6 +1112,17 @@
     [100
       gen-global-attribute]]))
 
+(def gen-STUB-width
+  (gen/frequency [
+    [100
+      (gen/return "0")]
+    [100
+      (chuck/string-from-regex #"[0-9]")]
+    [100
+      (chuck/string-from-regex #"[0-9][0-9]")]
+    [100
+      (chuck/string-from-regex #"[0-9][0-9][0-9]")]]))
+
 (def gen-s-attribute
   gen-global-attribute)
 
@@ -1124,17 +1135,6 @@
         (gen/return "\""))]
     [100
       gen-global-attribute]]))
-
-(def gen-TODO-width
-  (gen/frequency [
-    [100
-      (gen/return "0")]
-    [100
-      (chuck/string-from-regex #"[0-9]")]
-    [100
-      (chuck/string-from-regex #"[0-9][0-9]")]
-    [100
-      (chuck/string-from-regex #"[0-9][0-9][0-9]")]]))
 
 (def gen-keygen-attribute
   (gen/frequency [
@@ -1166,7 +1166,7 @@
       gen-global-attribute]]))
 
 (def gen-attr-val-codebase
-  (gen/return "TODO_codebase"))
+  (gen/return "STUB_codebase"))
 
 (def gen-applet-attribute
   (gen/frequency [
@@ -1194,7 +1194,7 @@
       gen-global-attribute]]))
 
 (def gen-attr-val-selected
-  (gen/return "TODO_selected"))
+  (gen/return "STUB_selected"))
 
 (def gen-rt-attribute
   gen-global-attribute)
@@ -1209,10 +1209,10 @@
   gen-global-attribute)
 
 (def gen-attr-val-poster
-  (gen/return "TODO_poster"))
+  (gen/return "STUB_poster"))
 
 (def gen-attr-val-icon
-  (gen/return "TODO_icon"))
+  (gen/return "STUB_icon"))
 
 (def gen-address-attribute
   gen-global-attribute)
@@ -1221,7 +1221,7 @@
   gen-global-attribute)
 
 (def gen-attr-val-novalidate
-  (gen/return "TODO_novalidate"))
+  (gen/return "STUB_novalidate"))
 
 (def gen-figcaption-attribute
   gen-global-attribute)
@@ -1264,7 +1264,7 @@
       gen-global-attribute]]))
 
 (def gen-attr-val-cite
-  (gen/return "TODO_cite"))
+  (gen/return "STUB_cite"))
 
 (def gen-del-attribute
   (gen/frequency [
@@ -1282,13 +1282,13 @@
       gen-global-attribute]]))
 
 (def gen-attr-val-rowspan
-  (gen/return "TODO_rowspan"))
+  (gen/return "STUB_rowspan"))
 
 (def gen-span-attribute
   gen-global-attribute)
 
 (def gen-attr-val-open
-  (gen/return "TODO_open"))
+  (gen/return "STUB_open"))
 
 (def gen-style-attribute
   (gen/frequency [
@@ -1341,7 +1341,7 @@
     (gen/return ";")))
 
 (def gen-attr-val-radiogroup
-  (gen/return "TODO_radiogroup"))
+  (gen/return "STUB_radiogroup"))
 
 (def gen-rtc-attribute
   gen-global-attribute)
@@ -1356,16 +1356,16 @@
   gen-global-attribute)
 
 (def gen-attr-val-headers
-  (gen/return "TODO_headers"))
+  (gen/return "STUB_headers"))
 
 (def gen-attr-val-srcset
-  (gen/return "TODO_srcset"))
+  (gen/return "STUB_srcset"))
 
 (def gen-attr-val-data
-  (gen/return "TODO_data"))
+  (gen/return "STUB_data"))
 
 (def gen-attr-val-border
-  gen-TODO-width)
+  gen-STUB-width)
 
 (def gen-object-attribute
   (gen/frequency [
@@ -1430,15 +1430,15 @@
 (def gen-dir-attribute
   gen-global-attribute)
 
-(def gen-TODO-uri
+(def gen-STUB-uri
   (gen/frequency [
     [100
-      (gen/return "http://TODO.com/TODO/TODO")]
+      (gen/return "http://STUB.com/STUB/STUB")]
     [100
-      (gen/return "https://TODO.com/TODO/TODO")]]))
+      (gen/return "https://STUB.com/STUB/STUB")]]))
 
 (def gen-attr-val-action
-  gen-TODO-uri)
+  gen-STUB-uri)
 
 (def gen-char-ref-dec
   (gen/frequency [
@@ -1521,16 +1521,16 @@
       gen-char-ref-hex]]))
 
 (def gen-attr-val-summary
-  (gen/return "TODO_summary"))
+  (gen/return "STUB_summary"))
 
 (def gen-attr-val-rows
-  (gen/return "TODO_rows"))
+  (gen/return "STUB_rows"))
 
 (def gen-sup-attribute
   gen-global-attribute)
 
 (def gen-attr-val-colspan
-  (gen/return "TODO_colspan"))
+  (gen/return "STUB_colspan"))
 
 (def gen-th-attribute
   (gen/frequency [
@@ -1726,7 +1726,7 @@
       gen-global-attribute]]))
 
 (def gen-attr-val-wrap
-  (gen/return "TODO_wrap"))
+  (gen/return "STUB_wrap"))
 
 (def gen-textarea-attribute
   (gen/frequency [
@@ -1788,13 +1788,13 @@
       gen-global-attribute]]))
 
 (def gen-attr-val-enctype
-  (gen/return "TODO_enctype"))
+  (gen/return "STUB_enctype"))
 
 (def gen-acronym-attribute
   gen-global-attribute)
 
 (def gen-attr-val-sizes
-  (gen/return "TODO_sizes"))
+  (gen/return "STUB_sizes"))
 
 (def gen-link-attribute
   (gen/frequency [
@@ -1907,7 +1907,7 @@
       gen-global-attribute]]))
 
 (def gen-attr-val-http-equiv
-  (gen/return "TODO_http-equiv"))
+  (gen/return "STUB_http-equiv"))
 
 (def gen-command-attribute
   (gen/frequency [
@@ -1934,7 +1934,7 @@
       gen-global-attribute]]))
 
 (def gen-attr-val-low
-  (gen/return "TODO_low"))
+  (gen/return "STUB_low"))
 
 (def gen-marquee-attribute
   (gen/frequency [
@@ -2005,7 +2005,7 @@
   gen-global-attribute)
 
 (def gen-attr-val-optimum
-  (gen/return "TODO_optimum"))
+  (gen/return "STUB_optimum"))
 
 (def gen-meter-attribute
   (gen/frequency [
@@ -2102,7 +2102,7 @@
       gen-comment]]))
 
 (def gen-attr-val-language
-  (gen/return "TODO_language"))
+  (gen/return "STUB_language"))
 
 (def gen-script-attribute
   (gen/frequency [
@@ -9890,7 +9890,7 @@
   (gen/return ""))
 
 (def gen-attr-val-manifest
-  (gen/return "TODO_manifest"))
+  (gen/return "STUB_manifest"))
 
 (def gen-html-attribute
   (gen/frequency [
