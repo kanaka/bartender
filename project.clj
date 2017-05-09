@@ -15,14 +15,16 @@
                  [hickory "0.7.0"]
                  [instaparse "1.4.5"]
                  [com.rpl/specter "1.0.0"]
+                 [org.clojure/math.combinatorics "0.1.4"]
 
                  [org.clojure/tools.cli "0.3.5"]]
 
   :source-paths ["src"]
 
-  :profiles {:ebnf  {:main mend.ebnf}
-             :css3  {:main mend.css3}
-             :html5 {:main mend.html5}}
+  :profiles {:ebnf       {:main mend.ebnf}
+             :css3       {:main mend.css3}
+             :css3-orig  {:main mend.css3-orig}
+             :html5      {:main mend.html5}}
 
   ;;:main mend.css3-download
   ;;:main mend.html5-download

@@ -193,7 +193,7 @@ body = <'<'> 'body style=\"background: #1289ef; font: 25px/1 Ahem\"' (<space> bo
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defn prefix [ctx]
+(defn ns-prefix [ctx]
   (str
 "(ns " (:namespace ctx) "
    (:require [clojure.test.check.generators :as gen]
@@ -209,12 +209,8 @@ body = <'<'> 'body style=\"background: #1289ef; font: 25px/1 Ahem\"' (<space> bo
 
 (defn grammar->ns
   [ctx grammar]
-  ;(prn :before apply-grammar-updates)
-  ;(pprint grammar)
   (let [g (apply-grammar-updates grammar)]
-    ;(prn :after apply-grammar-updates)
-    ;(pprint g)
-    (str (prefix ctx)
+    (str (ns-prefix ctx)
          (ebnf/grammar->generator-defs-source ctx g))))
 
 
@@ -273,10 +269,6 @@ body = <'<'> 'body style=\"background: #1289ef; font: 25px/1 Ahem\"' (<space> bo
     (println (html5-ns opts))))
 
 (comment
-
-  (spit "src/rend/html5_generators.clj"
-        (html5-ns "rend.html5-generators" "rend.css-generators"))
-
   ;; time lein with-profile html5 run --namespace rend.html5-generators --css-namespace rend.css3-generators --weights data/html5-weights.edn --weights-output data/html5-weights-output.edn --ebnf-output data/html5.ebnf > src/rend/html5_generators.clj
 
   (require '[rend.html5-generators :as html5-gen] :reload)

@@ -134,12 +134,15 @@
   [{:keys [cur-nt] :as ctx} tree indent]
   (let [pre (apply str (repeat indent "  "))
         kw (:keyword tree)
-        kw-ns (namespace kw)]
+        kw-ns (namespace kw)
+        gen-dict (:gen-dict ctx)]
     (str pre (if (= cur-nt kw)
                "inner"
                (if kw-ns
                  (str kw-ns "/" (name kw))
-                 (str "gen-" (name kw)))))))
+                 (if gen-dict
+                   (str "(:" (name kw) " " gen-dict ")")
+                   (str "gen-" (name kw))))))))
 
 ;;;;;;
 
@@ -258,6 +261,8 @@
           (str "(def gen-" (name k) "\n"
                (gen-rule-body ctx k v 1) ")"))))))
 
+(def RULES-PER-FN 200)
+
 (defn grammar->generator-func-source
   "Takes an grammar (loaded using load-grammar) and returns the text
   of a namespace with a single Clojure function. The function takes
@@ -266,18 +271,35 @@
   [{:keys [function] :as ctx} grammar]
   (assert function "No function name specified")
   (let [ordered-rules (check-and-order-rules grammar)
-        ctx (assoc ctx :weights-lookup? true)]
+        partitioned-rules (map-indexed #(vector %1 %2)
+                                       (partition-all 200 ordered-rules))
+        ctx (assoc ctx
+                   :weights-lookup? true
+                   :gen-dict "gmap")]
     (str
-      "(defn " function " [& [weights]]\n"
-      "  (let [gmap {}\n\n"
       (string/join
         "\n\n"
-        (for [k ordered-rules
-              :let [v (get grammar k)]]
-          (str "        gen-" (name k) "\n"
-               (gen-rule-body ctx k v 4) "\n"
-               "        gmap (assoc gmap " k " gen-" (name k) ")"))) "]\n"
-      "    gmap))")))
+        (for [[idx rules] partitioned-rules]
+          (str
+            "(defn- " function "-part-" idx " [gmap weights]\n"
+            "  (let [\n"
+            (string/join
+              "\n\n"
+              (for [k rules
+                    :let [v (get grammar k)]]
+                (str "        gen-" (name k) "\n"
+                     (gen-rule-body ctx k v 4) "\n"
+                     "        gmap (assoc gmap " k " gen-" (name k) ")"))) "]\n"
+            "    gmap))")))
+      (str
+        "\n\n"
+        "(defn " function " [& [weights]]\n"
+        "  (let [gmap {}\n"
+        (string/join
+          "\n"
+          (for [[idx _] partitioned-rules]
+            (str "        gmap (" function "-part-" idx " gmap weights)"))) "]\n"
+        "    gmap))"))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Generator object/API
@@ -286,8 +308,11 @@
   [{:keys [start] :as ctx} grammar]
   (let [ctx (assoc ctx :function "ephemeral")
         fn-src (grammar->generator-func-source ctx grammar)
+        ;;gen-fn (binding [*ns* (create-ns 'mend.ebnf)]
+        ;;         (eval (read-string fn-src)))
+        ;;gen-fn (load-string fn-src)
         gen-fn (binding [*ns* (create-ns 'mend.ebnf)]
-                 (eval (read-string fn-src)))
+                 (load-string fn-src))
         start (or start (:start (meta grammar)))
         gens (gen-fn (:weights ctx))
         gen (gen/fmap util/flatten-text (get gens start))]
@@ -334,7 +359,7 @@
 
 
 (comment
-  (println (grammar->generator-let {} (load-grammar (slurp "test/recur3.ebnf")) 0))
+  (println (grammar->generator-function-source {} (load-grammar (slurp "test/recur3.ebnf"))))
 
   (def ebnf-generator (ebnf-gen (slurp "test/recur3.ebnf")))
   (pprint (gen/sample ebnf-generator 10))
