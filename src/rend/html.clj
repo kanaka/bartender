@@ -1,11 +1,12 @@
-(ns rend.report
+(ns rend.html
   (:require [hiccup.core :as hiccup]
             [clojure.math.combinatorics :refer [combinations]]))
 
 (def RED "#ff8080")
 (def GREEN "#80ff80")
 
-(defn render-test-row [test-dir browsers logs sth]
+
+(defn render-report-row [browsers logs sth]
   (let [l (nth logs sth)
         idx (+ 1 sth)
         pass (:result l)
@@ -21,10 +22,13 @@
                     (str "background-color: " GREEN)
                     (str "background-color: " RED))}
           (if pass "PASS" "FAIL")]
-         [:td [:a {:href (str "/" test-dir
-                              "/" idx ".html")
-                   :title (str (hiccup/html html))}
-               "html"]]
+         [:td
+          [:a {:href (str idx ".html")
+               :title (str (hiccup/html html))}
+           "html"]
+          " / "
+          [:a {:href (str idx ".html.txt")}
+           "txt"]]
          [:td "&nbsp;"]]
         (for [browser browsers]
           [:td
@@ -34,21 +38,17 @@
                           "background-color: " RED)}
              {:style "vertical-align: top; text-align: center"})
            [:a {:style "padding-left: 2px; padding-right: 2px"
-                :href (str "/" test-dir
-                           "/" idx "_" (:type browser) ".png")}
+                :href (str idx "_" (:type browser) ".png")}
             [:span.tlink "png"]
             [:img.thumb {:style "display: none"
-                         :src (str "/" test-dir
-                                   "/" idx "_" (:type browser)
+                         :src (str idx "_" (:type browser)
                                    "_thumb.png")}]]])
         [[:td "&nbsp;"]
          [:td {:style "vertical-align: top"}
-          [:a {:href (str "/" test-dir
-                          "/" idx "_avg.png")}
+          [:a {:href (str idx "_avg.png")}
            [:span.tlink "png"]
            [:img.thumb {:style "display: none"
-                        :src (str "/" test-dir
-                                  "/" idx "_avg_thumb.png")}]]]
+                        :src (str idx "_avg_thumb.png")}]]]
          [:td "&nbsp;"]]
         (for [[ba bb] (combinations browsers 2)
               :let [odiff (get-in diffs [ba bb])]]
@@ -57,12 +57,10 @@
                    (get violations bb))
              {:style (str "vertical-align: top; text-align: center; background-color: " RED)}
              {:style (str "vertical-align: top; text-align: center")})
-           [:a {:href (str "/" test-dir "/" idx
-                           "_diff_" (:type ba)
+           [:a {:href (str idx "_diff_" (:type ba)
                            "_" (:type bb) ".png")}
             [:img.thumb {:style "display: none"
-                         :src (str "/" test-dir "/" idx
-                                   "_diff_" (:type ba)
+                         :src (str idx "_diff_" (:type ba)
                                    "_" (:type bb) "_thumb.png")}]
             [:br.thumb {:style "display: none"}]
             (format "%.6f" odiff)]])))))
@@ -88,7 +86,7 @@
   }")
 
 ;; Generate an HTML index page for the current test results
-(defn render-page [cfg test-dir state]
+(defn render-report [cfg state]
   (let [logs (:log state)
         threshold (-> cfg :compare :threshold)
         browsers (:browsers cfg)]
@@ -115,5 +113,5 @@
                  (for [[ba bb] (combinations browsers 2)]
                    [:th (str (:type ba) "&Delta;" (:type bb))])))]
             (for [i (range (count logs))]
-              (render-test-row test-dir browsers logs i))))
+              (render-report-row browsers logs i))))
         [:script toggle-thumbs-js]]])))

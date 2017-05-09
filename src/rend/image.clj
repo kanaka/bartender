@@ -1,5 +1,5 @@
 (ns rend.image
-  (:import [org.opencv.core Core CvType Mat Scalar]
+  (:import [org.opencv.core Core CvType Mat Scalar Point]
            [org.opencv.highgui Highgui]
            [org.opencv.imgproc Imgproc]))
 
@@ -66,4 +66,14 @@
 (defn absdiff [a b]
   (let [res (Mat/zeros 0 0 CvType/CV_32FC3)
         d (Core/absdiff a b res)]
+    res))
+
+(defn error-image [w h text1 & [text2]]
+  (let [res (Mat/zeros h w CvType/CV_32FC3)
+        font Core/FONT_HERSHEY_SIMPLEX
+        color (Scalar. 0 0 255)]
+    (Core/putText res "Error:" (Point. 10 60) font 2 color 2)
+    (Core/putText res text1 (Point. 10 150) font 0.7 color 2)
+    (when text2
+      (Core/putText res text2 (Point. 10 200) font 0.7 color 2))
     res))

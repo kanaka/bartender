@@ -22,4 +22,3 @@
 		    :max-size max-size
 		    :reporter-fn report-fn)))
 
-

@@ -48,18 +48,28 @@
       session
       (init-session browser {}))))
 
+(def GET-RETRY-ATTEMPTS 1)
+
 (defn GET [browser path]
   (let [session (get-session browser)
         session-id (:sessionId session)
         url (str (addr browser) "/session/" session-id "/" path)
-        opts {:headers {"Host" (str "localhost:" (:port browser))}}
-        {:keys [status error body] :as resp} @(http/get url opts)]
-;    (prn :get :status status :error error :body body :resp resp)
-    (if (or error (< status 200) (> status 299))
-      (if error
-        (throw (Exception. error))
-        (throw (Exception. body)))
-      (json/read-str body :key-fn keyword))))
+        opts {:headers {"Host" (str "localhost:" (:port browser))}}]
+    (loop [attempt 1]
+      (let [{:keys [status error body] :as resp} @(http/get url opts)]
+        ;    (prn :get :status status :error error :body body :resp resp)
+        (if (or error (< status 200) (> status 299))
+          (do
+            (prn :GET-ERROR :status status :error error :attempt attempt :body body)
+            (if (and (< attempt GET-RETRY-ATTEMPTS)
+                     (= 404 status))
+              (do
+                (Thread/sleep 500)
+                (recur (inc attempt)))
+              (if error
+                (throw (Exception. error))
+                (throw (Exception. body)))))
+          (json/read-str body :key-fn keyword))))))
 
 (defn POST [browser path data]
   (let [session (get-session browser)
@@ -72,7 +82,9 @@
         {:keys [status error body] :as resp} @(http/post url opts)]
 ;    (prn :post :status status :error error :body body :resp resp)
     (if (or error (< status 200) (> status 299))
-      (if error
-        (throw (Exception. error))
-        (throw (Exception. body)))
+      (do
+        (prn :POST-ERROR :status status :error error :body body)
+        (if error
+          (throw (Exception. error))
+          (throw (Exception. body))))
       (json/read-str body :key-fn keyword))))

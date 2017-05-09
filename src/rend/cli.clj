@@ -1,8 +1,8 @@
 (ns rend.cli
   (:require [mend.check]
-            [rend.html5-generators]
+            [rend.generator]
             [rend.image :as image]
-            [rend.report]
+            [rend.html]
             [rend.server]
             [rend.webdriver :as webdriver]
 
@@ -11,16 +11,23 @@
             [clojure.data.codec.base64 :as base64]
             [hiccup.core]
             [clojure.pprint :refer [pprint]]
+            [clojure.java.io :as io]
             [clojure.java.shell :refer [sh]]))
 
-(defn screenshot-page [browser path]
-  (let [ss (webdriver/GET browser "screenshot")
-        png (base64/decode (.getBytes (:value ss)))
-        file (java.io.File. path)]
-;    (println "Writing" (count png) "bytes to:" path)
-    (clojure.java.io/copy png file)
-    ;; TODO: can we convert PNG more directly to image?
-    (image/imread path)))
+(defn screenshot-page [browser test-dir path]
+  (try
+    (let [ss (webdriver/GET browser "screenshot")
+          png (base64/decode (.getBytes (:value ss)))
+          ifile (io/file path)]
+      ;    (println "Writing" (count png) "bytes to:" path)
+      (io/copy png ifile)
+      ;; TODO: can we convert PNG more directly to image?
+      (image/imread path))
+    (catch Exception e
+      (let [eimg (image/error-image
+                   400 300 "render failure for" (:type browser))]
+        (image/imwrite path eimg)
+        eimg))))
 
 
 (def check-page-state (atom {}))
@@ -33,9 +40,12 @@
     (try
       (println "------")
       (println "Test case:" text)
-      ;      (println "Writing to " path)
+      ;; (println "Writing to " path)
       (clojure.java.io/make-parents (java.io.File. path))
       (spit path text)
+      ;; (println "Writing to " (str path ".txt"))
+      ;;(spit (str path ".txt") (rend.html/pprint-html text))
+      (spit (str path ".txt") text)
 
       ;; Load the page in each browser
       (println "Loading" url "in each browser")
@@ -62,7 +72,7 @@
             images (into {}
                          (for [browser (:browsers cfg)]
                            (let [ss-path (str test-prefix "_" (:type browser)  ".png")
-                                 img (screenshot-page browser ss-path)]
+                                 img (screenshot-page browser test-dir ss-path)]
                              [browser img])))
             imgs (apply assoc {}
                         (interleave (keys images)
@@ -143,7 +153,7 @@
                            :violations violations})]
     ;; Generate index page after every check
     (spit (str test-dir "/index.html")
-          (rend.report/render-page cfg test-dir state))
+          (rend.html/render-report cfg state))
     res))
 
 (defn load-sessions [file]
@@ -161,7 +171,9 @@
         session-file (second argv)
         cfg (yaml/parse-string (slurp cfg-file))
         id (rand-int 100000)
-        test-dir (str (-> cfg :web :dir) "/" id)]
+        test-dir (str (-> cfg :web :dir) "/" id)
+        weights (when (:weights cfg)
+                  (edn/read-string (slurp (:weights cfg))))]
     (println "Test ID" id)
     (when session-file
       (println "Loading session data")
@@ -177,18 +189,22 @@
                               :id id
                               :test-dir test-dir
                               :log []})
-    (let [qc-res (mend.check/run-check
+    (let [gen-html (rend.generator/get-html-generator weights)
+          qc-res (mend.check/run-check
                    (:quick-check cfg {})
-                   rend.html5-generators/gen-html
+                   gen-html
                    (fn [html] (check-page cfg test-dir html))
                    mend.check/reporter)
-          state (swap! check-page-state assoc :final-result qc-res)
+          full-result (swap! check-page-state
+                             assoc
+                             :final-result qc-res
+                             :config cfg)
           return-code (if (:result qc-res) 0 1)]
       (println "------")
       (println (str "Quick check results (also in " test-dir "/results.edn):"))
       (pprint qc-res)
       (println (str "Full results in: " test-dir "/full-results.edn"))
       (spit (str test-dir "/results.edn") (with-out-str (pprint qc-res)))
-      (spit (str test-dir "/full-results.edn") state)
+      (spit (str test-dir "/full-results.edn") full-result)
       (System/exit return-code))))
 
