@@ -18,6 +18,8 @@
             [clojure.test.check.generators :as gen]
             [com.gfredericks.test.chuck.generators :as chuck]))
 
+(def RULES-PER-FUNC 50)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defn pr-err
@@ -261,8 +263,6 @@
           (str "(def gen-" (name k) "\n"
                (gen-rule-body ctx k v 1) ")"))))))
 
-(def RULES-PER-FN 200)
-
 (defn grammar->generator-func-source
   "Takes an grammar (loaded using load-grammar) and returns the text
   of a namespace with a single Clojure function. The function takes
@@ -272,7 +272,8 @@
   (assert function "No function name specified")
   (let [ordered-rules (check-and-order-rules grammar)
         partitioned-rules (map-indexed #(vector %1 %2)
-                                       (partition-all 200 ordered-rules))
+                                       (partition-all RULES-PER-FUNC
+                                                      ordered-rules))
         ctx (assoc ctx
                    :weights-lookup? true
                    :gen-dict "gmap")]
@@ -293,8 +294,8 @@
             "    gmap))")))
       (str
         "\n\n"
-        "(defn " function " [& [weights]]\n"
-        "  (let [gmap {}\n"
+        "(defn " function " [& [gmap weights]]\n"
+        "  (let [gmap (or gmap {})\n"
         (string/join
           "\n"
           (for [[idx _] partitioned-rules]
@@ -308,9 +309,6 @@
   [{:keys [start] :as ctx} grammar]
   (let [ctx (assoc ctx :function "ephemeral")
         fn-src (grammar->generator-func-source ctx grammar)
-        ;;gen-fn (binding [*ns* (create-ns 'mend.ebnf)]
-        ;;         (eval (read-string fn-src)))
-        ;;gen-fn (load-string fn-src)
         gen-fn (binding [*ns* (create-ns 'mend.ebnf)]
                  (load-string fn-src))
         start (or start (:start (meta grammar)))

@@ -9,254 +9,254 @@ title = <'<'> 'title' (<space> title-attribute)* <opt-space> <'>'> content* <'</
 body = <'<'> 'body style="background: #1289ef; font: 25px/1 Ahem"' (<space> body-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'body' <opt-space> <'>'> <opt-space>
 
 
-element = <'<'> 'a' (<space> a-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'a' (<space> a-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'a' <opt-space> <'>'> <opt-space>
-        | <'<'> 'abbr' (<space> abbr-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'abbr' (<space> abbr-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'abbr' <opt-space> <'>'> <opt-space>
-        | <'<'> 'acronym' (<space> acronym-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'acronym' (<space> acronym-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'acronym' <opt-space> <'>'> <opt-space>
-        | <'<'> 'address' (<space> address-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'address' (<space> address-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'address' <opt-space> <'>'> <opt-space>
-        | <'<'> 'applet' (<space> applet-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'applet' (<space> applet-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'applet' <opt-space> <'>'> <opt-space>
-        | <'<'> 'area' (<space> area-attribute)* <opt-space> <'>'> <opt-space>
-        | <'<'> 'article' (<space> article-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'article' (<space> article-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'article' <opt-space> <'>'> <opt-space>
-        | <'<'> 'aside' (<space> aside-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'aside' (<space> aside-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'aside' <opt-space> <'>'> <opt-space>
-        | <'<'> 'audio' (<space> audio-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'audio' (<space> audio-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'audio' <opt-space> <'>'> <opt-space>
-        | <'<'> 'b' (<space> b-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'b' (<space> b-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'b' <opt-space> <'>'> <opt-space>
-        | <'<'> 'base' (<space> base-attribute)* <opt-space> <'>'> <opt-space>
-        | <'<'> 'basefont' (<space> basefont-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'basefont' (<space> basefont-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'basefont' <opt-space> <'>'> <opt-space>
-        | <'<'> 'bdi' (<space> bdi-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'bdi' (<space> bdi-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'bdi' <opt-space> <'>'> <opt-space>
-        | <'<'> 'bdo' (<space> bdo-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'bdo' (<space> bdo-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'bdo' <opt-space> <'>'> <opt-space>
-        | <'<'> 'bgsound' (<space> bgsound-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'bgsound' (<space> bgsound-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'bgsound' <opt-space> <'>'> <opt-space>
-        | <'<'> 'big' (<space> big-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'big' (<space> big-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'big' <opt-space> <'>'> <opt-space>
-        | <'<'> 'blink' (<space> blink-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'blink' (<space> blink-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'blink' <opt-space> <'>'> <opt-space>
-        | <'<'> 'blockquote' (<space> blockquote-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'blockquote' (<space> blockquote-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'blockquote' <opt-space> <'>'> <opt-space>
-        | <'<'> 'br' (<space> br-attribute)* <opt-space> <'>'> <opt-space>
-        | <'<'> 'button' (<space> button-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'button' (<space> button-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'button' <opt-space> <'>'> <opt-space>
-        | <'<'> 'canvas' (<space> canvas-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'canvas' (<space> canvas-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'canvas' <opt-space> <'>'> <opt-space>
-        | <'<'> 'caption' (<space> caption-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'caption' (<space> caption-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'caption' <opt-space> <'>'> <opt-space>
-        | <'<'> 'center' (<space> center-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'center' (<space> center-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'center' <opt-space> <'>'> <opt-space>
-        | <'<'> 'cite' (<space> cite-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'cite' (<space> cite-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'cite' <opt-space> <'>'> <opt-space>
-        | <'<'> 'code' (<space> code-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'code' (<space> code-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'code' <opt-space> <'>'> <opt-space>
-        | <'<'> 'col' (<space> col-attribute)* <opt-space> <'>'> <opt-space>
-        | <'<'> 'colgroup' (<space> colgroup-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'colgroup' (<space> colgroup-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'colgroup' <opt-space> <'>'> <opt-space>
-        | <'<'> 'command' (<space> command-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'command' (<space> command-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'command' <opt-space> <'>'> <opt-space>
-        | <'<'> 'content' (<space> content-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'content' (<space> content-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'content' <opt-space> <'>'> <opt-space>
-        | <'<'> 'data' (<space> data-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'data' (<space> data-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'data' <opt-space> <'>'> <opt-space>
-        | <'<'> 'datalist' (<space> datalist-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'datalist' (<space> datalist-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'datalist' <opt-space> <'>'> <opt-space>
-        | <'<'> 'dd' (<space> dd-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'dd' (<space> dd-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'dd' <opt-space> <'>'> <opt-space>
-        | <'<'> 'del' (<space> del-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'del' (<space> del-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'del' <opt-space> <'>'> <opt-space>
-        | <'<'> 'details' (<space> details-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'details' (<space> details-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'details' <opt-space> <'>'> <opt-space>
-        | <'<'> 'dfn' (<space> dfn-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'dfn' (<space> dfn-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'dfn' <opt-space> <'>'> <opt-space>
-        | <'<'> 'dialog' (<space> dialog-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'dialog' (<space> dialog-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'dialog' <opt-space> <'>'> <opt-space>
-        | <'<'> 'dir' (<space> dir-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'dir' (<space> dir-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'dir' <opt-space> <'>'> <opt-space>
-        | <'<'> 'div' (<space> div-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'div' (<space> div-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'div' <opt-space> <'>'> <opt-space>
-        | <'<'> 'dl' (<space> dl-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'dl' (<space> dl-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'dl' <opt-space> <'>'> <opt-space>
-        | <'<'> 'dt' (<space> dt-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'dt' (<space> dt-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'dt' <opt-space> <'>'> <opt-space>
-        | <'<'> 'element' (<space> element-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'element' (<space> element-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'element' <opt-space> <'>'> <opt-space>
-        | <'<'> 'em' (<space> em-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'em' (<space> em-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'em' <opt-space> <'>'> <opt-space>
-        | <'<'> 'embed' (<space> embed-attribute)* <opt-space> <'>'> <opt-space>
-        | <'<'> 'fieldset' (<space> fieldset-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'fieldset' (<space> fieldset-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'fieldset' <opt-space> <'>'> <opt-space>
-        | <'<'> 'figcaption' (<space> figcaption-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'figcaption' (<space> figcaption-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'figcaption' <opt-space> <'>'> <opt-space>
-        | <'<'> 'figure' (<space> figure-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'figure' (<space> figure-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'figure' <opt-space> <'>'> <opt-space>
-        | <'<'> 'font' (<space> font-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'font' (<space> font-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'font' <opt-space> <'>'> <opt-space>
-        | <'<'> 'footer' (<space> footer-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'footer' (<space> footer-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'footer' <opt-space> <'>'> <opt-space>
-        | <'<'> 'form' (<space> form-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'form' (<space> form-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'form' <opt-space> <'>'> <opt-space>
-        | <'<'> 'frame' (<space> frame-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'frame' (<space> frame-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'frame' <opt-space> <'>'> <opt-space>
-        | <'<'> 'frameset' (<space> frameset-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'frameset' (<space> frameset-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'frameset' <opt-space> <'>'> <opt-space>
-        | <'<'> 'h1–h6' (<space> h1–h6-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'h1–h6' (<space> h1–h6-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'h1–h6' <opt-space> <'>'> <opt-space>
-        | <'<'> 'header' (<space> header-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'header' (<space> header-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'header' <opt-space> <'>'> <opt-space>
-        | <'<'> 'hgroup' (<space> hgroup-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'hgroup' (<space> hgroup-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'hgroup' <opt-space> <'>'> <opt-space>
-        | <'<'> 'hr' (<space> hr-attribute)* <opt-space> <'>'> <opt-space>
-        | <'<'> 'i' (<space> i-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'i' (<space> i-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'i' <opt-space> <'>'> <opt-space>
-        | <'<'> 'iframe' (<space> iframe-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'iframe' (<space> iframe-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'iframe' <opt-space> <'>'> <opt-space>
-        | <'<'> 'img' (<space> img-attribute)* <opt-space> <'>'> <opt-space>
-        | <'<'> 'input' (<space> input-attribute)* <opt-space> <'>'> <opt-space>
-        | <'<'> 'ins' (<space> ins-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'ins' (<space> ins-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'ins' <opt-space> <'>'> <opt-space>
-        | <'<'> 'isindex' (<space> isindex-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'isindex' (<space> isindex-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'isindex' <opt-space> <'>'> <opt-space>
-        | <'<'> 'kbd' (<space> kbd-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'kbd' (<space> kbd-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'kbd' <opt-space> <'>'> <opt-space>
-        | <'<'> 'keygen' (<space> keygen-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'keygen' (<space> keygen-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'keygen' <opt-space> <'>'> <opt-space>
-        | <'<'> 'label' (<space> label-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'label' (<space> label-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'label' <opt-space> <'>'> <opt-space>
-        | <'<'> 'legend' (<space> legend-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'legend' (<space> legend-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'legend' <opt-space> <'>'> <opt-space>
-        | <'<'> 'li' (<space> li-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'li' (<space> li-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'li' <opt-space> <'>'> <opt-space>
-        | <'<'> 'link' (<space> link-attribute)* <opt-space> <'>'> <opt-space>
-        | <'<'> 'listing' (<space> listing-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'listing' (<space> listing-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'listing' <opt-space> <'>'> <opt-space>
-        | <'<'> 'main' (<space> main-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'main' (<space> main-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'main' <opt-space> <'>'> <opt-space>
-        | <'<'> 'map' (<space> map-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'map' (<space> map-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'map' <opt-space> <'>'> <opt-space>
-        | <'<'> 'mark' (<space> mark-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'mark' (<space> mark-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'mark' <opt-space> <'>'> <opt-space>
-        | <'<'> 'marquee' (<space> marquee-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'marquee' (<space> marquee-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'marquee' <opt-space> <'>'> <opt-space>
-        | <'<'> 'menu' (<space> menu-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'menu' (<space> menu-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'menu' <opt-space> <'>'> <opt-space>
-        | <'<'> 'menuitem' (<space> menuitem-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'menuitem' (<space> menuitem-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'menuitem' <opt-space> <'>'> <opt-space>
-        | <'<'> 'meta' (<space> meta-attribute)* <opt-space> <'>'> <opt-space>
-        | <'<'> 'meter' (<space> meter-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'meter' (<space> meter-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'meter' <opt-space> <'>'> <opt-space>
-        | <'<'> 'multicol' (<space> multicol-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'multicol' (<space> multicol-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'multicol' <opt-space> <'>'> <opt-space>
-        | <'<'> 'nav' (<space> nav-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'nav' (<space> nav-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'nav' <opt-space> <'>'> <opt-space>
-        | <'<'> 'nextid' (<space> nextid-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'nextid' (<space> nextid-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'nextid' <opt-space> <'>'> <opt-space>
-        | <'<'> 'noembed' (<space> noembed-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'noembed' (<space> noembed-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'noembed' <opt-space> <'>'> <opt-space>
-        | <'<'> 'noscript' (<space> noscript-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'noscript' (<space> noscript-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'noscript' <opt-space> <'>'> <opt-space>
-        | <'<'> 'object' (<space> object-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'object' (<space> object-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'object' <opt-space> <'>'> <opt-space>
-        | <'<'> 'ol' (<space> ol-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'ol' (<space> ol-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'ol' <opt-space> <'>'> <opt-space>
-        | <'<'> 'optgroup' (<space> optgroup-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'optgroup' (<space> optgroup-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'optgroup' <opt-space> <'>'> <opt-space>
-        | <'<'> 'option' (<space> option-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'option' (<space> option-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'option' <opt-space> <'>'> <opt-space>
-        | <'<'> 'output' (<space> output-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'output' (<space> output-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'output' <opt-space> <'>'> <opt-space>
-        | <'<'> 'p' (<space> p-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'p' (<space> p-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'p' <opt-space> <'>'> <opt-space>
-        | <'<'> 'param' (<space> param-attribute)* <opt-space> <'>'> <opt-space>
-        | <'<'> 'plaintext' (<space> plaintext-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'plaintext' (<space> plaintext-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'plaintext' <opt-space> <'>'> <opt-space>
-        | <'<'> 'pre' (<space> pre-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'pre' (<space> pre-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'pre' <opt-space> <'>'> <opt-space>
-        | <'<'> 'progress' (<space> progress-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'progress' (<space> progress-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'progress' <opt-space> <'>'> <opt-space>
-        | <'<'> 'q' (<space> q-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'q' (<space> q-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'q' <opt-space> <'>'> <opt-space>
-        | <'<'> 'rp' (<space> rp-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'rp' (<space> rp-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'rp' <opt-space> <'>'> <opt-space>
-        | <'<'> 'rt' (<space> rt-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'rt' (<space> rt-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'rt' <opt-space> <'>'> <opt-space>
-        | <'<'> 'rtc' (<space> rtc-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'rtc' (<space> rtc-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'rtc' <opt-space> <'>'> <opt-space>
-        | <'<'> 'ruby' (<space> ruby-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'ruby' (<space> ruby-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'ruby' <opt-space> <'>'> <opt-space>
-        | <'<'> 's' (<space> s-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 's' (<space> s-attribute)* <opt-space> <'>'> (element | content)* <'</'> 's' <opt-space> <'>'> <opt-space>
-        | <'<'> 'samp' (<space> samp-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'samp' (<space> samp-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'samp' <opt-space> <'>'> <opt-space>
-        | <'<'> 'script' (<space> script-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'script' (<space> script-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'script' <opt-space> <'>'> <opt-space>
-        | <'<'> 'section' (<space> section-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'section' (<space> section-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'section' <opt-space> <'>'> <opt-space>
-        | <'<'> 'select' (<space> select-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'select' (<space> select-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'select' <opt-space> <'>'> <opt-space>
-        | <'<'> 'shadow' (<space> shadow-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'shadow' (<space> shadow-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'shadow' <opt-space> <'>'> <opt-space>
-        | <'<'> 'slot' (<space> slot-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'slot' (<space> slot-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'slot' <opt-space> <'>'> <opt-space>
-        | <'<'> 'small' (<space> small-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'small' (<space> small-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'small' <opt-space> <'>'> <opt-space>
-        | <'<'> 'source' (<space> source-attribute)* <opt-space> <'>'> <opt-space>
-        | <'<'> 'spacer' (<space> spacer-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'spacer' (<space> spacer-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'spacer' <opt-space> <'>'> <opt-space>
-        | <'<'> 'span' (<space> span-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'span' (<space> span-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'span' <opt-space> <'>'> <opt-space>
-        | <'<'> 'strike' (<space> strike-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'strike' (<space> strike-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'strike' <opt-space> <'>'> <opt-space>
-        | <'<'> 'strong' (<space> strong-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'strong' (<space> strong-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'strong' <opt-space> <'>'> <opt-space>
-        | <'<'> 'style' (<space> style-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'style' (<space> style-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'style' <opt-space> <'>'> <opt-space>
-        | <'<'> 'sub' (<space> sub-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'sub' (<space> sub-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'sub' <opt-space> <'>'> <opt-space>
-        | <'<'> 'summary' (<space> summary-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'summary' (<space> summary-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'summary' <opt-space> <'>'> <opt-space>
-        | <'<'> 'sup' (<space> sup-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'sup' (<space> sup-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'sup' <opt-space> <'>'> <opt-space>
-        | <'<'> 'table' (<space> table-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'table' (<space> table-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'table' <opt-space> <'>'> <opt-space>
-        | <'<'> 'tbody' (<space> tbody-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'tbody' (<space> tbody-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'tbody' <opt-space> <'>'> <opt-space>
-        | <'<'> 'td' (<space> td-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'td' (<space> td-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'td' <opt-space> <'>'> <opt-space>
-        | <'<'> 'template' (<space> template-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'template' (<space> template-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'template' <opt-space> <'>'> <opt-space>
-        | <'<'> 'textarea' (<space> textarea-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'textarea' (<space> textarea-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'textarea' <opt-space> <'>'> <opt-space>
-        | <'<'> 'tfoot' (<space> tfoot-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'tfoot' (<space> tfoot-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'tfoot' <opt-space> <'>'> <opt-space>
-        | <'<'> 'th' (<space> th-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'th' (<space> th-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'th' <opt-space> <'>'> <opt-space>
-        | <'<'> 'thead' (<space> thead-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'thead' (<space> thead-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'thead' <opt-space> <'>'> <opt-space>
-        | <'<'> 'time' (<space> time-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'time' (<space> time-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'time' <opt-space> <'>'> <opt-space>
-        | <'<'> 'tr' (<space> tr-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'tr' (<space> tr-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'tr' <opt-space> <'>'> <opt-space>
-        | <'<'> 'track' (<space> track-attribute)* <opt-space> <'>'> <opt-space>
-        | <'<'> 'tt' (<space> tt-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'tt' (<space> tt-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'tt' <opt-space> <'>'> <opt-space>
-        | <'<'> 'u' (<space> u-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'u' (<space> u-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'u' <opt-space> <'>'> <opt-space>
-        | <'<'> 'ul' (<space> ul-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'ul' (<space> ul-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'ul' <opt-space> <'>'> <opt-space>
-        | <'<'> 'var' (<space> var-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'var' (<space> var-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'var' <opt-space> <'>'> <opt-space>
-        | <'<'> 'video' (<space> video-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'video' (<space> video-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'video' <opt-space> <'>'> <opt-space>
-        | <'<'> 'wbr' (<space> wbr-attribute)* <opt-space> <'>'> <opt-space>
-        | <'<'> 'xmp' (<space> xmp-attribute)* <opt-space> <'/>'> <opt-space>
-        | <'<'> 'xmp' (<space> xmp-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'xmp' <opt-space> <'>'> <opt-space>
+element = '<a' (<space> a-attribute)* '/>'
+        | '<a' (<space> a-attribute)* '>' (element | content)* '</a>'
+        | '<abbr' (<space> abbr-attribute)* '/>'
+        | '<abbr' (<space> abbr-attribute)* '>' (element | content)* '</abbr>'
+        | '<acronym' (<space> acronym-attribute)* '/>'
+        | '<acronym' (<space> acronym-attribute)* '>' (element | content)* '</acronym>'
+        | '<address' (<space> address-attribute)* '/>'
+        | '<address' (<space> address-attribute)* '>' (element | content)* '</address>'
+        | '<applet' (<space> applet-attribute)* '/>'
+        | '<applet' (<space> applet-attribute)* '>' (element | content)* '</applet>'
+        | '<area' (<space> area-attribute)* '>'
+        | '<article' (<space> article-attribute)* '/>'
+        | '<article' (<space> article-attribute)* '>' (element | content)* '</article>'
+        | '<aside' (<space> aside-attribute)* '/>'
+        | '<aside' (<space> aside-attribute)* '>' (element | content)* '</aside>'
+        | '<audio' (<space> audio-attribute)* '/>'
+        | '<audio' (<space> audio-attribute)* '>' (element | content)* '</audio>'
+        | '<b' (<space> b-attribute)* '/>'
+        | '<b' (<space> b-attribute)* '>' (element | content)* '</b>'
+        | '<base' (<space> base-attribute)* '>'
+        | '<basefont' (<space> basefont-attribute)* '/>'
+        | '<basefont' (<space> basefont-attribute)* '>' (element | content)* '</basefont>'
+        | '<bdi' (<space> bdi-attribute)* '/>'
+        | '<bdi' (<space> bdi-attribute)* '>' (element | content)* '</bdi>'
+        | '<bdo' (<space> bdo-attribute)* '/>'
+        | '<bdo' (<space> bdo-attribute)* '>' (element | content)* '</bdo>'
+        | '<bgsound' (<space> bgsound-attribute)* '/>'
+        | '<bgsound' (<space> bgsound-attribute)* '>' (element | content)* '</bgsound>'
+        | '<big' (<space> big-attribute)* '/>'
+        | '<big' (<space> big-attribute)* '>' (element | content)* '</big>'
+        | '<blink' (<space> blink-attribute)* '/>'
+        | '<blink' (<space> blink-attribute)* '>' (element | content)* '</blink>'
+        | '<blockquote' (<space> blockquote-attribute)* '/>'
+        | '<blockquote' (<space> blockquote-attribute)* '>' (element | content)* '</blockquote>'
+        | '<br' (<space> br-attribute)* '>'
+        | '<button' (<space> button-attribute)* '/>'
+        | '<button' (<space> button-attribute)* '>' (element | content)* '</button>'
+        | '<canvas' (<space> canvas-attribute)* '/>'
+        | '<canvas' (<space> canvas-attribute)* '>' (element | content)* '</canvas>'
+        | '<caption' (<space> caption-attribute)* '/>'
+        | '<caption' (<space> caption-attribute)* '>' (element | content)* '</caption>'
+        | '<center' (<space> center-attribute)* '/>'
+        | '<center' (<space> center-attribute)* '>' (element | content)* '</center>'
+        | '<cite' (<space> cite-attribute)* '/>'
+        | '<cite' (<space> cite-attribute)* '>' (element | content)* '</cite>'
+        | '<code' (<space> code-attribute)* '/>'
+        | '<code' (<space> code-attribute)* '>' (element | content)* '</code>'
+        | '<col' (<space> col-attribute)* '>'
+        | '<colgroup' (<space> colgroup-attribute)* '/>'
+        | '<colgroup' (<space> colgroup-attribute)* '>' (element | content)* '</colgroup>'
+        | '<command' (<space> command-attribute)* '/>'
+        | '<command' (<space> command-attribute)* '>' (element | content)* '</command>'
+        | '<content' (<space> content-attribute)* '/>'
+        | '<content' (<space> content-attribute)* '>' (element | content)* '</content>'
+        | '<data' (<space> data-attribute)* '/>'
+        | '<data' (<space> data-attribute)* '>' (element | content)* '</data>'
+        | '<datalist' (<space> datalist-attribute)* '/>'
+        | '<datalist' (<space> datalist-attribute)* '>' (element | content)* '</datalist>'
+        | '<dd' (<space> dd-attribute)* '/>'
+        | '<dd' (<space> dd-attribute)* '>' (element | content)* '</dd>'
+        | '<del' (<space> del-attribute)* '/>'
+        | '<del' (<space> del-attribute)* '>' (element | content)* '</del>'
+        | '<details' (<space> details-attribute)* '/>'
+        | '<details' (<space> details-attribute)* '>' (element | content)* '</details>'
+        | '<dfn' (<space> dfn-attribute)* '/>'
+        | '<dfn' (<space> dfn-attribute)* '>' (element | content)* '</dfn>'
+        | '<dialog' (<space> dialog-attribute)* '/>'
+        | '<dialog' (<space> dialog-attribute)* '>' (element | content)* '</dialog>'
+        | '<dir' (<space> dir-attribute)* '/>'
+        | '<dir' (<space> dir-attribute)* '>' (element | content)* '</dir>'
+        | '<div' (<space> div-attribute)* '/>'
+        | '<div' (<space> div-attribute)* '>' (element | content)* '</div>'
+        | '<dl' (<space> dl-attribute)* '/>'
+        | '<dl' (<space> dl-attribute)* '>' (element | content)* '</dl>'
+        | '<dt' (<space> dt-attribute)* '/>'
+        | '<dt' (<space> dt-attribute)* '>' (element | content)* '</dt>'
+        | '<element' (<space> element-attribute)* '/>'
+        | '<element' (<space> element-attribute)* '>' (element | content)* '</element>'
+        | '<em' (<space> em-attribute)* '/>'
+        | '<em' (<space> em-attribute)* '>' (element | content)* '</em>'
+        | '<embed' (<space> embed-attribute)* '>'
+        | '<fieldset' (<space> fieldset-attribute)* '/>'
+        | '<fieldset' (<space> fieldset-attribute)* '>' (element | content)* '</fieldset>'
+        | '<figcaption' (<space> figcaption-attribute)* '/>'
+        | '<figcaption' (<space> figcaption-attribute)* '>' (element | content)* '</figcaption>'
+        | '<figure' (<space> figure-attribute)* '/>'
+        | '<figure' (<space> figure-attribute)* '>' (element | content)* '</figure>'
+        | '<font' (<space> font-attribute)* '/>'
+        | '<font' (<space> font-attribute)* '>' (element | content)* '</font>'
+        | '<footer' (<space> footer-attribute)* '/>'
+        | '<footer' (<space> footer-attribute)* '>' (element | content)* '</footer>'
+        | '<form' (<space> form-attribute)* '/>'
+        | '<form' (<space> form-attribute)* '>' (element | content)* '</form>'
+        | '<frame' (<space> frame-attribute)* '/>'
+        | '<frame' (<space> frame-attribute)* '>' (element | content)* '</frame>'
+        | '<frameset' (<space> frameset-attribute)* '/>'
+        | '<frameset' (<space> frameset-attribute)* '>' (element | content)* '</frameset>'
+        | '<h1–h6' (<space> h1–h6-attribute)* '/>'
+        | '<h1–h6' (<space> h1–h6-attribute)* '>' (element | content)* '</h1–h6>'
+        | '<header' (<space> header-attribute)* '/>'
+        | '<header' (<space> header-attribute)* '>' (element | content)* '</header>'
+        | '<hgroup' (<space> hgroup-attribute)* '/>'
+        | '<hgroup' (<space> hgroup-attribute)* '>' (element | content)* '</hgroup>'
+        | '<hr' (<space> hr-attribute)* '>'
+        | '<i' (<space> i-attribute)* '/>'
+        | '<i' (<space> i-attribute)* '>' (element | content)* '</i>'
+        | '<iframe' (<space> iframe-attribute)* '/>'
+        | '<iframe' (<space> iframe-attribute)* '>' (element | content)* '</iframe>'
+        | '<img' (<space> img-attribute)* '>'
+        | '<input' (<space> input-attribute)* '>'
+        | '<ins' (<space> ins-attribute)* '/>'
+        | '<ins' (<space> ins-attribute)* '>' (element | content)* '</ins>'
+        | '<isindex' (<space> isindex-attribute)* '/>'
+        | '<isindex' (<space> isindex-attribute)* '>' (element | content)* '</isindex>'
+        | '<kbd' (<space> kbd-attribute)* '/>'
+        | '<kbd' (<space> kbd-attribute)* '>' (element | content)* '</kbd>'
+        | '<keygen' (<space> keygen-attribute)* '/>'
+        | '<keygen' (<space> keygen-attribute)* '>' (element | content)* '</keygen>'
+        | '<label' (<space> label-attribute)* '/>'
+        | '<label' (<space> label-attribute)* '>' (element | content)* '</label>'
+        | '<legend' (<space> legend-attribute)* '/>'
+        | '<legend' (<space> legend-attribute)* '>' (element | content)* '</legend>'
+        | '<li' (<space> li-attribute)* '/>'
+        | '<li' (<space> li-attribute)* '>' (element | content)* '</li>'
+        | '<link' (<space> link-attribute)* '>'
+        | '<listing' (<space> listing-attribute)* '/>'
+        | '<listing' (<space> listing-attribute)* '>' (element | content)* '</listing>'
+        | '<main' (<space> main-attribute)* '/>'
+        | '<main' (<space> main-attribute)* '>' (element | content)* '</main>'
+        | '<map' (<space> map-attribute)* '/>'
+        | '<map' (<space> map-attribute)* '>' (element | content)* '</map>'
+        | '<mark' (<space> mark-attribute)* '/>'
+        | '<mark' (<space> mark-attribute)* '>' (element | content)* '</mark>'
+        | '<marquee' (<space> marquee-attribute)* '/>'
+        | '<marquee' (<space> marquee-attribute)* '>' (element | content)* '</marquee>'
+        | '<menu' (<space> menu-attribute)* '/>'
+        | '<menu' (<space> menu-attribute)* '>' (element | content)* '</menu>'
+        | '<menuitem' (<space> menuitem-attribute)* '/>'
+        | '<menuitem' (<space> menuitem-attribute)* '>' (element | content)* '</menuitem>'
+        | '<meta' (<space> meta-attribute)* '>'
+        | '<meter' (<space> meter-attribute)* '/>'
+        | '<meter' (<space> meter-attribute)* '>' (element | content)* '</meter>'
+        | '<multicol' (<space> multicol-attribute)* '/>'
+        | '<multicol' (<space> multicol-attribute)* '>' (element | content)* '</multicol>'
+        | '<nav' (<space> nav-attribute)* '/>'
+        | '<nav' (<space> nav-attribute)* '>' (element | content)* '</nav>'
+        | '<nextid' (<space> nextid-attribute)* '/>'
+        | '<nextid' (<space> nextid-attribute)* '>' (element | content)* '</nextid>'
+        | '<noembed' (<space> noembed-attribute)* '/>'
+        | '<noembed' (<space> noembed-attribute)* '>' (element | content)* '</noembed>'
+        | '<noscript' (<space> noscript-attribute)* '/>'
+        | '<noscript' (<space> noscript-attribute)* '>' (element | content)* '</noscript>'
+        | '<object' (<space> object-attribute)* '/>'
+        | '<object' (<space> object-attribute)* '>' (element | content)* '</object>'
+        | '<ol' (<space> ol-attribute)* '/>'
+        | '<ol' (<space> ol-attribute)* '>' (element | content)* '</ol>'
+        | '<optgroup' (<space> optgroup-attribute)* '/>'
+        | '<optgroup' (<space> optgroup-attribute)* '>' (element | content)* '</optgroup>'
+        | '<option' (<space> option-attribute)* '/>'
+        | '<option' (<space> option-attribute)* '>' (element | content)* '</option>'
+        | '<output' (<space> output-attribute)* '/>'
+        | '<output' (<space> output-attribute)* '>' (element | content)* '</output>'
+        | '<p' (<space> p-attribute)* '/>'
+        | '<p' (<space> p-attribute)* '>' (element | content)* '</p>'
+        | '<param' (<space> param-attribute)* '>'
+        | '<plaintext' (<space> plaintext-attribute)* '/>'
+        | '<plaintext' (<space> plaintext-attribute)* '>' (element | content)* '</plaintext>'
+        | '<pre' (<space> pre-attribute)* '/>'
+        | '<pre' (<space> pre-attribute)* '>' (element | content)* '</pre>'
+        | '<progress' (<space> progress-attribute)* '/>'
+        | '<progress' (<space> progress-attribute)* '>' (element | content)* '</progress>'
+        | '<q' (<space> q-attribute)* '/>'
+        | '<q' (<space> q-attribute)* '>' (element | content)* '</q>'
+        | '<rp' (<space> rp-attribute)* '/>'
+        | '<rp' (<space> rp-attribute)* '>' (element | content)* '</rp>'
+        | '<rt' (<space> rt-attribute)* '/>'
+        | '<rt' (<space> rt-attribute)* '>' (element | content)* '</rt>'
+        | '<rtc' (<space> rtc-attribute)* '/>'
+        | '<rtc' (<space> rtc-attribute)* '>' (element | content)* '</rtc>'
+        | '<ruby' (<space> ruby-attribute)* '/>'
+        | '<ruby' (<space> ruby-attribute)* '>' (element | content)* '</ruby>'
+        | '<s' (<space> s-attribute)* '/>'
+        | '<s' (<space> s-attribute)* '>' (element | content)* '</s>'
+        | '<samp' (<space> samp-attribute)* '/>'
+        | '<samp' (<space> samp-attribute)* '>' (element | content)* '</samp>'
+        | '<script' (<space> script-attribute)* '/>'
+        | '<script' (<space> script-attribute)* '>' (element | content)* '</script>'
+        | '<section' (<space> section-attribute)* '/>'
+        | '<section' (<space> section-attribute)* '>' (element | content)* '</section>'
+        | '<select' (<space> select-attribute)* '/>'
+        | '<select' (<space> select-attribute)* '>' (element | content)* '</select>'
+        | '<shadow' (<space> shadow-attribute)* '/>'
+        | '<shadow' (<space> shadow-attribute)* '>' (element | content)* '</shadow>'
+        | '<slot' (<space> slot-attribute)* '/>'
+        | '<slot' (<space> slot-attribute)* '>' (element | content)* '</slot>'
+        | '<small' (<space> small-attribute)* '/>'
+        | '<small' (<space> small-attribute)* '>' (element | content)* '</small>'
+        | '<source' (<space> source-attribute)* '>'
+        | '<spacer' (<space> spacer-attribute)* '/>'
+        | '<spacer' (<space> spacer-attribute)* '>' (element | content)* '</spacer>'
+        | '<span' (<space> span-attribute)* '/>'
+        | '<span' (<space> span-attribute)* '>' (element | content)* '</span>'
+        | '<strike' (<space> strike-attribute)* '/>'
+        | '<strike' (<space> strike-attribute)* '>' (element | content)* '</strike>'
+        | '<strong' (<space> strong-attribute)* '/>'
+        | '<strong' (<space> strong-attribute)* '>' (element | content)* '</strong>'
+        | '<style' (<space> style-attribute)* '/>'
+        | '<style' (<space> style-attribute)* '>' (element | content)* '</style>'
+        | '<sub' (<space> sub-attribute)* '/>'
+        | '<sub' (<space> sub-attribute)* '>' (element | content)* '</sub>'
+        | '<summary' (<space> summary-attribute)* '/>'
+        | '<summary' (<space> summary-attribute)* '>' (element | content)* '</summary>'
+        | '<sup' (<space> sup-attribute)* '/>'
+        | '<sup' (<space> sup-attribute)* '>' (element | content)* '</sup>'
+        | '<table' (<space> table-attribute)* '/>'
+        | '<table' (<space> table-attribute)* '>' (element | content)* '</table>'
+        | '<tbody' (<space> tbody-attribute)* '/>'
+        | '<tbody' (<space> tbody-attribute)* '>' (element | content)* '</tbody>'
+        | '<td' (<space> td-attribute)* '/>'
+        | '<td' (<space> td-attribute)* '>' (element | content)* '</td>'
+        | '<template' (<space> template-attribute)* '/>'
+        | '<template' (<space> template-attribute)* '>' (element | content)* '</template>'
+        | '<textarea' (<space> textarea-attribute)* '/>'
+        | '<textarea' (<space> textarea-attribute)* '>' (element | content)* '</textarea>'
+        | '<tfoot' (<space> tfoot-attribute)* '/>'
+        | '<tfoot' (<space> tfoot-attribute)* '>' (element | content)* '</tfoot>'
+        | '<th' (<space> th-attribute)* '/>'
+        | '<th' (<space> th-attribute)* '>' (element | content)* '</th>'
+        | '<thead' (<space> thead-attribute)* '/>'
+        | '<thead' (<space> thead-attribute)* '>' (element | content)* '</thead>'
+        | '<time' (<space> time-attribute)* '/>'
+        | '<time' (<space> time-attribute)* '>' (element | content)* '</time>'
+        | '<tr' (<space> tr-attribute)* '/>'
+        | '<tr' (<space> tr-attribute)* '>' (element | content)* '</tr>'
+        | '<track' (<space> track-attribute)* '>'
+        | '<tt' (<space> tt-attribute)* '/>'
+        | '<tt' (<space> tt-attribute)* '>' (element | content)* '</tt>'
+        | '<u' (<space> u-attribute)* '/>'
+        | '<u' (<space> u-attribute)* '>' (element | content)* '</u>'
+        | '<ul' (<space> ul-attribute)* '/>'
+        | '<ul' (<space> ul-attribute)* '>' (element | content)* '</ul>'
+        | '<var' (<space> var-attribute)* '/>'
+        | '<var' (<space> var-attribute)* '>' (element | content)* '</var>'
+        | '<video' (<space> video-attribute)* '/>'
+        | '<video' (<space> video-attribute)* '>' (element | content)* '</video>'
+        | '<wbr' (<space> wbr-attribute)* '>'
+        | '<xmp' (<space> xmp-attribute)* '/>'
+        | '<xmp' (<space> xmp-attribute)* '>' (element | content)* '</xmp>'
 
 global-attribute = 'accesskey="' attr-val-accesskey '"'
                  | 'class="' attr-val-class '"'

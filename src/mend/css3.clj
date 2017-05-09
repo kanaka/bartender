@@ -21,8 +21,8 @@
 ;; https://github.com/csstree/csstree/
 ;; https://csstree.github.io/docs/syntax.html
 
-(def css3-properties (json/read-str (slurp "mdn_data/css/properties.json")))
-(def css3-syntaxes (json/read-str (slurp "mdn_data/css/syntaxes.json")))
+(def CSS3-PROPERTIES "mdn_data/css/properties.json")
+(def CSS3-SYNTAXES "mdn_data/css/syntaxes.json")
 
 (def css3-syntax-parser (insta/parser (slurp "data/css-pvs.ebnf")))
 
@@ -69,7 +69,7 @@
                :else
                [k v]))))
 
-(defn pvs [properties syntaxes]
+(defn pvs-all [properties syntaxes]
   (let [props (filter-css-properties properties)
         syns (mangle-css-syntaxes syntaxes)
         ps (for [[prop {:strs [syntax]}] (sort props)]
@@ -79,7 +79,8 @@
     (apply str (concat ps ss))))
 
 (comment
-  (spit "data/css3.pvs" (pvs css3-properties css3-syntaxes))
+  (spit "data/css3.pvs" (pvs-all (json/read-str (slurp CSS3-PROPERTIES))
+                                 (json/read-str (slurp CSS3-SYNTAXES))))
 )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -489,9 +490,9 @@ nonprop-y = \"11\" ;
 (defn grammar->ns
   [ctx grammar]
   (str (ns-prefix ctx)
-       (ebnf/grammar->generator-defs-source ctx grammar)))
-
-
+       (if (:function ctx)
+         (ebnf/grammar->generator-func-source ctx grammar)
+         (ebnf/grammar->generator-defs-source ctx grammar))))
 
 (def cli-options
   (vec
@@ -503,20 +504,26 @@ nonprop-y = \"11\" ;
         "Path for storing copy of full PVS syntax file"
         :default "./data/css3.pvs"]
        [nil "--ebnf-output EBNF-OUTPUT"
-        "Write intermediate EBNF to file"]])))
+        "Write intermediate EBNF to file"]
+       [nil "--function FUNCTION"
+        "Emit a function named FUNCTION which returns a generator rather than a defn for every generator"]])))
 
 (defn opt-errors [opts]
   (when (:errors opts)
-    (map pr-err (:errors opts))
+    (doall (map pr-err (:errors opts)))
     (System/exit 2))
   opts)
 
 (defn css3-ns [opts]
   (let [ctx (merge {:weights-res (atom {})}
-                   (select-keys opts [:namespace :weights]))
+                   (select-keys opts [:namespace
+                                      :weights :function]))
 
-        _ (pr-err "Generating full CSS PVS grammar")
-        pvs-text (pvs css3-properties css3-syntaxes)
+        _ (pr-err "Generating full CSS PVS grammar from files:"
+                  CSS3-PROPERTIES CSS3-SYNTAXES)
+        css3-properties (json/read-str (slurp CSS3-PROPERTIES))
+        css3-syntaxes (json/read-str (slurp CSS3-SYNTAXES))
+        pvs-text (pvs-all css3-properties css3-syntaxes)
 
         _ (pr-err "Loading CSS PVS grammar")
         css-tree (css3-syntax-parser pvs-text)
@@ -529,7 +536,7 @@ nonprop-y = \"11\" ;
         ;; The following takes 5 seconds
         css3-grammar (ebnf/load-grammar css3-ebnf-str)
 
-        _ (pr-err "Converting CSS grammar to generators")
+        _ (pr-err "Converting CSS grammar to source")
         ;; The following takes 14+ seconds
         ns-str (grammar->ns ctx css3-grammar)]
 
@@ -557,7 +564,7 @@ nonprop-y = \"11\" ;
     (println (css3-ns opts))))
 
 (comment
-  ;; time lein with-profile css3 run --namespace rend.css3-generators --weights data/css3-weights.edn --weights-output data/css3-weights-output.edn --pvs-output data/css3.pvs --ebnf-output data/css3.ebnf > src/rend/css3_generators.clj
+  ;; time lein with-profile css3 run --namespace rend.css3-generators --weights data/css3-weights.edn --weights-output data/css3-weights-output.edn --pvs-output data/css3.pvs --ebnf-output data/css3.ebnf --function css3-generators > src/rend/css3_generators.clj
 
   (require '[mend.css3-generators :as css3-gen] :reload)
   (pprint (gen/sample css3-gen/gen-css-assignments 10))
