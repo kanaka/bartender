@@ -3,6 +3,7 @@
             [clojure.java.io :refer [as-file]]
             [clojure.walk :as walk]
             [clojure.edn :as edn]
+            [com.rpl.specter :refer [setval]]
 
             [clojure.java.io :as io]
             [clojure.tools.cli :refer [parse-opts]]
@@ -210,6 +211,19 @@
   (into {} (for [[k rule] grammar]
              [k (prune-rule-recursion k rule)])))
 
+(defn apply-grammar-updates
+  "Replace the generators in the grammar as defined by the list of
+  {:path PATH :value VALUE} maps in grammar-updates. Find each :path
+  in a grammar and replace it with :value (using specter's setval).
+  This allows us to replace generators in the grammar with references
+  to other generators (such as real generators from a Clojure
+  namespace)."
+  [grammar grammar-updates]
+  (reduce (fn [g {:keys [path value]}]
+            (setval path value g))
+          grammar grammar-updates))
+
+
 ;;;;;;
 
 (defn- gen-rule-body
@@ -250,7 +264,8 @@
   rule. Only the start rule flattens the generated values into a final
   string."
   [{:keys [start] :as ctx} grammar]
-  (let [ordered-rules (check-and-order-rules grammar)
+  (let [grammar (apply-grammar-updates grammar (:grammar-updates ctx))
+        ordered-rules (check-and-order-rules grammar)
         start (or start (:start (meta grammar)))]
     (string/join
       "\n\n"
@@ -270,7 +285,8 @@
   generators (indexed by rule-name keyword)."
   [{:keys [function] :as ctx} grammar]
   (assert function "No function name specified")
-  (let [ordered-rules (check-and-order-rules grammar)
+  (let [grammar (apply-grammar-updates grammar (:grammar-updates ctx))
+        ordered-rules (check-and-order-rules grammar)
         partitioned-rules (map-indexed #(vector %1 %2)
                                        (partition-all RULES-PER-FUNC
                                                       ordered-rules))
@@ -486,7 +502,7 @@
                                      (:options cmd-opts))))
         ctx (merge (select-keys opts [:debug :verbose :start
                                       :namespace :function :weights
-                                      :sample-dir])
+                                      :sample-dir :grammar-updates])
                    {:weights-res (atom {})})
         ebnf-grammar (load-grammar (slurp ebnf))
 

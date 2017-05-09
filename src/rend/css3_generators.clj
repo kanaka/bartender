@@ -45,25 +45,19 @@
         gmap (assoc gmap :nonprop-single-animation-direction gen-nonprop-single-animation-direction)
 
         gen-nonprop-integer
-        (gen/tuple
-          (gen/one-of [
-            (gen/return "")
-            (gen/return "-")])
-          (chuck/string-from-regex #"[0-9]+"))
+        gen/int
         gmap (assoc gmap :nonprop-integer gen-nonprop-integer)
+
+        gen-number-float
+        gen/double
+        gmap (assoc gmap :number-float gen-number-float)
 
         gen-nonprop-number
         (gen/frequency [
           [(get weights [:nonprop-number :alt 0] 100)
             (:nonprop-integer gmap)]
           [(get weights [:nonprop-number :alt 1] 100)
-            (gen/tuple
-              (gen/one-of [
-                (gen/return "")
-                (gen/return "-")])
-              (chuck/string-from-regex #"[0-9]+")
-              (gen/return ".")
-              (chuck/string-from-regex #"[0-9]+"))]])
+            (:number-float gmap)]])
         gmap (assoc gmap :nonprop-number gen-nonprop-number)
 
         gen-nonprop-angle
@@ -1499,8 +1493,11 @@
 
         gen-nonprop-flex
         (:prop-flex gmap)
-        gmap (assoc gmap :nonprop-flex gen-nonprop-flex)
+        gmap (assoc gmap :nonprop-flex gen-nonprop-flex)]
+    gmap))
 
+(defn- css3-generators-part-1 [gmap weights]
+  (let [
         gen-nonprop-track-breadth
         (gen/frequency [
           [(get weights [:nonprop-track-breadth :alt 0] 100)
@@ -1523,11 +1520,8 @@
             (gen/tuple
               (gen/return "auto")
               (gen/return " "))]])
-        gmap (assoc gmap :nonprop-track-breadth gen-nonprop-track-breadth)]
-    gmap))
+        gmap (assoc gmap :nonprop-track-breadth gen-nonprop-track-breadth)
 
-(defn- css3-generators-part-1 [gmap weights]
-  (let [
         gen-nonprop-fixed-breadth
         (gen/tuple
           (:nonprop-length-percentage gmap)
@@ -1600,7 +1594,7 @@
         gmap (assoc gmap :nonprop-custom-ident gen-nonprop-custom-ident)
 
         gen-nonprop-positive-integer
-        (chuck/string-from-regex #"[0-9]+")
+        gen/pos-int
         gmap (assoc gmap :nonprop-positive-integer gen-nonprop-positive-integer)
 
         gen-nonprop-line-names
@@ -2401,8 +2395,11 @@
                 (:nonprop-length-percentage gmap)
                 (:nonprop-length-percentage gmap))
               (gen/return " "))]])
-        gmap (assoc gmap :nonprop-size gen-nonprop-size)
+        gmap (assoc gmap :nonprop-size gen-nonprop-size)]
+    gmap))
 
+(defn- css3-generators-part-2 [gmap weights]
+  (let [
         gen-nonprop-color-stop
         (gen/tuple
           (:nonprop-color gmap)
@@ -2411,11 +2408,8 @@
             (gen/return "")
             (:nonprop-length-percentage gmap)])
           (gen/return " "))
-        gmap (assoc gmap :nonprop-color-stop gen-nonprop-color-stop)]
-    gmap))
+        gmap (assoc gmap :nonprop-color-stop gen-nonprop-color-stop)
 
-(defn- css3-generators-part-2 [gmap weights]
-  (let [
         gen-nonprop-color-stop-list
         (gen/tuple
           (gen/tuple
@@ -3407,8 +3401,11 @@
               (gen/return " ")
               (gen/return ")")
               (gen/return " "))]])
-        gmap (assoc gmap :func-leader gen-func-leader)
+        gmap (assoc gmap :func-leader gen-func-leader)]
+    gmap))
 
+(defn- css3-generators-part-3 [gmap weights]
+  (let [
         gen-nonprop-grid-line
         (gen/frequency [
           [(get weights [:nonprop-grid-line :alt 0] 100)
@@ -3446,11 +3443,8 @@
                         (gen/return " "))]])))
                 (gen/return " "))
               (gen/return " "))]])
-        gmap (assoc gmap :nonprop-grid-line gen-nonprop-grid-line)]
-    gmap))
+        gmap (assoc gmap :nonprop-grid-line gen-nonprop-grid-line)
 
-(defn- css3-generators-part-3 [gmap weights]
-  (let [
         gen-prop-grid-row-end
         (gen/tuple
           (:nonprop-grid-line gmap)
@@ -4046,8 +4040,11 @@
             (gen/return "")
             (:nonprop-line-names gmap)])
           (gen/return " "))
-        gmap (assoc gmap :nonprop-explicit-track-list gen-nonprop-explicit-track-list)
+        gmap (assoc gmap :nonprop-explicit-track-list gen-nonprop-explicit-track-list)]
+    gmap))
 
+(defn- css3-generators-part-4 [gmap weights]
+  (let [
         gen-prop-grid-template
         (gen/frequency [
           [(get weights [:prop-grid-template :alt 0] 100)
@@ -4091,11 +4088,8 @@
                   (:nonprop-explicit-track-list gmap)
                   (gen/return " "))])
               (gen/return " "))]])
-        gmap (assoc gmap :prop-grid-template gen-prop-grid-template)]
-    gmap))
+        gmap (assoc gmap :prop-grid-template gen-prop-grid-template)
 
-(defn- css3-generators-part-4 [gmap weights]
-  (let [
         gen-prop-outline-color
         (gen/frequency [
           [(get weights [:prop-outline-color :alt 0] 100)
@@ -4950,8 +4944,11 @@
               (gen/return " ")
               (gen/return ")")
               (gen/return " "))]])
-        gmap (assoc gmap :prop-scroll-snap-points-y gen-prop-scroll-snap-points-y)
+        gmap (assoc gmap :prop-scroll-snap-points-y gen-prop-scroll-snap-points-y)]
+    gmap))
 
+(defn- css3-generators-part-5 [gmap weights]
+  (let [
         gen-prop-user-select
         (gen/frequency [
           [(get weights [:prop-user-select :alt 0] 100)
@@ -4974,11 +4971,8 @@
             (gen/tuple
               (gen/return "all")
               (gen/return " "))]])
-        gmap (assoc gmap :prop-user-select gen-prop-user-select)]
-    gmap))
+        gmap (assoc gmap :prop-user-select gen-prop-user-select)
 
-(defn- css3-generators-part-5 [gmap weights]
-  (let [
         gen-prop-border-block-start
         (gen/such-that not-empty (gen/vector
           (gen/frequency [
@@ -5941,17 +5935,17 @@
               (gen/tuple
                 (:nonprop-color gmap)
                 (gen/return " "))]])))
-        gmap (assoc gmap :prop-border-inline-start gen-prop-border-inline-start)
-
-        gen-prop-border-right-width
-        (gen/tuple
-          (:nonprop-br-width gmap)
-          (gen/return " "))
-        gmap (assoc gmap :prop-border-right-width gen-prop-border-right-width)]
+        gmap (assoc gmap :prop-border-inline-start gen-prop-border-inline-start)]
     gmap))
 
 (defn- css3-generators-part-6 [gmap weights]
   (let [
+        gen-prop-border-right-width
+        (gen/tuple
+          (:nonprop-br-width gmap)
+          (gen/return " "))
+        gmap (assoc gmap :prop-border-right-width gen-prop-border-right-width)
+
         gen-nonprop-east-asian-width-values
         (gen/tuple
           (gen/frequency [
@@ -6678,15 +6672,15 @@
                     (:nonprop-length-percentage gmap))]])
               (gen/return " "))])
           (gen/return " "))
-        gmap (assoc gmap :prop-border-radius gen-prop-border-radius)
-
-        gen-nonprop-border-radius
-        (:prop-border-radius gmap)
-        gmap (assoc gmap :nonprop-border-radius gen-nonprop-border-radius)]
+        gmap (assoc gmap :prop-border-radius gen-prop-border-radius)]
     gmap))
 
 (defn- css3-generators-part-7 [gmap weights]
   (let [
+        gen-nonprop-border-radius
+        (:prop-border-radius gmap)
+        gmap (assoc gmap :nonprop-border-radius gen-nonprop-border-radius)
+
         gen-nonprop-fill-rule
         (gen/frequency [
           [(get weights [:nonprop-fill-rule :alt 0] 100)
@@ -7590,8 +7584,11 @@
             (gen/tuple
               (gen/return "stretch-to-fit")
               (gen/return " "))]])
-        gmap (assoc gmap :prop--moz-stack-sizing gen-prop--moz-stack-sizing)
+        gmap (assoc gmap :prop--moz-stack-sizing gen-prop--moz-stack-sizing)]
+    gmap))
 
+(defn- css3-generators-part-8 [gmap weights]
+  (let [
         gen-prop-letter-spacing
         (gen/frequency [
           [(get weights [:prop-letter-spacing :alt 0] 100)
@@ -7602,11 +7599,8 @@
             (gen/tuple
               (:nonprop-length gmap)
               (gen/return " "))]])
-        gmap (assoc gmap :prop-letter-spacing gen-prop-letter-spacing)]
-    gmap))
+        gmap (assoc gmap :prop-letter-spacing gen-prop-letter-spacing)
 
-(defn- css3-generators-part-8 [gmap weights]
-  (let [
         gen-nonprop-clip-style
         (gen/return "STUB_clip_style")
         gmap (assoc gmap :nonprop-clip-style gen-nonprop-clip-style)
@@ -8479,15 +8473,15 @@
         (gen/tuple
           (:nonprop-color gmap)
           (gen/return " "))
-        gmap (assoc gmap :prop-border-bottom-color gen-prop-border-bottom-color)
-
-        gen-nonprop-list-style-image
-        (:prop-list-style-image gmap)
-        gmap (assoc gmap :nonprop-list-style-image gen-nonprop-list-style-image)]
+        gmap (assoc gmap :prop-border-bottom-color gen-prop-border-bottom-color)]
     gmap))
 
 (defn- css3-generators-part-9 [gmap weights]
   (let [
+        gen-nonprop-list-style-image
+        (:prop-list-style-image gmap)
+        gmap (assoc gmap :nonprop-list-style-image gen-nonprop-list-style-image)
+
         gen-prop-list-style
         (gen/such-that not-empty (gen/vector
           (gen/frequency [
@@ -9370,8 +9364,11 @@
             (gen/tuple
               (:nonprop-number gmap)
               (gen/return " "))]])
-        gmap (assoc gmap :nonprop-single-animation-iteration-count gen-nonprop-single-animation-iteration-count)
+        gmap (assoc gmap :nonprop-single-animation-iteration-count gen-nonprop-single-animation-iteration-count)]
+    gmap))
 
+(defn- css3-generators-part-10 [gmap weights]
+  (let [
         gen-nonprop-single-animation
         (gen/such-that not-empty (gen/vector
           (gen/frequency [
@@ -9415,11 +9412,8 @@
                       (:nonprop-keyframes-name gmap)
                       (gen/return " "))]])
                 (gen/return " "))]])))
-        gmap (assoc gmap :nonprop-single-animation gen-nonprop-single-animation)]
-    gmap))
+        gmap (assoc gmap :nonprop-single-animation gen-nonprop-single-animation)
 
-(defn- css3-generators-part-10 [gmap weights]
-  (let [
         gen-prop-grid-column-start
         (gen/tuple
           (:nonprop-grid-line gmap)
@@ -10964,8 +10958,11 @@
         (gen/tuple
           (:nonprop-position gmap)
           (gen/return " "))
-        gmap (assoc gmap :prop-object-position gen-prop-object-position)
+        gmap (assoc gmap :prop-object-position gen-prop-object-position)]
+    gmap))
 
+(defn- css3-generators-part-11 [gmap weights]
+  (let [
         gen-prop-writing-mode
         (gen/frequency [
           [(get weights [:prop-writing-mode :alt 0] 100)
@@ -10988,11 +10985,8 @@
             (gen/tuple
               (gen/return "sideways-lr")
               (gen/return " "))]])
-        gmap (assoc gmap :prop-writing-mode gen-prop-writing-mode)]
-    gmap))
+        gmap (assoc gmap :prop-writing-mode gen-prop-writing-mode)
 
-(defn- css3-generators-part-11 [gmap weights]
-  (let [
         gen-prop-overflow-y
         (gen/frequency [
           [(get weights [:prop-overflow-y :alt 0] 100)
@@ -11917,8 +11911,11 @@
             (gen/tuple
               (gen/return "none")
               (gen/return " "))]])
-        gmap (assoc gmap :nonprop-display-box gen-nonprop-display-box)
+        gmap (assoc gmap :nonprop-display-box gen-nonprop-display-box)]
+    gmap))
 
+(defn- css3-generators-part-12 [gmap weights]
+  (let [
         gen-prop-display
         (gen/frequency [
           [(get weights [:prop-display :alt 0] 100)
@@ -11950,11 +11947,8 @@
             (gen/tuple
               (:nonprop-display-legacy gmap)
               (gen/return " "))]])
-        gmap (assoc gmap :prop-display gen-prop-display)]
-    gmap))
+        gmap (assoc gmap :prop-display gen-prop-display)
 
-(defn- css3-generators-part-12 [gmap weights]
-  (let [
         gen-prop-isolation
         (gen/frequency [
           [(get weights [:prop-isolation :alt 0] 100)

@@ -5929,7 +5929,7 @@ nonprop-frequency = nonprop-number ( 'Hz' | 'kHz' ) ;
 (* nonprop-image = ; *)
 nonprop-integer = '-'? #'[0-9]+' ;
 nonprop-length = nonprop-number nonprop-length-unit ;
-nonprop-number = nonprop-integer | '-'? #'[0-9]+' '.' #'[0-9]+' ;
+nonprop-number = nonprop-integer | number-float ;
 nonprop-percentage = nonprop-number '%' ;
 (* nonprop-position = ; *)
 nonprop-ratio = nonprop-positive-integer '/' nonprop-positive-integer ;
@@ -5945,6 +5945,7 @@ nonprop-url = 'url(http://STUB_DOMAIN.com/STUB_PATH/STUB_IMAGE=.png)' ;
 (* Convenenience rules for types above *)
 
 nonprop-positive-integer = #'[0-9]+' ;
+number-float = '-'? #'[0-9]+' '.' #'[0-9]+' ;
 nonprop-length-unit = 'em' | 'ex' | 'ch' | 'ic' | 'rem' | 'lh' | 'rlh'
                     | 'vh' | 'vw' | 'vi' | 'vb' | 'vmin' | 'vmax'
                     | 'px' | 'mm' | 'q' | 'cm' | 'in' |  'pt' | 'pc' | 'mozmm' ;

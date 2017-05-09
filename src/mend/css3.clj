@@ -26,6 +26,20 @@
 
 (def css3-syntax-parser (insta/parser (slurp "data/css-pvs.ebnf")))
 
+;; Find each :path in a grammar and replace it with :value
+;; This allows us to replace stub generators in the grammar with
+;; references to generators in a different namespace as just one
+;; example.
+(def grammar-updates
+  [;; Replace regex number generators with actual numeric/sized types
+   {:path [:nonprop-integer]
+    :value {:tag :nt :keyword :gen/int}}
+   {:path [:nonprop-positive-integer]
+    :value {:tag :nt :keyword :gen/pos-int}}
+   {:path [:number-float]
+    :value {:tag :nt :keyword :gen/double}}])
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defn pr-err
@@ -135,7 +149,7 @@ nonprop-frequency = nonprop-number ( 'Hz' | 'kHz' ) ;
 (* nonprop-image = ; *)
 nonprop-integer = '-'? #'[0-9]+' ;
 nonprop-length = nonprop-number nonprop-length-unit ;
-nonprop-number = nonprop-integer | '-'? #'[0-9]+' '.' #'[0-9]+' ;
+nonprop-number = nonprop-integer | number-float ;
 nonprop-percentage = nonprop-number '%' ;
 (* nonprop-position = ; *)
 nonprop-ratio = nonprop-positive-integer '/' nonprop-positive-integer ;
@@ -151,6 +165,7 @@ nonprop-url = 'url(http://STUB_DOMAIN.com/STUB_PATH/STUB_IMAGE=.png)' ;
 (* Convenenience rules for types above *)
 
 nonprop-positive-integer = #'[0-9]+' ;
+number-float = '-'? #'[0-9]+' '.' #'[0-9]+' ;
 nonprop-length-unit = 'em' | 'ex' | 'ch' | 'ic' | 'rem' | 'lh' | 'rlh'
                     | 'vh' | 'vw' | 'vi' | 'vb' | 'vmin' | 'vmax'
                     | 'px' | 'mm' | 'q' | 'cm' | 'in' |  'pt' | 'pc' | 'mozmm' ;
@@ -515,7 +530,8 @@ nonprop-y = \"11\" ;
   opts)
 
 (defn css3-ns [opts]
-  (let [ctx (merge {:weights-res (atom {})}
+  (let [ctx (merge {:weights-res (atom {})
+                    :grammar-updates grammar-updates}
                    (select-keys opts [:namespace
                                       :weights :function]))
 

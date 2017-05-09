@@ -3,7 +3,7 @@
             [clojure.data.json :as json]
             [clojure.string :as string]
             [mend.ebnf :as ebnf]
-            [com.rpl.specter :refer [transform setval srange nthpath]]
+            [com.rpl.specter :refer [nthpath]]
 
             [clojure.tools.cli :refer [parse-opts]]
 
@@ -182,13 +182,6 @@ body = <'<'> 'body style=\"background: #1289ef; font: 25px/1 Ahem\"' (<space> bo
     (slurp HTML5-EBNF-ATTR-VALS)))
 
 
-(defn apply-grammar-updates
-  "Replace the stub CSS value generator with real one."
-  [grammar]
-  (reduce (fn [g {:keys [path value]}]
-            (setval path value g))
-          grammar grammar-updates))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defn ns-prefix [ctx]
@@ -206,11 +199,10 @@ body = <'<'> 'body style=\"background: #1289ef; font: 25px/1 Ahem\"' (<space> bo
 
 (defn grammar->ns
   [ctx grammar]
-  (let [g (apply-grammar-updates grammar)]
-    (str (ns-prefix ctx)
-         (if (:function ctx)
-           (ebnf/grammar->generator-func-source ctx g)
-           (ebnf/grammar->generator-defs-source ctx g)))))
+  (str (ns-prefix ctx)
+       (if (:function ctx)
+         (ebnf/grammar->generator-func-source ctx grammar)
+         (ebnf/grammar->generator-defs-source ctx grammar))))
 
 (def cli-options
   (vec
@@ -230,7 +222,8 @@ body = <'<'> 'body style=\"background: #1289ef; font: 25px/1 Ahem\"' (<space> bo
   opts)
 
 (defn html5-ns [opts]
-  (let [ctx (merge {:weights-res (atom {})}
+  (let [ctx (merge {:weights-res (atom {})
+                    :grammar-updates grammar-updates}
                    (select-keys opts [:namespace :css-namespace
                                       :weights :function]))
 
