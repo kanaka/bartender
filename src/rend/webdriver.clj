@@ -33,7 +33,12 @@
         (throw (Exception. error))
         (throw (Exception. body)))
       (let [session (json/read-str body :key-fn keyword)]
-        (swap! browser-state assoc browser session)))))
+        (prn :browser browser :session session)
+        (swap! browser-state assoc browser
+               (cond (-> session :sessionId) session
+                     (-> session :value :sessionId) (:value session)
+                     true (throw (Exception.
+                                   "No :sessionId in response"))))))))
 
 (defn init-session [browser desired]
   (let [sessions @browser-state
