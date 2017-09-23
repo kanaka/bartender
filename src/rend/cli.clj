@@ -1,5 +1,7 @@
 (ns rend.cli
-  (:require [mend.check]
+  (:require [clojure.tools.cli :refer [parse-opts summarize]]
+
+            [mend.check]
             [rend.generator]
             [rend.image :as image]
             [rend.html]
@@ -163,27 +165,52 @@
               (reset! webdriver/browser-state
                       (edn/read-string (slurp file)))))))
 
+
+;----
+
+(defn deep-merge [a b]
+  (merge-with (fn [x y] (if (map? y) (deep-merge x y) y))
+              a b))
+
+(def cli-options
+  [["-S" "--sessions SESSIONS" "Browser sessions file (edn)"
+    :default "sessions.edn"]
+   ["-s" "--seed SEED" "Test random seed (overrides config file)"
+    :parse-fn #(Integer. %)]])
+
+(defn usage [data]
+  (println "Usage: rend [OPTIONS] config.yaml")
+  (println (summarize data)))
+
+(defn pr-err [& args] (binding [*out* *err*] (apply println args)))
+
+(defn opt-errors [opts]
+  (when (:errors opts)
+    (doall (map pr-err (:errors opts)))
+    (System/exit 2))
+  opts)
+
 (defn -main [& argv]
-  (when (= 0 (count argv))
-    (println "Usage: rend config.yaml [sessions.edn]")
-    (System/exit 0))
-  (let [cfg-file (first argv)
-        session-file (second argv)
-        cfg (yaml/parse-string (slurp cfg-file))
+  (let [{:keys [options arguments]} (opt-errors (parse-opts argv cli-options
+                                                            :summary-fn usage))
+        cfg-file (first arguments)
+        sessions-file (:sessions options)
+        cfg (deep-merge (yaml/parse-string (slurp cfg-file))
+                        (if (:seed options)
+                          {:quick-check {:seed (:seed options)}}))
+        _ (do (println "Configuration:") (pprint cfg))
         id (rand-int 100000)
-        test-dir (str (-> cfg :web :dir) "/" id)
+        test-dir (str (-> cfg :web :dir) "/" id "-" (-> cfg :quick-check :seed))
+        _ (println "Test dir: " test-dir)
         weights (when (:weights cfg)
                   (edn/read-string (slurp (:weights cfg))))]
-    (println "Test ID" id)
-    (when session-file
-      (println "Loading session data")
-      (load-sessions session-file))
-    (println "Configuration:")
-    (pprint cfg)
+    (when (.exists (io/as-file sessions-file))
+      (println "Loading sessions state from " sessions-file)
+      (load-sessions sessions-file))
     (rend.server/start-server cfg)
     (doseq [browser (:browsers cfg)]
       (println "Initializing browser session to:" browser)
-      (spit session-file (prn-str (webdriver/init-session browser {}))))
+      (spit sessions-file (prn-str (webdriver/init-session browser {}))))
 
     (reset! check-page-state {:index 0
                               :id id

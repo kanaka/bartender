@@ -26,7 +26,9 @@
 
                  ;; Installed with localrepo by running `make deps`
                  [opencv/opencv "2.4.9"]
-                 [opencv/opencv-native "2.4.9"]]
+                 [opencv/opencv-native "2.4.9"]
+
+                 [org.clojure/tools.cli "0.3.5"]]
 
   :source-paths ["src"]
 
