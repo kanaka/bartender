@@ -6025,7 +6025,7 @@
         gen-body
         (gen/tuple
           (gen/return "<")
-          (gen/return "body style=\"background: #1289ef; font: 25px/1 Ahem\"")
+          (gen/return "body style=\"background: #1289af; font: 25px/1 Ahem\"")
           (gen/vector
             (gen/tuple
               (:space gmap)
