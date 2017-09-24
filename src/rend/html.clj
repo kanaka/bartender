@@ -71,9 +71,11 @@
     var thumb_display = 'none',
         tlink_display = 'none';
     if (toggleb.value === 'Show Thumbnails') {
+      history.pushState(null, null, '#thumbs')
       toggleb.value = 'Hide Thumbnails'
       thumb_display = 'inline';
     } else {
+      history.pushState(null, null, '#')
       toggleb.value = 'Show Thumbnails'
       tlink_display = 'inline';
     }
@@ -83,7 +85,11 @@
     for (var x of document.getElementsByClassName('tlink')) {
       x.style.display = tlink_display;
     }
-  }")
+  }
+  if (location.hash.indexOf('thumbs') > -1) {
+    toggle_thumbs()
+  }
+")
 
 ;; Generate an HTML index page for the current test results
 (defn render-report [cfg state]
