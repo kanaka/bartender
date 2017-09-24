@@ -27,7 +27,11 @@ attribute-value = <'"'> (#'[A-Za-z0-9_<>/\\ .]*' | reference)* <'"'>
 (*
 char-data = #'[^<&]'* !(#'[^<&]'* ']]>' #'[^<&]'* )
 *)
+(*
 char-data = #'[A-Za-z0-9_<>/\\ .]*'
+*)
+(* Just include the Ahem glyphs that render differently *)
+char-data = ' ' | 'p' | '&#x00c9;' | 'X'
 
 reference     = entity-ref
               | char-ref-dec
