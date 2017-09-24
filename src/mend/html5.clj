@@ -100,15 +100,17 @@
 (defn ebnf-tag-rhs
   [tag-name]
   (if (void-tags tag-name)
-    [;; void tag (no end-tag)
+    [;; void tag (no end tag)
      (str "'<" tag-name "' "
           "(<space> " tag-name "-attribute)* "
-          "'>'")]
-    [;; empty tag (i.e. <tag ... />)
-     (str "'<" tag-name "' "
-          "(<space> " tag-name "-attribute)* "
-          "'/>'")
-     ;; full tag (i.e. <tag ...> ... </tag>)
+          "'>'")
+;; For now don't emit self-closing void elements
+;;     ;; void tag (self-closing mark is allowed)
+;;     (str "'<" tag-name "' "
+;;          "(<space> " tag-name "-attribute)* "
+;;          "'/>'")
+     ]
+    [;; normal tag (i.e. <tag ...> ... </tag>)
      (str "'<" tag-name "' "
           "(<space> " tag-name "-attribute)* "
           "'>' (element | content)* "
@@ -166,7 +168,7 @@ head = <'<'> 'head' <opt-space> <'>'> title? <'</'> 'head' <opt-space> <'>'> <op
 
 title = <'<'> 'title' (<space> title-attribute)* <opt-space> <'>'> content* <'</'> 'title' <opt-space> <'>'> <opt-space>
 
-body = <'<'> 'body style=\"background: #1289ef; font: 25px/1 Ahem\"' (<space> body-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'body' <opt-space> <'>'> <opt-space>
+body = <'<'> 'body style=\"background: #1289af; font: 25px/1 Ahem\"' (<space> body-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'body' <opt-space> <'>'> <opt-space>
 
 
 ")

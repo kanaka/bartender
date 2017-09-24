@@ -2324,7 +2324,15 @@
         gmap (assoc gmap :aside-attribute gen-aside-attribute)
 
         gen-char-data
-        (chuck/string-from-regex #"[A-Za-z0-9_<>/\\ .]*")
+        (gen/frequency [
+          [(get weights [:char-data :alt 0] 100)
+            (gen/return " ")]
+          [(get weights [:char-data :alt 1] 100)
+            (gen/return "p")]
+          [(get weights [:char-data :alt 2] 100)
+            (gen/return "&#x00c9;")]
+          [(get weights [:char-data :alt 3] 100)
+            (gen/return "X")]])
         gmap (assoc gmap :char-data gen-char-data)
 
         gen-content
@@ -2752,14 +2760,21 @@
                     (gen/tuple
                       (:space gmap)
                       (:a-attribute gmap)))
-                  (gen/return "/>"))]
+                  (gen/return ">")
+                  (gen/vector
+                    (gen/frequency [
+                      [(get weights [:element :alt 0 :cat 3 :star :alt 0] 100)
+                        inner]
+                      [(get weights [:element :alt 0 :cat 3 :star :alt 1] 100)
+                        (:content gmap)]]))
+                  (gen/return "</a>"))]
               [(get weights [:element :alt 1] 100)
                 (gen/tuple
-                  (gen/return "<a")
+                  (gen/return "<abbr")
                   (gen/vector
                     (gen/tuple
                       (:space gmap)
-                      (:a-attribute gmap)))
+                      (:abbr-attribute gmap)))
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
@@ -2767,22 +2782,29 @@
                         inner]
                       [(get weights [:element :alt 1 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
-                  (gen/return "</a>"))]
+                  (gen/return "</abbr>"))]
               [(get weights [:element :alt 2] 100)
                 (gen/tuple
-                  (gen/return "<abbr")
+                  (gen/return "<acronym")
                   (gen/vector
                     (gen/tuple
                       (:space gmap)
-                      (:abbr-attribute gmap)))
-                  (gen/return "/>"))]
+                      (:acronym-attribute gmap)))
+                  (gen/return ">")
+                  (gen/vector
+                    (gen/frequency [
+                      [(get weights [:element :alt 2 :cat 3 :star :alt 0] 100)
+                        inner]
+                      [(get weights [:element :alt 2 :cat 3 :star :alt 1] 100)
+                        (:content gmap)]]))
+                  (gen/return "</acronym>"))]
               [(get weights [:element :alt 3] 100)
                 (gen/tuple
-                  (gen/return "<abbr")
+                  (gen/return "<address")
                   (gen/vector
                     (gen/tuple
                       (:space gmap)
-                      (:abbr-attribute gmap)))
+                      (:address-attribute gmap)))
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
@@ -2790,63 +2812,9 @@
                         inner]
                       [(get weights [:element :alt 3 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
-                  (gen/return "</abbr>"))]
+                  (gen/return "</address>"))]
               [(get weights [:element :alt 4] 100)
                 (gen/tuple
-                  (gen/return "<acronym")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:acronym-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 5] 100)
-                (gen/tuple
-                  (gen/return "<acronym")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:acronym-attribute gmap)))
-                  (gen/return ">")
-                  (gen/vector
-                    (gen/frequency [
-                      [(get weights [:element :alt 5 :cat 3 :star :alt 0] 100)
-                        inner]
-                      [(get weights [:element :alt 5 :cat 3 :star :alt 1] 100)
-                        (:content gmap)]]))
-                  (gen/return "</acronym>"))]
-              [(get weights [:element :alt 6] 100)
-                (gen/tuple
-                  (gen/return "<address")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:address-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 7] 100)
-                (gen/tuple
-                  (gen/return "<address")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:address-attribute gmap)))
-                  (gen/return ">")
-                  (gen/vector
-                    (gen/frequency [
-                      [(get weights [:element :alt 7 :cat 3 :star :alt 0] 100)
-                        inner]
-                      [(get weights [:element :alt 7 :cat 3 :star :alt 1] 100)
-                        (:content gmap)]]))
-                  (gen/return "</address>"))]
-              [(get weights [:element :alt 8] 100)
-                (gen/tuple
-                  (gen/return "<applet")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:applet-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 9] 100)
-                (gen/tuple
                   (gen/return "<applet")
                   (gen/vector
                     (gen/tuple
@@ -2855,12 +2823,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 9 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 4 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 9 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 4 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</applet>"))]
-              [(get weights [:element :alt 10] 100)
+              [(get weights [:element :alt 5] 100)
                 (gen/tuple
                   (gen/return "<area")
                   (gen/vector
@@ -2868,15 +2836,7 @@
                       (:space gmap)
                       (:area-attribute gmap)))
                   (gen/return ">"))]
-              [(get weights [:element :alt 11] 100)
-                (gen/tuple
-                  (gen/return "<article")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:article-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 12] 100)
+              [(get weights [:element :alt 6] 100)
                 (gen/tuple
                   (gen/return "<article")
                   (gen/vector
@@ -2886,20 +2846,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 12 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 6 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 12 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 6 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</article>"))]
-              [(get weights [:element :alt 13] 100)
-                (gen/tuple
-                  (gen/return "<aside")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:aside-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 14] 100)
+              [(get weights [:element :alt 7] 100)
                 (gen/tuple
                   (gen/return "<aside")
                   (gen/vector
@@ -2909,20 +2861,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 14 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 7 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 14 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 7 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</aside>"))]
-              [(get weights [:element :alt 15] 100)
-                (gen/tuple
-                  (gen/return "<audio")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:audio-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 16] 100)
+              [(get weights [:element :alt 8] 100)
                 (gen/tuple
                   (gen/return "<audio")
                   (gen/vector
@@ -2932,20 +2876,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 16 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 8 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 16 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 8 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</audio>"))]
-              [(get weights [:element :alt 17] 100)
-                (gen/tuple
-                  (gen/return "<b")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:b-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 18] 100)
+              [(get weights [:element :alt 9] 100)
                 (gen/tuple
                   (gen/return "<b")
                   (gen/vector
@@ -2955,12 +2891,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 18 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 9 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 18 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 9 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</b>"))]
-              [(get weights [:element :alt 19] 100)
+              [(get weights [:element :alt 10] 100)
                 (gen/tuple
                   (gen/return "<base")
                   (gen/vector
@@ -2968,15 +2904,7 @@
                       (:space gmap)
                       (:base-attribute gmap)))
                   (gen/return ">"))]
-              [(get weights [:element :alt 20] 100)
-                (gen/tuple
-                  (gen/return "<basefont")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:basefont-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 21] 100)
+              [(get weights [:element :alt 11] 100)
                 (gen/tuple
                   (gen/return "<basefont")
                   (gen/vector
@@ -2986,20 +2914,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 21 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 11 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 21 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 11 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</basefont>"))]
-              [(get weights [:element :alt 22] 100)
-                (gen/tuple
-                  (gen/return "<bdi")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:bdi-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 23] 100)
+              [(get weights [:element :alt 12] 100)
                 (gen/tuple
                   (gen/return "<bdi")
                   (gen/vector
@@ -3009,20 +2929,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 23 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 12 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 23 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 12 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</bdi>"))]
-              [(get weights [:element :alt 24] 100)
-                (gen/tuple
-                  (gen/return "<bdo")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:bdo-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 25] 100)
+              [(get weights [:element :alt 13] 100)
                 (gen/tuple
                   (gen/return "<bdo")
                   (gen/vector
@@ -3032,20 +2944,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 25 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 13 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 25 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 13 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</bdo>"))]
-              [(get weights [:element :alt 26] 100)
-                (gen/tuple
-                  (gen/return "<bgsound")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:bgsound-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 27] 100)
+              [(get weights [:element :alt 14] 100)
                 (gen/tuple
                   (gen/return "<bgsound")
                   (gen/vector
@@ -3055,20 +2959,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 27 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 14 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 27 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 14 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</bgsound>"))]
-              [(get weights [:element :alt 28] 100)
-                (gen/tuple
-                  (gen/return "<big")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:big-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 29] 100)
+              [(get weights [:element :alt 15] 100)
                 (gen/tuple
                   (gen/return "<big")
                   (gen/vector
@@ -3078,20 +2974,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 29 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 15 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 29 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 15 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</big>"))]
-              [(get weights [:element :alt 30] 100)
-                (gen/tuple
-                  (gen/return "<blink")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:blink-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 31] 100)
+              [(get weights [:element :alt 16] 100)
                 (gen/tuple
                   (gen/return "<blink")
                   (gen/vector
@@ -3101,20 +2989,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 31 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 16 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 31 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 16 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</blink>"))]
-              [(get weights [:element :alt 32] 100)
-                (gen/tuple
-                  (gen/return "<blockquote")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:blockquote-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 33] 100)
+              [(get weights [:element :alt 17] 100)
                 (gen/tuple
                   (gen/return "<blockquote")
                   (gen/vector
@@ -3124,12 +3004,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 33 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 17 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 33 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 17 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</blockquote>"))]
-              [(get weights [:element :alt 34] 100)
+              [(get weights [:element :alt 18] 100)
                 (gen/tuple
                   (gen/return "<br")
                   (gen/vector
@@ -3137,15 +3017,7 @@
                       (:space gmap)
                       (:br-attribute gmap)))
                   (gen/return ">"))]
-              [(get weights [:element :alt 35] 100)
-                (gen/tuple
-                  (gen/return "<button")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:button-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 36] 100)
+              [(get weights [:element :alt 19] 100)
                 (gen/tuple
                   (gen/return "<button")
                   (gen/vector
@@ -3155,20 +3027,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 36 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 19 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 36 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 19 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</button>"))]
-              [(get weights [:element :alt 37] 100)
-                (gen/tuple
-                  (gen/return "<canvas")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:canvas-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 38] 100)
+              [(get weights [:element :alt 20] 100)
                 (gen/tuple
                   (gen/return "<canvas")
                   (gen/vector
@@ -3178,20 +3042,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 38 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 20 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 38 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 20 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</canvas>"))]
-              [(get weights [:element :alt 39] 100)
-                (gen/tuple
-                  (gen/return "<caption")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:caption-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 40] 100)
+              [(get weights [:element :alt 21] 100)
                 (gen/tuple
                   (gen/return "<caption")
                   (gen/vector
@@ -3201,20 +3057,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 40 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 21 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 40 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 21 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</caption>"))]
-              [(get weights [:element :alt 41] 100)
-                (gen/tuple
-                  (gen/return "<center")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:center-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 42] 100)
+              [(get weights [:element :alt 22] 100)
                 (gen/tuple
                   (gen/return "<center")
                   (gen/vector
@@ -3224,20 +3072,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 42 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 22 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 42 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 22 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</center>"))]
-              [(get weights [:element :alt 43] 100)
-                (gen/tuple
-                  (gen/return "<cite")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:cite-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 44] 100)
+              [(get weights [:element :alt 23] 100)
                 (gen/tuple
                   (gen/return "<cite")
                   (gen/vector
@@ -3247,20 +3087,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 44 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 23 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 44 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 23 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</cite>"))]
-              [(get weights [:element :alt 45] 100)
-                (gen/tuple
-                  (gen/return "<code")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:code-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 46] 100)
+              [(get weights [:element :alt 24] 100)
                 (gen/tuple
                   (gen/return "<code")
                   (gen/vector
@@ -3270,12 +3102,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 46 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 24 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 46 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 24 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</code>"))]
-              [(get weights [:element :alt 47] 100)
+              [(get weights [:element :alt 25] 100)
                 (gen/tuple
                   (gen/return "<col")
                   (gen/vector
@@ -3283,15 +3115,7 @@
                       (:space gmap)
                       (:col-attribute gmap)))
                   (gen/return ">"))]
-              [(get weights [:element :alt 48] 100)
-                (gen/tuple
-                  (gen/return "<colgroup")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:colgroup-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 49] 100)
+              [(get weights [:element :alt 26] 100)
                 (gen/tuple
                   (gen/return "<colgroup")
                   (gen/vector
@@ -3301,20 +3125,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 49 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 26 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 49 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 26 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</colgroup>"))]
-              [(get weights [:element :alt 50] 100)
-                (gen/tuple
-                  (gen/return "<command")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:command-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 51] 100)
+              [(get weights [:element :alt 27] 100)
                 (gen/tuple
                   (gen/return "<command")
                   (gen/vector
@@ -3324,20 +3140,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 51 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 27 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 51 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 27 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</command>"))]
-              [(get weights [:element :alt 52] 100)
-                (gen/tuple
-                  (gen/return "<content")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:content-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 53] 100)
+              [(get weights [:element :alt 28] 100)
                 (gen/tuple
                   (gen/return "<content")
                   (gen/vector
@@ -3347,20 +3155,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 53 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 28 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 53 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 28 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</content>"))]
-              [(get weights [:element :alt 54] 100)
-                (gen/tuple
-                  (gen/return "<data")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:data-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 55] 100)
+              [(get weights [:element :alt 29] 100)
                 (gen/tuple
                   (gen/return "<data")
                   (gen/vector
@@ -3370,20 +3170,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 55 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 29 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 55 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 29 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</data>"))]
-              [(get weights [:element :alt 56] 100)
-                (gen/tuple
-                  (gen/return "<datalist")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:datalist-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 57] 100)
+              [(get weights [:element :alt 30] 100)
                 (gen/tuple
                   (gen/return "<datalist")
                   (gen/vector
@@ -3393,20 +3185,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 57 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 30 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 57 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 30 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</datalist>"))]
-              [(get weights [:element :alt 58] 100)
-                (gen/tuple
-                  (gen/return "<dd")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:dd-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 59] 100)
+              [(get weights [:element :alt 31] 100)
                 (gen/tuple
                   (gen/return "<dd")
                   (gen/vector
@@ -3416,20 +3200,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 59 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 31 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 59 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 31 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</dd>"))]
-              [(get weights [:element :alt 60] 100)
-                (gen/tuple
-                  (gen/return "<del")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:del-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 61] 100)
+              [(get weights [:element :alt 32] 100)
                 (gen/tuple
                   (gen/return "<del")
                   (gen/vector
@@ -3439,20 +3215,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 61 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 32 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 61 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 32 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</del>"))]
-              [(get weights [:element :alt 62] 100)
-                (gen/tuple
-                  (gen/return "<details")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:details-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 63] 100)
+              [(get weights [:element :alt 33] 100)
                 (gen/tuple
                   (gen/return "<details")
                   (gen/vector
@@ -3462,20 +3230,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 63 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 33 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 63 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 33 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</details>"))]
-              [(get weights [:element :alt 64] 100)
-                (gen/tuple
-                  (gen/return "<dfn")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:dfn-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 65] 100)
+              [(get weights [:element :alt 34] 100)
                 (gen/tuple
                   (gen/return "<dfn")
                   (gen/vector
@@ -3485,20 +3245,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 65 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 34 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 65 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 34 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</dfn>"))]
-              [(get weights [:element :alt 66] 100)
-                (gen/tuple
-                  (gen/return "<dialog")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:dialog-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 67] 100)
+              [(get weights [:element :alt 35] 100)
                 (gen/tuple
                   (gen/return "<dialog")
                   (gen/vector
@@ -3508,20 +3260,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 67 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 35 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 67 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 35 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</dialog>"))]
-              [(get weights [:element :alt 68] 100)
-                (gen/tuple
-                  (gen/return "<dir")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:dir-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 69] 100)
+              [(get weights [:element :alt 36] 100)
                 (gen/tuple
                   (gen/return "<dir")
                   (gen/vector
@@ -3531,20 +3275,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 69 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 36 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 69 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 36 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</dir>"))]
-              [(get weights [:element :alt 70] 10000)    ;; ** adjusted by config ***
-                (gen/tuple
-                  (gen/return "<div")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:div-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 71] 10000)    ;; ** adjusted by config ***
+              [(get weights [:element :alt 37] 100)
                 (gen/tuple
                   (gen/return "<div")
                   (gen/vector
@@ -3554,20 +3290,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 71 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 37 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 71 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 37 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</div>"))]
-              [(get weights [:element :alt 72] 100)
-                (gen/tuple
-                  (gen/return "<dl")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:dl-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 73] 100)
+              [(get weights [:element :alt 38] 100)
                 (gen/tuple
                   (gen/return "<dl")
                   (gen/vector
@@ -3577,20 +3305,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 73 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 38 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 73 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 38 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</dl>"))]
-              [(get weights [:element :alt 74] 100)
-                (gen/tuple
-                  (gen/return "<dt")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:dt-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 75] 100)
+              [(get weights [:element :alt 39] 100)
                 (gen/tuple
                   (gen/return "<dt")
                   (gen/vector
@@ -3600,20 +3320,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 75 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 39 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 75 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 39 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</dt>"))]
-              [(get weights [:element :alt 76] 100)
-                (gen/tuple
-                  (gen/return "<element")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:element-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 77] 100)
+              [(get weights [:element :alt 40] 100)
                 (gen/tuple
                   (gen/return "<element")
                   (gen/vector
@@ -3623,20 +3335,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 77 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 40 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 77 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 40 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</element>"))]
-              [(get weights [:element :alt 78] 100)
-                (gen/tuple
-                  (gen/return "<em")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:em-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 79] 100)
+              [(get weights [:element :alt 41] 100)
                 (gen/tuple
                   (gen/return "<em")
                   (gen/vector
@@ -3646,12 +3350,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 79 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 41 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 79 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 41 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</em>"))]
-              [(get weights [:element :alt 80] 100)
+              [(get weights [:element :alt 42] 100)
                 (gen/tuple
                   (gen/return "<embed")
                   (gen/vector
@@ -3659,15 +3363,7 @@
                       (:space gmap)
                       (:embed-attribute gmap)))
                   (gen/return ">"))]
-              [(get weights [:element :alt 81] 100)
-                (gen/tuple
-                  (gen/return "<fieldset")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:fieldset-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 82] 100)
+              [(get weights [:element :alt 43] 100)
                 (gen/tuple
                   (gen/return "<fieldset")
                   (gen/vector
@@ -3677,20 +3373,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 82 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 43 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 82 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 43 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</fieldset>"))]
-              [(get weights [:element :alt 83] 100)
-                (gen/tuple
-                  (gen/return "<figcaption")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:figcaption-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 84] 100)
+              [(get weights [:element :alt 44] 100)
                 (gen/tuple
                   (gen/return "<figcaption")
                   (gen/vector
@@ -3700,20 +3388,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 84 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 44 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 84 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 44 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</figcaption>"))]
-              [(get weights [:element :alt 85] 100)
-                (gen/tuple
-                  (gen/return "<figure")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:figure-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 86] 100)
+              [(get weights [:element :alt 45] 100)
                 (gen/tuple
                   (gen/return "<figure")
                   (gen/vector
@@ -3723,20 +3403,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 86 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 45 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 86 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 45 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</figure>"))]
-              [(get weights [:element :alt 87] 100)
-                (gen/tuple
-                  (gen/return "<font")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:font-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 88] 100)
+              [(get weights [:element :alt 46] 100)
                 (gen/tuple
                   (gen/return "<font")
                   (gen/vector
@@ -3746,20 +3418,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 88 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 46 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 88 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 46 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</font>"))]
-              [(get weights [:element :alt 89] 100)
-                (gen/tuple
-                  (gen/return "<footer")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:footer-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 90] 100)
+              [(get weights [:element :alt 47] 100)
                 (gen/tuple
                   (gen/return "<footer")
                   (gen/vector
@@ -3769,20 +3433,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 90 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 47 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 90 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 47 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</footer>"))]
-              [(get weights [:element :alt 91] 100)
-                (gen/tuple
-                  (gen/return "<form")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:form-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 92] 100)
+              [(get weights [:element :alt 48] 100)
                 (gen/tuple
                   (gen/return "<form")
                   (gen/vector
@@ -3792,20 +3448,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 92 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 48 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 92 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 48 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</form>"))]
-              [(get weights [:element :alt 93] 100)
-                (gen/tuple
-                  (gen/return "<frame")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:frame-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 94] 100)
+              [(get weights [:element :alt 49] 100)
                 (gen/tuple
                   (gen/return "<frame")
                   (gen/vector
@@ -3815,20 +3463,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 94 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 49 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 94 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 49 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</frame>"))]
-              [(get weights [:element :alt 95] 100)
-                (gen/tuple
-                  (gen/return "<frameset")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:frameset-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 96] 100)
+              [(get weights [:element :alt 50] 100)
                 (gen/tuple
                   (gen/return "<frameset")
                   (gen/vector
@@ -3838,20 +3478,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 96 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 50 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 96 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 50 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</frameset>"))]
-              [(get weights [:element :alt 97] 100)
-                (gen/tuple
-                  (gen/return "<h1–h6")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:h1–h6-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 98] 100)
+              [(get weights [:element :alt 51] 100)
                 (gen/tuple
                   (gen/return "<h1–h6")
                   (gen/vector
@@ -3861,20 +3493,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 98 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 51 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 98 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 51 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</h1–h6>"))]
-              [(get weights [:element :alt 99] 100)
-                (gen/tuple
-                  (gen/return "<header")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:header-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 100] 100)
+              [(get weights [:element :alt 52] 100)
                 (gen/tuple
                   (gen/return "<header")
                   (gen/vector
@@ -3884,20 +3508,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 100 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 52 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 100 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 52 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</header>"))]
-              [(get weights [:element :alt 101] 100)
-                (gen/tuple
-                  (gen/return "<hgroup")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:hgroup-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 102] 100)
+              [(get weights [:element :alt 53] 100)
                 (gen/tuple
                   (gen/return "<hgroup")
                   (gen/vector
@@ -3907,12 +3523,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 102 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 53 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 102 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 53 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</hgroup>"))]
-              [(get weights [:element :alt 103] 100)
+              [(get weights [:element :alt 54] 100)
                 (gen/tuple
                   (gen/return "<hr")
                   (gen/vector
@@ -3920,15 +3536,7 @@
                       (:space gmap)
                       (:hr-attribute gmap)))
                   (gen/return ">"))]
-              [(get weights [:element :alt 104] 100)
-                (gen/tuple
-                  (gen/return "<i")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:i-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 105] 100)
+              [(get weights [:element :alt 55] 100)
                 (gen/tuple
                   (gen/return "<i")
                   (gen/vector
@@ -3938,20 +3546,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 105 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 55 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 105 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 55 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</i>"))]
-              [(get weights [:element :alt 106] 100)
-                (gen/tuple
-                  (gen/return "<iframe")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:iframe-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 107] 100)
+              [(get weights [:element :alt 56] 100)
                 (gen/tuple
                   (gen/return "<iframe")
                   (gen/vector
@@ -3961,12 +3561,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 107 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 56 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 107 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 56 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</iframe>"))]
-              [(get weights [:element :alt 108] 100)
+              [(get weights [:element :alt 57] 100)
                 (gen/tuple
                   (gen/return "<img")
                   (gen/vector
@@ -3974,7 +3574,7 @@
                       (:space gmap)
                       (:img-attribute gmap)))
                   (gen/return ">"))]
-              [(get weights [:element :alt 109] 100)
+              [(get weights [:element :alt 58] 100)
                 (gen/tuple
                   (gen/return "<input")
                   (gen/vector
@@ -3982,15 +3582,7 @@
                       (:space gmap)
                       (:input-attribute gmap)))
                   (gen/return ">"))]
-              [(get weights [:element :alt 110] 100)
-                (gen/tuple
-                  (gen/return "<ins")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:ins-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 111] 100)
+              [(get weights [:element :alt 59] 100)
                 (gen/tuple
                   (gen/return "<ins")
                   (gen/vector
@@ -4000,20 +3592,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 111 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 59 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 111 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 59 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</ins>"))]
-              [(get weights [:element :alt 112] 100)
-                (gen/tuple
-                  (gen/return "<isindex")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:isindex-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 113] 100)
+              [(get weights [:element :alt 60] 100)
                 (gen/tuple
                   (gen/return "<isindex")
                   (gen/vector
@@ -4023,20 +3607,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 113 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 60 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 113 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 60 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</isindex>"))]
-              [(get weights [:element :alt 114] 100)
-                (gen/tuple
-                  (gen/return "<kbd")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:kbd-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 115] 100)
+              [(get weights [:element :alt 61] 100)
                 (gen/tuple
                   (gen/return "<kbd")
                   (gen/vector
@@ -4046,20 +3622,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 115 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 61 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 115 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 61 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</kbd>"))]
-              [(get weights [:element :alt 116] 100)
-                (gen/tuple
-                  (gen/return "<keygen")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:keygen-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 117] 100)
+              [(get weights [:element :alt 62] 100)
                 (gen/tuple
                   (gen/return "<keygen")
                   (gen/vector
@@ -4069,20 +3637,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 117 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 62 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 117 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 62 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</keygen>"))]
-              [(get weights [:element :alt 118] 100)
-                (gen/tuple
-                  (gen/return "<label")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:label-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 119] 100)
+              [(get weights [:element :alt 63] 100)
                 (gen/tuple
                   (gen/return "<label")
                   (gen/vector
@@ -4092,20 +3652,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 119 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 63 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 119 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 63 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</label>"))]
-              [(get weights [:element :alt 120] 100)
-                (gen/tuple
-                  (gen/return "<legend")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:legend-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 121] 100)
+              [(get weights [:element :alt 64] 100)
                 (gen/tuple
                   (gen/return "<legend")
                   (gen/vector
@@ -4115,20 +3667,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 121 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 64 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 121 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 64 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</legend>"))]
-              [(get weights [:element :alt 122] 100)
-                (gen/tuple
-                  (gen/return "<li")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:li-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 123] 100)
+              [(get weights [:element :alt 65] 100)
                 (gen/tuple
                   (gen/return "<li")
                   (gen/vector
@@ -4138,12 +3682,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 123 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 65 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 123 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 65 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</li>"))]
-              [(get weights [:element :alt 124] 100)
+              [(get weights [:element :alt 66] 100)
                 (gen/tuple
                   (gen/return "<link")
                   (gen/vector
@@ -4151,15 +3695,7 @@
                       (:space gmap)
                       (:link-attribute gmap)))
                   (gen/return ">"))]
-              [(get weights [:element :alt 125] 100)
-                (gen/tuple
-                  (gen/return "<listing")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:listing-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 126] 100)
+              [(get weights [:element :alt 67] 100)
                 (gen/tuple
                   (gen/return "<listing")
                   (gen/vector
@@ -4169,20 +3705,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 126 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 67 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 126 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 67 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</listing>"))]
-              [(get weights [:element :alt 127] 100)
-                (gen/tuple
-                  (gen/return "<main")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:main-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 128] 100)
+              [(get weights [:element :alt 68] 100)
                 (gen/tuple
                   (gen/return "<main")
                   (gen/vector
@@ -4192,20 +3720,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 128 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 68 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 128 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 68 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</main>"))]
-              [(get weights [:element :alt 129] 100)
-                (gen/tuple
-                  (gen/return "<map")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:map-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 130] 100)
+              [(get weights [:element :alt 69] 100)
                 (gen/tuple
                   (gen/return "<map")
                   (gen/vector
@@ -4215,20 +3735,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 130 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 69 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 130 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 69 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</map>"))]
-              [(get weights [:element :alt 131] 100)
-                (gen/tuple
-                  (gen/return "<mark")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:mark-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 132] 100)
+              [(get weights [:element :alt 70] 10000)    ;; ** adjusted by config ***
                 (gen/tuple
                   (gen/return "<mark")
                   (gen/vector
@@ -4238,20 +3750,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 132 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 70 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 132 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 70 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</mark>"))]
-              [(get weights [:element :alt 133] 100)
-                (gen/tuple
-                  (gen/return "<marquee")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:marquee-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 134] 100)
+              [(get weights [:element :alt 71] 10000)    ;; ** adjusted by config ***
                 (gen/tuple
                   (gen/return "<marquee")
                   (gen/vector
@@ -4261,20 +3765,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 134 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 71 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 134 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 71 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</marquee>"))]
-              [(get weights [:element :alt 135] 100)
-                (gen/tuple
-                  (gen/return "<menu")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:menu-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 136] 100)
+              [(get weights [:element :alt 72] 100)
                 (gen/tuple
                   (gen/return "<menu")
                   (gen/vector
@@ -4284,20 +3780,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 136 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 72 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 136 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 72 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</menu>"))]
-              [(get weights [:element :alt 137] 100)
-                (gen/tuple
-                  (gen/return "<menuitem")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:menuitem-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 138] 100)
+              [(get weights [:element :alt 73] 100)
                 (gen/tuple
                   (gen/return "<menuitem")
                   (gen/vector
@@ -4307,12 +3795,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 138 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 73 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 138 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 73 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</menuitem>"))]
-              [(get weights [:element :alt 139] 100)
+              [(get weights [:element :alt 74] 100)
                 (gen/tuple
                   (gen/return "<meta")
                   (gen/vector
@@ -4320,15 +3808,7 @@
                       (:space gmap)
                       (:meta-attribute gmap)))
                   (gen/return ">"))]
-              [(get weights [:element :alt 140] 100)
-                (gen/tuple
-                  (gen/return "<meter")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:meter-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 141] 100)
+              [(get weights [:element :alt 75] 100)
                 (gen/tuple
                   (gen/return "<meter")
                   (gen/vector
@@ -4338,20 +3818,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 141 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 75 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 141 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 75 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</meter>"))]
-              [(get weights [:element :alt 142] 100)
-                (gen/tuple
-                  (gen/return "<multicol")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:multicol-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 143] 100)
+              [(get weights [:element :alt 76] 100)
                 (gen/tuple
                   (gen/return "<multicol")
                   (gen/vector
@@ -4361,20 +3833,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 143 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 76 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 143 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 76 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</multicol>"))]
-              [(get weights [:element :alt 144] 100)
-                (gen/tuple
-                  (gen/return "<nav")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:nav-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 145] 100)
+              [(get weights [:element :alt 77] 100)
                 (gen/tuple
                   (gen/return "<nav")
                   (gen/vector
@@ -4384,20 +3848,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 145 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 77 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 145 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 77 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</nav>"))]
-              [(get weights [:element :alt 146] 100)
-                (gen/tuple
-                  (gen/return "<nextid")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:nextid-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 147] 100)
+              [(get weights [:element :alt 78] 100)
                 (gen/tuple
                   (gen/return "<nextid")
                   (gen/vector
@@ -4407,20 +3863,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 147 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 78 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 147 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 78 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</nextid>"))]
-              [(get weights [:element :alt 148] 100)
-                (gen/tuple
-                  (gen/return "<noembed")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:noembed-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 149] 100)
+              [(get weights [:element :alt 79] 100)
                 (gen/tuple
                   (gen/return "<noembed")
                   (gen/vector
@@ -4430,20 +3878,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 149 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 79 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 149 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 79 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</noembed>"))]
-              [(get weights [:element :alt 150] 100)
-                (gen/tuple
-                  (gen/return "<noscript")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:noscript-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 151] 100)
+              [(get weights [:element :alt 80] 100)
                 (gen/tuple
                   (gen/return "<noscript")
                   (gen/vector
@@ -4453,20 +3893,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 151 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 80 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 151 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 80 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</noscript>"))]
-              [(get weights [:element :alt 152] 100)
-                (gen/tuple
-                  (gen/return "<object")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:object-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 153] 100)
+              [(get weights [:element :alt 81] 100)
                 (gen/tuple
                   (gen/return "<object")
                   (gen/vector
@@ -4476,20 +3908,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 153 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 81 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 153 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 81 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</object>"))]
-              [(get weights [:element :alt 154] 100)
-                (gen/tuple
-                  (gen/return "<ol")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:ol-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 155] 100)
+              [(get weights [:element :alt 82] 100)
                 (gen/tuple
                   (gen/return "<ol")
                   (gen/vector
@@ -4499,20 +3923,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 155 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 82 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 155 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 82 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</ol>"))]
-              [(get weights [:element :alt 156] 100)
-                (gen/tuple
-                  (gen/return "<optgroup")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:optgroup-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 157] 100)
+              [(get weights [:element :alt 83] 100)
                 (gen/tuple
                   (gen/return "<optgroup")
                   (gen/vector
@@ -4522,20 +3938,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 157 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 83 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 157 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 83 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</optgroup>"))]
-              [(get weights [:element :alt 158] 100)
-                (gen/tuple
-                  (gen/return "<option")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:option-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 159] 100)
+              [(get weights [:element :alt 84] 100)
                 (gen/tuple
                   (gen/return "<option")
                   (gen/vector
@@ -4545,20 +3953,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 159 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 84 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 159 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 84 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</option>"))]
-              [(get weights [:element :alt 160] 100)
-                (gen/tuple
-                  (gen/return "<output")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:output-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 161] 100)
+              [(get weights [:element :alt 85] 100)
                 (gen/tuple
                   (gen/return "<output")
                   (gen/vector
@@ -4568,20 +3968,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 161 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 85 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 161 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 85 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</output>"))]
-              [(get weights [:element :alt 162] 100)
-                (gen/tuple
-                  (gen/return "<p")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:p-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 163] 100)
+              [(get weights [:element :alt 86] 100)
                 (gen/tuple
                   (gen/return "<p")
                   (gen/vector
@@ -4591,12 +3983,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 163 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 86 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 163 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 86 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</p>"))]
-              [(get weights [:element :alt 164] 100)
+              [(get weights [:element :alt 87] 100)
                 (gen/tuple
                   (gen/return "<param")
                   (gen/vector
@@ -4604,15 +3996,7 @@
                       (:space gmap)
                       (:param-attribute gmap)))
                   (gen/return ">"))]
-              [(get weights [:element :alt 165] 100)
-                (gen/tuple
-                  (gen/return "<plaintext")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:plaintext-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 166] 100)
+              [(get weights [:element :alt 88] 100)
                 (gen/tuple
                   (gen/return "<plaintext")
                   (gen/vector
@@ -4622,20 +4006,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 166 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 88 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 166 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 88 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</plaintext>"))]
-              [(get weights [:element :alt 167] 100)
-                (gen/tuple
-                  (gen/return "<pre")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:pre-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 168] 100)
+              [(get weights [:element :alt 89] 100)
                 (gen/tuple
                   (gen/return "<pre")
                   (gen/vector
@@ -4645,20 +4021,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 168 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 89 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 168 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 89 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</pre>"))]
-              [(get weights [:element :alt 169] 100)
-                (gen/tuple
-                  (gen/return "<progress")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:progress-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 170] 100)
+              [(get weights [:element :alt 90] 100)
                 (gen/tuple
                   (gen/return "<progress")
                   (gen/vector
@@ -4668,20 +4036,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 170 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 90 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 170 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 90 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</progress>"))]
-              [(get weights [:element :alt 171] 100)
-                (gen/tuple
-                  (gen/return "<q")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:q-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 172] 100)
+              [(get weights [:element :alt 91] 100)
                 (gen/tuple
                   (gen/return "<q")
                   (gen/vector
@@ -4691,20 +4051,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 172 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 91 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 172 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 91 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</q>"))]
-              [(get weights [:element :alt 173] 100)
-                (gen/tuple
-                  (gen/return "<rp")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:rp-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 174] 100)
+              [(get weights [:element :alt 92] 100)
                 (gen/tuple
                   (gen/return "<rp")
                   (gen/vector
@@ -4714,20 +4066,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 174 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 92 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 174 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 92 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</rp>"))]
-              [(get weights [:element :alt 175] 100)
-                (gen/tuple
-                  (gen/return "<rt")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:rt-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 176] 100)
+              [(get weights [:element :alt 93] 100)
                 (gen/tuple
                   (gen/return "<rt")
                   (gen/vector
@@ -4737,20 +4081,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 176 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 93 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 176 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 93 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</rt>"))]
-              [(get weights [:element :alt 177] 100)
-                (gen/tuple
-                  (gen/return "<rtc")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:rtc-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 178] 100)
+              [(get weights [:element :alt 94] 100)
                 (gen/tuple
                   (gen/return "<rtc")
                   (gen/vector
@@ -4760,20 +4096,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 178 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 94 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 178 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 94 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</rtc>"))]
-              [(get weights [:element :alt 179] 100)
-                (gen/tuple
-                  (gen/return "<ruby")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:ruby-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 180] 100)
+              [(get weights [:element :alt 95] 100)
                 (gen/tuple
                   (gen/return "<ruby")
                   (gen/vector
@@ -4783,20 +4111,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 180 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 95 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 180 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 95 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</ruby>"))]
-              [(get weights [:element :alt 181] 100)
-                (gen/tuple
-                  (gen/return "<s")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:s-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 182] 100)
+              [(get weights [:element :alt 96] 100)
                 (gen/tuple
                   (gen/return "<s")
                   (gen/vector
@@ -4806,20 +4126,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 182 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 96 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 182 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 96 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</s>"))]
-              [(get weights [:element :alt 183] 100)
-                (gen/tuple
-                  (gen/return "<samp")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:samp-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 184] 100)
+              [(get weights [:element :alt 97] 100)
                 (gen/tuple
                   (gen/return "<samp")
                   (gen/vector
@@ -4829,20 +4141,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 184 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 97 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 184 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 97 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</samp>"))]
-              [(get weights [:element :alt 185] 100)
-                (gen/tuple
-                  (gen/return "<script")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:script-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 186] 100)
+              [(get weights [:element :alt 98] 100)
                 (gen/tuple
                   (gen/return "<script")
                   (gen/vector
@@ -4852,20 +4156,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 186 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 98 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 186 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 98 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</script>"))]
-              [(get weights [:element :alt 187] 100)
-                (gen/tuple
-                  (gen/return "<section")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:section-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 188] 100)
+              [(get weights [:element :alt 99] 100)
                 (gen/tuple
                   (gen/return "<section")
                   (gen/vector
@@ -4875,20 +4171,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 188 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 99 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 188 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 99 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</section>"))]
-              [(get weights [:element :alt 189] 100)
-                (gen/tuple
-                  (gen/return "<select")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:select-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 190] 100)
+              [(get weights [:element :alt 100] 100)
                 (gen/tuple
                   (gen/return "<select")
                   (gen/vector
@@ -4898,20 +4186,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 190 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 100 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 190 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 100 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</select>"))]
-              [(get weights [:element :alt 191] 100)
-                (gen/tuple
-                  (gen/return "<shadow")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:shadow-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 192] 100)
+              [(get weights [:element :alt 101] 100)
                 (gen/tuple
                   (gen/return "<shadow")
                   (gen/vector
@@ -4921,20 +4201,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 192 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 101 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 192 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 101 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</shadow>"))]
-              [(get weights [:element :alt 193] 100)
-                (gen/tuple
-                  (gen/return "<slot")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:slot-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 194] 100)
+              [(get weights [:element :alt 102] 100)
                 (gen/tuple
                   (gen/return "<slot")
                   (gen/vector
@@ -4944,20 +4216,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 194 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 102 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 194 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 102 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</slot>"))]
-              [(get weights [:element :alt 195] 100)
-                (gen/tuple
-                  (gen/return "<small")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:small-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 196] 100)
+              [(get weights [:element :alt 103] 100)
                 (gen/tuple
                   (gen/return "<small")
                   (gen/vector
@@ -4967,12 +4231,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 196 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 103 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 196 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 103 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</small>"))]
-              [(get weights [:element :alt 197] 100)
+              [(get weights [:element :alt 104] 100)
                 (gen/tuple
                   (gen/return "<source")
                   (gen/vector
@@ -4980,15 +4244,7 @@
                       (:space gmap)
                       (:source-attribute gmap)))
                   (gen/return ">"))]
-              [(get weights [:element :alt 198] 100)
-                (gen/tuple
-                  (gen/return "<spacer")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:spacer-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 199] 100)
+              [(get weights [:element :alt 105] 100)
                 (gen/tuple
                   (gen/return "<spacer")
                   (gen/vector
@@ -4998,20 +4254,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 199 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 105 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 199 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 105 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</spacer>"))]
-              [(get weights [:element :alt 200] 100)
-                (gen/tuple
-                  (gen/return "<span")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:span-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 201] 100)
+              [(get weights [:element :alt 106] 100)
                 (gen/tuple
                   (gen/return "<span")
                   (gen/vector
@@ -5021,20 +4269,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 201 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 106 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 201 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 106 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</span>"))]
-              [(get weights [:element :alt 202] 100)
-                (gen/tuple
-                  (gen/return "<strike")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:strike-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 203] 100)
+              [(get weights [:element :alt 107] 100)
                 (gen/tuple
                   (gen/return "<strike")
                   (gen/vector
@@ -5044,20 +4284,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 203 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 107 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 203 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 107 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</strike>"))]
-              [(get weights [:element :alt 204] 100)
-                (gen/tuple
-                  (gen/return "<strong")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:strong-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 205] 100)
+              [(get weights [:element :alt 108] 100)
                 (gen/tuple
                   (gen/return "<strong")
                   (gen/vector
@@ -5067,20 +4299,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 205 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 108 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 205 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 108 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</strong>"))]
-              [(get weights [:element :alt 206] 100)
-                (gen/tuple
-                  (gen/return "<style")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:style-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 207] 100)
+              [(get weights [:element :alt 109] 100)
                 (gen/tuple
                   (gen/return "<style")
                   (gen/vector
@@ -5090,20 +4314,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 207 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 109 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 207 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 109 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</style>"))]
-              [(get weights [:element :alt 208] 100)
-                (gen/tuple
-                  (gen/return "<sub")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:sub-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 209] 100)
+              [(get weights [:element :alt 110] 100)
                 (gen/tuple
                   (gen/return "<sub")
                   (gen/vector
@@ -5113,20 +4329,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 209 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 110 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 209 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 110 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</sub>"))]
-              [(get weights [:element :alt 210] 100)
-                (gen/tuple
-                  (gen/return "<summary")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:summary-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 211] 100)
+              [(get weights [:element :alt 111] 100)
                 (gen/tuple
                   (gen/return "<summary")
                   (gen/vector
@@ -5136,20 +4344,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 211 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 111 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 211 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 111 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</summary>"))]
-              [(get weights [:element :alt 212] 100)
-                (gen/tuple
-                  (gen/return "<sup")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:sup-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 213] 100)
+              [(get weights [:element :alt 112] 100)
                 (gen/tuple
                   (gen/return "<sup")
                   (gen/vector
@@ -5159,20 +4359,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 213 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 112 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 213 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 112 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</sup>"))]
-              [(get weights [:element :alt 214] 100)
-                (gen/tuple
-                  (gen/return "<table")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:table-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 215] 100)
+              [(get weights [:element :alt 113] 100)
                 (gen/tuple
                   (gen/return "<table")
                   (gen/vector
@@ -5182,20 +4374,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 215 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 113 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 215 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 113 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</table>"))]
-              [(get weights [:element :alt 216] 100)
-                (gen/tuple
-                  (gen/return "<tbody")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:tbody-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 217] 100)
+              [(get weights [:element :alt 114] 100)
                 (gen/tuple
                   (gen/return "<tbody")
                   (gen/vector
@@ -5205,20 +4389,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 217 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 114 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 217 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 114 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</tbody>"))]
-              [(get weights [:element :alt 218] 100)
-                (gen/tuple
-                  (gen/return "<td")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:td-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 219] 100)
+              [(get weights [:element :alt 115] 100)
                 (gen/tuple
                   (gen/return "<td")
                   (gen/vector
@@ -5228,20 +4404,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 219 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 115 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 219 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 115 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</td>"))]
-              [(get weights [:element :alt 220] 100)
-                (gen/tuple
-                  (gen/return "<template")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:template-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 221] 100)
+              [(get weights [:element :alt 116] 100)
                 (gen/tuple
                   (gen/return "<template")
                   (gen/vector
@@ -5251,20 +4419,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 221 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 116 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 221 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 116 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</template>"))]
-              [(get weights [:element :alt 222] 100)
-                (gen/tuple
-                  (gen/return "<textarea")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:textarea-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 223] 100)
+              [(get weights [:element :alt 117] 100)
                 (gen/tuple
                   (gen/return "<textarea")
                   (gen/vector
@@ -5274,20 +4434,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 223 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 117 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 223 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 117 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</textarea>"))]
-              [(get weights [:element :alt 224] 100)
-                (gen/tuple
-                  (gen/return "<tfoot")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:tfoot-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 225] 100)
+              [(get weights [:element :alt 118] 100)
                 (gen/tuple
                   (gen/return "<tfoot")
                   (gen/vector
@@ -5297,20 +4449,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 225 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 118 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 225 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 118 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</tfoot>"))]
-              [(get weights [:element :alt 226] 100)
-                (gen/tuple
-                  (gen/return "<th")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:th-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 227] 100)
+              [(get weights [:element :alt 119] 100)
                 (gen/tuple
                   (gen/return "<th")
                   (gen/vector
@@ -5320,20 +4464,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 227 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 119 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 227 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 119 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</th>"))]
-              [(get weights [:element :alt 228] 100)
-                (gen/tuple
-                  (gen/return "<thead")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:thead-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 229] 100)
+              [(get weights [:element :alt 120] 100)
                 (gen/tuple
                   (gen/return "<thead")
                   (gen/vector
@@ -5343,20 +4479,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 229 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 120 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 229 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 120 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</thead>"))]
-              [(get weights [:element :alt 230] 100)
-                (gen/tuple
-                  (gen/return "<time")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:time-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 231] 100)
+              [(get weights [:element :alt 121] 100)
                 (gen/tuple
                   (gen/return "<time")
                   (gen/vector
@@ -5366,20 +4494,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 231 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 121 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 231 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 121 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</time>"))]
-              [(get weights [:element :alt 232] 100)
-                (gen/tuple
-                  (gen/return "<tr")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:tr-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 233] 100)
+              [(get weights [:element :alt 122] 100)
                 (gen/tuple
                   (gen/return "<tr")
                   (gen/vector
@@ -5389,12 +4509,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 233 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 122 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 233 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 122 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</tr>"))]
-              [(get weights [:element :alt 234] 100)
+              [(get weights [:element :alt 123] 100)
                 (gen/tuple
                   (gen/return "<track")
                   (gen/vector
@@ -5402,15 +4522,7 @@
                       (:space gmap)
                       (:track-attribute gmap)))
                   (gen/return ">"))]
-              [(get weights [:element :alt 235] 100)
-                (gen/tuple
-                  (gen/return "<tt")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:tt-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 236] 100)
+              [(get weights [:element :alt 124] 100)
                 (gen/tuple
                   (gen/return "<tt")
                   (gen/vector
@@ -5420,20 +4532,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 236 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 124 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 236 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 124 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</tt>"))]
-              [(get weights [:element :alt 237] 100)
-                (gen/tuple
-                  (gen/return "<u")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:u-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 238] 100)
+              [(get weights [:element :alt 125] 100)
                 (gen/tuple
                   (gen/return "<u")
                   (gen/vector
@@ -5443,20 +4547,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 238 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 125 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 238 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 125 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</u>"))]
-              [(get weights [:element :alt 239] 100)
-                (gen/tuple
-                  (gen/return "<ul")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:ul-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 240] 100)
+              [(get weights [:element :alt 126] 100)
                 (gen/tuple
                   (gen/return "<ul")
                   (gen/vector
@@ -5466,20 +4562,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 240 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 126 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 240 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 126 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</ul>"))]
-              [(get weights [:element :alt 241] 100)
-                (gen/tuple
-                  (gen/return "<var")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:var-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 242] 100)
+              [(get weights [:element :alt 127] 100)
                 (gen/tuple
                   (gen/return "<var")
                   (gen/vector
@@ -5489,20 +4577,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 242 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 127 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 242 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 127 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</var>"))]
-              [(get weights [:element :alt 243] 100)
-                (gen/tuple
-                  (gen/return "<video")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:video-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 244] 100)
+              [(get weights [:element :alt 128] 100)
                 (gen/tuple
                   (gen/return "<video")
                   (gen/vector
@@ -5512,12 +4592,12 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 244 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 128 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 244 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 128 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</video>"))]
-              [(get weights [:element :alt 245] 100)
+              [(get weights [:element :alt 129] 100)
                 (gen/tuple
                   (gen/return "<wbr")
                   (gen/vector
@@ -5525,15 +4605,7 @@
                       (:space gmap)
                       (:wbr-attribute gmap)))
                   (gen/return ">"))]
-              [(get weights [:element :alt 246] 100)
-                (gen/tuple
-                  (gen/return "<xmp")
-                  (gen/vector
-                    (gen/tuple
-                      (:space gmap)
-                      (:xmp-attribute gmap)))
-                  (gen/return "/>"))]
-              [(get weights [:element :alt 247] 100)
+              [(get weights [:element :alt 130] 100)
                 (gen/tuple
                   (gen/return "<xmp")
                   (gen/vector
@@ -5543,9 +4615,9 @@
                   (gen/return ">")
                   (gen/vector
                     (gen/frequency [
-                      [(get weights [:element :alt 247 :cat 3 :star :alt 0] 100)
+                      [(get weights [:element :alt 130 :cat 3 :star :alt 0] 100)
                         inner]
-                      [(get weights [:element :alt 247 :cat 3 :star :alt 1] 100)
+                      [(get weights [:element :alt 130 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</xmp>"))]]))
           (gen/frequency [
@@ -5556,27 +4628,11 @@
                   (gen/tuple
                     (:space gmap)
                     (:a-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 1] 100)
-              (gen/tuple
-                (gen/return "<a")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:a-attribute gmap)))
                 (gen/return ">")
                 (gen/vector
                   (:content gmap))
                 (gen/return "</a>"))]
-            [(get weights [:element :alt 2] 100)
-              (gen/tuple
-                (gen/return "<abbr")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:abbr-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 3] 100)
+            [(get weights [:element :alt 1] 100)
               (gen/tuple
                 (gen/return "<abbr")
                 (gen/vector
@@ -5587,15 +4643,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</abbr>"))]
-            [(get weights [:element :alt 4] 100)
-              (gen/tuple
-                (gen/return "<acronym")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:acronym-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 5] 100)
+            [(get weights [:element :alt 2] 100)
               (gen/tuple
                 (gen/return "<acronym")
                 (gen/vector
@@ -5606,15 +4654,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</acronym>"))]
-            [(get weights [:element :alt 6] 100)
-              (gen/tuple
-                (gen/return "<address")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:address-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 7] 100)
+            [(get weights [:element :alt 3] 100)
               (gen/tuple
                 (gen/return "<address")
                 (gen/vector
@@ -5625,15 +4665,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</address>"))]
-            [(get weights [:element :alt 8] 100)
-              (gen/tuple
-                (gen/return "<applet")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:applet-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 9] 100)
+            [(get weights [:element :alt 4] 100)
               (gen/tuple
                 (gen/return "<applet")
                 (gen/vector
@@ -5644,7 +4676,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</applet>"))]
-            [(get weights [:element :alt 10] 100)
+            [(get weights [:element :alt 5] 100)
               (gen/tuple
                 (gen/return "<area")
                 (gen/vector
@@ -5652,15 +4684,7 @@
                     (:space gmap)
                     (:area-attribute gmap)))
                 (gen/return ">"))]
-            [(get weights [:element :alt 11] 100)
-              (gen/tuple
-                (gen/return "<article")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:article-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 12] 100)
+            [(get weights [:element :alt 6] 100)
               (gen/tuple
                 (gen/return "<article")
                 (gen/vector
@@ -5671,15 +4695,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</article>"))]
-            [(get weights [:element :alt 13] 100)
-              (gen/tuple
-                (gen/return "<aside")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:aside-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 14] 100)
+            [(get weights [:element :alt 7] 100)
               (gen/tuple
                 (gen/return "<aside")
                 (gen/vector
@@ -5690,15 +4706,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</aside>"))]
-            [(get weights [:element :alt 15] 100)
-              (gen/tuple
-                (gen/return "<audio")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:audio-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 16] 100)
+            [(get weights [:element :alt 8] 100)
               (gen/tuple
                 (gen/return "<audio")
                 (gen/vector
@@ -5709,15 +4717,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</audio>"))]
-            [(get weights [:element :alt 17] 100)
-              (gen/tuple
-                (gen/return "<b")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:b-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 18] 100)
+            [(get weights [:element :alt 9] 100)
               (gen/tuple
                 (gen/return "<b")
                 (gen/vector
@@ -5728,7 +4728,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</b>"))]
-            [(get weights [:element :alt 19] 100)
+            [(get weights [:element :alt 10] 100)
               (gen/tuple
                 (gen/return "<base")
                 (gen/vector
@@ -5736,15 +4736,7 @@
                     (:space gmap)
                     (:base-attribute gmap)))
                 (gen/return ">"))]
-            [(get weights [:element :alt 20] 100)
-              (gen/tuple
-                (gen/return "<basefont")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:basefont-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 21] 100)
+            [(get weights [:element :alt 11] 100)
               (gen/tuple
                 (gen/return "<basefont")
                 (gen/vector
@@ -5755,15 +4747,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</basefont>"))]
-            [(get weights [:element :alt 22] 100)
-              (gen/tuple
-                (gen/return "<bdi")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:bdi-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 23] 100)
+            [(get weights [:element :alt 12] 100)
               (gen/tuple
                 (gen/return "<bdi")
                 (gen/vector
@@ -5774,15 +4758,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</bdi>"))]
-            [(get weights [:element :alt 24] 100)
-              (gen/tuple
-                (gen/return "<bdo")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:bdo-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 25] 100)
+            [(get weights [:element :alt 13] 100)
               (gen/tuple
                 (gen/return "<bdo")
                 (gen/vector
@@ -5793,15 +4769,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</bdo>"))]
-            [(get weights [:element :alt 26] 100)
-              (gen/tuple
-                (gen/return "<bgsound")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:bgsound-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 27] 100)
+            [(get weights [:element :alt 14] 100)
               (gen/tuple
                 (gen/return "<bgsound")
                 (gen/vector
@@ -5812,15 +4780,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</bgsound>"))]
-            [(get weights [:element :alt 28] 100)
-              (gen/tuple
-                (gen/return "<big")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:big-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 29] 100)
+            [(get weights [:element :alt 15] 100)
               (gen/tuple
                 (gen/return "<big")
                 (gen/vector
@@ -5831,15 +4791,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</big>"))]
-            [(get weights [:element :alt 30] 100)
-              (gen/tuple
-                (gen/return "<blink")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:blink-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 31] 100)
+            [(get weights [:element :alt 16] 100)
               (gen/tuple
                 (gen/return "<blink")
                 (gen/vector
@@ -5850,15 +4802,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</blink>"))]
-            [(get weights [:element :alt 32] 100)
-              (gen/tuple
-                (gen/return "<blockquote")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:blockquote-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 33] 100)
+            [(get weights [:element :alt 17] 100)
               (gen/tuple
                 (gen/return "<blockquote")
                 (gen/vector
@@ -5869,7 +4813,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</blockquote>"))]
-            [(get weights [:element :alt 34] 100)
+            [(get weights [:element :alt 18] 100)
               (gen/tuple
                 (gen/return "<br")
                 (gen/vector
@@ -5877,15 +4821,7 @@
                     (:space gmap)
                     (:br-attribute gmap)))
                 (gen/return ">"))]
-            [(get weights [:element :alt 35] 100)
-              (gen/tuple
-                (gen/return "<button")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:button-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 36] 100)
+            [(get weights [:element :alt 19] 100)
               (gen/tuple
                 (gen/return "<button")
                 (gen/vector
@@ -5896,15 +4832,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</button>"))]
-            [(get weights [:element :alt 37] 100)
-              (gen/tuple
-                (gen/return "<canvas")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:canvas-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 38] 100)
+            [(get weights [:element :alt 20] 100)
               (gen/tuple
                 (gen/return "<canvas")
                 (gen/vector
@@ -5915,15 +4843,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</canvas>"))]
-            [(get weights [:element :alt 39] 100)
-              (gen/tuple
-                (gen/return "<caption")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:caption-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 40] 100)
+            [(get weights [:element :alt 21] 100)
               (gen/tuple
                 (gen/return "<caption")
                 (gen/vector
@@ -5934,15 +4854,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</caption>"))]
-            [(get weights [:element :alt 41] 100)
-              (gen/tuple
-                (gen/return "<center")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:center-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 42] 100)
+            [(get weights [:element :alt 22] 100)
               (gen/tuple
                 (gen/return "<center")
                 (gen/vector
@@ -5953,15 +4865,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</center>"))]
-            [(get weights [:element :alt 43] 100)
-              (gen/tuple
-                (gen/return "<cite")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:cite-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 44] 100)
+            [(get weights [:element :alt 23] 100)
               (gen/tuple
                 (gen/return "<cite")
                 (gen/vector
@@ -5972,15 +4876,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</cite>"))]
-            [(get weights [:element :alt 45] 100)
-              (gen/tuple
-                (gen/return "<code")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:code-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 46] 100)
+            [(get weights [:element :alt 24] 100)
               (gen/tuple
                 (gen/return "<code")
                 (gen/vector
@@ -5991,7 +4887,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</code>"))]
-            [(get weights [:element :alt 47] 100)
+            [(get weights [:element :alt 25] 100)
               (gen/tuple
                 (gen/return "<col")
                 (gen/vector
@@ -5999,15 +4895,7 @@
                     (:space gmap)
                     (:col-attribute gmap)))
                 (gen/return ">"))]
-            [(get weights [:element :alt 48] 100)
-              (gen/tuple
-                (gen/return "<colgroup")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:colgroup-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 49] 100)
+            [(get weights [:element :alt 26] 100)
               (gen/tuple
                 (gen/return "<colgroup")
                 (gen/vector
@@ -6018,15 +4906,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</colgroup>"))]
-            [(get weights [:element :alt 50] 100)
-              (gen/tuple
-                (gen/return "<command")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:command-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 51] 100)
+            [(get weights [:element :alt 27] 100)
               (gen/tuple
                 (gen/return "<command")
                 (gen/vector
@@ -6037,15 +4917,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</command>"))]
-            [(get weights [:element :alt 52] 100)
-              (gen/tuple
-                (gen/return "<content")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:content-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 53] 100)
+            [(get weights [:element :alt 28] 100)
               (gen/tuple
                 (gen/return "<content")
                 (gen/vector
@@ -6056,15 +4928,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</content>"))]
-            [(get weights [:element :alt 54] 100)
-              (gen/tuple
-                (gen/return "<data")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:data-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 55] 100)
+            [(get weights [:element :alt 29] 100)
               (gen/tuple
                 (gen/return "<data")
                 (gen/vector
@@ -6075,15 +4939,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</data>"))]
-            [(get weights [:element :alt 56] 100)
-              (gen/tuple
-                (gen/return "<datalist")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:datalist-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 57] 100)
+            [(get weights [:element :alt 30] 100)
               (gen/tuple
                 (gen/return "<datalist")
                 (gen/vector
@@ -6094,15 +4950,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</datalist>"))]
-            [(get weights [:element :alt 58] 100)
-              (gen/tuple
-                (gen/return "<dd")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:dd-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 59] 100)
+            [(get weights [:element :alt 31] 100)
               (gen/tuple
                 (gen/return "<dd")
                 (gen/vector
@@ -6113,15 +4961,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</dd>"))]
-            [(get weights [:element :alt 60] 100)
-              (gen/tuple
-                (gen/return "<del")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:del-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 61] 100)
+            [(get weights [:element :alt 32] 100)
               (gen/tuple
                 (gen/return "<del")
                 (gen/vector
@@ -6132,15 +4972,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</del>"))]
-            [(get weights [:element :alt 62] 100)
-              (gen/tuple
-                (gen/return "<details")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:details-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 63] 100)
+            [(get weights [:element :alt 33] 100)
               (gen/tuple
                 (gen/return "<details")
                 (gen/vector
@@ -6151,15 +4983,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</details>"))]
-            [(get weights [:element :alt 64] 100)
-              (gen/tuple
-                (gen/return "<dfn")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:dfn-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 65] 100)
+            [(get weights [:element :alt 34] 100)
               (gen/tuple
                 (gen/return "<dfn")
                 (gen/vector
@@ -6170,15 +4994,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</dfn>"))]
-            [(get weights [:element :alt 66] 100)
-              (gen/tuple
-                (gen/return "<dialog")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:dialog-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 67] 100)
+            [(get weights [:element :alt 35] 100)
               (gen/tuple
                 (gen/return "<dialog")
                 (gen/vector
@@ -6189,15 +5005,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</dialog>"))]
-            [(get weights [:element :alt 68] 100)
-              (gen/tuple
-                (gen/return "<dir")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:dir-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 69] 100)
+            [(get weights [:element :alt 36] 100)
               (gen/tuple
                 (gen/return "<dir")
                 (gen/vector
@@ -6208,15 +5016,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</dir>"))]
-            [(get weights [:element :alt 70] 10000)    ;; ** adjusted by config ***
-              (gen/tuple
-                (gen/return "<div")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:div-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 71] 10000)    ;; ** adjusted by config ***
+            [(get weights [:element :alt 37] 100)
               (gen/tuple
                 (gen/return "<div")
                 (gen/vector
@@ -6227,15 +5027,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</div>"))]
-            [(get weights [:element :alt 72] 100)
-              (gen/tuple
-                (gen/return "<dl")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:dl-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 73] 100)
+            [(get weights [:element :alt 38] 100)
               (gen/tuple
                 (gen/return "<dl")
                 (gen/vector
@@ -6246,15 +5038,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</dl>"))]
-            [(get weights [:element :alt 74] 100)
-              (gen/tuple
-                (gen/return "<dt")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:dt-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 75] 100)
+            [(get weights [:element :alt 39] 100)
               (gen/tuple
                 (gen/return "<dt")
                 (gen/vector
@@ -6265,15 +5049,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</dt>"))]
-            [(get weights [:element :alt 76] 100)
-              (gen/tuple
-                (gen/return "<element")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:element-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 77] 100)
+            [(get weights [:element :alt 40] 100)
               (gen/tuple
                 (gen/return "<element")
                 (gen/vector
@@ -6284,15 +5060,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</element>"))]
-            [(get weights [:element :alt 78] 100)
-              (gen/tuple
-                (gen/return "<em")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:em-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 79] 100)
+            [(get weights [:element :alt 41] 100)
               (gen/tuple
                 (gen/return "<em")
                 (gen/vector
@@ -6303,7 +5071,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</em>"))]
-            [(get weights [:element :alt 80] 100)
+            [(get weights [:element :alt 42] 100)
               (gen/tuple
                 (gen/return "<embed")
                 (gen/vector
@@ -6311,15 +5079,7 @@
                     (:space gmap)
                     (:embed-attribute gmap)))
                 (gen/return ">"))]
-            [(get weights [:element :alt 81] 100)
-              (gen/tuple
-                (gen/return "<fieldset")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:fieldset-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 82] 100)
+            [(get weights [:element :alt 43] 100)
               (gen/tuple
                 (gen/return "<fieldset")
                 (gen/vector
@@ -6330,15 +5090,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</fieldset>"))]
-            [(get weights [:element :alt 83] 100)
-              (gen/tuple
-                (gen/return "<figcaption")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:figcaption-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 84] 100)
+            [(get weights [:element :alt 44] 100)
               (gen/tuple
                 (gen/return "<figcaption")
                 (gen/vector
@@ -6349,15 +5101,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</figcaption>"))]
-            [(get weights [:element :alt 85] 100)
-              (gen/tuple
-                (gen/return "<figure")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:figure-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 86] 100)
+            [(get weights [:element :alt 45] 100)
               (gen/tuple
                 (gen/return "<figure")
                 (gen/vector
@@ -6368,15 +5112,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</figure>"))]
-            [(get weights [:element :alt 87] 100)
-              (gen/tuple
-                (gen/return "<font")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:font-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 88] 100)
+            [(get weights [:element :alt 46] 100)
               (gen/tuple
                 (gen/return "<font")
                 (gen/vector
@@ -6387,15 +5123,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</font>"))]
-            [(get weights [:element :alt 89] 100)
-              (gen/tuple
-                (gen/return "<footer")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:footer-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 90] 100)
+            [(get weights [:element :alt 47] 100)
               (gen/tuple
                 (gen/return "<footer")
                 (gen/vector
@@ -6406,15 +5134,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</footer>"))]
-            [(get weights [:element :alt 91] 100)
-              (gen/tuple
-                (gen/return "<form")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:form-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 92] 100)
+            [(get weights [:element :alt 48] 100)
               (gen/tuple
                 (gen/return "<form")
                 (gen/vector
@@ -6425,15 +5145,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</form>"))]
-            [(get weights [:element :alt 93] 100)
-              (gen/tuple
-                (gen/return "<frame")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:frame-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 94] 100)
+            [(get weights [:element :alt 49] 100)
               (gen/tuple
                 (gen/return "<frame")
                 (gen/vector
@@ -6444,15 +5156,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</frame>"))]
-            [(get weights [:element :alt 95] 100)
-              (gen/tuple
-                (gen/return "<frameset")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:frameset-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 96] 100)
+            [(get weights [:element :alt 50] 100)
               (gen/tuple
                 (gen/return "<frameset")
                 (gen/vector
@@ -6463,15 +5167,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</frameset>"))]
-            [(get weights [:element :alt 97] 100)
-              (gen/tuple
-                (gen/return "<h1–h6")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:h1–h6-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 98] 100)
+            [(get weights [:element :alt 51] 100)
               (gen/tuple
                 (gen/return "<h1–h6")
                 (gen/vector
@@ -6482,15 +5178,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</h1–h6>"))]
-            [(get weights [:element :alt 99] 100)
-              (gen/tuple
-                (gen/return "<header")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:header-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 100] 100)
+            [(get weights [:element :alt 52] 100)
               (gen/tuple
                 (gen/return "<header")
                 (gen/vector
@@ -6501,15 +5189,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</header>"))]
-            [(get weights [:element :alt 101] 100)
-              (gen/tuple
-                (gen/return "<hgroup")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:hgroup-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 102] 100)
+            [(get weights [:element :alt 53] 100)
               (gen/tuple
                 (gen/return "<hgroup")
                 (gen/vector
@@ -6520,7 +5200,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</hgroup>"))]
-            [(get weights [:element :alt 103] 100)
+            [(get weights [:element :alt 54] 100)
               (gen/tuple
                 (gen/return "<hr")
                 (gen/vector
@@ -6528,15 +5208,7 @@
                     (:space gmap)
                     (:hr-attribute gmap)))
                 (gen/return ">"))]
-            [(get weights [:element :alt 104] 100)
-              (gen/tuple
-                (gen/return "<i")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:i-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 105] 100)
+            [(get weights [:element :alt 55] 100)
               (gen/tuple
                 (gen/return "<i")
                 (gen/vector
@@ -6547,15 +5219,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</i>"))]
-            [(get weights [:element :alt 106] 100)
-              (gen/tuple
-                (gen/return "<iframe")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:iframe-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 107] 100)
+            [(get weights [:element :alt 56] 100)
               (gen/tuple
                 (gen/return "<iframe")
                 (gen/vector
@@ -6566,7 +5230,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</iframe>"))]
-            [(get weights [:element :alt 108] 100)
+            [(get weights [:element :alt 57] 100)
               (gen/tuple
                 (gen/return "<img")
                 (gen/vector
@@ -6574,7 +5238,7 @@
                     (:space gmap)
                     (:img-attribute gmap)))
                 (gen/return ">"))]
-            [(get weights [:element :alt 109] 100)
+            [(get weights [:element :alt 58] 100)
               (gen/tuple
                 (gen/return "<input")
                 (gen/vector
@@ -6582,15 +5246,7 @@
                     (:space gmap)
                     (:input-attribute gmap)))
                 (gen/return ">"))]
-            [(get weights [:element :alt 110] 100)
-              (gen/tuple
-                (gen/return "<ins")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:ins-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 111] 100)
+            [(get weights [:element :alt 59] 100)
               (gen/tuple
                 (gen/return "<ins")
                 (gen/vector
@@ -6601,15 +5257,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</ins>"))]
-            [(get weights [:element :alt 112] 100)
-              (gen/tuple
-                (gen/return "<isindex")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:isindex-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 113] 100)
+            [(get weights [:element :alt 60] 100)
               (gen/tuple
                 (gen/return "<isindex")
                 (gen/vector
@@ -6620,15 +5268,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</isindex>"))]
-            [(get weights [:element :alt 114] 100)
-              (gen/tuple
-                (gen/return "<kbd")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:kbd-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 115] 100)
+            [(get weights [:element :alt 61] 100)
               (gen/tuple
                 (gen/return "<kbd")
                 (gen/vector
@@ -6639,15 +5279,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</kbd>"))]
-            [(get weights [:element :alt 116] 100)
-              (gen/tuple
-                (gen/return "<keygen")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:keygen-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 117] 100)
+            [(get weights [:element :alt 62] 100)
               (gen/tuple
                 (gen/return "<keygen")
                 (gen/vector
@@ -6658,15 +5290,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</keygen>"))]
-            [(get weights [:element :alt 118] 100)
-              (gen/tuple
-                (gen/return "<label")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:label-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 119] 100)
+            [(get weights [:element :alt 63] 100)
               (gen/tuple
                 (gen/return "<label")
                 (gen/vector
@@ -6677,15 +5301,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</label>"))]
-            [(get weights [:element :alt 120] 100)
-              (gen/tuple
-                (gen/return "<legend")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:legend-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 121] 100)
+            [(get weights [:element :alt 64] 100)
               (gen/tuple
                 (gen/return "<legend")
                 (gen/vector
@@ -6696,15 +5312,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</legend>"))]
-            [(get weights [:element :alt 122] 100)
-              (gen/tuple
-                (gen/return "<li")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:li-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 123] 100)
+            [(get weights [:element :alt 65] 100)
               (gen/tuple
                 (gen/return "<li")
                 (gen/vector
@@ -6715,7 +5323,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</li>"))]
-            [(get weights [:element :alt 124] 100)
+            [(get weights [:element :alt 66] 100)
               (gen/tuple
                 (gen/return "<link")
                 (gen/vector
@@ -6723,15 +5331,7 @@
                     (:space gmap)
                     (:link-attribute gmap)))
                 (gen/return ">"))]
-            [(get weights [:element :alt 125] 100)
-              (gen/tuple
-                (gen/return "<listing")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:listing-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 126] 100)
+            [(get weights [:element :alt 67] 100)
               (gen/tuple
                 (gen/return "<listing")
                 (gen/vector
@@ -6742,15 +5342,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</listing>"))]
-            [(get weights [:element :alt 127] 100)
-              (gen/tuple
-                (gen/return "<main")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:main-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 128] 100)
+            [(get weights [:element :alt 68] 100)
               (gen/tuple
                 (gen/return "<main")
                 (gen/vector
@@ -6761,15 +5353,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</main>"))]
-            [(get weights [:element :alt 129] 100)
-              (gen/tuple
-                (gen/return "<map")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:map-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 130] 100)
+            [(get weights [:element :alt 69] 100)
               (gen/tuple
                 (gen/return "<map")
                 (gen/vector
@@ -6780,15 +5364,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</map>"))]
-            [(get weights [:element :alt 131] 100)
-              (gen/tuple
-                (gen/return "<mark")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:mark-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 132] 100)
+            [(get weights [:element :alt 70] 10000)    ;; ** adjusted by config ***
               (gen/tuple
                 (gen/return "<mark")
                 (gen/vector
@@ -6799,15 +5375,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</mark>"))]
-            [(get weights [:element :alt 133] 100)
-              (gen/tuple
-                (gen/return "<marquee")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:marquee-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 134] 100)
+            [(get weights [:element :alt 71] 10000)    ;; ** adjusted by config ***
               (gen/tuple
                 (gen/return "<marquee")
                 (gen/vector
@@ -6818,15 +5386,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</marquee>"))]
-            [(get weights [:element :alt 135] 100)
-              (gen/tuple
-                (gen/return "<menu")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:menu-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 136] 100)
+            [(get weights [:element :alt 72] 100)
               (gen/tuple
                 (gen/return "<menu")
                 (gen/vector
@@ -6837,15 +5397,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</menu>"))]
-            [(get weights [:element :alt 137] 100)
-              (gen/tuple
-                (gen/return "<menuitem")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:menuitem-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 138] 100)
+            [(get weights [:element :alt 73] 100)
               (gen/tuple
                 (gen/return "<menuitem")
                 (gen/vector
@@ -6856,7 +5408,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</menuitem>"))]
-            [(get weights [:element :alt 139] 100)
+            [(get weights [:element :alt 74] 100)
               (gen/tuple
                 (gen/return "<meta")
                 (gen/vector
@@ -6864,15 +5416,7 @@
                     (:space gmap)
                     (:meta-attribute gmap)))
                 (gen/return ">"))]
-            [(get weights [:element :alt 140] 100)
-              (gen/tuple
-                (gen/return "<meter")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:meter-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 141] 100)
+            [(get weights [:element :alt 75] 100)
               (gen/tuple
                 (gen/return "<meter")
                 (gen/vector
@@ -6883,15 +5427,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</meter>"))]
-            [(get weights [:element :alt 142] 100)
-              (gen/tuple
-                (gen/return "<multicol")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:multicol-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 143] 100)
+            [(get weights [:element :alt 76] 100)
               (gen/tuple
                 (gen/return "<multicol")
                 (gen/vector
@@ -6902,15 +5438,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</multicol>"))]
-            [(get weights [:element :alt 144] 100)
-              (gen/tuple
-                (gen/return "<nav")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:nav-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 145] 100)
+            [(get weights [:element :alt 77] 100)
               (gen/tuple
                 (gen/return "<nav")
                 (gen/vector
@@ -6921,15 +5449,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</nav>"))]
-            [(get weights [:element :alt 146] 100)
-              (gen/tuple
-                (gen/return "<nextid")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:nextid-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 147] 100)
+            [(get weights [:element :alt 78] 100)
               (gen/tuple
                 (gen/return "<nextid")
                 (gen/vector
@@ -6940,15 +5460,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</nextid>"))]
-            [(get weights [:element :alt 148] 100)
-              (gen/tuple
-                (gen/return "<noembed")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:noembed-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 149] 100)
+            [(get weights [:element :alt 79] 100)
               (gen/tuple
                 (gen/return "<noembed")
                 (gen/vector
@@ -6959,15 +5471,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</noembed>"))]
-            [(get weights [:element :alt 150] 100)
-              (gen/tuple
-                (gen/return "<noscript")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:noscript-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 151] 100)
+            [(get weights [:element :alt 80] 100)
               (gen/tuple
                 (gen/return "<noscript")
                 (gen/vector
@@ -6978,15 +5482,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</noscript>"))]
-            [(get weights [:element :alt 152] 100)
-              (gen/tuple
-                (gen/return "<object")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:object-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 153] 100)
+            [(get weights [:element :alt 81] 100)
               (gen/tuple
                 (gen/return "<object")
                 (gen/vector
@@ -6997,15 +5493,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</object>"))]
-            [(get weights [:element :alt 154] 100)
-              (gen/tuple
-                (gen/return "<ol")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:ol-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 155] 100)
+            [(get weights [:element :alt 82] 100)
               (gen/tuple
                 (gen/return "<ol")
                 (gen/vector
@@ -7016,15 +5504,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</ol>"))]
-            [(get weights [:element :alt 156] 100)
-              (gen/tuple
-                (gen/return "<optgroup")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:optgroup-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 157] 100)
+            [(get weights [:element :alt 83] 100)
               (gen/tuple
                 (gen/return "<optgroup")
                 (gen/vector
@@ -7035,15 +5515,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</optgroup>"))]
-            [(get weights [:element :alt 158] 100)
-              (gen/tuple
-                (gen/return "<option")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:option-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 159] 100)
+            [(get weights [:element :alt 84] 100)
               (gen/tuple
                 (gen/return "<option")
                 (gen/vector
@@ -7054,15 +5526,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</option>"))]
-            [(get weights [:element :alt 160] 100)
-              (gen/tuple
-                (gen/return "<output")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:output-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 161] 100)
+            [(get weights [:element :alt 85] 100)
               (gen/tuple
                 (gen/return "<output")
                 (gen/vector
@@ -7073,15 +5537,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</output>"))]
-            [(get weights [:element :alt 162] 100)
-              (gen/tuple
-                (gen/return "<p")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:p-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 163] 100)
+            [(get weights [:element :alt 86] 100)
               (gen/tuple
                 (gen/return "<p")
                 (gen/vector
@@ -7092,7 +5548,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</p>"))]
-            [(get weights [:element :alt 164] 100)
+            [(get weights [:element :alt 87] 100)
               (gen/tuple
                 (gen/return "<param")
                 (gen/vector
@@ -7100,15 +5556,7 @@
                     (:space gmap)
                     (:param-attribute gmap)))
                 (gen/return ">"))]
-            [(get weights [:element :alt 165] 100)
-              (gen/tuple
-                (gen/return "<plaintext")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:plaintext-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 166] 100)
+            [(get weights [:element :alt 88] 100)
               (gen/tuple
                 (gen/return "<plaintext")
                 (gen/vector
@@ -7119,15 +5567,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</plaintext>"))]
-            [(get weights [:element :alt 167] 100)
-              (gen/tuple
-                (gen/return "<pre")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:pre-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 168] 100)
+            [(get weights [:element :alt 89] 100)
               (gen/tuple
                 (gen/return "<pre")
                 (gen/vector
@@ -7138,15 +5578,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</pre>"))]
-            [(get weights [:element :alt 169] 100)
-              (gen/tuple
-                (gen/return "<progress")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:progress-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 170] 100)
+            [(get weights [:element :alt 90] 100)
               (gen/tuple
                 (gen/return "<progress")
                 (gen/vector
@@ -7157,15 +5589,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</progress>"))]
-            [(get weights [:element :alt 171] 100)
-              (gen/tuple
-                (gen/return "<q")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:q-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 172] 100)
+            [(get weights [:element :alt 91] 100)
               (gen/tuple
                 (gen/return "<q")
                 (gen/vector
@@ -7176,15 +5600,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</q>"))]
-            [(get weights [:element :alt 173] 100)
-              (gen/tuple
-                (gen/return "<rp")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:rp-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 174] 100)
+            [(get weights [:element :alt 92] 100)
               (gen/tuple
                 (gen/return "<rp")
                 (gen/vector
@@ -7195,15 +5611,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</rp>"))]
-            [(get weights [:element :alt 175] 100)
-              (gen/tuple
-                (gen/return "<rt")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:rt-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 176] 100)
+            [(get weights [:element :alt 93] 100)
               (gen/tuple
                 (gen/return "<rt")
                 (gen/vector
@@ -7214,15 +5622,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</rt>"))]
-            [(get weights [:element :alt 177] 100)
-              (gen/tuple
-                (gen/return "<rtc")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:rtc-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 178] 100)
+            [(get weights [:element :alt 94] 100)
               (gen/tuple
                 (gen/return "<rtc")
                 (gen/vector
@@ -7233,15 +5633,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</rtc>"))]
-            [(get weights [:element :alt 179] 100)
-              (gen/tuple
-                (gen/return "<ruby")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:ruby-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 180] 100)
+            [(get weights [:element :alt 95] 100)
               (gen/tuple
                 (gen/return "<ruby")
                 (gen/vector
@@ -7252,15 +5644,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</ruby>"))]
-            [(get weights [:element :alt 181] 100)
-              (gen/tuple
-                (gen/return "<s")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:s-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 182] 100)
+            [(get weights [:element :alt 96] 100)
               (gen/tuple
                 (gen/return "<s")
                 (gen/vector
@@ -7271,15 +5655,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</s>"))]
-            [(get weights [:element :alt 183] 100)
-              (gen/tuple
-                (gen/return "<samp")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:samp-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 184] 100)
+            [(get weights [:element :alt 97] 100)
               (gen/tuple
                 (gen/return "<samp")
                 (gen/vector
@@ -7290,15 +5666,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</samp>"))]
-            [(get weights [:element :alt 185] 100)
-              (gen/tuple
-                (gen/return "<script")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:script-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 186] 100)
+            [(get weights [:element :alt 98] 100)
               (gen/tuple
                 (gen/return "<script")
                 (gen/vector
@@ -7309,15 +5677,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</script>"))]
-            [(get weights [:element :alt 187] 100)
-              (gen/tuple
-                (gen/return "<section")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:section-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 188] 100)
+            [(get weights [:element :alt 99] 100)
               (gen/tuple
                 (gen/return "<section")
                 (gen/vector
@@ -7328,15 +5688,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</section>"))]
-            [(get weights [:element :alt 189] 100)
-              (gen/tuple
-                (gen/return "<select")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:select-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 190] 100)
+            [(get weights [:element :alt 100] 100)
               (gen/tuple
                 (gen/return "<select")
                 (gen/vector
@@ -7347,15 +5699,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</select>"))]
-            [(get weights [:element :alt 191] 100)
-              (gen/tuple
-                (gen/return "<shadow")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:shadow-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 192] 100)
+            [(get weights [:element :alt 101] 100)
               (gen/tuple
                 (gen/return "<shadow")
                 (gen/vector
@@ -7366,15 +5710,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</shadow>"))]
-            [(get weights [:element :alt 193] 100)
-              (gen/tuple
-                (gen/return "<slot")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:slot-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 194] 100)
+            [(get weights [:element :alt 102] 100)
               (gen/tuple
                 (gen/return "<slot")
                 (gen/vector
@@ -7385,15 +5721,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</slot>"))]
-            [(get weights [:element :alt 195] 100)
-              (gen/tuple
-                (gen/return "<small")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:small-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 196] 100)
+            [(get weights [:element :alt 103] 100)
               (gen/tuple
                 (gen/return "<small")
                 (gen/vector
@@ -7404,7 +5732,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</small>"))]
-            [(get weights [:element :alt 197] 100)
+            [(get weights [:element :alt 104] 100)
               (gen/tuple
                 (gen/return "<source")
                 (gen/vector
@@ -7412,15 +5740,7 @@
                     (:space gmap)
                     (:source-attribute gmap)))
                 (gen/return ">"))]
-            [(get weights [:element :alt 198] 100)
-              (gen/tuple
-                (gen/return "<spacer")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:spacer-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 199] 100)
+            [(get weights [:element :alt 105] 100)
               (gen/tuple
                 (gen/return "<spacer")
                 (gen/vector
@@ -7431,15 +5751,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</spacer>"))]
-            [(get weights [:element :alt 200] 100)
-              (gen/tuple
-                (gen/return "<span")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:span-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 201] 100)
+            [(get weights [:element :alt 106] 100)
               (gen/tuple
                 (gen/return "<span")
                 (gen/vector
@@ -7450,15 +5762,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</span>"))]
-            [(get weights [:element :alt 202] 100)
-              (gen/tuple
-                (gen/return "<strike")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:strike-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 203] 100)
+            [(get weights [:element :alt 107] 100)
               (gen/tuple
                 (gen/return "<strike")
                 (gen/vector
@@ -7469,15 +5773,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</strike>"))]
-            [(get weights [:element :alt 204] 100)
-              (gen/tuple
-                (gen/return "<strong")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:strong-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 205] 100)
+            [(get weights [:element :alt 108] 100)
               (gen/tuple
                 (gen/return "<strong")
                 (gen/vector
@@ -7488,15 +5784,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</strong>"))]
-            [(get weights [:element :alt 206] 100)
-              (gen/tuple
-                (gen/return "<style")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:style-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 207] 100)
+            [(get weights [:element :alt 109] 100)
               (gen/tuple
                 (gen/return "<style")
                 (gen/vector
@@ -7507,15 +5795,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</style>"))]
-            [(get weights [:element :alt 208] 100)
-              (gen/tuple
-                (gen/return "<sub")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:sub-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 209] 100)
+            [(get weights [:element :alt 110] 100)
               (gen/tuple
                 (gen/return "<sub")
                 (gen/vector
@@ -7526,15 +5806,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</sub>"))]
-            [(get weights [:element :alt 210] 100)
-              (gen/tuple
-                (gen/return "<summary")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:summary-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 211] 100)
+            [(get weights [:element :alt 111] 100)
               (gen/tuple
                 (gen/return "<summary")
                 (gen/vector
@@ -7545,15 +5817,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</summary>"))]
-            [(get weights [:element :alt 212] 100)
-              (gen/tuple
-                (gen/return "<sup")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:sup-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 213] 100)
+            [(get weights [:element :alt 112] 100)
               (gen/tuple
                 (gen/return "<sup")
                 (gen/vector
@@ -7564,15 +5828,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</sup>"))]
-            [(get weights [:element :alt 214] 100)
-              (gen/tuple
-                (gen/return "<table")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:table-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 215] 100)
+            [(get weights [:element :alt 113] 100)
               (gen/tuple
                 (gen/return "<table")
                 (gen/vector
@@ -7583,15 +5839,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</table>"))]
-            [(get weights [:element :alt 216] 100)
-              (gen/tuple
-                (gen/return "<tbody")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:tbody-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 217] 100)
+            [(get weights [:element :alt 114] 100)
               (gen/tuple
                 (gen/return "<tbody")
                 (gen/vector
@@ -7602,15 +5850,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</tbody>"))]
-            [(get weights [:element :alt 218] 100)
-              (gen/tuple
-                (gen/return "<td")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:td-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 219] 100)
+            [(get weights [:element :alt 115] 100)
               (gen/tuple
                 (gen/return "<td")
                 (gen/vector
@@ -7621,15 +5861,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</td>"))]
-            [(get weights [:element :alt 220] 100)
-              (gen/tuple
-                (gen/return "<template")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:template-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 221] 100)
+            [(get weights [:element :alt 116] 100)
               (gen/tuple
                 (gen/return "<template")
                 (gen/vector
@@ -7640,15 +5872,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</template>"))]
-            [(get weights [:element :alt 222] 100)
-              (gen/tuple
-                (gen/return "<textarea")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:textarea-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 223] 100)
+            [(get weights [:element :alt 117] 100)
               (gen/tuple
                 (gen/return "<textarea")
                 (gen/vector
@@ -7659,15 +5883,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</textarea>"))]
-            [(get weights [:element :alt 224] 100)
-              (gen/tuple
-                (gen/return "<tfoot")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:tfoot-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 225] 100)
+            [(get weights [:element :alt 118] 100)
               (gen/tuple
                 (gen/return "<tfoot")
                 (gen/vector
@@ -7678,15 +5894,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</tfoot>"))]
-            [(get weights [:element :alt 226] 100)
-              (gen/tuple
-                (gen/return "<th")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:th-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 227] 100)
+            [(get weights [:element :alt 119] 100)
               (gen/tuple
                 (gen/return "<th")
                 (gen/vector
@@ -7697,15 +5905,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</th>"))]
-            [(get weights [:element :alt 228] 100)
-              (gen/tuple
-                (gen/return "<thead")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:thead-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 229] 100)
+            [(get weights [:element :alt 120] 100)
               (gen/tuple
                 (gen/return "<thead")
                 (gen/vector
@@ -7716,15 +5916,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</thead>"))]
-            [(get weights [:element :alt 230] 100)
-              (gen/tuple
-                (gen/return "<time")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:time-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 231] 100)
+            [(get weights [:element :alt 121] 100)
               (gen/tuple
                 (gen/return "<time")
                 (gen/vector
@@ -7735,15 +5927,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</time>"))]
-            [(get weights [:element :alt 232] 100)
-              (gen/tuple
-                (gen/return "<tr")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:tr-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 233] 100)
+            [(get weights [:element :alt 122] 100)
               (gen/tuple
                 (gen/return "<tr")
                 (gen/vector
@@ -7754,7 +5938,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</tr>"))]
-            [(get weights [:element :alt 234] 100)
+            [(get weights [:element :alt 123] 100)
               (gen/tuple
                 (gen/return "<track")
                 (gen/vector
@@ -7762,15 +5946,7 @@
                     (:space gmap)
                     (:track-attribute gmap)))
                 (gen/return ">"))]
-            [(get weights [:element :alt 235] 100)
-              (gen/tuple
-                (gen/return "<tt")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:tt-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 236] 100)
+            [(get weights [:element :alt 124] 100)
               (gen/tuple
                 (gen/return "<tt")
                 (gen/vector
@@ -7781,15 +5957,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</tt>"))]
-            [(get weights [:element :alt 237] 100)
-              (gen/tuple
-                (gen/return "<u")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:u-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 238] 100)
+            [(get weights [:element :alt 125] 100)
               (gen/tuple
                 (gen/return "<u")
                 (gen/vector
@@ -7800,15 +5968,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</u>"))]
-            [(get weights [:element :alt 239] 100)
-              (gen/tuple
-                (gen/return "<ul")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:ul-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 240] 100)
+            [(get weights [:element :alt 126] 100)
               (gen/tuple
                 (gen/return "<ul")
                 (gen/vector
@@ -7819,15 +5979,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</ul>"))]
-            [(get weights [:element :alt 241] 100)
-              (gen/tuple
-                (gen/return "<var")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:var-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 242] 100)
+            [(get weights [:element :alt 127] 100)
               (gen/tuple
                 (gen/return "<var")
                 (gen/vector
@@ -7838,15 +5990,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</var>"))]
-            [(get weights [:element :alt 243] 100)
-              (gen/tuple
-                (gen/return "<video")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:video-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 244] 100)
+            [(get weights [:element :alt 128] 100)
               (gen/tuple
                 (gen/return "<video")
                 (gen/vector
@@ -7857,7 +6001,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</video>"))]
-            [(get weights [:element :alt 245] 100)
+            [(get weights [:element :alt 129] 100)
               (gen/tuple
                 (gen/return "<wbr")
                 (gen/vector
@@ -7865,15 +6009,7 @@
                     (:space gmap)
                     (:wbr-attribute gmap)))
                 (gen/return ">"))]
-            [(get weights [:element :alt 246] 100)
-              (gen/tuple
-                (gen/return "<xmp")
-                (gen/vector
-                  (gen/tuple
-                    (:space gmap)
-                    (:xmp-attribute gmap)))
-                (gen/return "/>"))]
-            [(get weights [:element :alt 247] 100)
+            [(get weights [:element :alt 130] 100)
               (gen/tuple
                 (gen/return "<xmp")
                 (gen/vector
