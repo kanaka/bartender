@@ -9,6 +9,7 @@
             [rend.webdriver :as webdriver]
 
             [clj-yaml.core :as yaml]
+            [clj-time.core :as t]
             [clojure.edn :as edn]
             [clojure.data.codec.base64 :as base64]
             [hiccup.core]
@@ -41,7 +42,7 @@
         url (str (webdriver/addr (:web cfg)) "/" path)]
     (try
       (println "------")
-      (println "Test case:" text)
+      ;; (println "Test case:" text)
       ;; (println "Writing to " path)
       (clojure.java.io/make-parents (java.io.File. path))
       (spit path text)
@@ -168,25 +169,33 @@
 
 ;----
 
-(defn deep-merge [a b]
-  (merge-with (fn [x y] (if (map? y) (deep-merge x y) y))
-              a b))
+(defn deep-merge [& maps]
+  (apply merge-with (fn [x y] (if (map? y) (deep-merge x y) y))
+         maps))
 
 (def cli-options
-  [["-S" "--sessions SESSIONS" "Browser sessions file (edn)"
+  [["-?" "--help" "Show usage"
+    :default false]
+   ["-v" "--verbose" "Verbose output"
+    :default false]
+   ["-S" "--sessions SESSIONS" "Browser sessions file (edn)"
     :default "sessions.edn"]
    ["-s" "--seed SEED" "Test random seed (overrides config file)"
     :parse-fn #(Integer. %)]])
 
 (defn usage [data]
-  (println "Usage: rend [OPTIONS] config.yaml")
-  (println (summarize data)))
+  (str "Usage: rend [OPTIONS] YAML_CONFIG_FILE\n"
+       (summarize data)))
 
 (defn pr-err [& args] (binding [*out* *err*] (apply println args)))
 
 (defn opt-errors [opts]
   (when (:errors opts)
     (doall (map pr-err (:errors opts)))
+    (System/exit 2))
+  (when (or (-> opts :options :help)
+            (-> opts :arguments count (> 1)))
+    (println (:summary opts))
     (System/exit 2))
   opts)
 
@@ -196,6 +205,7 @@
         cfg-file (first arguments)
         sessions-file (:sessions options)
         cfg (deep-merge (yaml/parse-string (slurp cfg-file))
+                        {:verbose (:verbose options)}
                         (if (:seed options)
                           {:quick-check {:seed (:seed options)}}))
         _ (do (println "Configuration:") (pprint cfg))
@@ -205,7 +215,7 @@
         weights (when (:weights cfg)
                   (edn/read-string (slurp (:weights cfg))))]
     (when (.exists (io/as-file sessions-file))
-      (println "Loading sessions state from " sessions-file)
+      (println "Loading sessions state from" sessions-file)
       (load-sessions sessions-file))
     (rend.server/start-server cfg)
     (doseq [browser (:browsers cfg)]
@@ -217,13 +227,19 @@
                               :test-dir test-dir
                               :log []})
     (let [gen-html (rend.generator/get-html-generator weights)
+          start-time (t/now)
           qc-res (mend.check/run-check
                    (:quick-check cfg {})
                    gen-html
                    (fn [html] (check-page cfg test-dir html))
                    mend.check/reporter)
+          end-time (t/now)
           full-result (swap! check-page-state
                              assoc
+                             :start-time (.toDate start-time)
+                             :end-time (.toDate end-time)
+                             :elapsed-ms (t/in-millis
+                                           (t/interval start-time end-time))
                              :final-result qc-res
                              :config cfg)
           return-code (if (:result qc-res) 0 1)]

@@ -5,6 +5,34 @@
  ;; increase <div> frequency
  [:element :alt 37] 10000,
 
+ ;;;
+
+ ;; Remove obsolete known different tags.
+ ;; <applet>
+ [:element :alt 4] 0,
+ ;; <marquee>
+ [:element :alt 71] 0,
+ ;; <object>
+ [:element :alt 81] 0,
+
+ ;; Remove known different tags
+ ;; <address>
+ [:element :alt 3] 0,
+ ;; <audio> - Chrome is different
+ [:element :alt 8] 0,
+ ;; <b> - Servo is different
+ [:element :alt 9] 0,
+ ;; <big> - Chrome is different
+ [:element :alt 15] 0,
+ ;; <blockquote> - Servo is different
+ [:element :alt 17] 0,
+ ;; <button> - Chrome/Firefox/Servo all different
+ [:element :alt 19] 0,
+ ;; <mark> - Chrome/Firefox/Servo all different
+ [:element :alt 70] 0,
+
+ ;;;
+
  ;; decrease bgcolor attribute
  [:colgroup-attribute :alt 1] 10,
  [:col-attribute :alt 1] 10,

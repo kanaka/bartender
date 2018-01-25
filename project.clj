@@ -14,6 +14,7 @@
                  [hiccup "1.0.5"]
                  [http-kit "2.2.0"]
                  [clj-yaml "0.4.0"]
+                 [clj-time "0.14.2"]
                  [org.clojure/data.json "0.2.6"]
                  [org.clojure/data.codec "0.1.0"]
                  [pandect "0.6.0"]
