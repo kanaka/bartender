@@ -406,9 +406,8 @@ nonprop-mask-source =
   nonprop-url ' ' ;
 
 func-rgba = 
-  (
+  'rgba('
     (
-      'rgba(' ' '
       (
         (
           (
@@ -430,9 +429,7 @@ func-rgba =
           '/' ' '
           nonprop-alpha-value ' '
         )? ' '
-      ) ' '
-    ) |
-    (
+      ) ' ' |
       (
         (
           (
@@ -453,9 +450,8 @@ func-rgba =
         ',' ' '
         nonprop-alpha-value? ' '
       ) ' '
-      ')' ' '
     )
-  ) ;
+  ')' ' ' ;
 
 prop-word-break = 
   (
@@ -695,20 +691,20 @@ prop-box-pack =
   ) ;
 
 func-radial-gradient = 
-  (
-    'radial-gradient(' ' '
-    ( (
-      nonprop-ending-shape ' ' |
-      nonprop-size ' '
-    )+ )? ' '
+  'radial-gradient('
     (
-      'at' ' '
-      nonprop-position ' '
-    )? ' '
-    ',' ' '
-    nonprop-color-stop-list ' '
-    ')' ' '
-  ) ;
+      ( (
+        nonprop-ending-shape ' ' |
+        nonprop-size ' '
+      )+ )? ' '
+      (
+        'at' ' '
+        nonprop-position ' '
+      )? ' '
+      ',' ' '
+      nonprop-color-stop-list ' '
+    )
+  ')' ' ' ;
 
 prop-min-height = 
   (
@@ -854,17 +850,17 @@ prop-transition-timing-function =
   )* ' ' ;
 
 nonprop-track-repeat = 
-  (
-    'repeat(' ' '
-    nonprop-positive-integer ' ' ' '
-    ',' ' '
+  'repeat('
     (
+      nonprop-positive-integer ' ' ' '
+      ',' ' '
+      (
+        nonprop-line-names? ' '
+        nonprop-track-size ' '
+      )+ ' '
       nonprop-line-names? ' '
-      nonprop-track-size ' '
-    )+ ' '
-    nonprop-line-names? ' '
-    ')' ' '
-  ) ;
+    )
+  ')' ' ' ;
 
 prop-animation-iteration-count = 
   nonprop-single-animation-iteration-count (
@@ -902,27 +898,27 @@ nonprop-content-list =
   )+ ' ' ;
 
 func-minmax = 
-  (
-    'minmax(' ' '
+  'minmax('
     (
-      nonprop-length ' ' |
-      nonprop-percentage ' ' |
-      nonprop-flex ' ' |
-      'min-content' ' ' |
-      'max-content' ' ' |
-      'auto' ' '
-    ) ' '
-    ',' ' '
-    (
-      nonprop-length ' ' |
-      nonprop-percentage ' ' |
-      nonprop-flex ' ' |
-      'min-content' ' ' |
-      'max-content' ' ' |
-      'auto' ' '
-    ) ' '
-    ')' ' '
-  ) ;
+      (
+        nonprop-length ' ' |
+        nonprop-percentage ' ' |
+        nonprop-flex ' ' |
+        'min-content' ' ' |
+        'max-content' ' ' |
+        'auto' ' '
+      ) ' '
+      ',' ' '
+      (
+        nonprop-length ' ' |
+        nonprop-percentage ' ' |
+        nonprop-flex ' ' |
+        'min-content' ' ' |
+        'max-content' ' ' |
+        'auto' ' '
+      ) ' '
+    )
+  ')' ' ' ;
 
 nonprop-display-listitem = 
   (
@@ -1022,11 +1018,9 @@ prop-word-spacing =
   ) ;
 
 func-scaleX = 
-  (
-    'scaleX(' ' '
+  'scaleX('
     nonprop-number ' '
-    ')' ' '
-  ) ;
+  ')' ' ' ;
 
 nonprop-absolute-size = 
   (
@@ -1130,11 +1124,9 @@ nonprop-gradient =
   ) ;
 
 func-rotateX = 
-  (
-    'rotateX(' ' '
+  'rotateX('
     nonprop-angle ' '
-    ')' ' '
-  ) ;
+  ')' ' ' ;
 
 nonprop-display-inside = 
   (
@@ -1191,15 +1183,15 @@ prop--webkit-border-before-style =
   nonprop-border-style ' ' ;
 
 func-scale3d = 
-  (
-    'scale3d(' ' '
-    nonprop-number ' '
-    ',' ' '
-    nonprop-number ' '
-    ',' ' '
-    nonprop-number ' '
-    ')' ' '
-  ) ;
+  'scale3d('
+    (
+      nonprop-number ' '
+      ',' ' '
+      nonprop-number ' '
+      ',' ' '
+      nonprop-number ' '
+    )
+  ')' ' ' ;
 
 prop-list-style-type = 
   (
@@ -1217,11 +1209,9 @@ nonprop-page-margin-box =
   ) ;
 
 func-blur = 
-  (
-    'blur(' ' '
+  'blur('
     nonprop-length ' '
-    ')' ' '
-  ) ;
+  ')' ' ' ;
 
 prop-break-after = 
   (
@@ -1328,17 +1318,17 @@ prop-box-flex =
   nonprop-number ' ' ;
 
 nonprop-shape = 
-  (
-    'rect(' ' '
-    nonprop-top ' '
-    ', '
-    nonprop-right ' '
-    ', '
-    nonprop-bottom ' '
-    ', '
-    nonprop-left ' '
-    ')' ' '
-  ) ;
+  'rect('
+    (
+      nonprop-top ' '
+      ', '
+      nonprop-right ' '
+      ', '
+      nonprop-bottom ' '
+      ', '
+      nonprop-left ' '
+    )
+  ')' ' ' ;
 
 prop-transform-style = 
   (
@@ -1347,11 +1337,9 @@ prop-transform-style =
   ) ;
 
 func-translateY = 
-  (
-    'translateY(' ' '
+  'translateY('
     nonprop-length-percentage ' '
-    ')' ' '
-  ) ;
+  ')' ' ' ;
 
 prop-font-family = 
   (
@@ -1409,11 +1397,9 @@ nonprop-mf-value =
   ) ;
 
 func-contrast = 
-  (
-    'contrast(' ' '
+  'contrast('
     nonprop-number-percentage ' ' ' '
-    ')' ' '
-  ) ;
+  ')' ' ' ;
 
 prop-text-decoration-line = 
   (
@@ -1471,29 +1457,29 @@ nonprop-single-transition-timing-function =
     'ease-in-out' ' ' |
     'step-start' ' ' |
     'step-end' ' ' |
-    (
-      'steps(' ' '
-      nonprop-integer ' '
+    'steps('
       (
-        ',' ' '
+        nonprop-integer ' '
         (
-          'start' ' ' |
-          'end' ' '
-        ) ' '
-      )? ' '
-      ')' ' '
-    ) |
-    (
-      'cubic-bezier(' ' '
-      nonprop-number ' '
-      ', '
-      nonprop-number ' '
-      ', '
-      nonprop-number ' '
-      ', '
-      nonprop-number ' '
-      ')' ' '
-    )
+          ',' ' '
+          (
+            'start' ' ' |
+            'end' ' '
+          ) ' '
+        )? ' '
+      )
+    ')' ' ' |
+    'cubic-bezier('
+      (
+        nonprop-number ' '
+        ', '
+        nonprop-number ' '
+        ', '
+        nonprop-number ' '
+        ', '
+        nonprop-number ' '
+      )
+    ')' ' '
   ) ;
 
 prop-font-style = 
@@ -1707,20 +1693,20 @@ prop-line-height =
   ) ;
 
 nonprop-auto-repeat = 
-  (
-    'repeat(' ' '
+  'repeat('
     (
-      'auto-fill' ' ' |
-      'auto-fit' ' '
-    ) ' '
-    ',' ' '
-    (
+      (
+        'auto-fill' ' ' |
+        'auto-fit' ' '
+      ) ' '
+      ',' ' '
+      (
+        nonprop-line-names? ' '
+        nonprop-fixed-size ' '
+      )+ ' '
       nonprop-line-names? ' '
-      nonprop-fixed-size ' '
-    )+ ' '
-    nonprop-line-names? ' '
-    ')' ' '
-  ) ;
+    )
+  ')' ' ' ;
 
 nonprop-type-or-unit = 
   (
@@ -1806,15 +1792,15 @@ nonprop-filter-function =
   ) ;
 
 func-skew = 
-  (
-    'skew(' ' '
-    nonprop-angle ' '
+  'skew('
     (
-      ',' ' '
       nonprop-angle ' '
-    )? ' '
-    ')' ' '
-  ) ;
+      (
+        ',' ' '
+        nonprop-angle ' '
+      )? ' '
+    )
+  ')' ' ' ;
 
 nonprop-single-animation-direction = 
   (
@@ -1825,8 +1811,7 @@ nonprop-single-animation-direction =
   ) ;
 
 func-image = 
-  (
-    'image(' ' '
+  'image('
     (
       (
         nonprop-image ' ' |
@@ -1835,8 +1820,7 @@ func-image =
       ',' ' '
       nonprop-color? ' '
     ) ' '
-    ')' ' '
-  ) ;
+  ')' ' ' ;
 
 prop-column-rule-color = 
   nonprop-color ' ' ;
@@ -1892,30 +1876,30 @@ prop-initial-letter-align =
   ) ' ' ;
 
 func-translate3d = 
-  (
-    'translate3d(' ' '
-    nonprop-length-percentage ' '
-    ',' ' '
-    nonprop-length-percentage ' '
-    ',' ' '
-    nonprop-length ' '
-    ')' ' '
-  ) ;
+  'translate3d('
+    (
+      nonprop-length-percentage ' '
+      ',' ' '
+      nonprop-length-percentage ' '
+      ',' ' '
+      nonprop-length ' '
+    )
+  ')' ' ' ;
 
 func-linear-gradient = 
-  (
-    'linear-gradient(' ' '
+  'linear-gradient('
     (
-      nonprop-angle ' ' |
       (
-        'to' ' '
-        nonprop-side-or-corner ' '
-      )
-    )? ' '
-    ',' ' '
-    nonprop-color-stop-list ' '
-    ')' ' '
-  ) ;
+        nonprop-angle ' ' |
+        (
+          'to' ' '
+          nonprop-side-or-corner ' '
+        )
+      )? ' '
+      ',' ' '
+      nonprop-color-stop-list ' '
+    )
+  ')' ' ' ;
 
 nonprop-named-color = 
   (
@@ -2093,11 +2077,9 @@ prop-image-orientation =
   ) ;
 
 func-hue-rotate = 
-  (
-    'hue-rotate(' ' '
+  'hue-rotate('
     nonprop-angle ' '
-    ')' ' '
-  ) ;
+  ')' ' ' ;
 
 prop-mask-size = 
   nonprop-bg-size (
@@ -2148,11 +2130,9 @@ prop-scroll-snap-destination =
   nonprop-position ' ' ;
 
 func-perspective = 
-  (
-    'perspective(' ' '
+  'perspective('
     nonprop-length ' '
-    ')' ' '
-  ) ;
+  ')' ' ' ;
 
 nonprop-masking-mode = 
   (
@@ -2165,11 +2145,9 @@ prop-grid-row-gap =
   nonprop-length-percentage ' ' ;
 
 func-brightness = 
-  (
-    'brightness(' ' '
+  'brightness('
     nonprop-number-percentage ' '
-    ')' ' '
-  ) ;
+  ')' ' ' ;
 
 prop-unicode-bidi = 
   (
@@ -2197,75 +2175,75 @@ prop-offset-distance =
   nonprop-length-percentage ' ' ;
 
 func-matrix3d = 
-  (
-    'matrix3d(' ' '
-    nonprop-number ' '
+  'matrix3d('
     (
+      nonprop-number ' '
       (
         (
-          ',' ' '
-          nonprop-number ' '
-        ) |
-        (
-          ',' ' '
-          nonprop-number ' '
+          (
+            ',' ' '
+            nonprop-number ' '
+          ) |
+          (
+            ',' ' '
+            nonprop-number ' '
+          )
+          (
+            ',' ' '
+            nonprop-number ' '
+          ) |
+          (
+            ',' ' '
+            nonprop-number ' '
+          )
+          (
+            ',' ' '
+            nonprop-number ' '
+          )
+          (
+            ',' ' '
+            nonprop-number ' '
+          ) |
+          (
+            ',' ' '
+            nonprop-number ' '
+          )
+          (
+            ',' ' '
+            nonprop-number ' '
+          )
+          (
+            ',' ' '
+            nonprop-number ' '
+          )
+          (
+            ',' ' '
+            nonprop-number ' '
+          ) |
+          (
+            ',' ' '
+            nonprop-number ' '
+          )
+          (
+            ',' ' '
+            nonprop-number ' '
+          )
+          (
+            ',' ' '
+            nonprop-number ' '
+          )
+          (
+            ',' ' '
+            nonprop-number ' '
+          )
+          (
+            ',' ' '
+            nonprop-number ' '
+          )
         )
-        (
-          ',' ' '
-          nonprop-number ' '
-        ) |
-        (
-          ',' ' '
-          nonprop-number ' '
-        )
-        (
-          ',' ' '
-          nonprop-number ' '
-        )
-        (
-          ',' ' '
-          nonprop-number ' '
-        ) |
-        (
-          ',' ' '
-          nonprop-number ' '
-        )
-        (
-          ',' ' '
-          nonprop-number ' '
-        )
-        (
-          ',' ' '
-          nonprop-number ' '
-        )
-        (
-          ',' ' '
-          nonprop-number ' '
-        ) |
-        (
-          ',' ' '
-          nonprop-number ' '
-        )
-        (
-          ',' ' '
-          nonprop-number ' '
-        )
-        (
-          ',' ' '
-          nonprop-number ' '
-        )
-        (
-          ',' ' '
-          nonprop-number ' '
-        )
-        (
-          ',' ' '
-          nonprop-number ' '
-        )
-      )
-    ) ' '
-    ')' ' '
-  ) ;
+      ) ' '
+    )
+  ')' ' ' ;
 
 prop-mask-clip = 
   (
@@ -2311,11 +2289,9 @@ nonprop-geometry-box =
   ) ;
 
 func-skewY = 
-  (
-    'skewY(' ' '
+  'skewY('
     nonprop-angle ' '
-    ')' ' '
-  ) ;
+  ')' ' ' ;
 
 prop-animation-direction = 
   nonprop-single-animation-direction (
@@ -2380,11 +2356,9 @@ nonprop-nth =
   ) ;
 
 func-rotateZ = 
-  (
-    'rotateZ(' ' '
+  'rotateZ('
     nonprop-angle ' '
-    ')' ' '
-  ) ;
+  ')' ' ' ;
 
 prop-font-variation-settings = 
   (
@@ -2413,42 +2387,42 @@ nonprop-keyframe-block =
   ) ;
 
 func-var = 
-  (
-    'var(' ' '
-    nonprop-custom-property-name ' '
+  'var('
     (
-      ',' ' '
-      nonprop-declaration-value ' '
-    )? ' '
-    ')' ' '
-  ) ;
+      nonprop-custom-property-name ' '
+      (
+        ',' ' '
+        nonprop-declaration-value ' '
+      )? ' '
+    )
+  ')' ' ' ;
 
 func-drop-shadow = 
-  (
-    'drop-shadow(' ' '
+  'drop-shadow('
     (
       (
-        nonprop-length
-        nonprop-length |
-        nonprop-length
-        nonprop-length
-        nonprop-length
-      )
-    ) ' '
-    nonprop-color? ' '
-    ')' ' '
-  ) ;
+        (
+          nonprop-length
+          nonprop-length |
+          nonprop-length
+          nonprop-length
+          nonprop-length
+        )
+      ) ' '
+      nonprop-color? ' '
+    )
+  ')' ' ' ;
 
 func-translate = 
-  (
-    'translate(' ' '
-    nonprop-length-percentage ' '
+  'translate('
     (
-      ',' ' '
       nonprop-length-percentage ' '
-    )? ' '
-    ')' ' '
-  ) ;
+      (
+        ',' ' '
+        nonprop-length-percentage ' '
+      )? ' '
+    )
+  ')' ' ' ;
 
 nonprop-page-selector-list = 
   nonprop-page-selector (
@@ -2513,15 +2487,15 @@ prop-margin-inline-end =
   nonprop-margin-left ' ' ;
 
 func-circle = 
-  (
-    'circle(' ' '
-    nonprop-shape-radius ' '? ' '
+  'circle('
     (
-      'at' ' '
-      nonprop-position ' '
-    )? ' '
-    ')' ' '
-  ) ;
+      nonprop-shape-radius ' '? ' '
+      (
+        'at' ' '
+        nonprop-position ' '
+      )? ' '
+    )
+  ')' ' ' ;
 
 prop-border-bottom-style = 
   nonprop-br-style ' ' ;
@@ -2544,14 +2518,12 @@ prop-grid-row-start =
   nonprop-grid-line ' ' ;
 
 func-image-set = 
-  (
-    'image-set(' ' '
+  'image-set('
     nonprop-image-set-option (
       ', '
       nonprop-image-set-option
     )* ' '
-    ')' ' '
-  ) ;
+  ')' ' ' ;
 
 nonprop-box = 
   (
@@ -2608,20 +2580,20 @@ prop-animation-name =
   )* ' ' ;
 
 func-repeating-radial-gradient = 
-  (
-    'repeating-radial-gradient(' ' '
-    ( (
-      nonprop-ending-shape ' ' |
-      nonprop-size ' '
-    )+ )? ' '
+  'repeating-radial-gradient('
     (
-      'at' ' '
-      nonprop-position ' '
-    )? ' '
-    ',' ' '
-    nonprop-color-stop-list ' '
-    ')' ' '
-  ) ;
+      ( (
+        nonprop-ending-shape ' ' |
+        nonprop-size ' '
+      )+ )? ' '
+      (
+        'at' ' '
+        nonprop-position ' '
+      )? ' '
+      ',' ' '
+      nonprop-color-stop-list ' '
+    )
+  ')' ' ' ;
 
 nonprop-mask-reference = 
   (
@@ -2713,18 +2685,14 @@ prop-will-change =
   ) ;
 
 func-leader = 
-  (
+  'leader('
     (
-      'leader(' ' '
-      'dotted' ' '
-    ) |
-    'solid' ' ' |
-    'space' ' ' |
-    (
+      'dotted' ' ' |
+      'solid' ' ' |
+      'space' ' ' |
       nonprop-string ' '
-      ')' ' '
     )
-  ) ;
+  ')' ' ' ;
 
 prop-font-synthesis = 
   (
@@ -2761,13 +2729,13 @@ prop-background-clip =
   )* ' ' ;
 
 func-cross-fade = 
-  (
-    'cross-fade(' ' '
-    nonprop-cf-mixing-image ' '
-    ',' ' '
-    nonprop-cf-final-image? ' '
-    ')' ' '
-  ) ;
+  'cross-fade('
+    (
+      nonprop-cf-mixing-image ' '
+      ',' ' '
+      nonprop-cf-final-image? ' '
+    )
+  ')' ' ' ;
 
 nonprop-shadow = 
   (
@@ -2791,11 +2759,9 @@ nonprop-shadow =
 prop-scroll-snap-points-x = 
   (
     'none' ' ' |
-    (
-      'repeat(' ' '
+    'repeat('
       nonprop-length-percentage ' '
-      ')' ' '
-    )
+    ')' ' '
   ) ;
 
 prop-animation = 
@@ -2824,21 +2790,19 @@ prop--webkit-mask-clip =
 nonprop-track-size = 
   (
     nonprop-track-breadth ' ' |
-    (
-      'minmax(' ' '
-      nonprop-inflexible-breadth ' '
-      ',' ' '
-      nonprop-track-breadth ' '
-      ')' ' '
-    ) |
-    (
-      'fit-content(' ' '
+    'minmax('
+      (
+        nonprop-inflexible-breadth ' '
+        ',' ' '
+        nonprop-track-breadth ' '
+      )
+    ')' ' ' |
+    'fit-content('
       (
         nonprop-length ' ' |
         nonprop-percentage ' '
       ) ' '
-      ')' ' '
-    )
+    ')' ' '
   ) ;
 
 nonprop-attachment = 
@@ -2849,14 +2813,12 @@ nonprop-attachment =
   ) ;
 
 func-fit-content = 
-  (
-    'fit-content(' ' '
+  'fit-content('
     (
       nonprop-length ' ' |
       nonprop-percentage ' '
     ) ' '
-    ')' ' '
-  ) ;
+  ')' ' ' ;
 
 prop-font-size-adjust = 
   (
@@ -3048,11 +3010,9 @@ prop-quotes =
 prop-scroll-snap-points-y = 
   (
     'none' ' ' |
-    (
-      'repeat(' ' '
+    'repeat('
       nonprop-length-percentage ' '
-      ')' ' '
-    )
+    ')' ' '
   ) ;
 
 nonprop-fill-rule = 
@@ -3182,20 +3142,20 @@ prop-border-block-end-style =
   nonprop-border-style ' ' ;
 
 func-target-counter = 
-  (
-    'target-counter(' ' '
+  'target-counter('
     (
-      nonprop-string ' ' |
-      nonprop-url ' '
-    ) ' '
-    ',' ' '
-    nonprop-custom-ident ' '
-    (
+      (
+        nonprop-string ' ' |
+        nonprop-url ' '
+      ) ' '
       ',' ' '
-      nonprop-counter-style ' '
-    )? ' '
-    ')' ' '
-  ) ;
+      nonprop-custom-ident ' '
+      (
+        ',' ' '
+        nonprop-counter-style ' '
+      )? ' '
+    )
+  ')' ' ' ;
 
 prop-padding-block-start = 
   nonprop-padding-left ' ' ;
@@ -3225,20 +3185,20 @@ prop--webkit-box-reflect =
   ) ;
 
 func-ellipse = 
-  (
-    'ellipse(' ' '
+  'ellipse('
     (
       (
-        nonprop-shape-radius
-        nonprop-shape-radius
-      )
-    ) ' '? ' '
-    (
-      'at' ' '
-      nonprop-position ' '
-    )? ' '
-    ')' ' '
-  ) ;
+        (
+          nonprop-shape-radius
+          nonprop-shape-radius
+        )
+      ) ' '? ' '
+      (
+        'at' ' '
+        nonprop-position ' '
+      )? ' '
+    )
+  ')' ' ' ;
 
 prop--moz-orient = 
   (
@@ -3316,35 +3276,35 @@ nonprop-ending-shape =
   ) ;
 
 func-matrix = 
-  (
-    'matrix(' ' '
-    nonprop-number ' '
+  'matrix('
     (
+      nonprop-number ' '
       (
         (
-          ',' ' '
-          nonprop-number ' '
+          (
+            ',' ' '
+            nonprop-number ' '
+          )
+          (
+            ',' ' '
+            nonprop-number ' '
+          )
+          (
+            ',' ' '
+            nonprop-number ' '
+          )
+          (
+            ',' ' '
+            nonprop-number ' '
+          )
+          (
+            ',' ' '
+            nonprop-number ' '
+          )
         )
-        (
-          ',' ' '
-          nonprop-number ' '
-        )
-        (
-          ',' ' '
-          nonprop-number ' '
-        )
-        (
-          ',' ' '
-          nonprop-number ' '
-        )
-        (
-          ',' ' '
-          nonprop-number ' '
-        )
-      )
-    ) ' '
-    ')' ' '
-  ) ;
+      ) ' '
+    )
+  ')' ' ' ;
 
 prop-offset-position = 
   (
@@ -3405,16 +3365,16 @@ prop-border-inline-end-width =
   nonprop-border-width ' ' ;
 
 func-attr = 
-  (
-    'attr(' ' '
-    nonprop-attr-name ' '
-    nonprop-type-or-unit? ' '
+  'attr('
     (
-      ',' ' '
-      nonprop-attr-fallback ' '
-    )? ' '
-    ')' ' '
-  ) ;
+      nonprop-attr-name ' '
+      nonprop-type-or-unit? ' '
+      (
+        ',' ' '
+        nonprop-attr-fallback ' '
+      )? ' '
+    )
+  ')' ' ' ;
 
 prop-text-emphasis-color = 
   nonprop-color ' ' ;
@@ -3466,24 +3426,22 @@ prop-max-height =
   ) ;
 
 func-rotate3d = 
-  (
-    'rotate3d(' ' '
-    nonprop-number ' '
-    ',' ' '
-    nonprop-number ' '
-    ',' ' '
-    nonprop-number ' '
-    ',' ' '
-    nonprop-angle ' '
-    ')' ' '
-  ) ;
+  'rotate3d('
+    (
+      nonprop-number ' '
+      ',' ' '
+      nonprop-number ' '
+      ',' ' '
+      nonprop-number ' '
+      ',' ' '
+      nonprop-angle ' '
+    )
+  ')' ' ' ;
 
 func-translateX = 
-  (
-    'translateX(' ' '
+  'translateX('
     nonprop-length-percentage ' '
-    ')' ' '
-  ) ;
+  ')' ' ' ;
 
 prop-mask-repeat = 
   nonprop-repeat-style (
@@ -3631,11 +3589,9 @@ nonprop-cf-mixing-image =
   ) ;
 
 func-element = 
-  (
-    'element(' ' '
+  'element('
     nonprop-id-selector ' '
-    ')' ' '
-  ) ;
+  ')' ' ' ;
 
 nonprop-symbol = 
   (
@@ -3645,23 +3601,23 @@ nonprop-symbol =
   ) ;
 
 func-target-text = 
-  (
-    'target-text(' ' '
+  'target-text('
     (
-      nonprop-string ' ' |
-      nonprop-url ' '
-    ) ' '
-    (
-      ',' ' '
       (
-        'content' ' ' |
-        'before' ' ' |
-        'after' ' ' |
-        'first-letter' ' '
+        nonprop-string ' ' |
+        nonprop-url ' '
       ) ' '
-    )? ' '
-    ')' ' '
-  ) ;
+      (
+        ',' ' '
+        (
+          'content' ' ' |
+          'before' ' ' |
+          'after' ' ' |
+          'first-letter' ' '
+        ) ' '
+      )? ' '
+    )
+  ')' ' ' ;
 
 prop-widows = 
   nonprop-integer ' ' ;
@@ -3695,11 +3651,9 @@ prop-background-position-y =
   )* ' ' ;
 
 func-rotate = 
-  (
-    'rotate(' ' '
+  'rotate('
     nonprop-angle ' '
-    ')' ' '
-  ) ;
+  ')' ' ' ;
 
 prop-font-size = 
   (
@@ -3738,11 +3692,9 @@ prop-offset-inline-end =
   nonprop-left ' ' ;
 
 func-translateZ = 
-  (
-    'translateZ(' ' '
+  'translateZ('
     nonprop-length ' '
-    ')' ' '
-  ) ;
+  ')' ' ' ;
 
 nonprop-mask-position = 
   (
@@ -3826,22 +3778,22 @@ nonprop-numeric-fraction-values =
   ) ' ' ;
 
 func-target-counters = 
-  (
-    'target-counters(' ' '
+  'target-counters('
     (
-      nonprop-string ' ' |
-      nonprop-url ' '
-    ) ' '
-    ',' ' '
-    nonprop-custom-ident ' '
-    ',' ' '
-    nonprop-string ' '
-    (
+      (
+        nonprop-string ' ' |
+        nonprop-url ' '
+      ) ' '
       ',' ' '
-      nonprop-counter-style ' '
-    )? ' '
-    ')' ' '
-  ) ;
+      nonprop-custom-ident ' '
+      ',' ' '
+      nonprop-string ' '
+      (
+        ',' ' '
+        nonprop-counter-style ' '
+      )? ' '
+    )
+  ')' ' ' ;
 
 prop-clip = 
   (
@@ -3878,11 +3830,9 @@ prop-border-top-color =
   nonprop-color ' ' ;
 
 func-rotateY = 
-  (
-    'rotateY(' ' '
+  'rotateY('
     nonprop-angle ' '
-    ')' ' '
-  ) ;
+  ')' ' ' ;
 
 prop-overflow-wrap = 
   (
@@ -3994,9 +3944,8 @@ prop-scroll-snap-type =
   ) ;
 
 func-hsl = 
-  (
+  'hsl('
     (
-      'hsl(' ' '
       (
         nonprop-hue ' '
         nonprop-percentage ' '
@@ -4005,9 +3954,7 @@ func-hsl =
           '/' ' '
           nonprop-alpha-value ' '
         )? ' '
-      ) ' '
-    ) |
-    (
+      ) ' ' |
       (
         nonprop-hue ' '
         ', '
@@ -4017,9 +3964,8 @@ func-hsl =
         ', '
         nonprop-alpha-value? ' '
       ) ' '
-      ')' ' '
     )
-  ) ;
+  ')' ' ' ;
 
 nonprop-single-transition = 
   ( (
@@ -4070,11 +4016,9 @@ prop-shape-outside =
   ) ;
 
 func-grayscale = 
-  (
-    'grayscale(' ' '
+  'grayscale('
     nonprop-number-percentage ' '
-    ')' ' '
-  ) ;
+  ')' ' ' ;
 
 prop-padding-block-end = 
   nonprop-padding-left ' ' ;
@@ -4226,11 +4170,9 @@ prop-table-layout =
   ) ;
 
 func-opacity = 
-  (
-    'opacity(' ' '
+  'opacity('
     nonprop-number-percentage ' ' ' '
-    ')' ' '
-  ) ;
+  ')' ' ' ;
 
 prop-bottom = 
   (
@@ -4291,20 +4233,20 @@ prop-overflow-x =
 nonprop-fixed-size = 
   (
     nonprop-fixed-breadth ' ' |
-    (
-      'minmax(' ' '
-      nonprop-fixed-breadth ' '
-      ',' ' '
-      nonprop-track-breadth ' '
-      ')' ' '
-    ) |
-    (
-      'minmax(' ' '
-      nonprop-inflexible-breadth ' '
-      ',' ' '
-      nonprop-fixed-breadth ' '
-      ')' ' '
-    )
+    'minmax('
+      (
+        nonprop-fixed-breadth ' '
+        ',' ' '
+        nonprop-track-breadth ' '
+      )
+    ')' ' ' |
+    'minmax('
+      (
+        nonprop-inflexible-breadth ' '
+        ',' ' '
+        nonprop-fixed-breadth ' '
+      )
+    ')' ' '
   ) ;
 
 prop-mask-type = 
@@ -4331,11 +4273,9 @@ prop--webkit-mask-origin =
   ) ;
 
 func-scaleY = 
-  (
-    'scaleY(' ' '
+  'scaleY('
     nonprop-number ' '
-    ')' ' '
-  ) ;
+  ')' ' ' ;
 
 prop--ms-overflow-style = 
   (
@@ -4387,15 +4327,15 @@ prop-hyphens =
   ) ;
 
 func-scale = 
-  (
-    'scale(' ' '
-    nonprop-number ' '
+  'scale('
     (
-      ',' ' '
       nonprop-number ' '
-    )? ' '
-    ')' ' '
-  ) ;
+      (
+        ',' ' '
+        nonprop-number ' '
+      )? ' '
+    )
+  ')' ' ' ;
 
 prop-offset-rotate = 
   ( (
@@ -4407,19 +4347,19 @@ prop-offset-rotate =
   )+ ) ;
 
 func-repeating-linear-gradient = 
-  (
-    'repeating-linear-gradient(' ' '
+  'repeating-linear-gradient('
     (
-      nonprop-angle ' ' |
       (
-        'to' ' '
-        nonprop-side-or-corner ' '
-      )
-    )? ' '
-    ',' ' '
-    nonprop-color-stop-list ' '
-    ')' ' '
-  ) ;
+        nonprop-angle ' ' |
+        (
+          'to' ' '
+          nonprop-side-or-corner ' '
+        )
+      )? ' '
+      ',' ' '
+      nonprop-color-stop-list ' '
+    )
+  ')' ' ' ;
 
 prop-writing-mode = 
   (
@@ -4490,11 +4430,9 @@ prop-contain =
   ) ;
 
 func-invert = 
-  (
-    'invert(' ' '
+  'invert('
     nonprop-number-percentage ' '
-    ')' ' '
-  ) ;
+  ')' ' ' ;
 
 nonprop-br-width = 
   (
@@ -4505,29 +4443,27 @@ nonprop-br-width =
   ) ;
 
 func-polygon = 
-  (
-    'polygon(' ' '
-    nonprop-fill-rule? ' '
-    ',' ' '
+  'polygon('
     (
-      nonprop-length-percentage ' '
-      nonprop-length-percentage ' '
-    ) (
-      ', '
+      nonprop-fill-rule? ' '
+      ',' ' '
       (
         nonprop-length-percentage ' '
         nonprop-length-percentage ' '
-      )
-    )* ' '
-    ')' ' '
-  ) ;
+      ) (
+        ', '
+        (
+          nonprop-length-percentage ' '
+          nonprop-length-percentage ' '
+        )
+      )* ' '
+    )
+  ')' ' ' ;
 
 func-sepia = 
-  (
-    'sepia(' ' '
+  'sepia('
     nonprop-number-percentage ' '
-    ')' ' '
-  ) ;
+  ')' ' ' ;
 
 prop-clear = 
   (
@@ -4630,67 +4566,53 @@ prop-font-variant =
   (
     'normal' ' ' |
     'none' ' ' |
-    (
-      ( (
-        nonprop-common-lig-values ' ' |
-        nonprop-discretionary-lig-values ' ' |
-        nonprop-historical-lig-values ' ' |
-        nonprop-contextual-alt-values ' ' |
-        'stylistic(' ' '
-      )+ )
-      nonprop-feature-value-name ' '
-      ( (
-        ')' ' ' |
-        'historical-forms' ' ' |
-        'styleset(' ' '
-      )+ )
-      nonprop-feature-value-name (
-        ', '
-        nonprop-feature-value-name
-      )* ' '
-      ( (
-        ')' ' ' |
-        'character-variant(' ' '
-      )+ )
-      nonprop-feature-value-name (
-        ', '
-        nonprop-feature-value-name
-      )* ' '
-      ( (
-        ')' ' ' |
-        'swash(' ' '
-      )+ )
-      nonprop-feature-value-name ' '
-      ( (
-        ')' ' ' |
-        'ornaments(' ' '
-      )+ )
-      nonprop-feature-value-name ' '
-      ( (
-        ')' ' ' |
-        'annotation(' ' '
-      )+ )
-      nonprop-feature-value-name ' '
-      ( (
-        ')' ' ' |
-        (
-          'small-caps' ' ' |
-          'all-small-caps' ' ' |
-          'petite-caps' ' ' |
-          'all-petite-caps' ' ' |
-          'unicase' ' ' |
-          'titling-caps' ' '
-        ) ' ' |
-        nonprop-numeric-figure-values ' ' |
-        nonprop-numeric-spacing-values ' ' |
-        nonprop-numeric-fraction-values ' ' |
-        'ordinal' ' ' |
-        'slashed-zero' ' ' |
-        nonprop-east-asian-variant-values ' ' |
-        nonprop-east-asian-width-values ' ' |
-        'ruby' ' '
-      )+ )
-    ) ' '
+    ( (
+      nonprop-common-lig-values ' ' |
+      nonprop-discretionary-lig-values ' ' |
+      nonprop-historical-lig-values ' ' |
+      nonprop-contextual-alt-values ' ' |
+      'stylistic('
+        nonprop-feature-value-name ' '
+      ')' ' ' |
+      'historical-forms' ' ' |
+      'styleset('
+        nonprop-feature-value-name (
+          ', '
+          nonprop-feature-value-name
+        )* ' '
+      ')' ' ' |
+      'character-variant('
+        nonprop-feature-value-name (
+          ', '
+          nonprop-feature-value-name
+        )* ' '
+      ')' ' ' |
+      'swash('
+        nonprop-feature-value-name ' '
+      ')' ' ' |
+      'ornaments('
+        nonprop-feature-value-name ' '
+      ')' ' ' |
+      'annotation('
+        nonprop-feature-value-name ' '
+      ')' ' ' |
+      (
+        'small-caps' ' ' |
+        'all-small-caps' ' ' |
+        'petite-caps' ' ' |
+        'all-petite-caps' ' ' |
+        'unicase' ' ' |
+        'titling-caps' ' '
+      ) ' ' |
+      nonprop-numeric-figure-values ' ' |
+      nonprop-numeric-spacing-values ' ' |
+      nonprop-numeric-fraction-values ' ' |
+      'ordinal' ' ' |
+      'slashed-zero' ' ' |
+      nonprop-east-asian-variant-values ' ' |
+      nonprop-east-asian-width-values ' ' |
+      'ruby' ' '
+    )+ ) ' '
   ) ;
 
 nonprop-quote = 
@@ -4702,28 +4624,28 @@ nonprop-quote =
   ) ;
 
 func-inset = 
-  (
-    'inset(' ' '
+  'inset('
     (
       (
-        nonprop-length-percentage |
-        nonprop-length-percentage
-        nonprop-length-percentage |
-        nonprop-length-percentage
-        nonprop-length-percentage
-        nonprop-length-percentage |
-        nonprop-length-percentage
-        nonprop-length-percentage
-        nonprop-length-percentage
-        nonprop-length-percentage
-      )
-    ) ' '
-    (
-      'round' ' '
-      nonprop-border-radius ' '
-    )? ' '
-    ')' ' '
-  ) ;
+        (
+          nonprop-length-percentage |
+          nonprop-length-percentage
+          nonprop-length-percentage |
+          nonprop-length-percentage
+          nonprop-length-percentage
+          nonprop-length-percentage |
+          nonprop-length-percentage
+          nonprop-length-percentage
+          nonprop-length-percentage
+          nonprop-length-percentage
+        )
+      ) ' '
+      (
+        'round' ' '
+        nonprop-border-radius ' '
+      )? ' '
+    )
+  ')' ' ' ;
 
 prop-flex-shrink = 
   nonprop-number ' ' ;
@@ -4755,17 +4677,17 @@ prop-margin-left =
   ) ;
 
 nonprop-fixed-repeat = 
-  (
-    'repeat(' ' '
-    nonprop-positive-integer ' ' ' '
-    ',' ' '
+  'repeat('
     (
+      nonprop-positive-integer ' ' ' '
+      ',' ' '
+      (
+        nonprop-line-names? ' '
+        nonprop-fixed-size ' '
+      )+ ' '
       nonprop-line-names? ' '
-      nonprop-fixed-size ' '
-    )+ ' '
-    nonprop-line-names? ' '
-    ')' ' '
-  ) ;
+    )
+  ')' ' ' ;
 
 prop-text-emphasis-style = 
   (
@@ -4872,11 +4794,9 @@ prop-grid-template-columns =
   ) ;
 
 func-saturate = 
-  (
-    'saturate(' ' '
+  'saturate('
     nonprop-number-percentage ' '
-    ')' ' '
-  ) ;
+  ')' ' ' ;
 
 prop-grid-column-start = 
   nonprop-grid-line ' ' ;
@@ -5053,43 +4973,33 @@ prop-margin =
 prop-font-variant-alternates = 
   (
     'normal' ' ' |
-    (
-      'stylistic(' ' '
-      nonprop-feature-value-name ' '
-      ( (
-        ')' ' ' |
-        'historical-forms' ' ' |
-        'styleset(' ' '
-      )+ )
-      nonprop-feature-value-name (
-        ', '
-        nonprop-feature-value-name
-      )* ' '
-      ( (
-        ')' ' ' |
-        'character-variant(' ' '
-      )+ )
-      nonprop-feature-value-name (
-        ', '
-        nonprop-feature-value-name
-      )* ' '
-      ( (
-        ')' ' ' |
-        'swash(' ' '
-      )+ )
-      nonprop-feature-value-name ' '
-      ( (
-        ')' ' ' |
-        'ornaments(' ' '
-      )+ )
-      nonprop-feature-value-name ' '
-      ( (
-        ')' ' ' |
-        'annotation(' ' '
-      )+ )
-      nonprop-feature-value-name ' '
+    ( (
+      'stylistic('
+        nonprop-feature-value-name ' '
+      ')' ' ' |
+      'historical-forms' ' ' |
+      'styleset('
+        nonprop-feature-value-name (
+          ', '
+          nonprop-feature-value-name
+        )* ' '
+      ')' ' ' |
+      'character-variant('
+        nonprop-feature-value-name (
+          ', '
+          nonprop-feature-value-name
+        )* ' '
+      ')' ' ' |
+      'swash('
+        nonprop-feature-value-name ' '
+      ')' ' ' |
+      'ornaments('
+        nonprop-feature-value-name ' '
+      ')' ' ' |
+      'annotation('
+        nonprop-feature-value-name ' '
       ')' ' '
-    ) ' '
+    )+ ) ' '
   ) ;
 
 prop-margin-right = 
@@ -5100,9 +5010,8 @@ prop-margin-right =
   ) ;
 
 func-hsla = 
-  (
+  'hsla('
     (
-      'hsla(' ' '
       (
         nonprop-hue ' '
         nonprop-percentage ' '
@@ -5111,9 +5020,7 @@ func-hsla =
           '/' ' '
           nonprop-alpha-value ' '
         )? ' '
-      ) ' '
-    ) |
-    (
+      ) ' ' |
       (
         nonprop-hue ' '
         ', '
@@ -5123,9 +5030,8 @@ func-hsla =
         ', '
         nonprop-alpha-value? ' '
       ) ' '
-      ')' ' '
     )
-  ) ;
+  ')' ' ' ;
 
 prop-outline = 
   ( (
@@ -5241,11 +5147,9 @@ nonprop-number-percentage =
   ) ;
 
 func-scaleZ = 
-  (
-    'scaleZ(' ' '
+  'scaleZ('
     nonprop-number ' '
-    ')' ' '
-  ) ;
+  ')' ' ' ;
 
 nonprop-fixed-breadth = 
   nonprop-length-percentage ' ' ;
@@ -5281,15 +5185,13 @@ prop-column-count =
 prop-offset-path = 
   (
     'none' ' ' |
-    (
-      'ray(' ' '
+    'ray('
       (
         nonprop-angle ' '
         nonprop-size? ' '
         'contain'? ' '
       ) ' '
-      ')' ' '
-    ) |
+    ')' ' ' |
     func-path ' ' |
     nonprop-url ' ' |
     ( (
@@ -5617,9 +5519,8 @@ nonprop-font-variant-css21 =
   ) ' ' ;
 
 func-rgb = 
-  (
+  'rgb('
     (
-      'rgb(' ' '
       (
         (
           (
@@ -5641,9 +5542,7 @@ func-rgb =
           '/' ' '
           nonprop-alpha-value ' '
         )? ' '
-      ) ' '
-    ) |
-    (
+      ) ' ' |
       (
         (
           (
@@ -5664,9 +5563,8 @@ func-rgb =
         ',' ' '
         nonprop-alpha-value? ' '
       ) ' '
-      ')' ' '
     )
-  ) ;
+  ')' ' ' ;
 
 prop-transform-origin = 
   (
@@ -5744,11 +5642,9 @@ prop-box-decoration-break =
   ) ;
 
 func-skewX = 
-  (
-    'skewX(' ' '
+  'skewX('
     nonprop-angle ' '
-    ')' ' '
-  ) ;
+  ')' ' ' ;
 
 nonprop-keyframes-name = 
   (

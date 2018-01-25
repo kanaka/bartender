@@ -3740,7 +3740,7 @@
                       [(get weights [:element :alt 69 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</map>"))]
-              [(get weights [:element :alt 70] 10000)    ;; ** adjusted by config ***
+              [(get weights [:element :alt 70] 100)
                 (gen/tuple
                   (gen/return "<mark")
                   (gen/vector
@@ -3755,7 +3755,7 @@
                       [(get weights [:element :alt 70 :cat 3 :star :alt 1] 100)
                         (:content gmap)]]))
                   (gen/return "</mark>"))]
-              [(get weights [:element :alt 71] 10000)    ;; ** adjusted by config ***
+              [(get weights [:element :alt 71] 100)
                 (gen/tuple
                   (gen/return "<marquee")
                   (gen/vector
@@ -5364,7 +5364,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</map>"))]
-            [(get weights [:element :alt 70] 10000)    ;; ** adjusted by config ***
+            [(get weights [:element :alt 70] 100)
               (gen/tuple
                 (gen/return "<mark")
                 (gen/vector
@@ -5375,7 +5375,7 @@
                 (gen/vector
                   (:content gmap))
                 (gen/return "</mark>"))]
-            [(get weights [:element :alt 71] 10000)    ;; ** adjusted by config ***
+            [(get weights [:element :alt 71] 100)
               (gen/tuple
                 (gen/return "<marquee")
                 (gen/vector

@@ -77,17 +77,17 @@
         gen-func-skew
         (gen/tuple
           (gen/return "skew(")
-          (gen/return " ")
-          (:nonprop-angle gmap)
-          (gen/return " ")
-          (gen/one-of [
-            (gen/return "")
-            (gen/tuple
-              (gen/return ",")
-              (gen/return " ")
-              (:nonprop-angle gmap)
-              (gen/return " "))])
-          (gen/return " ")
+          (gen/tuple
+            (:nonprop-angle gmap)
+            (gen/return " ")
+            (gen/one-of [
+              (gen/return "")
+              (gen/tuple
+                (gen/return ",")
+                (gen/return " ")
+                (:nonprop-angle gmap)
+                (gen/return " "))])
+            (gen/return " "))
           (gen/return ")")
           (gen/return " "))
         gmap (assoc gmap :func-skew gen-func-skew)
@@ -271,18 +271,18 @@
         gen-nonprop-shape
         (gen/tuple
           (gen/return "rect(")
-          (gen/return " ")
-          (:nonprop-top gmap)
-          (gen/return " ")
-          (gen/return ", ")
-          (:nonprop-right gmap)
-          (gen/return " ")
-          (gen/return ", ")
-          (:nonprop-bottom gmap)
-          (gen/return " ")
-          (gen/return ", ")
-          (:nonprop-left gmap)
-          (gen/return " ")
+          (gen/tuple
+            (:nonprop-top gmap)
+            (gen/return " ")
+            (gen/return ", ")
+            (:nonprop-right gmap)
+            (gen/return " ")
+            (gen/return ", ")
+            (:nonprop-bottom gmap)
+            (gen/return " ")
+            (gen/return ", ")
+            (:nonprop-left gmap)
+            (gen/return " "))
           (gen/return ")")
           (gen/return " "))
         gmap (assoc gmap :nonprop-shape gen-nonprop-shape)
@@ -324,46 +324,46 @@
         gmap (assoc gmap :nonprop-hue gen-nonprop-hue)
 
         gen-func-hsl
-        (gen/frequency [
-          [(get weights [:func-hsl :alt 0] 100)
-            (gen/tuple
-              (gen/return "hsl(")
-              (gen/return " ")
+        (gen/tuple
+          (gen/return "hsl(")
+          (gen/frequency [
+            [(get weights [:func-hsl :cat 1 :alt 0] 100)
               (gen/tuple
-                (:nonprop-hue gmap)
-                (gen/return " ")
-                (:nonprop-percentage gmap)
-                (gen/return " ")
-                (:nonprop-percentage gmap)
-                (gen/return " ")
-                (gen/one-of [
-                  (gen/return "")
-                  (gen/tuple
-                    (gen/return "/")
-                    (gen/return " ")
-                    (:nonprop-alpha-value gmap)
-                    (gen/return " "))])
-                (gen/return " "))
-              (gen/return " "))]
-          [(get weights [:func-hsl :alt 1] 100)
-            (gen/tuple
+                (gen/tuple
+                  (:nonprop-hue gmap)
+                  (gen/return " ")
+                  (:nonprop-percentage gmap)
+                  (gen/return " ")
+                  (:nonprop-percentage gmap)
+                  (gen/return " ")
+                  (gen/one-of [
+                    (gen/return "")
+                    (gen/tuple
+                      (gen/return "/")
+                      (gen/return " ")
+                      (:nonprop-alpha-value gmap)
+                      (gen/return " "))])
+                  (gen/return " "))
+                (gen/return " "))]
+            [(get weights [:func-hsl :cat 1 :alt 1] 100)
               (gen/tuple
-                (:nonprop-hue gmap)
-                (gen/return " ")
-                (gen/return ", ")
-                (:nonprop-percentage gmap)
-                (gen/return " ")
-                (gen/return ", ")
-                (:nonprop-percentage gmap)
-                (gen/return " ")
-                (gen/return ", ")
-                (gen/one-of [
-                  (gen/return "")
-                  (:nonprop-alpha-value gmap)])
-                (gen/return " "))
-              (gen/return " ")
-              (gen/return ")")
-              (gen/return " "))]])
+                (gen/tuple
+                  (:nonprop-hue gmap)
+                  (gen/return " ")
+                  (gen/return ", ")
+                  (:nonprop-percentage gmap)
+                  (gen/return " ")
+                  (gen/return ", ")
+                  (:nonprop-percentage gmap)
+                  (gen/return " ")
+                  (gen/return ", ")
+                  (gen/one-of [
+                    (gen/return "")
+                    (:nonprop-alpha-value gmap)])
+                  (gen/return " "))
+                (gen/return " "))]])
+          (gen/return ")")
+          (gen/return " "))
         gmap (assoc gmap :func-hsl gen-func-hsl)
 
         gen-nonprop-deprecated-system-color
@@ -494,69 +494,69 @@
         gmap (assoc gmap :nonprop-hex-color6 gen-nonprop-hex-color6)
 
         gen-func-rgb
-        (gen/frequency [
-          [(get weights [:func-rgb :alt 0] 100)
-            (gen/tuple
-              (gen/return "rgb(")
-              (gen/return " ")
+        (gen/tuple
+          (gen/return "rgb(")
+          (gen/frequency [
+            [(get weights [:func-rgb :cat 1 :alt 0] 100)
               (gen/tuple
-                (gen/frequency [
-                  [(get weights [:func-rgb :alt 0 :cat 2 :cat 0 :alt 0] 100)
-                    (gen/tuple
+                (gen/tuple
+                  (gen/frequency [
+                    [(get weights [:func-rgb :cat 1 :alt 0 :cat 0 :cat 0 :alt 0] 100)
                       (gen/tuple
-                        (:nonprop-percentage gmap)
-                        (:nonprop-percentage gmap)
-                        (:nonprop-percentage gmap))
-                      (gen/return " "))]
-                  [(get weights [:func-rgb :alt 0 :cat 2 :cat 0 :alt 1] 100)
-                    (gen/tuple
+                        (gen/tuple
+                          (:nonprop-percentage gmap)
+                          (:nonprop-percentage gmap)
+                          (:nonprop-percentage gmap))
+                        (gen/return " "))]
+                    [(get weights [:func-rgb :cat 1 :alt 0 :cat 0 :cat 0 :alt 1] 100)
                       (gen/tuple
-                        (:nonprop-number gmap)
-                        (:nonprop-number gmap)
-                        (:nonprop-number gmap))
-                      (gen/return " "))]])
-                (gen/return " ")
-                (gen/one-of [
-                  (gen/return "")
-                  (gen/tuple
-                    (gen/return "/")
-                    (gen/return " ")
-                    (:nonprop-alpha-value gmap)
-                    (gen/return " "))])
-                (gen/return " "))
-              (gen/return " "))]
-          [(get weights [:func-rgb :alt 1] 100)
-            (gen/tuple
+                        (gen/tuple
+                          (:nonprop-number gmap)
+                          (:nonprop-number gmap)
+                          (:nonprop-number gmap))
+                        (gen/return " "))]])
+                  (gen/return " ")
+                  (gen/one-of [
+                    (gen/return "")
+                    (gen/tuple
+                      (gen/return "/")
+                      (gen/return " ")
+                      (:nonprop-alpha-value gmap)
+                      (gen/return " "))])
+                  (gen/return " "))
+                (gen/return " "))]
+            [(get weights [:func-rgb :cat 1 :alt 1] 100)
               (gen/tuple
-                (gen/frequency [
-                  [(get weights [:func-rgb :alt 1 :cat 0 :cat 0 :alt 0] 100)
-                    (gen/tuple
+                (gen/tuple
+                  (gen/frequency [
+                    [(get weights [:func-rgb :cat 1 :alt 1 :cat 0 :cat 0 :alt 0] 100)
                       (gen/tuple
-                        (:nonprop-percentage gmap)
-                        (gen/return ", ")
-                        (:nonprop-percentage gmap)
-                        (gen/return ", ")
-                        (:nonprop-percentage gmap))
-                      (gen/return " "))]
-                  [(get weights [:func-rgb :alt 1 :cat 0 :cat 0 :alt 1] 100)
-                    (gen/tuple
+                        (gen/tuple
+                          (:nonprop-percentage gmap)
+                          (gen/return ", ")
+                          (:nonprop-percentage gmap)
+                          (gen/return ", ")
+                          (:nonprop-percentage gmap))
+                        (gen/return " "))]
+                    [(get weights [:func-rgb :cat 1 :alt 1 :cat 0 :cat 0 :alt 1] 100)
                       (gen/tuple
-                        (:nonprop-number gmap)
-                        (gen/return ", ")
-                        (:nonprop-number gmap)
-                        (gen/return ", ")
-                        (:nonprop-number gmap))
-                      (gen/return " "))]])
-                (gen/return " ")
-                (gen/return ",")
-                (gen/return " ")
-                (gen/one-of [
-                  (gen/return "")
-                  (:nonprop-alpha-value gmap)])
-                (gen/return " "))
-              (gen/return " ")
-              (gen/return ")")
-              (gen/return " "))]])
+                        (gen/tuple
+                          (:nonprop-number gmap)
+                          (gen/return ", ")
+                          (:nonprop-number gmap)
+                          (gen/return ", ")
+                          (:nonprop-number gmap))
+                        (gen/return " "))]])
+                  (gen/return " ")
+                  (gen/return ",")
+                  (gen/return " ")
+                  (gen/one-of [
+                    (gen/return "")
+                    (:nonprop-alpha-value gmap)])
+                  (gen/return " "))
+                (gen/return " "))]])
+          (gen/return ")")
+          (gen/return " "))
         gmap (assoc gmap :func-rgb gen-func-rgb)
 
         gen-nonprop-named-color
@@ -1176,112 +1176,112 @@
         gmap (assoc gmap :nonprop-hex-color gen-nonprop-hex-color)
 
         gen-func-hsla
-        (gen/frequency [
-          [(get weights [:func-hsla :alt 0] 100)
-            (gen/tuple
-              (gen/return "hsla(")
-              (gen/return " ")
+        (gen/tuple
+          (gen/return "hsla(")
+          (gen/frequency [
+            [(get weights [:func-hsla :cat 1 :alt 0] 100)
               (gen/tuple
-                (:nonprop-hue gmap)
-                (gen/return " ")
-                (:nonprop-percentage gmap)
-                (gen/return " ")
-                (:nonprop-percentage gmap)
-                (gen/return " ")
-                (gen/one-of [
-                  (gen/return "")
-                  (gen/tuple
-                    (gen/return "/")
-                    (gen/return " ")
-                    (:nonprop-alpha-value gmap)
-                    (gen/return " "))])
-                (gen/return " "))
-              (gen/return " "))]
-          [(get weights [:func-hsla :alt 1] 100)
-            (gen/tuple
+                (gen/tuple
+                  (:nonprop-hue gmap)
+                  (gen/return " ")
+                  (:nonprop-percentage gmap)
+                  (gen/return " ")
+                  (:nonprop-percentage gmap)
+                  (gen/return " ")
+                  (gen/one-of [
+                    (gen/return "")
+                    (gen/tuple
+                      (gen/return "/")
+                      (gen/return " ")
+                      (:nonprop-alpha-value gmap)
+                      (gen/return " "))])
+                  (gen/return " "))
+                (gen/return " "))]
+            [(get weights [:func-hsla :cat 1 :alt 1] 100)
               (gen/tuple
-                (:nonprop-hue gmap)
-                (gen/return " ")
-                (gen/return ", ")
-                (:nonprop-percentage gmap)
-                (gen/return " ")
-                (gen/return ", ")
-                (:nonprop-percentage gmap)
-                (gen/return " ")
-                (gen/return ", ")
-                (gen/one-of [
-                  (gen/return "")
-                  (:nonprop-alpha-value gmap)])
-                (gen/return " "))
-              (gen/return " ")
-              (gen/return ")")
-              (gen/return " "))]])
+                (gen/tuple
+                  (:nonprop-hue gmap)
+                  (gen/return " ")
+                  (gen/return ", ")
+                  (:nonprop-percentage gmap)
+                  (gen/return " ")
+                  (gen/return ", ")
+                  (:nonprop-percentage gmap)
+                  (gen/return " ")
+                  (gen/return ", ")
+                  (gen/one-of [
+                    (gen/return "")
+                    (:nonprop-alpha-value gmap)])
+                  (gen/return " "))
+                (gen/return " "))]])
+          (gen/return ")")
+          (gen/return " "))
         gmap (assoc gmap :func-hsla gen-func-hsla)
 
         gen-func-rgba
-        (gen/frequency [
-          [(get weights [:func-rgba :alt 0] 100)
-            (gen/tuple
-              (gen/return "rgba(")
-              (gen/return " ")
+        (gen/tuple
+          (gen/return "rgba(")
+          (gen/frequency [
+            [(get weights [:func-rgba :cat 1 :alt 0] 100)
               (gen/tuple
-                (gen/frequency [
-                  [(get weights [:func-rgba :alt 0 :cat 2 :cat 0 :alt 0] 100)
-                    (gen/tuple
+                (gen/tuple
+                  (gen/frequency [
+                    [(get weights [:func-rgba :cat 1 :alt 0 :cat 0 :cat 0 :alt 0] 100)
                       (gen/tuple
-                        (:nonprop-percentage gmap)
-                        (:nonprop-percentage gmap)
-                        (:nonprop-percentage gmap))
-                      (gen/return " "))]
-                  [(get weights [:func-rgba :alt 0 :cat 2 :cat 0 :alt 1] 100)
-                    (gen/tuple
+                        (gen/tuple
+                          (:nonprop-percentage gmap)
+                          (:nonprop-percentage gmap)
+                          (:nonprop-percentage gmap))
+                        (gen/return " "))]
+                    [(get weights [:func-rgba :cat 1 :alt 0 :cat 0 :cat 0 :alt 1] 100)
                       (gen/tuple
-                        (:nonprop-number gmap)
-                        (:nonprop-number gmap)
-                        (:nonprop-number gmap))
-                      (gen/return " "))]])
-                (gen/return " ")
-                (gen/one-of [
-                  (gen/return "")
-                  (gen/tuple
-                    (gen/return "/")
-                    (gen/return " ")
-                    (:nonprop-alpha-value gmap)
-                    (gen/return " "))])
-                (gen/return " "))
-              (gen/return " "))]
-          [(get weights [:func-rgba :alt 1] 100)
-            (gen/tuple
+                        (gen/tuple
+                          (:nonprop-number gmap)
+                          (:nonprop-number gmap)
+                          (:nonprop-number gmap))
+                        (gen/return " "))]])
+                  (gen/return " ")
+                  (gen/one-of [
+                    (gen/return "")
+                    (gen/tuple
+                      (gen/return "/")
+                      (gen/return " ")
+                      (:nonprop-alpha-value gmap)
+                      (gen/return " "))])
+                  (gen/return " "))
+                (gen/return " "))]
+            [(get weights [:func-rgba :cat 1 :alt 1] 100)
               (gen/tuple
-                (gen/frequency [
-                  [(get weights [:func-rgba :alt 1 :cat 0 :cat 0 :alt 0] 100)
-                    (gen/tuple
+                (gen/tuple
+                  (gen/frequency [
+                    [(get weights [:func-rgba :cat 1 :alt 1 :cat 0 :cat 0 :alt 0] 100)
                       (gen/tuple
-                        (:nonprop-percentage gmap)
-                        (gen/return ", ")
-                        (:nonprop-percentage gmap)
-                        (gen/return ", ")
-                        (:nonprop-percentage gmap))
-                      (gen/return " "))]
-                  [(get weights [:func-rgba :alt 1 :cat 0 :cat 0 :alt 1] 100)
-                    (gen/tuple
+                        (gen/tuple
+                          (:nonprop-percentage gmap)
+                          (gen/return ", ")
+                          (:nonprop-percentage gmap)
+                          (gen/return ", ")
+                          (:nonprop-percentage gmap))
+                        (gen/return " "))]
+                    [(get weights [:func-rgba :cat 1 :alt 1 :cat 0 :cat 0 :alt 1] 100)
                       (gen/tuple
-                        (:nonprop-number gmap)
-                        (gen/return ", ")
-                        (:nonprop-number gmap)
-                        (gen/return ", ")
-                        (:nonprop-number gmap))
-                      (gen/return " "))]])
-                (gen/return " ")
-                (gen/return ",")
-                (gen/return " ")
-                (gen/one-of [
-                  (gen/return "")
-                  (:nonprop-alpha-value gmap)])
-                (gen/return " "))
-              (gen/return " ")
-              (gen/return ")")
-              (gen/return " "))]])
+                        (gen/tuple
+                          (:nonprop-number gmap)
+                          (gen/return ", ")
+                          (:nonprop-number gmap)
+                          (gen/return ", ")
+                          (:nonprop-number gmap))
+                        (gen/return " "))]])
+                  (gen/return " ")
+                  (gen/return ",")
+                  (gen/return " ")
+                  (gen/one-of [
+                    (gen/return "")
+                    (:nonprop-alpha-value gmap)])
+                  (gen/return " "))
+                (gen/return " "))]])
+          (gen/return ")")
+          (gen/return " "))
         gmap (assoc gmap :func-rgba gen-func-rgba)
 
         gen-nonprop-color
@@ -1561,25 +1561,25 @@
           [(get weights [:nonprop-fixed-size :alt 1] 100)
             (gen/tuple
               (gen/return "minmax(")
-              (gen/return " ")
-              (:nonprop-fixed-breadth gmap)
-              (gen/return " ")
-              (gen/return ",")
-              (gen/return " ")
-              (:nonprop-track-breadth gmap)
-              (gen/return " ")
+              (gen/tuple
+                (:nonprop-fixed-breadth gmap)
+                (gen/return " ")
+                (gen/return ",")
+                (gen/return " ")
+                (:nonprop-track-breadth gmap)
+                (gen/return " "))
               (gen/return ")")
               (gen/return " "))]
           [(get weights [:nonprop-fixed-size :alt 2] 100)
             (gen/tuple
               (gen/return "minmax(")
-              (gen/return " ")
-              (:nonprop-inflexible-breadth gmap)
-              (gen/return " ")
-              (gen/return ",")
-              (gen/return " ")
-              (:nonprop-fixed-breadth gmap)
-              (gen/return " ")
+              (gen/tuple
+                (:nonprop-inflexible-breadth gmap)
+                (gen/return " ")
+                (gen/return ",")
+                (gen/return " ")
+                (:nonprop-fixed-breadth gmap)
+                (gen/return " "))
               (gen/return ")")
               (gen/return " "))]])
         gmap (assoc gmap :nonprop-fixed-size gen-nonprop-fixed-size)
@@ -1617,25 +1617,24 @@
           [(get weights [:nonprop-track-size :alt 1] 100)
             (gen/tuple
               (gen/return "minmax(")
-              (gen/return " ")
-              (:nonprop-inflexible-breadth gmap)
-              (gen/return " ")
-              (gen/return ",")
-              (gen/return " ")
-              (:nonprop-track-breadth gmap)
-              (gen/return " ")
+              (gen/tuple
+                (:nonprop-inflexible-breadth gmap)
+                (gen/return " ")
+                (gen/return ",")
+                (gen/return " ")
+                (:nonprop-track-breadth gmap)
+                (gen/return " "))
               (gen/return ")")
               (gen/return " "))]
           [(get weights [:nonprop-track-size :alt 2] 100)
             (gen/tuple
               (gen/return "fit-content(")
-              (gen/return " ")
               (gen/frequency [
-                [(get weights [:nonprop-track-size :alt 2 :cat 2 :alt 0] 100)
+                [(get weights [:nonprop-track-size :alt 2 :cat 1 :alt 0] 100)
                   (gen/tuple
                     (:nonprop-length gmap)
                     (gen/return " "))]
-                [(get weights [:nonprop-track-size :alt 2 :cat 2 :alt 1] 100)
+                [(get weights [:nonprop-track-size :alt 2 :cat 1 :alt 1] 100)
                   (gen/tuple
                     (:nonprop-percentage gmap)
                     (gen/return " "))]])
@@ -1647,25 +1646,25 @@
         gen-nonprop-track-repeat
         (gen/tuple
           (gen/return "repeat(")
-          (gen/return " ")
-          (:nonprop-positive-integer gmap)
-          (gen/return " ")
-          (gen/return " ")
-          (gen/return ",")
-          (gen/return " ")
-          (gen/such-that not-empty (gen/vector
-            (gen/tuple
-              (gen/one-of [
-                (gen/return "")
-                (:nonprop-line-names gmap)])
-              (gen/return " ")
-              (:nonprop-track-size gmap)
-              (gen/return " "))))
-          (gen/return " ")
-          (gen/one-of [
-            (gen/return "")
-            (:nonprop-line-names gmap)])
-          (gen/return " ")
+          (gen/tuple
+            (:nonprop-positive-integer gmap)
+            (gen/return " ")
+            (gen/return " ")
+            (gen/return ",")
+            (gen/return " ")
+            (gen/such-that not-empty (gen/vector
+              (gen/tuple
+                (gen/one-of [
+                  (gen/return "")
+                  (:nonprop-line-names gmap)])
+                (gen/return " ")
+                (:nonprop-track-size gmap)
+                (gen/return " "))))
+            (gen/return " ")
+            (gen/one-of [
+              (gen/return "")
+              (:nonprop-line-names gmap)])
+            (gen/return " "))
           (gen/return ")")
           (gen/return " "))
         gmap (assoc gmap :nonprop-track-repeat gen-nonprop-track-repeat)
@@ -1698,25 +1697,25 @@
         gen-nonprop-fixed-repeat
         (gen/tuple
           (gen/return "repeat(")
-          (gen/return " ")
-          (:nonprop-positive-integer gmap)
-          (gen/return " ")
-          (gen/return " ")
-          (gen/return ",")
-          (gen/return " ")
-          (gen/such-that not-empty (gen/vector
-            (gen/tuple
-              (gen/one-of [
-                (gen/return "")
-                (:nonprop-line-names gmap)])
-              (gen/return " ")
-              (:nonprop-fixed-size gmap)
-              (gen/return " "))))
-          (gen/return " ")
-          (gen/one-of [
-            (gen/return "")
-            (:nonprop-line-names gmap)])
-          (gen/return " ")
+          (gen/tuple
+            (:nonprop-positive-integer gmap)
+            (gen/return " ")
+            (gen/return " ")
+            (gen/return ",")
+            (gen/return " ")
+            (gen/such-that not-empty (gen/vector
+              (gen/tuple
+                (gen/one-of [
+                  (gen/return "")
+                  (:nonprop-line-names gmap)])
+                (gen/return " ")
+                (:nonprop-fixed-size gmap)
+                (gen/return " "))))
+            (gen/return " ")
+            (gen/one-of [
+              (gen/return "")
+              (:nonprop-line-names gmap)])
+            (gen/return " "))
           (gen/return ")")
           (gen/return " "))
         gmap (assoc gmap :nonprop-fixed-repeat gen-nonprop-fixed-repeat)
@@ -1724,32 +1723,32 @@
         gen-nonprop-auto-repeat
         (gen/tuple
           (gen/return "repeat(")
-          (gen/return " ")
-          (gen/frequency [
-            [(get weights [:nonprop-auto-repeat :cat 2 :alt 0] 100)
+          (gen/tuple
+            (gen/frequency [
+              [(get weights [:nonprop-auto-repeat :cat 1 :cat 0 :alt 0] 100)
+                (gen/tuple
+                  (gen/return "auto-fill")
+                  (gen/return " "))]
+              [(get weights [:nonprop-auto-repeat :cat 1 :cat 0 :alt 1] 100)
+                (gen/tuple
+                  (gen/return "auto-fit")
+                  (gen/return " "))]])
+            (gen/return " ")
+            (gen/return ",")
+            (gen/return " ")
+            (gen/such-that not-empty (gen/vector
               (gen/tuple
-                (gen/return "auto-fill")
-                (gen/return " "))]
-            [(get weights [:nonprop-auto-repeat :cat 2 :alt 1] 100)
-              (gen/tuple
-                (gen/return "auto-fit")
-                (gen/return " "))]])
-          (gen/return " ")
-          (gen/return ",")
-          (gen/return " ")
-          (gen/such-that not-empty (gen/vector
-            (gen/tuple
-              (gen/one-of [
-                (gen/return "")
-                (:nonprop-line-names gmap)])
-              (gen/return " ")
-              (:nonprop-fixed-size gmap)
-              (gen/return " "))))
-          (gen/return " ")
-          (gen/one-of [
-            (gen/return "")
-            (:nonprop-line-names gmap)])
-          (gen/return " ")
+                (gen/one-of [
+                  (gen/return "")
+                  (:nonprop-line-names gmap)])
+                (gen/return " ")
+                (:nonprop-fixed-size gmap)
+                (gen/return " "))))
+            (gen/return " ")
+            (gen/one-of [
+              (gen/return "")
+              (:nonprop-line-names gmap)])
+            (gen/return " "))
           (gen/return ")")
           (gen/return " "))
         gmap (assoc gmap :nonprop-auto-repeat gen-nonprop-auto-repeat)
@@ -2055,7 +2054,6 @@
         gen-func-element
         (gen/tuple
           (gen/return "element(")
-          (gen/return " ")
           (:nonprop-id-selector gmap)
           (gen/return " ")
           (gen/return ")")
@@ -2422,32 +2420,32 @@
         gen-func-repeating-radial-gradient
         (gen/tuple
           (gen/return "repeating-radial-gradient(")
-          (gen/return " ")
-          (gen/one-of [
-            (gen/return "")
-            (gen/such-that not-empty (gen/vector
-              (gen/frequency [
-                [(get weights [:func-repeating-radial-gradient :cat 2 :opt :plus :alt 0] 100)
-                  (gen/tuple
-                    (:nonprop-ending-shape gmap)
-                    (gen/return " "))]
-                [(get weights [:func-repeating-radial-gradient :cat 2 :opt :plus :alt 1] 100)
-                  (gen/tuple
-                    (:nonprop-size gmap)
-                    (gen/return " "))]])))])
-          (gen/return " ")
-          (gen/one-of [
-            (gen/return "")
-            (gen/tuple
-              (gen/return "at")
-              (gen/return " ")
-              (:nonprop-position gmap)
-              (gen/return " "))])
-          (gen/return " ")
-          (gen/return ",")
-          (gen/return " ")
-          (:nonprop-color-stop-list gmap)
-          (gen/return " ")
+          (gen/tuple
+            (gen/one-of [
+              (gen/return "")
+              (gen/such-that not-empty (gen/vector
+                (gen/frequency [
+                  [(get weights [:func-repeating-radial-gradient :cat 1 :cat 0 :opt :plus :alt 0] 100)
+                    (gen/tuple
+                      (:nonprop-ending-shape gmap)
+                      (gen/return " "))]
+                  [(get weights [:func-repeating-radial-gradient :cat 1 :cat 0 :opt :plus :alt 1] 100)
+                    (gen/tuple
+                      (:nonprop-size gmap)
+                      (gen/return " "))]])))])
+            (gen/return " ")
+            (gen/one-of [
+              (gen/return "")
+              (gen/tuple
+                (gen/return "at")
+                (gen/return " ")
+                (:nonprop-position gmap)
+                (gen/return " "))])
+            (gen/return " ")
+            (gen/return ",")
+            (gen/return " ")
+            (:nonprop-color-stop-list gmap)
+            (gen/return " "))
           (gen/return ")")
           (gen/return " "))
         gmap (assoc gmap :func-repeating-radial-gradient gen-func-repeating-radial-gradient)
@@ -2503,20 +2501,20 @@
         gen-func-circle
         (gen/tuple
           (gen/return "circle(")
-          (gen/return " ")
-          (:nonprop-shape-radius gmap)
-          (gen/one-of [
-            (gen/return "")
-            (gen/return " ")])
-          (gen/return " ")
-          (gen/one-of [
-            (gen/return "")
-            (gen/tuple
-              (gen/return "at")
-              (gen/return " ")
-              (:nonprop-position gmap)
-              (gen/return " "))])
-          (gen/return " ")
+          (gen/tuple
+            (:nonprop-shape-radius gmap)
+            (gen/one-of [
+              (gen/return "")
+              (gen/return " ")])
+            (gen/return " ")
+            (gen/one-of [
+              (gen/return "")
+              (gen/tuple
+                (gen/return "at")
+                (gen/return " ")
+                (:nonprop-position gmap)
+                (gen/return " "))])
+            (gen/return " "))
           (gen/return ")")
           (gen/return " "))
         gmap (assoc gmap :func-circle gen-func-circle)
@@ -2700,61 +2698,61 @@
         gen-func-minmax
         (gen/tuple
           (gen/return "minmax(")
-          (gen/return " ")
-          (gen/frequency [
-            [(get weights [:func-minmax :cat 2 :alt 0] 100)
-              (gen/tuple
-                (:nonprop-length gmap)
-                (gen/return " "))]
-            [(get weights [:func-minmax :cat 2 :alt 1] 100)
-              (gen/tuple
-                (:nonprop-percentage gmap)
-                (gen/return " "))]
-            [(get weights [:func-minmax :cat 2 :alt 2] 100)
-              (gen/tuple
-                (:nonprop-flex gmap)
-                (gen/return " "))]
-            [(get weights [:func-minmax :cat 2 :alt 3] 100)
-              (gen/tuple
-                (gen/return "min-content")
-                (gen/return " "))]
-            [(get weights [:func-minmax :cat 2 :alt 4] 100)
-              (gen/tuple
-                (gen/return "max-content")
-                (gen/return " "))]
-            [(get weights [:func-minmax :cat 2 :alt 5] 100)
-              (gen/tuple
-                (gen/return "auto")
-                (gen/return " "))]])
-          (gen/return " ")
-          (gen/return ",")
-          (gen/return " ")
-          (gen/frequency [
-            [(get weights [:func-minmax :cat 6 :alt 0] 100)
-              (gen/tuple
-                (:nonprop-length gmap)
-                (gen/return " "))]
-            [(get weights [:func-minmax :cat 6 :alt 1] 100)
-              (gen/tuple
-                (:nonprop-percentage gmap)
-                (gen/return " "))]
-            [(get weights [:func-minmax :cat 6 :alt 2] 100)
-              (gen/tuple
-                (:nonprop-flex gmap)
-                (gen/return " "))]
-            [(get weights [:func-minmax :cat 6 :alt 3] 100)
-              (gen/tuple
-                (gen/return "min-content")
-                (gen/return " "))]
-            [(get weights [:func-minmax :cat 6 :alt 4] 100)
-              (gen/tuple
-                (gen/return "max-content")
-                (gen/return " "))]
-            [(get weights [:func-minmax :cat 6 :alt 5] 100)
-              (gen/tuple
-                (gen/return "auto")
-                (gen/return " "))]])
-          (gen/return " ")
+          (gen/tuple
+            (gen/frequency [
+              [(get weights [:func-minmax :cat 1 :cat 0 :alt 0] 100)
+                (gen/tuple
+                  (:nonprop-length gmap)
+                  (gen/return " "))]
+              [(get weights [:func-minmax :cat 1 :cat 0 :alt 1] 100)
+                (gen/tuple
+                  (:nonprop-percentage gmap)
+                  (gen/return " "))]
+              [(get weights [:func-minmax :cat 1 :cat 0 :alt 2] 100)
+                (gen/tuple
+                  (:nonprop-flex gmap)
+                  (gen/return " "))]
+              [(get weights [:func-minmax :cat 1 :cat 0 :alt 3] 100)
+                (gen/tuple
+                  (gen/return "min-content")
+                  (gen/return " "))]
+              [(get weights [:func-minmax :cat 1 :cat 0 :alt 4] 100)
+                (gen/tuple
+                  (gen/return "max-content")
+                  (gen/return " "))]
+              [(get weights [:func-minmax :cat 1 :cat 0 :alt 5] 100)
+                (gen/tuple
+                  (gen/return "auto")
+                  (gen/return " "))]])
+            (gen/return " ")
+            (gen/return ",")
+            (gen/return " ")
+            (gen/frequency [
+              [(get weights [:func-minmax :cat 1 :cat 4 :alt 0] 100)
+                (gen/tuple
+                  (:nonprop-length gmap)
+                  (gen/return " "))]
+              [(get weights [:func-minmax :cat 1 :cat 4 :alt 1] 100)
+                (gen/tuple
+                  (:nonprop-percentage gmap)
+                  (gen/return " "))]
+              [(get weights [:func-minmax :cat 1 :cat 4 :alt 2] 100)
+                (gen/tuple
+                  (:nonprop-flex gmap)
+                  (gen/return " "))]
+              [(get weights [:func-minmax :cat 1 :cat 4 :alt 3] 100)
+                (gen/tuple
+                  (gen/return "min-content")
+                  (gen/return " "))]
+              [(get weights [:func-minmax :cat 1 :cat 4 :alt 4] 100)
+                (gen/tuple
+                  (gen/return "max-content")
+                  (gen/return " "))]
+              [(get weights [:func-minmax :cat 1 :cat 4 :alt 5] 100)
+                (gen/tuple
+                  (gen/return "auto")
+                  (gen/return " "))]])
+            (gen/return " "))
           (gen/return ")")
           (gen/return " "))
         gmap (assoc gmap :func-minmax gen-func-minmax)
@@ -3151,7 +3149,6 @@
         gen-func-rotate
         (gen/tuple
           (gen/return "rotate(")
-          (gen/return " ")
           (:nonprop-angle gmap)
           (gen/return " ")
           (gen/return ")")
@@ -3224,25 +3221,25 @@
         gen-func-linear-gradient
         (gen/tuple
           (gen/return "linear-gradient(")
-          (gen/return " ")
-          (gen/one-of [
-            (gen/return "")
-            (gen/frequency [
-              [(get weights [:func-linear-gradient :cat 2 :opt :alt 0] 100)
-                (gen/tuple
-                  (:nonprop-angle gmap)
-                  (gen/return " "))]
-              [(get weights [:func-linear-gradient :cat 2 :opt :alt 1] 100)
-                (gen/tuple
-                  (gen/return "to")
-                  (gen/return " ")
-                  (:nonprop-side-or-corner gmap)
-                  (gen/return " "))]])])
-          (gen/return " ")
-          (gen/return ",")
-          (gen/return " ")
-          (:nonprop-color-stop-list gmap)
-          (gen/return " ")
+          (gen/tuple
+            (gen/one-of [
+              (gen/return "")
+              (gen/frequency [
+                [(get weights [:func-linear-gradient :cat 1 :cat 0 :opt :alt 0] 100)
+                  (gen/tuple
+                    (:nonprop-angle gmap)
+                    (gen/return " "))]
+                [(get weights [:func-linear-gradient :cat 1 :cat 0 :opt :alt 1] 100)
+                  (gen/tuple
+                    (gen/return "to")
+                    (gen/return " ")
+                    (:nonprop-side-or-corner gmap)
+                    (gen/return " "))]])])
+            (gen/return " ")
+            (gen/return ",")
+            (gen/return " ")
+            (:nonprop-color-stop-list gmap)
+            (gen/return " "))
           (gen/return ")")
           (gen/return " "))
         gmap (assoc gmap :func-linear-gradient gen-func-linear-gradient)
@@ -3380,27 +3377,27 @@
         gmap (assoc gmap :nonprop-text-emphasis-style gen-nonprop-text-emphasis-style)
 
         gen-func-leader
-        (gen/frequency [
-          [(get weights [:func-leader :alt 0] 100)
-            (gen/tuple
-              (gen/return "leader(")
-              (gen/return " ")
-              (gen/return "dotted")
-              (gen/return " "))]
-          [(get weights [:func-leader :alt 1] 100)
-            (gen/tuple
-              (gen/return "solid")
-              (gen/return " "))]
-          [(get weights [:func-leader :alt 2] 100)
-            (gen/tuple
-              (gen/return "space")
-              (gen/return " "))]
-          [(get weights [:func-leader :alt 3] 100)
-            (gen/tuple
-              (:nonprop-string gmap)
-              (gen/return " ")
-              (gen/return ")")
-              (gen/return " "))]])
+        (gen/tuple
+          (gen/return "leader(")
+          (gen/frequency [
+            [(get weights [:func-leader :cat 1 :alt 0] 100)
+              (gen/tuple
+                (gen/return "dotted")
+                (gen/return " "))]
+            [(get weights [:func-leader :cat 1 :alt 1] 100)
+              (gen/tuple
+                (gen/return "solid")
+                (gen/return " "))]
+            [(get weights [:func-leader :cat 1 :alt 2] 100)
+              (gen/tuple
+                (gen/return "space")
+                (gen/return " "))]
+            [(get weights [:func-leader :cat 1 :alt 3] 100)
+              (gen/tuple
+                (:nonprop-string gmap)
+                (gen/return " "))]])
+          (gen/return ")")
+          (gen/return " "))
         gmap (assoc gmap :func-leader gen-func-leader)]
     gmap))
 
@@ -3660,7 +3657,6 @@
         gen-func-skewY
         (gen/tuple
           (gen/return "skewY(")
-          (gen/return " ")
           (:nonprop-angle gmap)
           (gen/return " ")
           (gen/return ")")
@@ -3715,7 +3711,6 @@
         gen-func-scaleY
         (gen/tuple
           (gen/return "scaleY(")
-          (gen/return " ")
           (:nonprop-number gmap)
           (gen/return " ")
           (gen/return ")")
@@ -3888,17 +3883,17 @@
         gen-func-var
         (gen/tuple
           (gen/return "var(")
-          (gen/return " ")
-          (:nonprop-custom-property-name gmap)
-          (gen/return " ")
-          (gen/one-of [
-            (gen/return "")
-            (gen/tuple
-              (gen/return ",")
-              (gen/return " ")
-              (:nonprop-declaration-value gmap)
-              (gen/return " "))])
-          (gen/return " ")
+          (gen/tuple
+            (:nonprop-custom-property-name gmap)
+            (gen/return " ")
+            (gen/one-of [
+              (gen/return "")
+              (gen/tuple
+                (gen/return ",")
+                (gen/return " ")
+                (:nonprop-declaration-value gmap)
+                (gen/return " "))])
+            (gen/return " "))
           (gen/return ")")
           (gen/return " "))
         gmap (assoc gmap :func-var gen-func-var)
@@ -4189,33 +4184,33 @@
         gen-func-target-counters
         (gen/tuple
           (gen/return "target-counters(")
-          (gen/return " ")
-          (gen/frequency [
-            [(get weights [:func-target-counters :cat 2 :alt 0] 100)
+          (gen/tuple
+            (gen/frequency [
+              [(get weights [:func-target-counters :cat 1 :cat 0 :alt 0] 100)
+                (gen/tuple
+                  (:nonprop-string gmap)
+                  (gen/return " "))]
+              [(get weights [:func-target-counters :cat 1 :cat 0 :alt 1] 100)
+                (gen/tuple
+                  (:nonprop-url gmap)
+                  (gen/return " "))]])
+            (gen/return " ")
+            (gen/return ",")
+            (gen/return " ")
+            (:nonprop-custom-ident gmap)
+            (gen/return " ")
+            (gen/return ",")
+            (gen/return " ")
+            (:nonprop-string gmap)
+            (gen/return " ")
+            (gen/one-of [
+              (gen/return "")
               (gen/tuple
-                (:nonprop-string gmap)
-                (gen/return " "))]
-            [(get weights [:func-target-counters :cat 2 :alt 1] 100)
-              (gen/tuple
-                (:nonprop-url gmap)
-                (gen/return " "))]])
-          (gen/return " ")
-          (gen/return ",")
-          (gen/return " ")
-          (:nonprop-custom-ident gmap)
-          (gen/return " ")
-          (gen/return ",")
-          (gen/return " ")
-          (:nonprop-string gmap)
-          (gen/return " ")
-          (gen/one-of [
-            (gen/return "")
-            (gen/tuple
-              (gen/return ",")
-              (gen/return " ")
-              (:nonprop-counter-style gmap)
-              (gen/return " "))])
-          (gen/return " ")
+                (gen/return ",")
+                (gen/return " ")
+                (:nonprop-counter-style gmap)
+                (gen/return " "))])
+            (gen/return " "))
           (gen/return ")")
           (gen/return " "))
         gmap (assoc gmap :func-target-counters gen-func-target-counters)
@@ -4223,41 +4218,41 @@
         gen-func-target-text
         (gen/tuple
           (gen/return "target-text(")
-          (gen/return " ")
-          (gen/frequency [
-            [(get weights [:func-target-text :cat 2 :alt 0] 100)
+          (gen/tuple
+            (gen/frequency [
+              [(get weights [:func-target-text :cat 1 :cat 0 :alt 0] 100)
+                (gen/tuple
+                  (:nonprop-string gmap)
+                  (gen/return " "))]
+              [(get weights [:func-target-text :cat 1 :cat 0 :alt 1] 100)
+                (gen/tuple
+                  (:nonprop-url gmap)
+                  (gen/return " "))]])
+            (gen/return " ")
+            (gen/one-of [
+              (gen/return "")
               (gen/tuple
-                (:nonprop-string gmap)
-                (gen/return " "))]
-            [(get weights [:func-target-text :cat 2 :alt 1] 100)
-              (gen/tuple
-                (:nonprop-url gmap)
-                (gen/return " "))]])
-          (gen/return " ")
-          (gen/one-of [
-            (gen/return "")
-            (gen/tuple
-              (gen/return ",")
-              (gen/return " ")
-              (gen/frequency [
-                [(get weights [:func-target-text :cat 4 :opt :cat 2 :alt 0] 100)
-                  (gen/tuple
-                    (gen/return "content")
-                    (gen/return " "))]
-                [(get weights [:func-target-text :cat 4 :opt :cat 2 :alt 1] 100)
-                  (gen/tuple
-                    (gen/return "before")
-                    (gen/return " "))]
-                [(get weights [:func-target-text :cat 4 :opt :cat 2 :alt 2] 100)
-                  (gen/tuple
-                    (gen/return "after")
-                    (gen/return " "))]
-                [(get weights [:func-target-text :cat 4 :opt :cat 2 :alt 3] 100)
-                  (gen/tuple
-                    (gen/return "first-letter")
-                    (gen/return " "))]])
-              (gen/return " "))])
-          (gen/return " ")
+                (gen/return ",")
+                (gen/return " ")
+                (gen/frequency [
+                  [(get weights [:func-target-text :cat 1 :cat 2 :opt :cat 2 :alt 0] 100)
+                    (gen/tuple
+                      (gen/return "content")
+                      (gen/return " "))]
+                  [(get weights [:func-target-text :cat 1 :cat 2 :opt :cat 2 :alt 1] 100)
+                    (gen/tuple
+                      (gen/return "before")
+                      (gen/return " "))]
+                  [(get weights [:func-target-text :cat 1 :cat 2 :opt :cat 2 :alt 2] 100)
+                    (gen/tuple
+                      (gen/return "after")
+                      (gen/return " "))]
+                  [(get weights [:func-target-text :cat 1 :cat 2 :opt :cat 2 :alt 3] 100)
+                    (gen/tuple
+                      (gen/return "first-letter")
+                      (gen/return " "))]])
+                (gen/return " "))])
+            (gen/return " "))
           (gen/return ")")
           (gen/return " "))
         gmap (assoc gmap :func-target-text gen-func-target-text)
@@ -4265,29 +4260,29 @@
         gen-func-target-counter
         (gen/tuple
           (gen/return "target-counter(")
-          (gen/return " ")
-          (gen/frequency [
-            [(get weights [:func-target-counter :cat 2 :alt 0] 100)
+          (gen/tuple
+            (gen/frequency [
+              [(get weights [:func-target-counter :cat 1 :cat 0 :alt 0] 100)
+                (gen/tuple
+                  (:nonprop-string gmap)
+                  (gen/return " "))]
+              [(get weights [:func-target-counter :cat 1 :cat 0 :alt 1] 100)
+                (gen/tuple
+                  (:nonprop-url gmap)
+                  (gen/return " "))]])
+            (gen/return " ")
+            (gen/return ",")
+            (gen/return " ")
+            (:nonprop-custom-ident gmap)
+            (gen/return " ")
+            (gen/one-of [
+              (gen/return "")
               (gen/tuple
-                (:nonprop-string gmap)
-                (gen/return " "))]
-            [(get weights [:func-target-counter :cat 2 :alt 1] 100)
-              (gen/tuple
-                (:nonprop-url gmap)
-                (gen/return " "))]])
-          (gen/return " ")
-          (gen/return ",")
-          (gen/return " ")
-          (:nonprop-custom-ident gmap)
-          (gen/return " ")
-          (gen/one-of [
-            (gen/return "")
-            (gen/tuple
-              (gen/return ",")
-              (gen/return " ")
-              (:nonprop-counter-style gmap)
-              (gen/return " "))])
-          (gen/return " ")
+                (gen/return ",")
+                (gen/return " ")
+                (:nonprop-counter-style gmap)
+                (gen/return " "))])
+            (gen/return " "))
           (gen/return ")")
           (gen/return " "))
         gmap (assoc gmap :func-target-counter gen-func-target-counter)
@@ -4311,7 +4306,6 @@
         gen-func-rotateY
         (gen/tuple
           (gen/return "rotateY(")
-          (gen/return " ")
           (:nonprop-angle gmap)
           (gen/return " ")
           (gen/return ")")
@@ -4541,7 +4535,6 @@
         gen-func-contrast
         (gen/tuple
           (gen/return "contrast(")
-          (gen/return " ")
           (:nonprop-number-percentage gmap)
           (gen/return " ")
           (gen/return " ")
@@ -4552,7 +4545,6 @@
         gen-func-brightness
         (gen/tuple
           (gen/return "brightness(")
-          (gen/return " ")
           (:nonprop-number-percentage gmap)
           (gen/return " ")
           (gen/return ")")
@@ -4562,22 +4554,22 @@
         gen-func-drop-shadow
         (gen/tuple
           (gen/return "drop-shadow(")
-          (gen/return " ")
-          (gen/frequency [
-            [(get weights [:func-drop-shadow :cat 2 :alt 0] 100)
-              (gen/tuple
-                (:nonprop-length gmap)
-                (:nonprop-length gmap))]
-            [(get weights [:func-drop-shadow :cat 2 :alt 1] 100)
-              (gen/tuple
-                (:nonprop-length gmap)
-                (:nonprop-length gmap)
-                (:nonprop-length gmap))]])
-          (gen/return " ")
-          (gen/one-of [
-            (gen/return "")
-            (:nonprop-color gmap)])
-          (gen/return " ")
+          (gen/tuple
+            (gen/frequency [
+              [(get weights [:func-drop-shadow :cat 1 :cat 0 :alt 0] 100)
+                (gen/tuple
+                  (:nonprop-length gmap)
+                  (:nonprop-length gmap))]
+              [(get weights [:func-drop-shadow :cat 1 :cat 0 :alt 1] 100)
+                (gen/tuple
+                  (:nonprop-length gmap)
+                  (:nonprop-length gmap)
+                  (:nonprop-length gmap))]])
+            (gen/return " ")
+            (gen/one-of [
+              (gen/return "")
+              (:nonprop-color gmap)])
+            (gen/return " "))
           (gen/return ")")
           (gen/return " "))
         gmap (assoc gmap :func-drop-shadow gen-func-drop-shadow)
@@ -4585,7 +4577,6 @@
         gen-func-saturate
         (gen/tuple
           (gen/return "saturate(")
-          (gen/return " ")
           (:nonprop-number-percentage gmap)
           (gen/return " ")
           (gen/return ")")
@@ -4595,7 +4586,6 @@
         gen-func-hue-rotate
         (gen/tuple
           (gen/return "hue-rotate(")
-          (gen/return " ")
           (:nonprop-angle gmap)
           (gen/return " ")
           (gen/return ")")
@@ -4605,7 +4595,6 @@
         gen-func-blur
         (gen/tuple
           (gen/return "blur(")
-          (gen/return " ")
           (:nonprop-length gmap)
           (gen/return " ")
           (gen/return ")")
@@ -4615,7 +4604,6 @@
         gen-func-opacity
         (gen/tuple
           (gen/return "opacity(")
-          (gen/return " ")
           (:nonprop-number-percentage gmap)
           (gen/return " ")
           (gen/return " ")
@@ -4626,7 +4614,6 @@
         gen-func-grayscale
         (gen/tuple
           (gen/return "grayscale(")
-          (gen/return " ")
           (:nonprop-number-percentage gmap)
           (gen/return " ")
           (gen/return ")")
@@ -4636,7 +4623,6 @@
         gen-func-sepia
         (gen/tuple
           (gen/return "sepia(")
-          (gen/return " ")
           (:nonprop-number-percentage gmap)
           (gen/return " ")
           (gen/return ")")
@@ -4646,7 +4632,6 @@
         gen-func-invert
         (gen/tuple
           (gen/return "invert(")
-          (gen/return " ")
           (:nonprop-number-percentage gmap)
           (gen/return " ")
           (gen/return ")")
@@ -4895,21 +4880,21 @@
         gen-func-attr
         (gen/tuple
           (gen/return "attr(")
-          (gen/return " ")
-          (:nonprop-attr-name gmap)
-          (gen/return " ")
-          (gen/one-of [
-            (gen/return "")
-            (:nonprop-type-or-unit gmap)])
-          (gen/return " ")
-          (gen/one-of [
-            (gen/return "")
-            (gen/tuple
-              (gen/return ",")
-              (gen/return " ")
-              (:nonprop-attr-fallback gmap)
-              (gen/return " "))])
-          (gen/return " ")
+          (gen/tuple
+            (:nonprop-attr-name gmap)
+            (gen/return " ")
+            (gen/one-of [
+              (gen/return "")
+              (:nonprop-type-or-unit gmap)])
+            (gen/return " ")
+            (gen/one-of [
+              (gen/return "")
+              (gen/tuple
+                (gen/return ",")
+                (gen/return " ")
+                (:nonprop-attr-fallback gmap)
+                (gen/return " "))])
+            (gen/return " "))
           (gen/return ")")
           (gen/return " "))
         gmap (assoc gmap :func-attr gen-func-attr)
@@ -4939,7 +4924,6 @@
           [(get weights [:prop-scroll-snap-points-y :alt 1] 100)
             (gen/tuple
               (gen/return "repeat(")
-              (gen/return " ")
               (:nonprop-length-percentage gmap)
               (gen/return " ")
               (gen/return ")")
@@ -5163,42 +5147,42 @@
           [(get weights [:nonprop-single-transition-timing-function :alt 7] 100)
             (gen/tuple
               (gen/return "steps(")
-              (gen/return " ")
-              (:nonprop-integer gmap)
-              (gen/return " ")
-              (gen/one-of [
-                (gen/return "")
-                (gen/tuple
-                  (gen/return ",")
-                  (gen/return " ")
-                  (gen/frequency [
-                    [(get weights [:nonprop-single-transition-timing-function :alt 7 :cat 4 :opt :cat 2 :alt 0] 100)
-                      (gen/tuple
-                        (gen/return "start")
-                        (gen/return " "))]
-                    [(get weights [:nonprop-single-transition-timing-function :alt 7 :cat 4 :opt :cat 2 :alt 1] 100)
-                      (gen/tuple
-                        (gen/return "end")
-                        (gen/return " "))]])
-                  (gen/return " "))])
-              (gen/return " ")
+              (gen/tuple
+                (:nonprop-integer gmap)
+                (gen/return " ")
+                (gen/one-of [
+                  (gen/return "")
+                  (gen/tuple
+                    (gen/return ",")
+                    (gen/return " ")
+                    (gen/frequency [
+                      [(get weights [:nonprop-single-transition-timing-function :alt 7 :cat 1 :cat 2 :opt :cat 2 :alt 0] 100)
+                        (gen/tuple
+                          (gen/return "start")
+                          (gen/return " "))]
+                      [(get weights [:nonprop-single-transition-timing-function :alt 7 :cat 1 :cat 2 :opt :cat 2 :alt 1] 100)
+                        (gen/tuple
+                          (gen/return "end")
+                          (gen/return " "))]])
+                    (gen/return " "))])
+                (gen/return " "))
               (gen/return ")")
               (gen/return " "))]
           [(get weights [:nonprop-single-transition-timing-function :alt 8] 100)
             (gen/tuple
               (gen/return "cubic-bezier(")
-              (gen/return " ")
-              (:nonprop-number gmap)
-              (gen/return " ")
-              (gen/return ", ")
-              (:nonprop-number gmap)
-              (gen/return " ")
-              (gen/return ", ")
-              (:nonprop-number gmap)
-              (gen/return " ")
-              (gen/return ", ")
-              (:nonprop-number gmap)
-              (gen/return " ")
+              (gen/tuple
+                (:nonprop-number gmap)
+                (gen/return " ")
+                (gen/return ", ")
+                (:nonprop-number gmap)
+                (gen/return " ")
+                (gen/return ", ")
+                (:nonprop-number gmap)
+                (gen/return " ")
+                (gen/return ", ")
+                (:nonprop-number gmap)
+                (gen/return " "))
               (gen/return ")")
               (gen/return " "))]])
         gmap (assoc gmap :nonprop-single-transition-timing-function gen-nonprop-single-transition-timing-function)
@@ -5416,7 +5400,6 @@
         gen-func-translateY
         (gen/tuple
           (gen/return "translateY(")
-          (gen/return " ")
           (:nonprop-length-percentage gmap)
           (gen/return " ")
           (gen/return ")")
@@ -5426,17 +5409,17 @@
         gen-func-scale
         (gen/tuple
           (gen/return "scale(")
-          (gen/return " ")
-          (:nonprop-number gmap)
-          (gen/return " ")
-          (gen/one-of [
-            (gen/return "")
-            (gen/tuple
-              (gen/return ",")
-              (gen/return " ")
-              (:nonprop-number gmap)
-              (gen/return " "))])
-          (gen/return " ")
+          (gen/tuple
+            (:nonprop-number gmap)
+            (gen/return " ")
+            (gen/one-of [
+              (gen/return "")
+              (gen/tuple
+                (gen/return ",")
+                (gen/return " ")
+                (:nonprop-number gmap)
+                (gen/return " "))])
+            (gen/return " "))
           (gen/return ")")
           (gen/return " "))
         gmap (assoc gmap :func-scale gen-func-scale)
@@ -5444,7 +5427,6 @@
         gen-func-rotateZ
         (gen/tuple
           (gen/return "rotateZ(")
-          (gen/return " ")
           (:nonprop-angle gmap)
           (gen/return " ")
           (gen/return ")")
@@ -5454,21 +5436,21 @@
         gen-func-rotate3d
         (gen/tuple
           (gen/return "rotate3d(")
-          (gen/return " ")
-          (:nonprop-number gmap)
-          (gen/return " ")
-          (gen/return ",")
-          (gen/return " ")
-          (:nonprop-number gmap)
-          (gen/return " ")
-          (gen/return ",")
-          (gen/return " ")
-          (:nonprop-number gmap)
-          (gen/return " ")
-          (gen/return ",")
-          (gen/return " ")
-          (:nonprop-angle gmap)
-          (gen/return " ")
+          (gen/tuple
+            (:nonprop-number gmap)
+            (gen/return " ")
+            (gen/return ",")
+            (gen/return " ")
+            (:nonprop-number gmap)
+            (gen/return " ")
+            (gen/return ",")
+            (gen/return " ")
+            (:nonprop-number gmap)
+            (gen/return " ")
+            (gen/return ",")
+            (gen/return " ")
+            (:nonprop-angle gmap)
+            (gen/return " "))
           (gen/return ")")
           (gen/return " "))
         gmap (assoc gmap :func-rotate3d gen-func-rotate3d)
@@ -5476,7 +5458,6 @@
         gen-func-skewX
         (gen/tuple
           (gen/return "skewX(")
-          (gen/return " ")
           (:nonprop-angle gmap)
           (gen/return " ")
           (gen/return ")")
@@ -5486,95 +5467,95 @@
         gen-func-matrix3d
         (gen/tuple
           (gen/return "matrix3d(")
-          (gen/return " ")
-          (:nonprop-number gmap)
-          (gen/return " ")
-          (gen/frequency [
-            [(get weights [:func-matrix3d :cat 4 :alt 0] 100)
-              (gen/tuple
-                (gen/return ",")
-                (gen/return " ")
-                (:nonprop-number gmap)
-                (gen/return " "))]
-            [(get weights [:func-matrix3d :cat 4 :alt 1] 100)
-              (gen/tuple
+          (gen/tuple
+            (:nonprop-number gmap)
+            (gen/return " ")
+            (gen/frequency [
+              [(get weights [:func-matrix3d :cat 1 :cat 2 :alt 0] 100)
                 (gen/tuple
                   (gen/return ",")
                   (gen/return " ")
                   (:nonprop-number gmap)
-                  (gen/return " "))
+                  (gen/return " "))]
+              [(get weights [:func-matrix3d :cat 1 :cat 2 :alt 1] 100)
                 (gen/tuple
-                  (gen/return ",")
-                  (gen/return " ")
-                  (:nonprop-number gmap)
-                  (gen/return " ")))]
-            [(get weights [:func-matrix3d :cat 4 :alt 2] 100)
-              (gen/tuple
+                  (gen/tuple
+                    (gen/return ",")
+                    (gen/return " ")
+                    (:nonprop-number gmap)
+                    (gen/return " "))
+                  (gen/tuple
+                    (gen/return ",")
+                    (gen/return " ")
+                    (:nonprop-number gmap)
+                    (gen/return " ")))]
+              [(get weights [:func-matrix3d :cat 1 :cat 2 :alt 2] 100)
                 (gen/tuple
-                  (gen/return ",")
-                  (gen/return " ")
-                  (:nonprop-number gmap)
-                  (gen/return " "))
+                  (gen/tuple
+                    (gen/return ",")
+                    (gen/return " ")
+                    (:nonprop-number gmap)
+                    (gen/return " "))
+                  (gen/tuple
+                    (gen/return ",")
+                    (gen/return " ")
+                    (:nonprop-number gmap)
+                    (gen/return " "))
+                  (gen/tuple
+                    (gen/return ",")
+                    (gen/return " ")
+                    (:nonprop-number gmap)
+                    (gen/return " ")))]
+              [(get weights [:func-matrix3d :cat 1 :cat 2 :alt 3] 100)
                 (gen/tuple
-                  (gen/return ",")
-                  (gen/return " ")
-                  (:nonprop-number gmap)
-                  (gen/return " "))
+                  (gen/tuple
+                    (gen/return ",")
+                    (gen/return " ")
+                    (:nonprop-number gmap)
+                    (gen/return " "))
+                  (gen/tuple
+                    (gen/return ",")
+                    (gen/return " ")
+                    (:nonprop-number gmap)
+                    (gen/return " "))
+                  (gen/tuple
+                    (gen/return ",")
+                    (gen/return " ")
+                    (:nonprop-number gmap)
+                    (gen/return " "))
+                  (gen/tuple
+                    (gen/return ",")
+                    (gen/return " ")
+                    (:nonprop-number gmap)
+                    (gen/return " ")))]
+              [(get weights [:func-matrix3d :cat 1 :cat 2 :alt 4] 100)
                 (gen/tuple
-                  (gen/return ",")
-                  (gen/return " ")
-                  (:nonprop-number gmap)
-                  (gen/return " ")))]
-            [(get weights [:func-matrix3d :cat 4 :alt 3] 100)
-              (gen/tuple
-                (gen/tuple
-                  (gen/return ",")
-                  (gen/return " ")
-                  (:nonprop-number gmap)
-                  (gen/return " "))
-                (gen/tuple
-                  (gen/return ",")
-                  (gen/return " ")
-                  (:nonprop-number gmap)
-                  (gen/return " "))
-                (gen/tuple
-                  (gen/return ",")
-                  (gen/return " ")
-                  (:nonprop-number gmap)
-                  (gen/return " "))
-                (gen/tuple
-                  (gen/return ",")
-                  (gen/return " ")
-                  (:nonprop-number gmap)
-                  (gen/return " ")))]
-            [(get weights [:func-matrix3d :cat 4 :alt 4] 100)
-              (gen/tuple
-                (gen/tuple
-                  (gen/return ",")
-                  (gen/return " ")
-                  (:nonprop-number gmap)
-                  (gen/return " "))
-                (gen/tuple
-                  (gen/return ",")
-                  (gen/return " ")
-                  (:nonprop-number gmap)
-                  (gen/return " "))
-                (gen/tuple
-                  (gen/return ",")
-                  (gen/return " ")
-                  (:nonprop-number gmap)
-                  (gen/return " "))
-                (gen/tuple
-                  (gen/return ",")
-                  (gen/return " ")
-                  (:nonprop-number gmap)
-                  (gen/return " "))
-                (gen/tuple
-                  (gen/return ",")
-                  (gen/return " ")
-                  (:nonprop-number gmap)
-                  (gen/return " ")))]])
-          (gen/return " ")
+                  (gen/tuple
+                    (gen/return ",")
+                    (gen/return " ")
+                    (:nonprop-number gmap)
+                    (gen/return " "))
+                  (gen/tuple
+                    (gen/return ",")
+                    (gen/return " ")
+                    (:nonprop-number gmap)
+                    (gen/return " "))
+                  (gen/tuple
+                    (gen/return ",")
+                    (gen/return " ")
+                    (:nonprop-number gmap)
+                    (gen/return " "))
+                  (gen/tuple
+                    (gen/return ",")
+                    (gen/return " ")
+                    (:nonprop-number gmap)
+                    (gen/return " "))
+                  (gen/tuple
+                    (gen/return ",")
+                    (gen/return " ")
+                    (:nonprop-number gmap)
+                    (gen/return " ")))]])
+            (gen/return " "))
           (gen/return ")")
           (gen/return " "))
         gmap (assoc gmap :func-matrix3d gen-func-matrix3d)
@@ -5582,17 +5563,17 @@
         gen-func-translate
         (gen/tuple
           (gen/return "translate(")
-          (gen/return " ")
-          (:nonprop-length-percentage gmap)
-          (gen/return " ")
-          (gen/one-of [
-            (gen/return "")
-            (gen/tuple
-              (gen/return ",")
-              (gen/return " ")
-              (:nonprop-length-percentage gmap)
-              (gen/return " "))])
-          (gen/return " ")
+          (gen/tuple
+            (:nonprop-length-percentage gmap)
+            (gen/return " ")
+            (gen/one-of [
+              (gen/return "")
+              (gen/tuple
+                (gen/return ",")
+                (gen/return " ")
+                (:nonprop-length-percentage gmap)
+                (gen/return " "))])
+            (gen/return " "))
           (gen/return ")")
           (gen/return " "))
         gmap (assoc gmap :func-translate gen-func-translate)
@@ -5600,7 +5581,6 @@
         gen-func-scaleZ
         (gen/tuple
           (gen/return "scaleZ(")
-          (gen/return " ")
           (:nonprop-number gmap)
           (gen/return " ")
           (gen/return ")")
@@ -5610,17 +5590,17 @@
         gen-func-scale3d
         (gen/tuple
           (gen/return "scale3d(")
-          (gen/return " ")
-          (:nonprop-number gmap)
-          (gen/return " ")
-          (gen/return ",")
-          (gen/return " ")
-          (:nonprop-number gmap)
-          (gen/return " ")
-          (gen/return ",")
-          (gen/return " ")
-          (:nonprop-number gmap)
-          (gen/return " ")
+          (gen/tuple
+            (:nonprop-number gmap)
+            (gen/return " ")
+            (gen/return ",")
+            (gen/return " ")
+            (:nonprop-number gmap)
+            (gen/return " ")
+            (gen/return ",")
+            (gen/return " ")
+            (:nonprop-number gmap)
+            (gen/return " "))
           (gen/return ")")
           (gen/return " "))
         gmap (assoc gmap :func-scale3d gen-func-scale3d)
@@ -5628,7 +5608,6 @@
         gen-func-rotateX
         (gen/tuple
           (gen/return "rotateX(")
-          (gen/return " ")
           (:nonprop-angle gmap)
           (gen/return " ")
           (gen/return ")")
@@ -5638,7 +5617,6 @@
         gen-func-scaleX
         (gen/tuple
           (gen/return "scaleX(")
-          (gen/return " ")
           (:nonprop-number gmap)
           (gen/return " ")
           (gen/return ")")
@@ -5648,36 +5626,36 @@
         gen-func-matrix
         (gen/tuple
           (gen/return "matrix(")
-          (gen/return " ")
-          (:nonprop-number gmap)
-          (gen/return " ")
           (gen/tuple
+            (:nonprop-number gmap)
+            (gen/return " ")
             (gen/tuple
-              (gen/return ",")
-              (gen/return " ")
-              (:nonprop-number gmap)
-              (gen/return " "))
-            (gen/tuple
-              (gen/return ",")
-              (gen/return " ")
-              (:nonprop-number gmap)
-              (gen/return " "))
-            (gen/tuple
-              (gen/return ",")
-              (gen/return " ")
-              (:nonprop-number gmap)
-              (gen/return " "))
-            (gen/tuple
-              (gen/return ",")
-              (gen/return " ")
-              (:nonprop-number gmap)
-              (gen/return " "))
-            (gen/tuple
-              (gen/return ",")
-              (gen/return " ")
-              (:nonprop-number gmap)
-              (gen/return " ")))
-          (gen/return " ")
+              (gen/tuple
+                (gen/return ",")
+                (gen/return " ")
+                (:nonprop-number gmap)
+                (gen/return " "))
+              (gen/tuple
+                (gen/return ",")
+                (gen/return " ")
+                (:nonprop-number gmap)
+                (gen/return " "))
+              (gen/tuple
+                (gen/return ",")
+                (gen/return " ")
+                (:nonprop-number gmap)
+                (gen/return " "))
+              (gen/tuple
+                (gen/return ",")
+                (gen/return " ")
+                (:nonprop-number gmap)
+                (gen/return " "))
+              (gen/tuple
+                (gen/return ",")
+                (gen/return " ")
+                (:nonprop-number gmap)
+                (gen/return " ")))
+            (gen/return " "))
           (gen/return ")")
           (gen/return " "))
         gmap (assoc gmap :func-matrix gen-func-matrix)
@@ -5685,7 +5663,6 @@
         gen-func-perspective
         (gen/tuple
           (gen/return "perspective(")
-          (gen/return " ")
           (:nonprop-length gmap)
           (gen/return " ")
           (gen/return ")")
@@ -5695,17 +5672,17 @@
         gen-func-translate3d
         (gen/tuple
           (gen/return "translate3d(")
-          (gen/return " ")
-          (:nonprop-length-percentage gmap)
-          (gen/return " ")
-          (gen/return ",")
-          (gen/return " ")
-          (:nonprop-length-percentage gmap)
-          (gen/return " ")
-          (gen/return ",")
-          (gen/return " ")
-          (:nonprop-length gmap)
-          (gen/return " ")
+          (gen/tuple
+            (:nonprop-length-percentage gmap)
+            (gen/return " ")
+            (gen/return ",")
+            (gen/return " ")
+            (:nonprop-length-percentage gmap)
+            (gen/return " ")
+            (gen/return ",")
+            (gen/return " ")
+            (:nonprop-length gmap)
+            (gen/return " "))
           (gen/return ")")
           (gen/return " "))
         gmap (assoc gmap :func-translate3d gen-func-translate3d)
@@ -5713,7 +5690,6 @@
         gen-func-translateX
         (gen/tuple
           (gen/return "translateX(")
-          (gen/return " ")
           (:nonprop-length-percentage gmap)
           (gen/return " ")
           (gen/return ")")
@@ -5723,7 +5699,6 @@
         gen-func-translateZ
         (gen/tuple
           (gen/return "translateZ(")
-          (gen/return " ")
           (:nonprop-length gmap)
           (gen/return " ")
           (gen/return ")")
@@ -5844,25 +5819,25 @@
         gen-func-repeating-linear-gradient
         (gen/tuple
           (gen/return "repeating-linear-gradient(")
-          (gen/return " ")
-          (gen/one-of [
-            (gen/return "")
-            (gen/frequency [
-              [(get weights [:func-repeating-linear-gradient :cat 2 :opt :alt 0] 100)
-                (gen/tuple
-                  (:nonprop-angle gmap)
-                  (gen/return " "))]
-              [(get weights [:func-repeating-linear-gradient :cat 2 :opt :alt 1] 100)
-                (gen/tuple
-                  (gen/return "to")
-                  (gen/return " ")
-                  (:nonprop-side-or-corner gmap)
-                  (gen/return " "))]])])
-          (gen/return " ")
-          (gen/return ",")
-          (gen/return " ")
-          (:nonprop-color-stop-list gmap)
-          (gen/return " ")
+          (gen/tuple
+            (gen/one-of [
+              (gen/return "")
+              (gen/frequency [
+                [(get weights [:func-repeating-linear-gradient :cat 1 :cat 0 :opt :alt 0] 100)
+                  (gen/tuple
+                    (:nonprop-angle gmap)
+                    (gen/return " "))]
+                [(get weights [:func-repeating-linear-gradient :cat 1 :cat 0 :opt :alt 1] 100)
+                  (gen/tuple
+                    (gen/return "to")
+                    (gen/return " ")
+                    (:nonprop-side-or-corner gmap)
+                    (gen/return " "))]])])
+            (gen/return " ")
+            (gen/return ",")
+            (gen/return " ")
+            (:nonprop-color-stop-list gmap)
+            (gen/return " "))
           (gen/return ")")
           (gen/return " "))
         gmap (assoc gmap :func-repeating-linear-gradient gen-func-repeating-linear-gradient)
@@ -5870,32 +5845,32 @@
         gen-func-radial-gradient
         (gen/tuple
           (gen/return "radial-gradient(")
-          (gen/return " ")
-          (gen/one-of [
-            (gen/return "")
-            (gen/such-that not-empty (gen/vector
-              (gen/frequency [
-                [(get weights [:func-radial-gradient :cat 2 :opt :plus :alt 0] 100)
-                  (gen/tuple
-                    (:nonprop-ending-shape gmap)
-                    (gen/return " "))]
-                [(get weights [:func-radial-gradient :cat 2 :opt :plus :alt 1] 100)
-                  (gen/tuple
-                    (:nonprop-size gmap)
-                    (gen/return " "))]])))])
-          (gen/return " ")
-          (gen/one-of [
-            (gen/return "")
-            (gen/tuple
-              (gen/return "at")
-              (gen/return " ")
-              (:nonprop-position gmap)
-              (gen/return " "))])
-          (gen/return " ")
-          (gen/return ",")
-          (gen/return " ")
-          (:nonprop-color-stop-list gmap)
-          (gen/return " ")
+          (gen/tuple
+            (gen/one-of [
+              (gen/return "")
+              (gen/such-that not-empty (gen/vector
+                (gen/frequency [
+                  [(get weights [:func-radial-gradient :cat 1 :cat 0 :opt :plus :alt 0] 100)
+                    (gen/tuple
+                      (:nonprop-ending-shape gmap)
+                      (gen/return " "))]
+                  [(get weights [:func-radial-gradient :cat 1 :cat 0 :opt :plus :alt 1] 100)
+                    (gen/tuple
+                      (:nonprop-size gmap)
+                      (gen/return " "))]])))])
+            (gen/return " ")
+            (gen/one-of [
+              (gen/return "")
+              (gen/tuple
+                (gen/return "at")
+                (gen/return " ")
+                (:nonprop-position gmap)
+                (gen/return " "))])
+            (gen/return " ")
+            (gen/return ",")
+            (gen/return " ")
+            (:nonprop-color-stop-list gmap)
+            (gen/return " "))
           (gen/return ")")
           (gen/return " "))
         gmap (assoc gmap :func-radial-gradient gen-func-radial-gradient)
@@ -6300,7 +6275,6 @@
           [(get weights [:prop-scroll-snap-points-x :alt 1] 100)
             (gen/tuple
               (gen/return "repeat(")
-              (gen/return " ")
               (:nonprop-length-percentage gmap)
               (gen/return " ")
               (gen/return ")")
@@ -6606,22 +6580,22 @@
         gen-func-ellipse
         (gen/tuple
           (gen/return "ellipse(")
-          (gen/return " ")
           (gen/tuple
-            (:nonprop-shape-radius gmap)
-            (:nonprop-shape-radius gmap))
-          (gen/one-of [
-            (gen/return "")
-            (gen/return " ")])
-          (gen/return " ")
-          (gen/one-of [
-            (gen/return "")
             (gen/tuple
-              (gen/return "at")
-              (gen/return " ")
-              (:nonprop-position gmap)
-              (gen/return " "))])
-          (gen/return " ")
+              (:nonprop-shape-radius gmap)
+              (:nonprop-shape-radius gmap))
+            (gen/one-of [
+              (gen/return "")
+              (gen/return " ")])
+            (gen/return " ")
+            (gen/one-of [
+              (gen/return "")
+              (gen/tuple
+                (gen/return "at")
+                (gen/return " ")
+                (:nonprop-position gmap)
+                (gen/return " "))])
+            (gen/return " "))
           (gen/return ")")
           (gen/return " "))
         gmap (assoc gmap :func-ellipse gen-func-ellipse)
@@ -6696,27 +6670,27 @@
         gen-func-polygon
         (gen/tuple
           (gen/return "polygon(")
-          (gen/return " ")
-          (gen/one-of [
-            (gen/return "")
-            (:nonprop-fill-rule gmap)])
-          (gen/return " ")
-          (gen/return ",")
-          (gen/return " ")
           (gen/tuple
-            (:nonprop-length-percentage gmap)
+            (gen/one-of [
+              (gen/return "")
+              (:nonprop-fill-rule gmap)])
             (gen/return " ")
-            (:nonprop-length-percentage gmap)
-            (gen/return " "))
-          (gen/vector
+            (gen/return ",")
+            (gen/return " ")
             (gen/tuple
-              (gen/return ", ")
+              (:nonprop-length-percentage gmap)
+              (gen/return " ")
+              (:nonprop-length-percentage gmap)
+              (gen/return " "))
+            (gen/vector
               (gen/tuple
-                (:nonprop-length-percentage gmap)
-                (gen/return " ")
-                (:nonprop-length-percentage gmap)
-                (gen/return " "))))
-          (gen/return " ")
+                (gen/return ", ")
+                (gen/tuple
+                  (:nonprop-length-percentage gmap)
+                  (gen/return " ")
+                  (:nonprop-length-percentage gmap)
+                  (gen/return " "))))
+            (gen/return " "))
           (gen/return ")")
           (gen/return " "))
         gmap (assoc gmap :func-polygon gen-func-polygon)
@@ -6728,34 +6702,34 @@
         gen-func-inset
         (gen/tuple
           (gen/return "inset(")
-          (gen/return " ")
-          (gen/frequency [
-            [(get weights [:func-inset :cat 2 :alt 0] 100)
-              (:nonprop-length-percentage gmap)]
-            [(get weights [:func-inset :cat 2 :alt 1] 100)
+          (gen/tuple
+            (gen/frequency [
+              [(get weights [:func-inset :cat 1 :cat 0 :alt 0] 100)
+                (:nonprop-length-percentage gmap)]
+              [(get weights [:func-inset :cat 1 :cat 0 :alt 1] 100)
+                (gen/tuple
+                  (:nonprop-length-percentage gmap)
+                  (:nonprop-length-percentage gmap))]
+              [(get weights [:func-inset :cat 1 :cat 0 :alt 2] 100)
+                (gen/tuple
+                  (:nonprop-length-percentage gmap)
+                  (:nonprop-length-percentage gmap)
+                  (:nonprop-length-percentage gmap))]
+              [(get weights [:func-inset :cat 1 :cat 0 :alt 3] 100)
+                (gen/tuple
+                  (:nonprop-length-percentage gmap)
+                  (:nonprop-length-percentage gmap)
+                  (:nonprop-length-percentage gmap)
+                  (:nonprop-length-percentage gmap))]])
+            (gen/return " ")
+            (gen/one-of [
+              (gen/return "")
               (gen/tuple
-                (:nonprop-length-percentage gmap)
-                (:nonprop-length-percentage gmap))]
-            [(get weights [:func-inset :cat 2 :alt 2] 100)
-              (gen/tuple
-                (:nonprop-length-percentage gmap)
-                (:nonprop-length-percentage gmap)
-                (:nonprop-length-percentage gmap))]
-            [(get weights [:func-inset :cat 2 :alt 3] 100)
-              (gen/tuple
-                (:nonprop-length-percentage gmap)
-                (:nonprop-length-percentage gmap)
-                (:nonprop-length-percentage gmap)
-                (:nonprop-length-percentage gmap))]])
-          (gen/return " ")
-          (gen/one-of [
-            (gen/return "")
-            (gen/tuple
-              (gen/return "round")
-              (gen/return " ")
-              (:nonprop-border-radius gmap)
-              (gen/return " "))])
-          (gen/return " ")
+                (gen/return "round")
+                (gen/return " ")
+                (:nonprop-border-radius gmap)
+                (gen/return " "))])
+            (gen/return " "))
           (gen/return ")")
           (gen/return " "))
         gmap (assoc gmap :func-inset gen-func-inset)
@@ -6789,7 +6763,6 @@
           [(get weights [:prop-offset-path :alt 1] 100)
             (gen/tuple
               (gen/return "ray(")
-              (gen/return " ")
               (gen/tuple
                 (:nonprop-angle gmap)
                 (gen/return " ")
@@ -8262,13 +8235,12 @@
         gen-func-fit-content
         (gen/tuple
           (gen/return "fit-content(")
-          (gen/return " ")
           (gen/frequency [
-            [(get weights [:func-fit-content :cat 2 :alt 0] 100)
+            [(get weights [:func-fit-content :cat 1 :alt 0] 100)
               (gen/tuple
                 (:nonprop-length gmap)
                 (gen/return " "))]
-            [(get weights [:func-fit-content :cat 2 :alt 1] 100)
+            [(get weights [:func-fit-content :cat 1 :alt 1] 100)
               (gen/tuple
                 (:nonprop-percentage gmap)
                 (gen/return " "))]])
@@ -8679,85 +8651,62 @@
               (gen/return " "))]
           [(get weights [:prop-font-variant-alternates :alt 1] 100)
             (gen/tuple
-              (gen/tuple
-                (gen/return "stylistic(")
-                (gen/return " ")
-                (:nonprop-feature-value-name gmap)
-                (gen/return " ")
-                (gen/such-that not-empty (gen/vector
-                  (gen/frequency [
-                    [(get weights [:prop-font-variant-alternates :alt 1 :cat 0 :cat 4 :plus :alt 0] 100)
-                      (gen/tuple
-                        (gen/return ")")
-                        (gen/return " "))]
-                    [(get weights [:prop-font-variant-alternates :alt 1 :cat 0 :cat 4 :plus :alt 1] 100)
-                      (gen/tuple
-                        (gen/return "historical-forms")
-                        (gen/return " "))]
-                    [(get weights [:prop-font-variant-alternates :alt 1 :cat 0 :cat 4 :plus :alt 2] 100)
-                      (gen/tuple
-                        (gen/return "styleset(")
-                        (gen/return " "))]])))
-                (:nonprop-feature-value-name gmap)
-                (gen/vector
-                  (gen/tuple
-                    (gen/return ", ")
-                    (:nonprop-feature-value-name gmap)))
-                (gen/return " ")
-                (gen/such-that not-empty (gen/vector
-                  (gen/frequency [
-                    [(get weights [:prop-font-variant-alternates :alt 1 :cat 0 :cat 8 :plus :alt 0] 100)
-                      (gen/tuple
-                        (gen/return ")")
-                        (gen/return " "))]
-                    [(get weights [:prop-font-variant-alternates :alt 1 :cat 0 :cat 8 :plus :alt 1] 100)
-                      (gen/tuple
-                        (gen/return "character-variant(")
-                        (gen/return " "))]])))
-                (:nonprop-feature-value-name gmap)
-                (gen/vector
-                  (gen/tuple
-                    (gen/return ", ")
-                    (:nonprop-feature-value-name gmap)))
-                (gen/return " ")
-                (gen/such-that not-empty (gen/vector
-                  (gen/frequency [
-                    [(get weights [:prop-font-variant-alternates :alt 1 :cat 0 :cat 12 :plus :alt 0] 100)
-                      (gen/tuple
-                        (gen/return ")")
-                        (gen/return " "))]
-                    [(get weights [:prop-font-variant-alternates :alt 1 :cat 0 :cat 12 :plus :alt 1] 100)
-                      (gen/tuple
-                        (gen/return "swash(")
-                        (gen/return " "))]])))
-                (:nonprop-feature-value-name gmap)
-                (gen/return " ")
-                (gen/such-that not-empty (gen/vector
-                  (gen/frequency [
-                    [(get weights [:prop-font-variant-alternates :alt 1 :cat 0 :cat 15 :plus :alt 0] 100)
-                      (gen/tuple
-                        (gen/return ")")
-                        (gen/return " "))]
-                    [(get weights [:prop-font-variant-alternates :alt 1 :cat 0 :cat 15 :plus :alt 1] 100)
-                      (gen/tuple
-                        (gen/return "ornaments(")
-                        (gen/return " "))]])))
-                (:nonprop-feature-value-name gmap)
-                (gen/return " ")
-                (gen/such-that not-empty (gen/vector
-                  (gen/frequency [
-                    [(get weights [:prop-font-variant-alternates :alt 1 :cat 0 :cat 18 :plus :alt 0] 100)
-                      (gen/tuple
-                        (gen/return ")")
-                        (gen/return " "))]
-                    [(get weights [:prop-font-variant-alternates :alt 1 :cat 0 :cat 18 :plus :alt 1] 100)
-                      (gen/tuple
-                        (gen/return "annotation(")
-                        (gen/return " "))]])))
-                (:nonprop-feature-value-name gmap)
-                (gen/return " ")
-                (gen/return ")")
-                (gen/return " "))
+              (gen/such-that not-empty (gen/vector
+                (gen/frequency [
+                  [(get weights [:prop-font-variant-alternates :alt 1 :cat 0 :plus :alt 0] 100)
+                    (gen/tuple
+                      (gen/return "stylistic(")
+                      (:nonprop-feature-value-name gmap)
+                      (gen/return " ")
+                      (gen/return ")")
+                      (gen/return " "))]
+                  [(get weights [:prop-font-variant-alternates :alt 1 :cat 0 :plus :alt 1] 100)
+                    (gen/tuple
+                      (gen/return "historical-forms")
+                      (gen/return " "))]
+                  [(get weights [:prop-font-variant-alternates :alt 1 :cat 0 :plus :alt 2] 100)
+                    (gen/tuple
+                      (gen/return "styleset(")
+                      (:nonprop-feature-value-name gmap)
+                      (gen/vector
+                        (gen/tuple
+                          (gen/return ", ")
+                          (:nonprop-feature-value-name gmap)))
+                      (gen/return " ")
+                      (gen/return ")")
+                      (gen/return " "))]
+                  [(get weights [:prop-font-variant-alternates :alt 1 :cat 0 :plus :alt 3] 100)
+                    (gen/tuple
+                      (gen/return "character-variant(")
+                      (:nonprop-feature-value-name gmap)
+                      (gen/vector
+                        (gen/tuple
+                          (gen/return ", ")
+                          (:nonprop-feature-value-name gmap)))
+                      (gen/return " ")
+                      (gen/return ")")
+                      (gen/return " "))]
+                  [(get weights [:prop-font-variant-alternates :alt 1 :cat 0 :plus :alt 4] 100)
+                    (gen/tuple
+                      (gen/return "swash(")
+                      (:nonprop-feature-value-name gmap)
+                      (gen/return " ")
+                      (gen/return ")")
+                      (gen/return " "))]
+                  [(get weights [:prop-font-variant-alternates :alt 1 :cat 0 :plus :alt 5] 100)
+                    (gen/tuple
+                      (gen/return "ornaments(")
+                      (:nonprop-feature-value-name gmap)
+                      (gen/return " ")
+                      (gen/return ")")
+                      (gen/return " "))]
+                  [(get weights [:prop-font-variant-alternates :alt 1 :cat 0 :plus :alt 6] 100)
+                    (gen/tuple
+                      (gen/return "annotation(")
+                      (:nonprop-feature-value-name gmap)
+                      (gen/return " ")
+                      (gen/return ")")
+                      (gen/return " "))]])))
               (gen/return " "))]])
         gmap (assoc gmap :prop-font-variant-alternates gen-prop-font-variant-alternates)
 
@@ -8818,15 +8767,15 @@
         gen-func-cross-fade
         (gen/tuple
           (gen/return "cross-fade(")
-          (gen/return " ")
-          (:nonprop-cf-mixing-image gmap)
-          (gen/return " ")
-          (gen/return ",")
-          (gen/return " ")
-          (gen/one-of [
-            (gen/return "")
-            (:nonprop-cf-final-image gmap)])
-          (gen/return " ")
+          (gen/tuple
+            (:nonprop-cf-mixing-image gmap)
+            (gen/return " ")
+            (gen/return ",")
+            (gen/return " ")
+            (gen/one-of [
+              (gen/return "")
+              (:nonprop-cf-final-image gmap)])
+            (gen/return " "))
           (gen/return ")")
           (gen/return " "))
         gmap (assoc gmap :func-cross-fade gen-func-cross-fade)
@@ -9117,7 +9066,6 @@
         gen-func-image-set
         (gen/tuple
           (gen/return "image-set(")
-          (gen/return " ")
           (:nonprop-image-set-option gmap)
           (gen/vector
             (gen/tuple
@@ -11814,16 +11762,15 @@
         gen-func-image
         (gen/tuple
           (gen/return "image(")
-          (gen/return " ")
           (gen/tuple
             (gen/one-of [
               (gen/return "")
               (gen/frequency [
-                [(get weights [:func-image :cat 2 :cat 0 :opt :alt 0] 100)
+                [(get weights [:func-image :cat 1 :cat 0 :opt :alt 0] 100)
                   (gen/tuple
                     (:nonprop-image gmap)
                     (gen/return " "))]
-                [(get weights [:func-image :cat 2 :cat 0 :opt :alt 1] 100)
+                [(get weights [:func-image :cat 1 :cat 0 :opt :alt 1] 100)
                   (gen/tuple
                     (:nonprop-string gmap)
                     (gen/return " "))]])])
@@ -12473,169 +12420,138 @@
               (gen/return " "))]
           [(get weights [:prop-font-variant :alt 2] 100)
             (gen/tuple
-              (gen/tuple
-                (gen/such-that not-empty (gen/vector
-                  (gen/frequency [
-                    [(get weights [:prop-font-variant :alt 2 :cat 0 :cat 0 :plus :alt 0] 100)
-                      (gen/tuple
-                        (:nonprop-common-lig-values gmap)
-                        (gen/return " "))]
-                    [(get weights [:prop-font-variant :alt 2 :cat 0 :cat 0 :plus :alt 1] 100)
-                      (gen/tuple
-                        (:nonprop-discretionary-lig-values gmap)
-                        (gen/return " "))]
-                    [(get weights [:prop-font-variant :alt 2 :cat 0 :cat 0 :plus :alt 2] 100)
-                      (gen/tuple
-                        (:nonprop-historical-lig-values gmap)
-                        (gen/return " "))]
-                    [(get weights [:prop-font-variant :alt 2 :cat 0 :cat 0 :plus :alt 3] 100)
-                      (gen/tuple
-                        (:nonprop-contextual-alt-values gmap)
-                        (gen/return " "))]
-                    [(get weights [:prop-font-variant :alt 2 :cat 0 :cat 0 :plus :alt 4] 100)
-                      (gen/tuple
-                        (gen/return "stylistic(")
-                        (gen/return " "))]])))
-                (:nonprop-feature-value-name gmap)
-                (gen/return " ")
-                (gen/such-that not-empty (gen/vector
-                  (gen/frequency [
-                    [(get weights [:prop-font-variant :alt 2 :cat 0 :cat 3 :plus :alt 0] 100)
-                      (gen/tuple
-                        (gen/return ")")
-                        (gen/return " "))]
-                    [(get weights [:prop-font-variant :alt 2 :cat 0 :cat 3 :plus :alt 1] 100)
-                      (gen/tuple
-                        (gen/return "historical-forms")
-                        (gen/return " "))]
-                    [(get weights [:prop-font-variant :alt 2 :cat 0 :cat 3 :plus :alt 2] 100)
-                      (gen/tuple
-                        (gen/return "styleset(")
-                        (gen/return " "))]])))
-                (:nonprop-feature-value-name gmap)
-                (gen/vector
-                  (gen/tuple
-                    (gen/return ", ")
-                    (:nonprop-feature-value-name gmap)))
-                (gen/return " ")
-                (gen/such-that not-empty (gen/vector
-                  (gen/frequency [
-                    [(get weights [:prop-font-variant :alt 2 :cat 0 :cat 7 :plus :alt 0] 100)
-                      (gen/tuple
-                        (gen/return ")")
-                        (gen/return " "))]
-                    [(get weights [:prop-font-variant :alt 2 :cat 0 :cat 7 :plus :alt 1] 100)
-                      (gen/tuple
-                        (gen/return "character-variant(")
-                        (gen/return " "))]])))
-                (:nonprop-feature-value-name gmap)
-                (gen/vector
-                  (gen/tuple
-                    (gen/return ", ")
-                    (:nonprop-feature-value-name gmap)))
-                (gen/return " ")
-                (gen/such-that not-empty (gen/vector
-                  (gen/frequency [
-                    [(get weights [:prop-font-variant :alt 2 :cat 0 :cat 11 :plus :alt 0] 100)
-                      (gen/tuple
-                        (gen/return ")")
-                        (gen/return " "))]
-                    [(get weights [:prop-font-variant :alt 2 :cat 0 :cat 11 :plus :alt 1] 100)
-                      (gen/tuple
-                        (gen/return "swash(")
-                        (gen/return " "))]])))
-                (:nonprop-feature-value-name gmap)
-                (gen/return " ")
-                (gen/such-that not-empty (gen/vector
-                  (gen/frequency [
-                    [(get weights [:prop-font-variant :alt 2 :cat 0 :cat 14 :plus :alt 0] 100)
-                      (gen/tuple
-                        (gen/return ")")
-                        (gen/return " "))]
-                    [(get weights [:prop-font-variant :alt 2 :cat 0 :cat 14 :plus :alt 1] 100)
-                      (gen/tuple
-                        (gen/return "ornaments(")
-                        (gen/return " "))]])))
-                (:nonprop-feature-value-name gmap)
-                (gen/return " ")
-                (gen/such-that not-empty (gen/vector
-                  (gen/frequency [
-                    [(get weights [:prop-font-variant :alt 2 :cat 0 :cat 17 :plus :alt 0] 100)
-                      (gen/tuple
-                        (gen/return ")")
-                        (gen/return " "))]
-                    [(get weights [:prop-font-variant :alt 2 :cat 0 :cat 17 :plus :alt 1] 100)
-                      (gen/tuple
-                        (gen/return "annotation(")
-                        (gen/return " "))]])))
-                (:nonprop-feature-value-name gmap)
-                (gen/return " ")
-                (gen/such-that not-empty (gen/vector
-                  (gen/frequency [
-                    [(get weights [:prop-font-variant :alt 2 :cat 0 :cat 20 :plus :alt 0] 100)
-                      (gen/tuple
-                        (gen/return ")")
-                        (gen/return " "))]
-                    [(get weights [:prop-font-variant :alt 2 :cat 0 :cat 20 :plus :alt 1] 100)
-                      (gen/tuple
-                        (gen/frequency [
-                          [(get weights [:prop-font-variant :alt 2 :cat 0 :cat 20 :plus :alt 1 :cat 0 :alt 0] 100)
-                            (gen/tuple
-                              (gen/return "small-caps")
-                              (gen/return " "))]
-                          [(get weights [:prop-font-variant :alt 2 :cat 0 :cat 20 :plus :alt 1 :cat 0 :alt 1] 100)
-                            (gen/tuple
-                              (gen/return "all-small-caps")
-                              (gen/return " "))]
-                          [(get weights [:prop-font-variant :alt 2 :cat 0 :cat 20 :plus :alt 1 :cat 0 :alt 2] 100)
-                            (gen/tuple
-                              (gen/return "petite-caps")
-                              (gen/return " "))]
-                          [(get weights [:prop-font-variant :alt 2 :cat 0 :cat 20 :plus :alt 1 :cat 0 :alt 3] 100)
-                            (gen/tuple
-                              (gen/return "all-petite-caps")
-                              (gen/return " "))]
-                          [(get weights [:prop-font-variant :alt 2 :cat 0 :cat 20 :plus :alt 1 :cat 0 :alt 4] 100)
-                            (gen/tuple
-                              (gen/return "unicase")
-                              (gen/return " "))]
-                          [(get weights [:prop-font-variant :alt 2 :cat 0 :cat 20 :plus :alt 1 :cat 0 :alt 5] 100)
-                            (gen/tuple
-                              (gen/return "titling-caps")
-                              (gen/return " "))]])
-                        (gen/return " "))]
-                    [(get weights [:prop-font-variant :alt 2 :cat 0 :cat 20 :plus :alt 2] 100)
-                      (gen/tuple
-                        (:nonprop-numeric-figure-values gmap)
-                        (gen/return " "))]
-                    [(get weights [:prop-font-variant :alt 2 :cat 0 :cat 20 :plus :alt 3] 100)
-                      (gen/tuple
-                        (:nonprop-numeric-spacing-values gmap)
-                        (gen/return " "))]
-                    [(get weights [:prop-font-variant :alt 2 :cat 0 :cat 20 :plus :alt 4] 100)
-                      (gen/tuple
-                        (:nonprop-numeric-fraction-values gmap)
-                        (gen/return " "))]
-                    [(get weights [:prop-font-variant :alt 2 :cat 0 :cat 20 :plus :alt 5] 100)
-                      (gen/tuple
-                        (gen/return "ordinal")
-                        (gen/return " "))]
-                    [(get weights [:prop-font-variant :alt 2 :cat 0 :cat 20 :plus :alt 6] 100)
-                      (gen/tuple
-                        (gen/return "slashed-zero")
-                        (gen/return " "))]
-                    [(get weights [:prop-font-variant :alt 2 :cat 0 :cat 20 :plus :alt 7] 100)
-                      (gen/tuple
-                        (:nonprop-east-asian-variant-values gmap)
-                        (gen/return " "))]
-                    [(get weights [:prop-font-variant :alt 2 :cat 0 :cat 20 :plus :alt 8] 100)
-                      (gen/tuple
-                        (:nonprop-east-asian-width-values gmap)
-                        (gen/return " "))]
-                    [(get weights [:prop-font-variant :alt 2 :cat 0 :cat 20 :plus :alt 9] 100)
-                      (gen/tuple
-                        (gen/return "ruby")
-                        (gen/return " "))]]))))
+              (gen/such-that not-empty (gen/vector
+                (gen/frequency [
+                  [(get weights [:prop-font-variant :alt 2 :cat 0 :plus :alt 0] 100)
+                    (gen/tuple
+                      (:nonprop-common-lig-values gmap)
+                      (gen/return " "))]
+                  [(get weights [:prop-font-variant :alt 2 :cat 0 :plus :alt 1] 100)
+                    (gen/tuple
+                      (:nonprop-discretionary-lig-values gmap)
+                      (gen/return " "))]
+                  [(get weights [:prop-font-variant :alt 2 :cat 0 :plus :alt 2] 100)
+                    (gen/tuple
+                      (:nonprop-historical-lig-values gmap)
+                      (gen/return " "))]
+                  [(get weights [:prop-font-variant :alt 2 :cat 0 :plus :alt 3] 100)
+                    (gen/tuple
+                      (:nonprop-contextual-alt-values gmap)
+                      (gen/return " "))]
+                  [(get weights [:prop-font-variant :alt 2 :cat 0 :plus :alt 4] 100)
+                    (gen/tuple
+                      (gen/return "stylistic(")
+                      (:nonprop-feature-value-name gmap)
+                      (gen/return " ")
+                      (gen/return ")")
+                      (gen/return " "))]
+                  [(get weights [:prop-font-variant :alt 2 :cat 0 :plus :alt 5] 100)
+                    (gen/tuple
+                      (gen/return "historical-forms")
+                      (gen/return " "))]
+                  [(get weights [:prop-font-variant :alt 2 :cat 0 :plus :alt 6] 100)
+                    (gen/tuple
+                      (gen/return "styleset(")
+                      (:nonprop-feature-value-name gmap)
+                      (gen/vector
+                        (gen/tuple
+                          (gen/return ", ")
+                          (:nonprop-feature-value-name gmap)))
+                      (gen/return " ")
+                      (gen/return ")")
+                      (gen/return " "))]
+                  [(get weights [:prop-font-variant :alt 2 :cat 0 :plus :alt 7] 100)
+                    (gen/tuple
+                      (gen/return "character-variant(")
+                      (:nonprop-feature-value-name gmap)
+                      (gen/vector
+                        (gen/tuple
+                          (gen/return ", ")
+                          (:nonprop-feature-value-name gmap)))
+                      (gen/return " ")
+                      (gen/return ")")
+                      (gen/return " "))]
+                  [(get weights [:prop-font-variant :alt 2 :cat 0 :plus :alt 8] 100)
+                    (gen/tuple
+                      (gen/return "swash(")
+                      (:nonprop-feature-value-name gmap)
+                      (gen/return " ")
+                      (gen/return ")")
+                      (gen/return " "))]
+                  [(get weights [:prop-font-variant :alt 2 :cat 0 :plus :alt 9] 100)
+                    (gen/tuple
+                      (gen/return "ornaments(")
+                      (:nonprop-feature-value-name gmap)
+                      (gen/return " ")
+                      (gen/return ")")
+                      (gen/return " "))]
+                  [(get weights [:prop-font-variant :alt 2 :cat 0 :plus :alt 10] 100)
+                    (gen/tuple
+                      (gen/return "annotation(")
+                      (:nonprop-feature-value-name gmap)
+                      (gen/return " ")
+                      (gen/return ")")
+                      (gen/return " "))]
+                  [(get weights [:prop-font-variant :alt 2 :cat 0 :plus :alt 11] 100)
+                    (gen/tuple
+                      (gen/frequency [
+                        [(get weights [:prop-font-variant :alt 2 :cat 0 :plus :alt 11 :cat 0 :alt 0] 100)
+                          (gen/tuple
+                            (gen/return "small-caps")
+                            (gen/return " "))]
+                        [(get weights [:prop-font-variant :alt 2 :cat 0 :plus :alt 11 :cat 0 :alt 1] 100)
+                          (gen/tuple
+                            (gen/return "all-small-caps")
+                            (gen/return " "))]
+                        [(get weights [:prop-font-variant :alt 2 :cat 0 :plus :alt 11 :cat 0 :alt 2] 100)
+                          (gen/tuple
+                            (gen/return "petite-caps")
+                            (gen/return " "))]
+                        [(get weights [:prop-font-variant :alt 2 :cat 0 :plus :alt 11 :cat 0 :alt 3] 100)
+                          (gen/tuple
+                            (gen/return "all-petite-caps")
+                            (gen/return " "))]
+                        [(get weights [:prop-font-variant :alt 2 :cat 0 :plus :alt 11 :cat 0 :alt 4] 100)
+                          (gen/tuple
+                            (gen/return "unicase")
+                            (gen/return " "))]
+                        [(get weights [:prop-font-variant :alt 2 :cat 0 :plus :alt 11 :cat 0 :alt 5] 100)
+                          (gen/tuple
+                            (gen/return "titling-caps")
+                            (gen/return " "))]])
+                      (gen/return " "))]
+                  [(get weights [:prop-font-variant :alt 2 :cat 0 :plus :alt 12] 100)
+                    (gen/tuple
+                      (:nonprop-numeric-figure-values gmap)
+                      (gen/return " "))]
+                  [(get weights [:prop-font-variant :alt 2 :cat 0 :plus :alt 13] 100)
+                    (gen/tuple
+                      (:nonprop-numeric-spacing-values gmap)
+                      (gen/return " "))]
+                  [(get weights [:prop-font-variant :alt 2 :cat 0 :plus :alt 14] 100)
+                    (gen/tuple
+                      (:nonprop-numeric-fraction-values gmap)
+                      (gen/return " "))]
+                  [(get weights [:prop-font-variant :alt 2 :cat 0 :plus :alt 15] 100)
+                    (gen/tuple
+                      (gen/return "ordinal")
+                      (gen/return " "))]
+                  [(get weights [:prop-font-variant :alt 2 :cat 0 :plus :alt 16] 100)
+                    (gen/tuple
+                      (gen/return "slashed-zero")
+                      (gen/return " "))]
+                  [(get weights [:prop-font-variant :alt 2 :cat 0 :plus :alt 17] 100)
+                    (gen/tuple
+                      (:nonprop-east-asian-variant-values gmap)
+                      (gen/return " "))]
+                  [(get weights [:prop-font-variant :alt 2 :cat 0 :plus :alt 18] 100)
+                    (gen/tuple
+                      (:nonprop-east-asian-width-values gmap)
+                      (gen/return " "))]
+                  [(get weights [:prop-font-variant :alt 2 :cat 0 :plus :alt 19] 100)
+                    (gen/tuple
+                      (gen/return "ruby")
+                      (gen/return " "))]])))
               (gen/return " "))]])
         gmap (assoc gmap :prop-font-variant gen-prop-font-variant)
 

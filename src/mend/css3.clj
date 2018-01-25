@@ -287,7 +287,8 @@ nonprop-y = \"11\" ;
 
 (declare adjacent-ebnf components-ebnf double-amp-ebnf
          double-pipe-ebnf component-ebnf component-single-ebnf
-         component-multiplied-ebnf brackets-ebnf block-ebnf braces-ebnf)
+         component-multiplied-ebnf brackets-ebnf block-ebnf func-ebnf
+         braces-ebnf)
 
 (defn name-ebnf [k]
   (cond
@@ -394,6 +395,7 @@ nonprop-y = \"11\" ;
       :property      (str pre (name-ebnf (second tree)))
       :brackets      (brackets-ebnf (drop 1 tree) indent)
       :block         (block-ebnf    (drop 1 tree) indent)
+      :func          (func-ebnf     (drop 1 tree) indent)
       )))
 
 (defn component-multiplied-ebnf [[tree multiplier] indent]
@@ -418,6 +420,13 @@ nonprop-y = \"11\" ;
   ;;(prn :** :brackets-ebnf tree indent)
   ;; TODO: deal with bang?
   (single-pipe-ebnf (drop 1 (first tree)) indent))
+
+(defn func-ebnf [tree indent]
+  ;;(prn :** :func-ebnf tree indent)
+  (let [pre (apply str (repeat indent "  "))]
+    (str pre "'" (first tree) "('\n"
+         (single-pipe-ebnf (drop 1 (second tree)) (+ 1 indent)) "\n"
+         pre "')'")))
 
 (defn block-ebnf [tree indent]
   ;;(prn :** :block-ebnf tree indent)
@@ -539,6 +548,7 @@ nonprop-y = \"11\" ;
                   CSS3-PROPERTIES CSS3-SYNTAXES)
         css3-properties (json/read-str (slurp CSS3-PROPERTIES))
         css3-syntaxes (json/read-str (slurp CSS3-SYNTAXES))
+        ;; TODO: add option to filter by status (i.e. "standard")
         pvs-text (pvs-all css3-properties css3-syntaxes)
 
         _ (pr-err "Loading CSS PVS grammar")

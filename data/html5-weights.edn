@@ -2,10 +2,6 @@
  ;; increase style attribute frequency
  [:global-attribute :alt 13] 10000,
 
- ;; increase div frequency
- [:element :alt 70] 10000,
- [:element :alt 71] 10000,
-
  ;; decrease bgcolor attribute
  [:colgroup-attribute :alt 1] 10,
  [:col-attribute :alt 1] 10,
