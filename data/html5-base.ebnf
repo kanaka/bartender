@@ -1,0 +1,66 @@
+(*
+element = simple-tag <opt-space>
+        | start-tag (element | content)* end-tag <opt-space>
+
+simple-tag = void-tag
+           | empty-tag
+void-tag  = <'<'> void-tags (<space> attribute)* <opt-space> <'>'>
+empty-tag = <'<'> name (<space> attribute)* <opt-space> <'/>'>
+
+start-tag = <'<'> name (<space> attribute)* <opt-space> <'>'>
+end-tag   = <'</'> name <opt-space> <'>'>
+*)
+
+
+content = char-data
+        | reference
+        | comment
+
+attribute       = name <eq> attribute-value
+(*
+attribute-value = <'"'> (#'[^<&"]*' | reference)* <'"'>
+                | <"'"> (#"[^<&']*" | reference)* <"'">
+*)
+attribute-value = <'"'> (#'[A-Za-z0-9_<>/\\ .]*' | reference)* <'"'>
+                | <"'"> (#"[A-Za-z0-9_<>/\\ .]*" | reference)* <"'">
+
+(*
+char-data = #'[^<&]'* !(#'[^<&]'* ']]>' #'[^<&]'* )
+*)
+(*
+char-data = #'[A-Za-z0-9_<>/\\ .]*'
+*)
+(* Just include the Ahem glyphs that render differently *)
+char-data = ' ' | 'p' | '&#x00c9;' | 'X'
+
+reference     = entity-ref
+              | char-ref-dec
+              | char-ref-hex
+entity-ref    = <'&'> name <';'>
+char-ref-dec  = <'&#'> #'[0-9]' <';'>
+              | <'&#'> #'[1-9][0-9]' <';'>
+              | <'&#'> #'[1-9][0-9][0-9]' <';'>
+              | <'&#'> #'[1-9][0-9][0-9][0-9]' <';'>
+              | <'&#'> #'[1-9][0-9][0-9][0-9][0-9]' <';'>
+              | <'&#'> #'[1-9][0-9][0-9][0-9][0-9][0-9]' <';'>
+              | <'&#'> #'[1][0-9][0-9][0-9][0-9][0-9][0-9]' <';'>
+char-ref-hex  = <'&#x'> #'[0-9A-F]' <';'>
+              | <'&#x'> #'[1-9A-F][0-9A-F]' <';'>
+              | <'&#x'> #'[1-9A-F][0-9A-F][0-9A-F]' <';'>
+              | <'&#x'> #'[1-9A-F][0-9A-F][0-9A-F][0-9A-F]' <';'>
+              | <'&#x'> #'[1-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F]' <';'>
+              | <'&#x'> #'[1][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F]' <';'>
+
+
+name      = #'[A-Za-z_:][A-Za-z_:\-.0-9]*'
+
+(*
+comment = <'<!--'> #'(?:[^-]|-[^-])*' <'-->'>
+*)
+comment = <'<!--'> #'(?:[A-Za-z0-9_<>/\\ .]|-[A-Za-z0-9_<>/\\ .])*' <'-->'>
+
+
+eq = <opt-space> '=' <opt-space>
+opt-space = #'\s*'
+space = #'\s+'
+

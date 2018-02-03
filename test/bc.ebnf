@@ -1,0 +1,15 @@
+file       = expression '\nquit\n'
+expression = '(' expression ')'
+           | expression "+" expression
+           | expression "-" expression
+           | expression "*" expression
+           | expression "/" nz-number
+           | expression "/" expression
+           | any-number
+any-number = "0"
+           | nz-number
+nz-number  = "1"
+           | #"[1-9][0-9]+"
+           | #"0\.[0-9]+"
+           | #"[1-9][0-9]+\.[0-9]+"
+

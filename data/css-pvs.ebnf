@@ -1,0 +1,69 @@
+assignments = assignment (<space> assignment)* <opt-space>?
+(*assignments = assignment (<delimeter> assignment)* <opt-space>? *)
+
+assignment = non-terminal <'='> <opt-space> single-pipe
+
+<non-terminal> = <opt-space> non-property <opt-space>
+               | <opt-space> property     <opt-space>
+
+single-pipe = adjacent (<space> <'|'> <space> <opt-space> adjacent)*
+
+adjacent    = (<opt-space> components comma? <space>)* components
+
+components = double-amp
+           | double-pipe
+
+double-amp  = (<opt-space> component <space> <'&&'> <space>)* component
+double-pipe = (<opt-space> component <space> <'||'> <space>)* component
+
+
+component = component-single
+          | component-multiplied
+
+component-single = literal
+                 / func
+                 / keyword-value
+                 / non-property
+                 / property
+                 / brackets
+                 / block
+
+component-multiplied = component-single multiplier
+
+keyword-value = identifier
+non-property  = <'<'> identifier <'>'>
+property      = <"<'"> identifier <"'>">
+brackets      = <'['> <opt-space> single-pipe <opt-space> <']'> bang?
+block         = '{' <space> adjacent <space> '}'
+func          = identifier <'('> <opt-space> single-pipe <opt-space> <')'>
+
+multiplier = question
+           | asterisk
+           | plus
+           | braces
+           | hash 
+           | hash-braces
+
+hash-braces = <hash> braces
+
+question  = <'?'>
+asterisk  = <'*'>
+plus      = <'+'>
+braces    = bracesA
+          | bracesA-B
+          | bracesA-
+bracesA   = <'{'> digit+ <'}'>
+bracesA-B = <'{'> digit+ <','> digit+ <'}'>
+bracesA-  = <'{'> digit+ <',}'>
+hash      = <'#'>
+bang      = <'!'>
+
+digit = #'[0-9]'
+comma = ','
+delimeter = <opt-space> ';' <opt-space>
+literal = #'[-a-zA-Z0-9,/:;%]+'
+        | <"'"> #'[-a-zA-Z0-9\u0028\u0029,/\u005B\u005D\u002A\u002B\u003C\u003E\u003D]' <"'">
+        | #'[\u0028\u0029]'
+<identifier> = #'@?[-a-zA-Z][-a-zA-Z0-9]*(?:\u0028\u0029)?(?x) #identifier'
+opt-space = #'\s*'
+space = #'\s+'
