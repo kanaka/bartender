@@ -6025,7 +6025,7 @@
         gen-body
         (gen/tuple
           (gen/return "<")
-          (gen/return "body style=\"background: #1289af; font: 25px/1 Ahem\"")
+          (gen/return "body")
           (gen/vector
             (gen/tuple
               (:space gmap)
@@ -6045,9 +6045,27 @@
           (:opt-space gmap))
         gmap (assoc gmap :body gen-body)
 
+        gen-rend-css
+        (gen/tuple
+          (gen/return "<")
+          (gen/return "link rel=\"stylesheet\" href=\"../static/rend.css\"")
+          (:opt-space gmap)
+          (gen/return ">")
+          (:opt-space gmap))
+        gmap (assoc gmap :rend-css gen-rend-css)
+
         gen-title-attribute
         (:global-attribute gmap)
         gmap (assoc gmap :title-attribute gen-title-attribute)
+
+        gen-normalize-css
+        (gen/tuple
+          (gen/return "<")
+          (gen/return "link rel=\"stylesheet\" href=\"../static/normalize.css\"")
+          (:opt-space gmap)
+          (gen/return ">")
+          (:opt-space gmap))
+        gmap (assoc gmap :normalize-css gen-normalize-css)
 
         gen-title
         (gen/tuple
@@ -6074,6 +6092,8 @@
           (gen/return "head")
           (:opt-space gmap)
           (gen/return ">")
+          (:normalize-css gmap)
+          (:rend-css gmap)
           (gen/one-of [
             (gen/return "")
             (:title gmap)])
@@ -6090,9 +6110,7 @@
           (gen/return "html")
           (:opt-space gmap)
           (gen/return ">")
-          (gen/one-of [
-            (gen/return "")
-            (:head gmap)])
+          (:head gmap)
           (:body gmap)
           (gen/return "</")
           (gen/return "html")
