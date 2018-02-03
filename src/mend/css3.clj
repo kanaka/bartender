@@ -589,10 +589,3 @@ nonprop-y = \"11\" ;
 
     (println (css3-ns opts))))
 
-(comment
-  ;; time lein with-profile css3 run --namespace rend.css3-generators --weights data/css3-weights.edn --weights-output data/css3-weights-output.edn --pvs-output data/css3.pvs --ebnf-output data/css3.ebnf --function css3-generators > src/rend/css3_generators.clj
-
-  (require '[mend.css3-generators :as css3-gen] :reload)
-  (pprint (gen/sample css3-gen/gen-css-assignments 10))
-)
-

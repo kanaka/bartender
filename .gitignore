@@ -9,3 +9,4 @@ pom.xml.asc
 /.nrepl-port
 .hgignore
 .hg/
+gen/[0-9]*

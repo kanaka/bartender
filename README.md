@@ -1,9 +1,9 @@
-# rend
+# Tend
 
-A Clojure program designed to use generative (property-based) testing
-to validate web browser rendering.
+A suite of Clojure tools for generative (property-based) testing using
+formal grammars (EBNF) with a focus on web browser rendering.
 
-## Usage
+## Rend
 
 * Prerequisites:
   * Install libopencv-dev:
@@ -20,10 +20,88 @@ make deps
 
 * Update `config.yaml` with browser webdriver connection information
 
-* Start testing:
+* Start a separate minimal web server to monitor results
+  at `http://localhost:9080/gen/...`:
+
 ```
-lein run config.yaml sessions.edn
+python3 -m http.server 9080
 ```
+
+* Start a test run:
+```
+lein with-profile rend run config.yaml
+```
+
+## Mend: Update HTML5 and CSS3 Generators
+
+Generate HTML5 EBNF grammar and Clojure generator source:
+
+```
+time lein with-profile html5 run --namespace rend.html5-generators --weights data/html5-weights.edn --weights-output data/html5-weights-output.edn --ebnf-output data/html5.ebnf --function html5-generators > src/rend/html5_generators.clj
+```
+
+Generate CSS3 EBNF grammar and Clojure generate source:
+
+```
+time lein with-profile css3 run --namespace rend.css3-generators --weights data/css3-weights.edn --weights-output data/css3-weights-output.edn --pvs-output data/css3.pvs --ebnf-output data/css3.ebnf --function css3-generators > src/rend/css3_generators.clj
+```
+
+Use the generators from a Clojure REPL:
+
+```
+lein repl
+(require '[rend.generator])
+(in-ns 'rend.generator)
+(clojure.pprint/pprint (gen/sample (get-html-generator) 5))
+```
+
+## Mend: EBNF Testing
+
+All the following example use the `test/bc.ebnf` EBNF grammar file
+which specifies a simple EBNF for generating commands that can be run
+with the bc (arbitrary precission calculator) program.
+
+Generate Clojure generators (one generator per EBNF rule named after
+the non-terminal):
+
+```
+lein with-profile ebnf run clj test/bc.ebnf --namespace bc.test
+```
+
+Generate a single Clojure generator (one generator named `gen-gc`):
+
+```
+lein with-profile ebnf run clj test/bc.ebnf --namespace bc.test --function gen-bc
+```
+
+Generate 10 and then 100 samples:
+
+```
+lein with-profile ebnf run samples test/bc.ebnf tmp/samp%.bc
+lein with-profile ebnf run samples test/bc.ebnf --samples 100 tmp/samp%.bc
+```
+
+Output the full set of weights to a file, modify the weights file and
+then generate 10 samples using the modified weights file:
+
+```
+rm tmp/samp*
+lein with-profile ebnf run samples test/bc.ebnf --weights-output tmp/bc-weights.edn tmp/samp%.bc
+    # tweak 0 and 1 lower (10), +,- to 1000, *,/ to 2000
+lein with-profile ebnf run samples test/bc.ebnf --weights tmp/bc-weights.edn tmp/samp%.bc
+```
+
+Run the test program using test samples, then update the weights file
+to increase the likelihood of 0 numbers (and thus a failure due to
+divide by zero):
+
+```
+rm tmp/samp*
+lein with-profile ebnf run check test/bc.ebnf --weights tmp/bc-weights.edn --sample-dir tmp/ -- test/testbc.sh -q %
+    # tweak 0 to increase frequency
+lein with-profile ebnf run check test/bc.ebnf --weights tmp/bc-weights.edn --sample-dir tmp/ -- test/testbc.sh -q %
+```
+
 
 ## Images
 

@@ -264,11 +264,3 @@ body = <'<'> 'body' (<space> body-attribute)* <opt-space> <'>'> (element | conte
 
     (println (html5-ns opts))))
 
-(comment
-  ;; time lein with-profile html5 run --namespace rend.html5-generators --weights data/html5-weights.edn --weights-output data/html5-weights-output.edn --ebnf-output data/html5.ebnf --function html5-generators > src/rend/html5_generators.clj
-
-  (require '[rend.html5-generators :as html5-gen] :reload)
-  (pprint (gen/sample html5-gen/gen-html 10))
-
-)
-
