@@ -19,31 +19,28 @@
                  [hiccup "1.0.5"]
                  [http-kit "2.2.0"]
 
-                 [org.clojure/tools.cli "0.3.5"]]
+                 [org.clojure/tools.cli "0.3.5"]
 
-  :profiles {:rend  {:main rend.cli
-                     :dependencies [[clj-yaml "0.4.0"]
-                                    [clj-time "0.14.2"]
-                                    [pandect "0.6.0"]
-                                    [compojure "1.5.1"]
-                                    [ring/ring-core "1.5.0"]
-                                    [ring/ring-jetty-adapter "1.5.0"]
+                 ;; rend specific
+                 [clj-yaml "0.4.0"]
+                 [clj-time "0.14.2"]
+                 [pandect "0.6.0"]
+                 [compojure "1.5.1"]
+                 [ring/ring-core "1.5.0"]
+                 [ring/ring-jetty-adapter "1.5.0"]
+                 ;; Installed with localrepo by running `make deps`
+                 [opencv/opencv "2.4.9"]
+                 [opencv/opencv-native "2.4.9"]
 
-                                    ;; Installed with localrepo by running `make deps`
-                                    [opencv/opencv "2.4.9"]
-                                    [opencv/opencv-native "2.4.9"]]
-             :ebnf  {:main mend.ebnf
-                     :dependencies [[hickory "0.7.0"]
-                                    [instaparse "1.4.5"]
-                                    [com.rpl/specter "1.0.0"]]}
-             :css3  {:main mend.css3
-                     :dependencies [[hickory "0.7.0"]
-                                    [instaparse "1.4.5"]
-                                    [com.rpl/specter "1.0.0"]]}
-             :html5 {:main mend.html5
-                     :dependencies [[hickory "0.7.0"]
-                                    [instaparse "1.4.5"]
-                                    [com.rpl/specter "1.0.0"]]}}}
+                 ;; mend specific
+                 [hickory "0.7.0"]
+                 [instaparse "1.4.5"]
+                 [com.rpl/specter "1.0.0"]]
+
+  :profiles {:rend  {:main rend.cli}
+             :ebnf  {:main mend.ebnf}
+             :css3  {:main mend.css3}
+             :html5 {:main mend.html5}}
 
   :main rend.cli
   )
