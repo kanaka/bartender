@@ -25,9 +25,8 @@
                  [clj-yaml "0.4.0"]
                  [clj-time "0.14.2"]
                  [pandect "0.6.0"]
-                 [compojure "1.5.1"]
-                 [ring/ring-core "1.5.0"]
-                 [ring/ring-jetty-adapter "1.5.0"]
+                 [compojure "1.6.0"]
+                 [ring/ring-core "1.6.3"]
                  ;; Installed with localrepo by running `make deps`
                  [opencv/opencv "2.4.9"]
                  [opencv/opencv-native "2.4.9"]

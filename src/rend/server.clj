@@ -1,7 +1,7 @@
 (ns rend.server
   (:require [compojure.core :refer [GET]]
             [compojure.route :as route]
-            [ring.adapter.jetty :as jetty]
+            [org.httpkit.server :refer [run-server]]
 ;            [ring.middleware.defaults :refer [wrap-defaults site-defaults]]
             [ring.middleware.content-type :refer [wrap-content-type]]
             [ring.middleware.not-modified :refer [wrap-not-modified]]
@@ -15,12 +15,11 @@
                  (route/files "/gen" {:root dir})
                  (route/not-found "Not Found"))
         app (-> routes
-;                   (wrap-defaults site-defaults)
-                   (wrap-file dir)
-                   (wrap-content-type)
+;                (wrap-defaults site-defaults)
+                (wrap-file dir)
+                (wrap-content-type)
                 (wrap-not-modified))
-        server (jetty/run-jetty app {:port port :join? false})]
-    (println (str "Ring server started on port: " port
+        server (run-server app {:port port :join? false})]
+    (println (str "HTTP kit server started on port: " port
                   ", serving directory: " dir))
     server))
-
