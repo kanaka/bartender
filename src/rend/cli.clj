@@ -17,7 +17,7 @@
             [clojure.java.io :as io]
             [clojure.java.shell :refer [sh]]))
 
-(defn screenshot-page [browser test-dir path]
+(defn screenshot-page [browser path]
   (try
     (let [ss (webdriver/GET browser "screenshot")
           png (base64/decode (.getBytes (:value ss)))
@@ -44,7 +44,7 @@
       (println "------")
       ;; (println "Test case:" text)
       ;; (println "Writing to " path)
-      (clojure.java.io/make-parents (java.io.File. path))
+      (io/make-parents (java.io.File. path))
       (spit path text)
       ;; (println "Writing to " (str path ".txt"))
       ;;(spit (str path ".txt") (rend.html/pprint-html text))
@@ -75,7 +75,7 @@
             images (into {}
                          (for [browser (:browsers cfg)]
                            (let [ss-path (str test-prefix "_" (:type browser)  ".png")
-                                 img (screenshot-page browser test-dir ss-path)]
+                                 img (screenshot-page browser ss-path)]
                              [browser img])))
             imgs (apply assoc {}
                         (interleave (keys images)
@@ -117,7 +117,7 @@
                            "_diff_" (:type browser) "_" (:type obrowser))
                   pre2 (str test-index
                             "_diff_" (:type obrowser) "_" (:type browser))]
-              (if (.exists (clojure.java.io/as-file
+              (if (.exists (io/as-file
                              (str test-dir "/" pre2 ".png")))
                 (do
                   (sh "ln" "-sf"
@@ -160,7 +160,7 @@
     res))
 
 (defn load-sessions [file]
-  (when (and file (.exists (clojure.java.io/as-file file)))
+  (when (and file (.exists (io/as-file file)))
     (println "Sessions keys:")
     (pprint (keys
               (reset! webdriver/browser-state
