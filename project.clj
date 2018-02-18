@@ -31,6 +31,10 @@
                  [opencv/opencv "2.4.9"]
                  [opencv/opencv-native "2.4.9"]
 
+                 [org.seleniumhq.selenium/selenium-api "3.9.1"]
+                 [org.seleniumhq.selenium/selenium-remote-driver "3.9.1"]
+                 [org.seleniumhq.selenium/selenium-server "3.9.1"]
+
                  ;; mend specific
                  [hickory "0.7.0"]
                  [instaparse "1.4.5"]
