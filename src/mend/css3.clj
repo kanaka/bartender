@@ -285,10 +285,28 @@ nonprop-y = \"11\" ;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(declare adjacent-ebnf components-ebnf double-amp-ebnf
-         double-pipe-ebnf component-ebnf component-single-ebnf
-         component-multiplied-ebnf brackets-ebnf block-ebnf func-ebnf
-         braces-ebnf)
+(declare juxtapose-ebnf double-amp-ebnf double-bar-ebnf component-ebnf
+         component-single-ebnf component-multiplied-ebnf brackets-ebnf
+         block-ebnf func-ebnf braces-ebnf)
+
+;; Operator precendence summary:
+;;  mult, juxt, &&, ||, |
+;;
+;; Notes:
+;; - juxtaposition has precedence over the double ampersand, meaning
+;;   that
+;;     bold thin && <length> is equivalent to
+;;     [ bold thin ] && <length>
+;; - the double ampersand has precedence over the double bar, meaning
+;;   that
+;;     bold || thin && <length> is equivalent to
+;;     bold || [ thin && <length> ]
+;; - the double bar has precedence over the single bar, meaning that
+;;     bold | thin || <length> is equivalent to
+;;     bold | [ thin || <length> ]
+;; - multipliers cannot be added and have all precedence over
+;; combinators.
+;;
 
 (defn name-ebnf [k]
   (cond
@@ -301,51 +319,62 @@ nonprop-y = \"11\" ;
     :else
     (str "nonprop-" k)))
 
-(defn single-pipe-ebnf
+(defn single-bar-ebnf
   "One of the values must occur."
   [tree indent]
-  ;;(prn :** :single-pipe-ebnf tree indent)
+  ;;(prn :** :single-bar-ebnf (count tree) tree :indent indent)
   (let [pre (apply str (repeat indent "  "))]
     (if (= 1 (count tree))
-      (adjacent-ebnf (drop 1 (first tree)) indent)
+      (double-bar-ebnf (drop 1 (first tree)) indent)
       (str pre "(\n"
            (string/join
              (str " |\n")
              (for [t tree]
-               (adjacent-ebnf (drop 1 t) (+ 1 indent))))
+               (double-bar-ebnf (drop 1 t) (+ 1 indent))))
            "\n"
            pre ")"))))
 
-(defn adjacent-ebnf
-  "Each value must occur."
+;; TODO: for EBNF we just treat this like a single-bar with '+'
+;; appended. This means that we may get more than one of each
+;; element.
+(defn double-bar-ebnf
+  "One or more of the values must occur in any order."
   [tree indent]
-  ;;(prn :** :adjacent-ebnf tree indent)
+  ;;(prn :** :double-bar-ebnf (count tree) tree :indent indent)
   (let [pre (apply str (repeat indent "  "))]
     (if (= 1 (count tree))
-      (components-ebnf (second (first tree)) indent)
+      (double-amp-ebnf (drop 1 (first tree)) indent)
+      (str pre "( (\n"
+           (string/join
+             (str " |\n")
+             (for [t tree]
+               (double-amp-ebnf (drop 1 t) (+ 1 indent))))
+           "\n"
+           pre ")+ )"))))
+
+;; TODO: for EBNF we just treat this as juxtapose we means we use the
+;; original order it is defined with. Fix this to allow any order.
+(defn double-amp-ebnf
+  "All values must occur in any order."
+  [tree indent]
+  ;;(prn :** :double-amp-ebnf (count tree) tree :indent indent)
+  (let [pre (apply str (repeat indent "  "))]
+    (if (= 1 (count tree))
+      (juxtapose-ebnf (drop 1 (first tree)) indent)
       (str pre "(\n"
            (string/join
              "\n"
              (for [t tree]
                (if (= :comma (first t))
                  (str pre "  ', '")
-                 (components-ebnf (second t) (+ 1 indent)))))
+                 (juxtapose-ebnf (drop 1 t) (+ 1 indent)))))
            "\n"
            pre ")"))))
 
-(defn components-ebnf [tree indent]
-  ;;(prn :** :components-ebnf tree indent)
-  (condp = (first tree)
-    :double-amp  (double-amp-ebnf  (drop 1 tree) indent)
-    :double-pipe (double-pipe-ebnf (drop 1 tree) indent)
-    ))
-
-;; TODO: for EBNF we just treat this as adjacent we means we use the
-;; original order it is defined with. Fix this to allow any order.
-(defn double-amp-ebnf
-  "All values must occur in any order."
+(defn juxtapose-ebnf
+  "Each value must occur."
   [tree indent]
-  ;;(prn :** :double-amp-ebnf tree indent)
+  ;;(prn :** :juxtapose-ebnf (count tree) tree :indent indent)
   (let [pre (apply str (repeat indent "  "))]
     (if (= 1 (count tree))
       (component-ebnf (second (first tree)) indent)
@@ -359,26 +388,8 @@ nonprop-y = \"11\" ;
            "\n"
            pre ")"))))
 
-;; TODO: for EBNF we just treat this like a single-pipe with '+'
-;; appended. This means that we may get more than one of each
-;; element.
-(defn double-pipe-ebnf
-  "One or more of the values must occur in any order."
-  [tree indent]
-  ;;(prn :** :double-pipe-ebnf tree indent)
-  (let [pre (apply str (repeat indent "  "))]
-    (if (= 1 (count tree))
-      (component-ebnf (second (first tree)) indent)
-      (str pre "( (\n"
-           (string/join
-             (str " |\n")
-             (for [t tree]
-               (component-ebnf (second t) (+ 1 indent))))
-           "\n"
-           pre ")+ )"))))
-
 (defn component-ebnf [tree indent]
-  ;;(prn :** :component-ebnf tree indent)
+  ;;(prn :** :component-ebnf (count tree) tree :indent indent)
   (str
     (condp = (first tree)
       :component-single     (component-single-ebnf (second tree) indent)
@@ -386,7 +397,7 @@ nonprop-y = \"11\" ;
     " ' '"))
 
 (defn component-single-ebnf [tree indent]
-  ;;(prn :** :component-single-ebnf tree indent)
+  ;;(prn :** :component-single-ebnf (count tree) tree :indent indent)
   (let [pre (apply str (repeat indent "  "))]
     (condp = (first tree)
       :literal       (str pre "'" (second tree) "'")
@@ -399,7 +410,7 @@ nonprop-y = \"11\" ;
       )))
 
 (defn component-multiplied-ebnf [[tree multiplier] indent]
-  ;;(prn :** :component-multiplied-ebnf tree indent)
+  ;;(prn :** :component-multiplied-ebnf (count tree) tree :indent indent)
   (let [pre (apply str (repeat indent "  "))
         single (partial component-single-ebnf (second tree))]
     (condp = (first (second multiplier))
@@ -419,20 +430,20 @@ nonprop-y = \"11\" ;
 (defn brackets-ebnf [tree indent]
   ;;(prn :** :brackets-ebnf tree indent)
   ;; TODO: deal with bang?
-  (single-pipe-ebnf (drop 1 (first tree)) indent))
+  (single-bar-ebnf (drop 1 (first tree)) indent))
 
 (defn func-ebnf [tree indent]
   ;;(prn :** :func-ebnf tree indent)
   (let [pre (apply str (repeat indent "  "))]
     (str pre "'" (first tree) "('\n"
-         (single-pipe-ebnf (drop 1 (second tree)) (+ 1 indent)) "\n"
+         (single-bar-ebnf (drop 1 (second tree)) (+ 1 indent)) "\n"
          pre "')'")))
 
 (defn block-ebnf [tree indent]
   ;;(prn :** :block-ebnf tree indent)
   (let [pre (apply str (repeat indent "  "))]
     (str pre "'{'\n"
-         (adjacent-ebnf (drop 1 (second tree)) (+ 1 indent)) "\n"
+         (juxtapose-ebnf (drop 1 (second tree)) (+ 1 indent)) "\n"
          pre "'}'")))
 
 (defn braces-ebnf [kind hash? single indent]
@@ -464,7 +475,7 @@ nonprop-y = \"11\" ;
 (defn value-ebnf [k v]
   ;;(prn :value-ebnf :k k :v v)
   (str (name-ebnf k) " = \n"
-       (single-pipe-ebnf (drop 1 v) 1)))
+       (single-bar-ebnf (drop 1 v) 1)))
 
 (defn assignment-ebnf [m]
   (str "css-assignment =\n  (\n"

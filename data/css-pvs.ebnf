@@ -1,21 +1,21 @@
 assignments = assignment (<space> assignment)* <opt-space>?
 (*assignments = assignment (<delimeter> assignment)* <opt-space>? *)
 
-assignment = non-terminal <'='> <opt-space> single-pipe
+assignment = non-terminal <'='> <opt-space> single-bar
 
 <non-terminal> = <opt-space> non-property <opt-space>
                | <opt-space> property     <opt-space>
 
-single-pipe = adjacent (<space> <'|'> <space> <opt-space> adjacent)*
 
-adjacent    = (<opt-space> components comma? <space>)* components
+(* Operator precendence: mult, juxt, &&, ||, | *)
 
-components = double-amp
-           | double-pipe
+single-bar = double-bar (<space> <'|'> <space> <opt-space> double-bar)*
 
-double-amp  = (<opt-space> component <space> <'&&'> <space>)* component
-double-pipe = (<opt-space> component <space> <'||'> <space>)* component
+double-bar = double-amp (<space> <'||'> <space> <opt-space> double-amp)*
 
+double-amp = juxtapose (<space> <'&&'> <space> <opt-space> juxtapose)*
+
+juxtapose  = (<opt-space> component comma? <space>)* component
 
 component = component-single
           | component-multiplied
@@ -33,9 +33,9 @@ component-multiplied = component-single multiplier
 keyword-value = identifier
 non-property  = <'<'> identifier <'>'>
 property      = <"<'"> identifier <"'>">
-brackets      = <'['> <opt-space> single-pipe <opt-space> <']'> bang?
-block         = '{' <space> adjacent <space> '}'
-func          = identifier <'('> <opt-space> single-pipe <opt-space> <')'>
+brackets      = <'['> <opt-space> single-bar <opt-space> <']'> bang?
+block         = '{' <space> juxtapose <space> '}'
+func          = identifier <'('> <opt-space> single-bar <opt-space> <')'>
 
 multiplier = question
            | asterisk
