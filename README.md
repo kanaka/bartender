@@ -16,7 +16,36 @@ sudo apt-get install libopencv-dev
 make deps
 ```
 
-* Start the webdriver capable browsers that are to be tested
+* Download/build the webdriver drivers/browsers:
+  * Firefox (https://developer.mozilla.org/en-US/Firefox/Headless_mode):
+  ```
+  curl -L https://github.com/mozilla/geckodriver/releases/download/v0.19.1/geckodriver-v0.19.1-linux64.tar.gz | tar xvzf -
+  ```
+  * Chrome (https://sites.google.com/a/chromium.org/chromedriver/getting-started):
+  ```
+  curl -LO https://chromedriver.storage.googleapis.com/2.35/chromedriver_linux64.zip
+  unzip chromedriver_linux64.zip; rm chromedriver_linux64.zip
+  ```
+  * Servo (https://github.com/mozilla/servo):
+  ```
+  git clone https://github.com/servo/servo
+  cd servo
+  ./mach build --release
+  ```
+
+* Start the webdriver drivers/browsers:
+  * Firefox:
+  ```
+  ./geckodriver --port 7000
+  ```
+  * Chrome:
+  ```
+  ./chromedriver --port=7001
+  ```
+  * Servo (https://github.com/mozilla/servo):
+  ```
+  ./mach run --release -z --webdriver 7002 --resolution 400x300
+  ```
 
 * Update `config.yaml` with browser webdriver connection information
 
