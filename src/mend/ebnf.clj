@@ -11,6 +11,7 @@
 
             [instaparse.core :as insta]
             [alandipert.kahn :as kahn]
+
             [mend.util :as util]
             [mend.check]
 
@@ -264,7 +265,10 @@
   rule. Only the start rule flattens the generated values into a final
   string."
   [{:keys [start] :as ctx} grammar]
-  (let [grammar (apply-grammar-updates grammar (:grammar-updates ctx))
+  (let [grammar (let [gu (:grammar-updates ctx)]
+                  (if (fn? gu)
+                    (gu ctx grammar)
+                    (apply-grammar-updates grammar gu)))
         ordered-rules (check-and-order-rules grammar)
         start (or start (:start (meta grammar)))]
     (string/join
@@ -285,7 +289,10 @@
   generators (indexed by rule-name keyword)."
   [{:keys [function] :as ctx} grammar]
   (assert function "No function name specified")
-  (let [grammar (apply-grammar-updates grammar (:grammar-updates ctx))
+  (let [grammar (let [gu (:grammar-updates ctx)]
+                  (if (fn? gu)
+                    (gu ctx grammar)
+                    (apply-grammar-updates grammar gu)))
         ordered-rules (check-and-order-rules grammar)
         partitioned-rules (map-indexed #(vector %1 %2)
                                        (partition-all RULES-PER-FUNC
