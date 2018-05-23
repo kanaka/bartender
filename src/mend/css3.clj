@@ -2,11 +2,13 @@
   (:require [clojure.data.json :as json]
             [clojure.string :as string]
             [clojure.java.io :as io]
-            [mend.util :as util]
-            [mend.ebnf :as ebnf]
+            [clojure.walk :refer [postwalk]]
 
             [instaparse.core :as insta]
             [clojure.tools.cli :refer [parse-opts]]
+
+            [mend.util :as util]
+            [mend.ebnf :as ebnf]
 
             ;; Not actually used here, but convenient for testing
             [clojure.pprint :refer [pprint]]
@@ -30,7 +32,7 @@
 ;; This allows us to replace stub generators in the grammar with
 ;; references to generators in a different namespace as just one
 ;; example.
-(def grammar-updates
+(def simple-grammar-updates
   [;; Replace regex number generators with actual numeric/sized types
    {:path [:nonprop-integer]
     :value {:tag :nt :keyword :gen/int}}
@@ -38,6 +40,19 @@
     :value {:tag :nt :keyword :gen/pos-int}}
    {:path [:number-float]
     :value {:tag :nt :keyword :gen/double}}])
+
+(defn prune-S [x]
+  (if (and (:parsers x)
+           (> (count (:parsers x)) 1))
+    (assoc x :parsers (filter #(not= (:keyword %) :S)
+                              (:parsers x)))
+    x))
+
+(defn grammar-update-fn [ctx grammar]
+  (let [g1 (ebnf/apply-grammar-updates grammar simple-grammar-updates)
+        ;; Remove empty strings
+        g2 (postwalk prune-S g1)]
+    g2))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -551,7 +566,7 @@ nonprop-y = \"11\" ;
 
 (defn css3-ns [opts]
   (let [ctx (merge {:weights-res (atom {})
-                    :grammar-updates grammar-updates}
+                    :grammar-updates grammar-update-fn}
                    (select-keys opts [:namespace
                                       :weights :function]))
 
