@@ -487,6 +487,7 @@
   (pr-err "ebnf [GLOBAL-OPTS] clj     <EBNF-FILE> [CLJ-OPTS]")
   (pr-err "ebnf [GLOBAL-OPTS] samples <EBNF-FILE> [GEN-OPTS] <PATH>")
   (pr-err "ebnf [GLOBAL-OPTS] check   <EBNF-FILE> [CHECK-OPTS] -- <CMD>")
+  (pr-err "ebnf [GLOBAL-OPTS] parse   <EBNF-FILE> <FILE> [<FILE>...]")
   (System/exit 2))
 
 (defn save-weights [ctx file]
@@ -501,7 +502,7 @@
         [cmd ebnf & cmd-args] (:arguments top-opts)
         _ (when (not (and ebnf
                           cmd
-                          (#{"clj" "samples" "check"} cmd)))
+                          (#{"clj" "samples" "check" "parse"} cmd)))
             (usage))
         cmd-opts (opt-errors (parse-opts cmd-args
                                          (concat cli-options
@@ -514,7 +515,8 @@
                                       :namespace :function :weights
                                       :sample-dir :grammar-updates])
                    {:weights-res (atom {})})
-        ebnf-grammar (load-grammar (slurp ebnf))
+        ebnf-parser (insta/parser (slurp ebnf))
+        ebnf-grammar (trim-parser ebnf-parser)
 
         ;;_ (prn :ctx ctx)
 
@@ -553,8 +555,27 @@
                             sample))
                 (fn [r]
                   (when (:verbose ctx)
-                    (prn :report (dissoc r :property))))))]
+                    (prn :report (dissoc r :property)))))
 
+              "parse"
+              (let [;; Get the full set of zero'd out weights by
+                    ;; calling the def generator but throwing away the
+                    ;; result. The weights are in the context atom.
+                    _ (grammar->generator-defs-source ctx ebnf-grammar)
+                    base-weights (into {} (for [[k v] @(:weights-res ctx)]
+                                            [k 0]))
+                    ;; Parse each file to get a cumulative list of
+                    ;; grammar paths
+                    paths (mapcat #(-> (insta/parse ebnf-parser (slurp %)
+                                                    :unhide :all)
+                                       meta
+                                       :path-log)
+                                  (:arguments cmd-opts))]
+                ;; Merge the grammar path frequencies onto the zero'd
+                ;; out weights
+                (reset! (:weights-res ctx)
+                        (merge base-weights
+                               (frequencies paths)))))]
     (when-let [wfile (:weights-output opts)]
       (pr-err "Saving weights to" wfile)
       (save-weights ctx wfile))
