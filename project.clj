@@ -37,10 +37,11 @@
 
                  ;; mend specific
                  [hickory "0.7.0"]
-                 [instaparse "1.4.5"]
+                 [instaparse "1.4.9.1-SNAPSHOT"]
                  [com.rpl/specter "1.0.0"]]
 
   :profiles {:rend  {:main rend.cli}
+             :wend  {:main wend.cli}
              :ebnf  {:main mend.ebnf}
              :css3  {:main mend.css3}
              :html5 {:main mend.html5}}

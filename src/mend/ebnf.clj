@@ -30,12 +30,15 @@
     (apply println args)
     (flush)))
 
+(defn trim-parser
+  [parser]
+  (with-meta
+    (util/remove-key (:grammar parser) :red)
+    {:start (:start-production parser)}))
+
 (defn load-grammar
   [ebnf]
-  (let [parser (insta/parser ebnf)]
-    (with-meta
-      (util/remove-key (:grammar parser) :red)
-      {:start (:start-production parser)})))
+  (trim-parser (insta/parser ebnf)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Create test.check generators for sub-trees of an
