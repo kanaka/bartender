@@ -16,32 +16,32 @@
         (gen/frequency [
           [(get weights [:prop--moz-binding :alt 0] 100)
             (gen/tuple
-              (:nonprop-url gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-url gmap))]
           [(get weights [:prop--moz-binding :alt 1] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "none"))]])
         gmap (assoc gmap :prop--moz-binding gen-prop--moz-binding)
 
         gen-nonprop-single-animation-direction
         (gen/frequency [
           [(get weights [:nonprop-single-animation-direction :alt 0] 100)
             (gen/tuple
-              (gen/return "normal")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "normal"))]
           [(get weights [:nonprop-single-animation-direction :alt 1] 100)
             (gen/tuple
-              (gen/return "reverse")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "reverse"))]
           [(get weights [:nonprop-single-animation-direction :alt 2] 100)
             (gen/tuple
-              (gen/return "alternate")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "alternate"))]
           [(get weights [:nonprop-single-animation-direction :alt 3] 100)
             (gen/tuple
-              (gen/return "alternate-reverse")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "alternate-reverse"))]])
         gmap (assoc gmap :nonprop-single-animation-direction gen-nonprop-single-animation-direction)
 
         gen-nonprop-integer
@@ -76,20 +76,20 @@
 
         gen-func-skew
         (gen/tuple
+          (gen/return " ")
           (gen/return "skew(")
           (gen/tuple
+            (gen/return " ")
             (:nonprop-angle gmap)
             (gen/return " ")
             (gen/one-of [
               (gen/return "")
               (gen/tuple
+                (gen/return " ")
                 (gen/return ",")
                 (gen/return " ")
-                (:nonprop-angle gmap)
-                (gen/return " "))])
-            (gen/return " "))
-          (gen/return ")")
-          (gen/return " "))
+                (:nonprop-angle gmap))]))
+          (gen/return ")"))
         gmap (assoc gmap :func-skew gen-func-skew)
 
         gen-nonprop-length-unit
@@ -139,9 +139,13 @@
         gmap (assoc gmap :nonprop-length-unit gen-nonprop-length-unit)
 
         gen-nonprop-length
-        (gen/tuple
-          (:nonprop-number gmap)
-          (:nonprop-length-unit gmap))
+        (gen/frequency [
+          [(get weights [:nonprop-length :alt 0] 100)
+            (gen/tuple
+              (:nonprop-number gmap)
+              (:nonprop-length-unit gmap))]
+          [(get weights [:nonprop-length :alt 1] 100)
+            (gen/return "0")]])
         gmap (assoc gmap :nonprop-length gen-nonprop-length)
 
         gen-nonprop-percentage
@@ -154,12 +158,12 @@
         (gen/frequency [
           [(get weights [:prop-padding-left :alt 0] 100)
             (gen/tuple
-              (:nonprop-length gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-length gmap))]
           [(get weights [:prop-padding-left :alt 1] 100)
             (gen/tuple
-              (:nonprop-percentage gmap)
-              (gen/return " "))]])
+              (gen/return " ")
+              (:nonprop-percentage gmap))]])
         gmap (assoc gmap :prop-padding-left gen-prop-padding-left)
 
         gen-nonprop-padding-left
@@ -168,56 +172,56 @@
 
         gen-prop-padding-block-start
         (gen/tuple
-          (:nonprop-padding-left gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-padding-left gmap))
         gmap (assoc gmap :prop-padding-block-start gen-prop-padding-block-start)
 
         gen-prop-image-rendering
         (gen/frequency [
           [(get weights [:prop-image-rendering :alt 0] 100)
             (gen/tuple
-              (gen/return "auto")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "auto"))]
           [(get weights [:prop-image-rendering :alt 1] 100)
             (gen/tuple
-              (gen/return "crisp-edges")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "crisp-edges"))]
           [(get weights [:prop-image-rendering :alt 2] 100)
             (gen/tuple
-              (gen/return "pixelated")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "pixelated"))]])
         gmap (assoc gmap :prop-image-rendering gen-prop-image-rendering)
 
         gen-prop-right
         (gen/frequency [
           [(get weights [:prop-right :alt 0] 100)
             (gen/tuple
-              (:nonprop-length gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-length gmap))]
           [(get weights [:prop-right :alt 1] 100)
             (gen/tuple
-              (:nonprop-percentage gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-percentage gmap))]
           [(get weights [:prop-right :alt 2] 100)
             (gen/tuple
-              (gen/return "auto")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "auto"))]])
         gmap (assoc gmap :prop-right gen-prop-right)
 
         gen-prop-bottom
         (gen/frequency [
           [(get weights [:prop-bottom :alt 0] 100)
             (gen/tuple
-              (:nonprop-length gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-length gmap))]
           [(get weights [:prop-bottom :alt 1] 100)
             (gen/tuple
-              (:nonprop-percentage gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-percentage gmap))]
           [(get weights [:prop-bottom :alt 2] 100)
             (gen/tuple
-              (gen/return "auto")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "auto"))]])
         gmap (assoc gmap :prop-bottom gen-prop-bottom)
 
         gen-nonprop-bottom
@@ -228,32 +232,32 @@
         (gen/frequency [
           [(get weights [:prop-left :alt 0] 100)
             (gen/tuple
-              (:nonprop-length gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-length gmap))]
           [(get weights [:prop-left :alt 1] 100)
             (gen/tuple
-              (:nonprop-percentage gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-percentage gmap))]
           [(get weights [:prop-left :alt 2] 100)
             (gen/tuple
-              (gen/return "auto")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "auto"))]])
         gmap (assoc gmap :prop-left gen-prop-left)
 
         gen-prop-top
         (gen/frequency [
           [(get weights [:prop-top :alt 0] 100)
             (gen/tuple
-              (:nonprop-length gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-length gmap))]
           [(get weights [:prop-top :alt 1] 100)
             (gen/tuple
-              (:nonprop-percentage gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-percentage gmap))]
           [(get weights [:prop-top :alt 2] 100)
             (gen/tuple
-              (gen/return "auto")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "auto"))]])
         gmap (assoc gmap :prop-top gen-prop-top)
 
         gen-nonprop-left
@@ -270,66 +274,69 @@
 
         gen-nonprop-shape
         (gen/tuple
+          (gen/return " ")
           (gen/return "rect(")
           (gen/tuple
+            (gen/return " ")
             (:nonprop-top gmap)
-            (gen/return " ")
             (gen/return ", ")
+            (gen/return " ")
             (:nonprop-right gmap)
-            (gen/return " ")
             (gen/return ", ")
+            (gen/return " ")
             (:nonprop-bottom gmap)
-            (gen/return " ")
             (gen/return ", ")
-            (:nonprop-left gmap)
-            (gen/return " "))
-          (gen/return ")")
-          (gen/return " "))
+            (gen/return " ")
+            (:nonprop-left gmap))
+          (gen/return ")"))
         gmap (assoc gmap :nonprop-shape gen-nonprop-shape)
 
         gen-prop-clip
         (gen/frequency [
           [(get weights [:prop-clip :alt 0] 100)
             (gen/tuple
-              (:nonprop-shape gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-shape gmap))]
           [(get weights [:prop-clip :alt 1] 100)
             (gen/tuple
-              (gen/return "auto")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "auto"))]])
         gmap (assoc gmap :prop-clip gen-prop-clip)
 
         gen-nonprop-alpha-value
         (gen/frequency [
           [(get weights [:nonprop-alpha-value :alt 0] 100)
             (gen/tuple
-              (:nonprop-number gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-number gmap))]
           [(get weights [:nonprop-alpha-value :alt 1] 100)
             (gen/tuple
-              (:nonprop-percentage gmap)
-              (gen/return " "))]])
+              (gen/return " ")
+              (:nonprop-percentage gmap))]])
         gmap (assoc gmap :nonprop-alpha-value gen-nonprop-alpha-value)
 
         gen-nonprop-hue
         (gen/frequency [
           [(get weights [:nonprop-hue :alt 0] 100)
             (gen/tuple
-              (:nonprop-number gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-number gmap))]
           [(get weights [:nonprop-hue :alt 1] 100)
             (gen/tuple
-              (:nonprop-angle gmap)
-              (gen/return " "))]])
+              (gen/return " ")
+              (:nonprop-angle gmap))]])
         gmap (assoc gmap :nonprop-hue gen-nonprop-hue)
 
         gen-func-hsl
         (gen/tuple
+          (gen/return " ")
           (gen/return "hsl(")
           (gen/frequency [
-            [(get weights [:func-hsl :cat 1 :alt 0] 100)
+            [(get weights [:func-hsl :cat 2 :alt 0] 100)
               (gen/tuple
+                (gen/return " ")
                 (gen/tuple
+                  (gen/return " ")
                   (:nonprop-hue gmap)
                   (gen/return " ")
                   (:nonprop-percentage gmap)
@@ -339,832 +346,829 @@
                   (gen/one-of [
                     (gen/return "")
                     (gen/tuple
+                      (gen/return " ")
                       (gen/return "/")
                       (gen/return " ")
-                      (:nonprop-alpha-value gmap)
-                      (gen/return " "))])
-                  (gen/return " "))
-                (gen/return " "))]
-            [(get weights [:func-hsl :cat 1 :alt 1] 100)
+                      (:nonprop-alpha-value gmap))])))]
+            [(get weights [:func-hsl :cat 2 :alt 1] 100)
               (gen/tuple
+                (gen/return " ")
                 (gen/tuple
+                  (gen/return " ")
                   (:nonprop-hue gmap)
-                  (gen/return " ")
                   (gen/return ", ")
+                  (gen/return " ")
                   (:nonprop-percentage gmap)
-                  (gen/return " ")
                   (gen/return ", ")
+                  (gen/return " ")
                   (:nonprop-percentage gmap)
-                  (gen/return " ")
                   (gen/return ", ")
+                  (gen/return " ")
                   (gen/one-of [
                     (gen/return "")
-                    (:nonprop-alpha-value gmap)])
-                  (gen/return " "))
-                (gen/return " "))]])
-          (gen/return ")")
-          (gen/return " "))
+                    (:nonprop-alpha-value gmap)])))]])
+          (gen/return ")"))
         gmap (assoc gmap :func-hsl gen-func-hsl)
 
         gen-nonprop-deprecated-system-color
         (gen/frequency [
           [(get weights [:nonprop-deprecated-system-color :alt 0] 100)
             (gen/tuple
-              (gen/return "ActiveBorder")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "ActiveBorder"))]
           [(get weights [:nonprop-deprecated-system-color :alt 1] 100)
             (gen/tuple
-              (gen/return "ActiveCaption")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "ActiveCaption"))]
           [(get weights [:nonprop-deprecated-system-color :alt 2] 100)
             (gen/tuple
-              (gen/return "AppWorkspace")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "AppWorkspace"))]
           [(get weights [:nonprop-deprecated-system-color :alt 3] 100)
             (gen/tuple
-              (gen/return "Background")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "Background"))]
           [(get weights [:nonprop-deprecated-system-color :alt 4] 100)
             (gen/tuple
-              (gen/return "ButtonFace")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "ButtonFace"))]
           [(get weights [:nonprop-deprecated-system-color :alt 5] 100)
             (gen/tuple
-              (gen/return "ButtonHighlight")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "ButtonHighlight"))]
           [(get weights [:nonprop-deprecated-system-color :alt 6] 100)
             (gen/tuple
-              (gen/return "ButtonShadow")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "ButtonShadow"))]
           [(get weights [:nonprop-deprecated-system-color :alt 7] 100)
             (gen/tuple
-              (gen/return "ButtonText")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "ButtonText"))]
           [(get weights [:nonprop-deprecated-system-color :alt 8] 100)
             (gen/tuple
-              (gen/return "CaptionText")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "CaptionText"))]
           [(get weights [:nonprop-deprecated-system-color :alt 9] 100)
             (gen/tuple
-              (gen/return "GrayText")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "GrayText"))]
           [(get weights [:nonprop-deprecated-system-color :alt 10] 100)
             (gen/tuple
-              (gen/return "Highlight")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "Highlight"))]
           [(get weights [:nonprop-deprecated-system-color :alt 11] 100)
             (gen/tuple
-              (gen/return "HighlightText")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "HighlightText"))]
           [(get weights [:nonprop-deprecated-system-color :alt 12] 100)
             (gen/tuple
-              (gen/return "InactiveBorder")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "InactiveBorder"))]
           [(get weights [:nonprop-deprecated-system-color :alt 13] 100)
             (gen/tuple
-              (gen/return "InactiveCaption")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "InactiveCaption"))]
           [(get weights [:nonprop-deprecated-system-color :alt 14] 100)
             (gen/tuple
-              (gen/return "InactiveCaptionText")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "InactiveCaptionText"))]
           [(get weights [:nonprop-deprecated-system-color :alt 15] 100)
             (gen/tuple
-              (gen/return "InfoBackground")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "InfoBackground"))]
           [(get weights [:nonprop-deprecated-system-color :alt 16] 100)
             (gen/tuple
-              (gen/return "InfoText")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "InfoText"))]
           [(get weights [:nonprop-deprecated-system-color :alt 17] 100)
             (gen/tuple
-              (gen/return "Menu")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "Menu"))]
           [(get weights [:nonprop-deprecated-system-color :alt 18] 100)
             (gen/tuple
-              (gen/return "MenuText")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "MenuText"))]
           [(get weights [:nonprop-deprecated-system-color :alt 19] 100)
             (gen/tuple
-              (gen/return "Scrollbar")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "Scrollbar"))]
           [(get weights [:nonprop-deprecated-system-color :alt 20] 100)
             (gen/tuple
-              (gen/return "ThreeDDarkShadow")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "ThreeDDarkShadow"))]
           [(get weights [:nonprop-deprecated-system-color :alt 21] 100)
             (gen/tuple
-              (gen/return "ThreeDFace")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "ThreeDFace"))]
           [(get weights [:nonprop-deprecated-system-color :alt 22] 100)
             (gen/tuple
-              (gen/return "ThreeDHighlight")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "ThreeDHighlight"))]
           [(get weights [:nonprop-deprecated-system-color :alt 23] 100)
             (gen/tuple
-              (gen/return "ThreeDLightShadow")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "ThreeDLightShadow"))]
           [(get weights [:nonprop-deprecated-system-color :alt 24] 100)
             (gen/tuple
-              (gen/return "ThreeDShadow")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "ThreeDShadow"))]
           [(get weights [:nonprop-deprecated-system-color :alt 25] 100)
             (gen/tuple
-              (gen/return "Window")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "Window"))]
           [(get weights [:nonprop-deprecated-system-color :alt 26] 100)
             (gen/tuple
-              (gen/return "WindowFrame")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "WindowFrame"))]
           [(get weights [:nonprop-deprecated-system-color :alt 27] 100)
             (gen/tuple
-              (gen/return "WindowText")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "WindowText"))]])
         gmap (assoc gmap :nonprop-deprecated-system-color gen-nonprop-deprecated-system-color)
 
         gen-nonprop-hex-color6
         (gen/tuple
           (gen/return "#")
-          (chuck/string-from-regex #"[0-9A-F]")
-          (chuck/string-from-regex #"[0-9A-F]")
-          (chuck/string-from-regex #"[0-9A-F]")
-          (chuck/string-from-regex #"[0-9A-F]")
-          (chuck/string-from-regex #"[0-9A-F]")
-          (chuck/string-from-regex #"[0-9A-F]"))
+          (chuck/string-from-regex #"[0-9A-Fa-f]")
+          (chuck/string-from-regex #"[0-9A-Fa-f]")
+          (chuck/string-from-regex #"[0-9A-Fa-f]")
+          (chuck/string-from-regex #"[0-9A-Fa-f]")
+          (chuck/string-from-regex #"[0-9A-Fa-f]")
+          (chuck/string-from-regex #"[0-9A-Fa-f]"))
         gmap (assoc gmap :nonprop-hex-color6 gen-nonprop-hex-color6)
 
         gen-func-rgb
         (gen/tuple
+          (gen/return " ")
           (gen/return "rgb(")
           (gen/frequency [
-            [(get weights [:func-rgb :cat 1 :alt 0] 100)
+            [(get weights [:func-rgb :cat 2 :alt 0] 100)
               (gen/tuple
+                (gen/return " ")
                 (gen/tuple
+                  (gen/return " ")
                   (gen/frequency [
-                    [(get weights [:func-rgb :cat 1 :alt 0 :cat 0 :cat 0 :alt 0] 100)
+                    [(get weights [:func-rgb :cat 2 :alt 0 :cat 1 :cat 1 :alt 0] 100)
                       (gen/tuple
+                        (gen/return " ")
                         (gen/tuple
                           (:nonprop-percentage gmap)
                           (:nonprop-percentage gmap)
-                          (:nonprop-percentage gmap))
-                        (gen/return " "))]
-                    [(get weights [:func-rgb :cat 1 :alt 0 :cat 0 :cat 0 :alt 1] 100)
+                          (:nonprop-percentage gmap)))]
+                    [(get weights [:func-rgb :cat 2 :alt 0 :cat 1 :cat 1 :alt 1] 100)
                       (gen/tuple
+                        (gen/return " ")
                         (gen/tuple
                           (:nonprop-number gmap)
                           (:nonprop-number gmap)
-                          (:nonprop-number gmap))
-                        (gen/return " "))]])
+                          (:nonprop-number gmap)))]])
                   (gen/return " ")
                   (gen/one-of [
                     (gen/return "")
                     (gen/tuple
+                      (gen/return " ")
                       (gen/return "/")
                       (gen/return " ")
-                      (:nonprop-alpha-value gmap)
-                      (gen/return " "))])
-                  (gen/return " "))
-                (gen/return " "))]
-            [(get weights [:func-rgb :cat 1 :alt 1] 100)
+                      (:nonprop-alpha-value gmap))])))]
+            [(get weights [:func-rgb :cat 2 :alt 1] 100)
               (gen/tuple
+                (gen/return " ")
                 (gen/tuple
+                  (gen/return " ")
                   (gen/frequency [
-                    [(get weights [:func-rgb :cat 1 :alt 1 :cat 0 :cat 0 :alt 0] 100)
+                    [(get weights [:func-rgb :cat 2 :alt 1 :cat 1 :cat 1 :alt 0] 100)
                       (gen/tuple
+                        (gen/return " ")
                         (gen/tuple
                           (:nonprop-percentage gmap)
                           (gen/return ", ")
                           (:nonprop-percentage gmap)
                           (gen/return ", ")
-                          (:nonprop-percentage gmap))
-                        (gen/return " "))]
-                    [(get weights [:func-rgb :cat 1 :alt 1 :cat 0 :cat 0 :alt 1] 100)
+                          (:nonprop-percentage gmap)))]
+                    [(get weights [:func-rgb :cat 2 :alt 1 :cat 1 :cat 1 :alt 1] 100)
                       (gen/tuple
+                        (gen/return " ")
                         (gen/tuple
                           (:nonprop-number gmap)
                           (gen/return ", ")
                           (:nonprop-number gmap)
                           (gen/return ", ")
-                          (:nonprop-number gmap))
-                        (gen/return " "))]])
+                          (:nonprop-number gmap)))]])
                   (gen/return " ")
                   (gen/return ",")
                   (gen/return " ")
                   (gen/one-of [
                     (gen/return "")
-                    (:nonprop-alpha-value gmap)])
-                  (gen/return " "))
-                (gen/return " "))]])
-          (gen/return ")")
-          (gen/return " "))
+                    (:nonprop-alpha-value gmap)])))]])
+          (gen/return ")"))
         gmap (assoc gmap :func-rgb gen-func-rgb)
 
         gen-nonprop-named-color
         (gen/frequency [
           [(get weights [:nonprop-named-color :alt 0] 100)
             (gen/tuple
-              (gen/return "transparent")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "transparent"))]
           [(get weights [:nonprop-named-color :alt 1] 100)
             (gen/tuple
-              (gen/return "aliceblue")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "aliceblue"))]
           [(get weights [:nonprop-named-color :alt 2] 100)
             (gen/tuple
-              (gen/return "antiquewhite")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "antiquewhite"))]
           [(get weights [:nonprop-named-color :alt 3] 100)
             (gen/tuple
-              (gen/return "aqua")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "aqua"))]
           [(get weights [:nonprop-named-color :alt 4] 100)
             (gen/tuple
-              (gen/return "aquamarine")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "aquamarine"))]
           [(get weights [:nonprop-named-color :alt 5] 100)
             (gen/tuple
-              (gen/return "azure")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "azure"))]
           [(get weights [:nonprop-named-color :alt 6] 100)
             (gen/tuple
-              (gen/return "beige")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "beige"))]
           [(get weights [:nonprop-named-color :alt 7] 100)
             (gen/tuple
-              (gen/return "bisque")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "bisque"))]
           [(get weights [:nonprop-named-color :alt 8] 100)
             (gen/tuple
-              (gen/return "black")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "black"))]
           [(get weights [:nonprop-named-color :alt 9] 100)
             (gen/tuple
-              (gen/return "blanchedalmond")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "blanchedalmond"))]
           [(get weights [:nonprop-named-color :alt 10] 100)
             (gen/tuple
-              (gen/return "blue")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "blue"))]
           [(get weights [:nonprop-named-color :alt 11] 100)
             (gen/tuple
-              (gen/return "blueviolet")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "blueviolet"))]
           [(get weights [:nonprop-named-color :alt 12] 100)
             (gen/tuple
-              (gen/return "brown")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "brown"))]
           [(get weights [:nonprop-named-color :alt 13] 100)
             (gen/tuple
-              (gen/return "burlywood")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "burlywood"))]
           [(get weights [:nonprop-named-color :alt 14] 100)
             (gen/tuple
-              (gen/return "cadetblue")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "cadetblue"))]
           [(get weights [:nonprop-named-color :alt 15] 100)
             (gen/tuple
-              (gen/return "chartreuse")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "chartreuse"))]
           [(get weights [:nonprop-named-color :alt 16] 100)
             (gen/tuple
-              (gen/return "chocolate")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "chocolate"))]
           [(get weights [:nonprop-named-color :alt 17] 100)
             (gen/tuple
-              (gen/return "coral")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "coral"))]
           [(get weights [:nonprop-named-color :alt 18] 100)
             (gen/tuple
-              (gen/return "cornflowerblue")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "cornflowerblue"))]
           [(get weights [:nonprop-named-color :alt 19] 100)
             (gen/tuple
-              (gen/return "cornsilk")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "cornsilk"))]
           [(get weights [:nonprop-named-color :alt 20] 100)
             (gen/tuple
-              (gen/return "crimson")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "crimson"))]
           [(get weights [:nonprop-named-color :alt 21] 100)
             (gen/tuple
-              (gen/return "cyan")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "cyan"))]
           [(get weights [:nonprop-named-color :alt 22] 100)
             (gen/tuple
-              (gen/return "darkblue")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "darkblue"))]
           [(get weights [:nonprop-named-color :alt 23] 100)
             (gen/tuple
-              (gen/return "darkcyan")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "darkcyan"))]
           [(get weights [:nonprop-named-color :alt 24] 100)
             (gen/tuple
-              (gen/return "darkgoldenrod")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "darkgoldenrod"))]
           [(get weights [:nonprop-named-color :alt 25] 100)
             (gen/tuple
-              (gen/return "darkgray")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "darkgray"))]
           [(get weights [:nonprop-named-color :alt 26] 100)
             (gen/tuple
-              (gen/return "darkgreen")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "darkgreen"))]
           [(get weights [:nonprop-named-color :alt 27] 100)
             (gen/tuple
-              (gen/return "darkgrey")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "darkgrey"))]
           [(get weights [:nonprop-named-color :alt 28] 100)
             (gen/tuple
-              (gen/return "darkkhaki")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "darkkhaki"))]
           [(get weights [:nonprop-named-color :alt 29] 100)
             (gen/tuple
-              (gen/return "darkmagenta")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "darkmagenta"))]
           [(get weights [:nonprop-named-color :alt 30] 100)
             (gen/tuple
-              (gen/return "darkolivegreen")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "darkolivegreen"))]
           [(get weights [:nonprop-named-color :alt 31] 100)
             (gen/tuple
-              (gen/return "darkorange")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "darkorange"))]
           [(get weights [:nonprop-named-color :alt 32] 100)
             (gen/tuple
-              (gen/return "darkorchid")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "darkorchid"))]
           [(get weights [:nonprop-named-color :alt 33] 100)
             (gen/tuple
-              (gen/return "darkred")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "darkred"))]
           [(get weights [:nonprop-named-color :alt 34] 100)
             (gen/tuple
-              (gen/return "darksalmon")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "darksalmon"))]
           [(get weights [:nonprop-named-color :alt 35] 100)
             (gen/tuple
-              (gen/return "darkseagreen")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "darkseagreen"))]
           [(get weights [:nonprop-named-color :alt 36] 100)
             (gen/tuple
-              (gen/return "darkslateblue")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "darkslateblue"))]
           [(get weights [:nonprop-named-color :alt 37] 100)
             (gen/tuple
-              (gen/return "darkslategray")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "darkslategray"))]
           [(get weights [:nonprop-named-color :alt 38] 100)
             (gen/tuple
-              (gen/return "darkslategrey")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "darkslategrey"))]
           [(get weights [:nonprop-named-color :alt 39] 100)
             (gen/tuple
-              (gen/return "darkturquoise")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "darkturquoise"))]
           [(get weights [:nonprop-named-color :alt 40] 100)
             (gen/tuple
-              (gen/return "darkviolet")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "darkviolet"))]
           [(get weights [:nonprop-named-color :alt 41] 100)
             (gen/tuple
-              (gen/return "deeppink")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "deeppink"))]
           [(get weights [:nonprop-named-color :alt 42] 100)
             (gen/tuple
-              (gen/return "deepskyblue")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "deepskyblue"))]
           [(get weights [:nonprop-named-color :alt 43] 100)
             (gen/tuple
-              (gen/return "dimgray")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "dimgray"))]
           [(get weights [:nonprop-named-color :alt 44] 100)
             (gen/tuple
-              (gen/return "dimgrey")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "dimgrey"))]
           [(get weights [:nonprop-named-color :alt 45] 100)
             (gen/tuple
-              (gen/return "dodgerblue")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "dodgerblue"))]
           [(get weights [:nonprop-named-color :alt 46] 100)
             (gen/tuple
-              (gen/return "firebrick")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "firebrick"))]
           [(get weights [:nonprop-named-color :alt 47] 100)
             (gen/tuple
-              (gen/return "floralwhite")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "floralwhite"))]
           [(get weights [:nonprop-named-color :alt 48] 100)
             (gen/tuple
-              (gen/return "forestgreen")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "forestgreen"))]
           [(get weights [:nonprop-named-color :alt 49] 100)
             (gen/tuple
-              (gen/return "fuchsia")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "fuchsia"))]
           [(get weights [:nonprop-named-color :alt 50] 100)
             (gen/tuple
-              (gen/return "gainsboro")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "gainsboro"))]
           [(get weights [:nonprop-named-color :alt 51] 100)
             (gen/tuple
-              (gen/return "ghostwhite")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "ghostwhite"))]
           [(get weights [:nonprop-named-color :alt 52] 100)
             (gen/tuple
-              (gen/return "gold")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "gold"))]
           [(get weights [:nonprop-named-color :alt 53] 100)
             (gen/tuple
-              (gen/return "goldenrod")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "goldenrod"))]
           [(get weights [:nonprop-named-color :alt 54] 100)
             (gen/tuple
-              (gen/return "gray")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "gray"))]
           [(get weights [:nonprop-named-color :alt 55] 100)
             (gen/tuple
-              (gen/return "green")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "green"))]
           [(get weights [:nonprop-named-color :alt 56] 100)
             (gen/tuple
-              (gen/return "greenyellow")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "greenyellow"))]
           [(get weights [:nonprop-named-color :alt 57] 100)
             (gen/tuple
-              (gen/return "grey")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "grey"))]
           [(get weights [:nonprop-named-color :alt 58] 100)
             (gen/tuple
-              (gen/return "honeydew")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "honeydew"))]
           [(get weights [:nonprop-named-color :alt 59] 100)
             (gen/tuple
-              (gen/return "hotpink")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "hotpink"))]
           [(get weights [:nonprop-named-color :alt 60] 100)
             (gen/tuple
-              (gen/return "indianred")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "indianred"))]
           [(get weights [:nonprop-named-color :alt 61] 100)
             (gen/tuple
-              (gen/return "indigo")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "indigo"))]
           [(get weights [:nonprop-named-color :alt 62] 100)
             (gen/tuple
-              (gen/return "ivory")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "ivory"))]
           [(get weights [:nonprop-named-color :alt 63] 100)
             (gen/tuple
-              (gen/return "khaki")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "khaki"))]
           [(get weights [:nonprop-named-color :alt 64] 100)
             (gen/tuple
-              (gen/return "lavender")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "lavender"))]
           [(get weights [:nonprop-named-color :alt 65] 100)
             (gen/tuple
-              (gen/return "lavenderblush")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "lavenderblush"))]
           [(get weights [:nonprop-named-color :alt 66] 100)
             (gen/tuple
-              (gen/return "lawngreen")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "lawngreen"))]
           [(get weights [:nonprop-named-color :alt 67] 100)
             (gen/tuple
-              (gen/return "lemonchiffon")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "lemonchiffon"))]
           [(get weights [:nonprop-named-color :alt 68] 100)
             (gen/tuple
-              (gen/return "lightblue")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "lightblue"))]
           [(get weights [:nonprop-named-color :alt 69] 100)
             (gen/tuple
-              (gen/return "lightcoral")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "lightcoral"))]
           [(get weights [:nonprop-named-color :alt 70] 100)
             (gen/tuple
-              (gen/return "lightcyan")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "lightcyan"))]
           [(get weights [:nonprop-named-color :alt 71] 100)
             (gen/tuple
-              (gen/return "lightgoldenrodyellow")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "lightgoldenrodyellow"))]
           [(get weights [:nonprop-named-color :alt 72] 100)
             (gen/tuple
-              (gen/return "lightgray")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "lightgray"))]
           [(get weights [:nonprop-named-color :alt 73] 100)
             (gen/tuple
-              (gen/return "lightgreen")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "lightgreen"))]
           [(get weights [:nonprop-named-color :alt 74] 100)
             (gen/tuple
-              (gen/return "lightgrey")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "lightgrey"))]
           [(get weights [:nonprop-named-color :alt 75] 100)
             (gen/tuple
-              (gen/return "lightpink")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "lightpink"))]
           [(get weights [:nonprop-named-color :alt 76] 100)
             (gen/tuple
-              (gen/return "lightsalmon")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "lightsalmon"))]
           [(get weights [:nonprop-named-color :alt 77] 100)
             (gen/tuple
-              (gen/return "lightseagreen")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "lightseagreen"))]
           [(get weights [:nonprop-named-color :alt 78] 100)
             (gen/tuple
-              (gen/return "lightskyblue")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "lightskyblue"))]
           [(get weights [:nonprop-named-color :alt 79] 100)
             (gen/tuple
-              (gen/return "lightslategray")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "lightslategray"))]
           [(get weights [:nonprop-named-color :alt 80] 100)
             (gen/tuple
-              (gen/return "lightslategrey")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "lightslategrey"))]
           [(get weights [:nonprop-named-color :alt 81] 100)
             (gen/tuple
-              (gen/return "lightsteelblue")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "lightsteelblue"))]
           [(get weights [:nonprop-named-color :alt 82] 100)
             (gen/tuple
-              (gen/return "lightyellow")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "lightyellow"))]
           [(get weights [:nonprop-named-color :alt 83] 100)
             (gen/tuple
-              (gen/return "lime")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "lime"))]
           [(get weights [:nonprop-named-color :alt 84] 100)
             (gen/tuple
-              (gen/return "limegreen")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "limegreen"))]
           [(get weights [:nonprop-named-color :alt 85] 100)
             (gen/tuple
-              (gen/return "linen")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "linen"))]
           [(get weights [:nonprop-named-color :alt 86] 100)
             (gen/tuple
-              (gen/return "magenta")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "magenta"))]
           [(get weights [:nonprop-named-color :alt 87] 100)
             (gen/tuple
-              (gen/return "maroon")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "maroon"))]
           [(get weights [:nonprop-named-color :alt 88] 100)
             (gen/tuple
-              (gen/return "mediumaquamarine")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "mediumaquamarine"))]
           [(get weights [:nonprop-named-color :alt 89] 100)
             (gen/tuple
-              (gen/return "mediumblue")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "mediumblue"))]
           [(get weights [:nonprop-named-color :alt 90] 100)
             (gen/tuple
-              (gen/return "mediumorchid")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "mediumorchid"))]
           [(get weights [:nonprop-named-color :alt 91] 100)
             (gen/tuple
-              (gen/return "mediumpurple")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "mediumpurple"))]
           [(get weights [:nonprop-named-color :alt 92] 100)
             (gen/tuple
-              (gen/return "mediumseagreen")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "mediumseagreen"))]
           [(get weights [:nonprop-named-color :alt 93] 100)
             (gen/tuple
-              (gen/return "mediumslateblue")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "mediumslateblue"))]
           [(get weights [:nonprop-named-color :alt 94] 100)
             (gen/tuple
-              (gen/return "mediumspringgreen")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "mediumspringgreen"))]
           [(get weights [:nonprop-named-color :alt 95] 100)
             (gen/tuple
-              (gen/return "mediumturquoise")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "mediumturquoise"))]
           [(get weights [:nonprop-named-color :alt 96] 100)
             (gen/tuple
-              (gen/return "mediumvioletred")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "mediumvioletred"))]
           [(get weights [:nonprop-named-color :alt 97] 100)
             (gen/tuple
-              (gen/return "midnightblue")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "midnightblue"))]
           [(get weights [:nonprop-named-color :alt 98] 100)
             (gen/tuple
-              (gen/return "mintcream")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "mintcream"))]
           [(get weights [:nonprop-named-color :alt 99] 100)
             (gen/tuple
-              (gen/return "mistyrose")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "mistyrose"))]
           [(get weights [:nonprop-named-color :alt 100] 100)
             (gen/tuple
-              (gen/return "moccasin")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "moccasin"))]
           [(get weights [:nonprop-named-color :alt 101] 100)
             (gen/tuple
-              (gen/return "navajowhite")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "navajowhite"))]
           [(get weights [:nonprop-named-color :alt 102] 100)
             (gen/tuple
-              (gen/return "navy")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "navy"))]
           [(get weights [:nonprop-named-color :alt 103] 100)
             (gen/tuple
-              (gen/return "oldlace")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "oldlace"))]
           [(get weights [:nonprop-named-color :alt 104] 100)
             (gen/tuple
-              (gen/return "olive")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "olive"))]
           [(get weights [:nonprop-named-color :alt 105] 100)
             (gen/tuple
-              (gen/return "olivedrab")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "olivedrab"))]
           [(get weights [:nonprop-named-color :alt 106] 100)
             (gen/tuple
-              (gen/return "orange")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "orange"))]
           [(get weights [:nonprop-named-color :alt 107] 100)
             (gen/tuple
-              (gen/return "orangered")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "orangered"))]
           [(get weights [:nonprop-named-color :alt 108] 100)
             (gen/tuple
-              (gen/return "orchid")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "orchid"))]
           [(get weights [:nonprop-named-color :alt 109] 100)
             (gen/tuple
-              (gen/return "palegoldenrod")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "palegoldenrod"))]
           [(get weights [:nonprop-named-color :alt 110] 100)
             (gen/tuple
-              (gen/return "palegreen")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "palegreen"))]
           [(get weights [:nonprop-named-color :alt 111] 100)
             (gen/tuple
-              (gen/return "paleturquoise")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "paleturquoise"))]
           [(get weights [:nonprop-named-color :alt 112] 100)
             (gen/tuple
-              (gen/return "palevioletred")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "palevioletred"))]
           [(get weights [:nonprop-named-color :alt 113] 100)
             (gen/tuple
-              (gen/return "papayawhip")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "papayawhip"))]
           [(get weights [:nonprop-named-color :alt 114] 100)
             (gen/tuple
-              (gen/return "peachpuff")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "peachpuff"))]
           [(get weights [:nonprop-named-color :alt 115] 100)
             (gen/tuple
-              (gen/return "peru")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "peru"))]
           [(get weights [:nonprop-named-color :alt 116] 100)
             (gen/tuple
-              (gen/return "pink")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "pink"))]
           [(get weights [:nonprop-named-color :alt 117] 100)
             (gen/tuple
-              (gen/return "plum")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "plum"))]
           [(get weights [:nonprop-named-color :alt 118] 100)
             (gen/tuple
-              (gen/return "powderblue")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "powderblue"))]
           [(get weights [:nonprop-named-color :alt 119] 100)
             (gen/tuple
-              (gen/return "purple")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "purple"))]
           [(get weights [:nonprop-named-color :alt 120] 100)
             (gen/tuple
-              (gen/return "rebeccapurple")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "rebeccapurple"))]
           [(get weights [:nonprop-named-color :alt 121] 100)
             (gen/tuple
-              (gen/return "red")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "red"))]
           [(get weights [:nonprop-named-color :alt 122] 100)
             (gen/tuple
-              (gen/return "rosybrown")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "rosybrown"))]
           [(get weights [:nonprop-named-color :alt 123] 100)
             (gen/tuple
-              (gen/return "royalblue")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "royalblue"))]
           [(get weights [:nonprop-named-color :alt 124] 100)
             (gen/tuple
-              (gen/return "saddlebrown")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "saddlebrown"))]
           [(get weights [:nonprop-named-color :alt 125] 100)
             (gen/tuple
-              (gen/return "salmon")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "salmon"))]
           [(get weights [:nonprop-named-color :alt 126] 100)
             (gen/tuple
-              (gen/return "sandybrown")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "sandybrown"))]
           [(get weights [:nonprop-named-color :alt 127] 100)
             (gen/tuple
-              (gen/return "seagreen")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "seagreen"))]
           [(get weights [:nonprop-named-color :alt 128] 100)
             (gen/tuple
-              (gen/return "seashell")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "seashell"))]
           [(get weights [:nonprop-named-color :alt 129] 100)
             (gen/tuple
-              (gen/return "sienna")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "sienna"))]
           [(get weights [:nonprop-named-color :alt 130] 100)
             (gen/tuple
-              (gen/return "silver")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "silver"))]
           [(get weights [:nonprop-named-color :alt 131] 100)
             (gen/tuple
-              (gen/return "skyblue")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "skyblue"))]
           [(get weights [:nonprop-named-color :alt 132] 100)
             (gen/tuple
-              (gen/return "slateblue")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "slateblue"))]
           [(get weights [:nonprop-named-color :alt 133] 100)
             (gen/tuple
-              (gen/return "slategray")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "slategray"))]
           [(get weights [:nonprop-named-color :alt 134] 100)
             (gen/tuple
-              (gen/return "slategrey")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "slategrey"))]
           [(get weights [:nonprop-named-color :alt 135] 100)
             (gen/tuple
-              (gen/return "snow")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "snow"))]
           [(get weights [:nonprop-named-color :alt 136] 100)
             (gen/tuple
-              (gen/return "springgreen")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "springgreen"))]
           [(get weights [:nonprop-named-color :alt 137] 100)
             (gen/tuple
-              (gen/return "steelblue")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "steelblue"))]
           [(get weights [:nonprop-named-color :alt 138] 100)
             (gen/tuple
-              (gen/return "tan")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "tan"))]
           [(get weights [:nonprop-named-color :alt 139] 100)
             (gen/tuple
-              (gen/return "teal")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "teal"))]
           [(get weights [:nonprop-named-color :alt 140] 100)
             (gen/tuple
-              (gen/return "thistle")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "thistle"))]
           [(get weights [:nonprop-named-color :alt 141] 100)
             (gen/tuple
-              (gen/return "tomato")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "tomato"))]
           [(get weights [:nonprop-named-color :alt 142] 100)
             (gen/tuple
-              (gen/return "turquoise")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "turquoise"))]
           [(get weights [:nonprop-named-color :alt 143] 100)
             (gen/tuple
-              (gen/return "violet")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "violet"))]
           [(get weights [:nonprop-named-color :alt 144] 100)
             (gen/tuple
-              (gen/return "wheat")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "wheat"))]
           [(get weights [:nonprop-named-color :alt 145] 100)
             (gen/tuple
-              (gen/return "white")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "white"))]
           [(get weights [:nonprop-named-color :alt 146] 100)
             (gen/tuple
-              (gen/return "whitesmoke")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "whitesmoke"))]
           [(get weights [:nonprop-named-color :alt 147] 100)
             (gen/tuple
-              (gen/return "yellow")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "yellow"))]
           [(get weights [:nonprop-named-color :alt 148] 100)
             (gen/tuple
-              (gen/return "yellowgreen")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "yellowgreen"))]])
         gmap (assoc gmap :nonprop-named-color gen-nonprop-named-color)
 
         gen-nonprop-hex-color3
         (gen/tuple
           (gen/return "#")
-          (chuck/string-from-regex #"[0-9A-F]")
-          (chuck/string-from-regex #"[0-9A-F]")
-          (chuck/string-from-regex #"[0-9A-F]"))
+          (chuck/string-from-regex #"[0-9A-Fa-f]")
+          (chuck/string-from-regex #"[0-9A-Fa-f]")
+          (chuck/string-from-regex #"[0-9A-Fa-f]"))
         gmap (assoc gmap :nonprop-hex-color3 gen-nonprop-hex-color3)
 
         gen-nonprop-hex-color
@@ -1177,11 +1181,14 @@
 
         gen-func-hsla
         (gen/tuple
+          (gen/return " ")
           (gen/return "hsla(")
           (gen/frequency [
-            [(get weights [:func-hsla :cat 1 :alt 0] 100)
+            [(get weights [:func-hsla :cat 2 :alt 0] 100)
               (gen/tuple
+                (gen/return " ")
                 (gen/tuple
+                  (gen/return " ")
                   (:nonprop-hue gmap)
                   (gen/return " ")
                   (:nonprop-percentage gmap)
@@ -1191,152 +1198,150 @@
                   (gen/one-of [
                     (gen/return "")
                     (gen/tuple
+                      (gen/return " ")
                       (gen/return "/")
                       (gen/return " ")
-                      (:nonprop-alpha-value gmap)
-                      (gen/return " "))])
-                  (gen/return " "))
-                (gen/return " "))]
-            [(get weights [:func-hsla :cat 1 :alt 1] 100)
+                      (:nonprop-alpha-value gmap))])))]
+            [(get weights [:func-hsla :cat 2 :alt 1] 100)
               (gen/tuple
+                (gen/return " ")
                 (gen/tuple
+                  (gen/return " ")
                   (:nonprop-hue gmap)
-                  (gen/return " ")
                   (gen/return ", ")
+                  (gen/return " ")
                   (:nonprop-percentage gmap)
-                  (gen/return " ")
                   (gen/return ", ")
+                  (gen/return " ")
                   (:nonprop-percentage gmap)
-                  (gen/return " ")
                   (gen/return ", ")
+                  (gen/return " ")
                   (gen/one-of [
                     (gen/return "")
-                    (:nonprop-alpha-value gmap)])
-                  (gen/return " "))
-                (gen/return " "))]])
-          (gen/return ")")
-          (gen/return " "))
+                    (:nonprop-alpha-value gmap)])))]])
+          (gen/return ")"))
         gmap (assoc gmap :func-hsla gen-func-hsla)
 
         gen-func-rgba
         (gen/tuple
+          (gen/return " ")
           (gen/return "rgba(")
           (gen/frequency [
-            [(get weights [:func-rgba :cat 1 :alt 0] 100)
+            [(get weights [:func-rgba :cat 2 :alt 0] 100)
               (gen/tuple
+                (gen/return " ")
                 (gen/tuple
+                  (gen/return " ")
                   (gen/frequency [
-                    [(get weights [:func-rgba :cat 1 :alt 0 :cat 0 :cat 0 :alt 0] 100)
+                    [(get weights [:func-rgba :cat 2 :alt 0 :cat 1 :cat 1 :alt 0] 100)
                       (gen/tuple
+                        (gen/return " ")
                         (gen/tuple
                           (:nonprop-percentage gmap)
                           (:nonprop-percentage gmap)
-                          (:nonprop-percentage gmap))
-                        (gen/return " "))]
-                    [(get weights [:func-rgba :cat 1 :alt 0 :cat 0 :cat 0 :alt 1] 100)
+                          (:nonprop-percentage gmap)))]
+                    [(get weights [:func-rgba :cat 2 :alt 0 :cat 1 :cat 1 :alt 1] 100)
                       (gen/tuple
+                        (gen/return " ")
                         (gen/tuple
                           (:nonprop-number gmap)
                           (:nonprop-number gmap)
-                          (:nonprop-number gmap))
-                        (gen/return " "))]])
+                          (:nonprop-number gmap)))]])
                   (gen/return " ")
                   (gen/one-of [
                     (gen/return "")
                     (gen/tuple
+                      (gen/return " ")
                       (gen/return "/")
                       (gen/return " ")
-                      (:nonprop-alpha-value gmap)
-                      (gen/return " "))])
-                  (gen/return " "))
-                (gen/return " "))]
-            [(get weights [:func-rgba :cat 1 :alt 1] 100)
+                      (:nonprop-alpha-value gmap))])))]
+            [(get weights [:func-rgba :cat 2 :alt 1] 100)
               (gen/tuple
+                (gen/return " ")
                 (gen/tuple
+                  (gen/return " ")
                   (gen/frequency [
-                    [(get weights [:func-rgba :cat 1 :alt 1 :cat 0 :cat 0 :alt 0] 100)
+                    [(get weights [:func-rgba :cat 2 :alt 1 :cat 1 :cat 1 :alt 0] 100)
                       (gen/tuple
+                        (gen/return " ")
                         (gen/tuple
                           (:nonprop-percentage gmap)
                           (gen/return ", ")
                           (:nonprop-percentage gmap)
                           (gen/return ", ")
-                          (:nonprop-percentage gmap))
-                        (gen/return " "))]
-                    [(get weights [:func-rgba :cat 1 :alt 1 :cat 0 :cat 0 :alt 1] 100)
+                          (:nonprop-percentage gmap)))]
+                    [(get weights [:func-rgba :cat 2 :alt 1 :cat 1 :cat 1 :alt 1] 100)
                       (gen/tuple
+                        (gen/return " ")
                         (gen/tuple
                           (:nonprop-number gmap)
                           (gen/return ", ")
                           (:nonprop-number gmap)
                           (gen/return ", ")
-                          (:nonprop-number gmap))
-                        (gen/return " "))]])
+                          (:nonprop-number gmap)))]])
                   (gen/return " ")
                   (gen/return ",")
                   (gen/return " ")
                   (gen/one-of [
                     (gen/return "")
-                    (:nonprop-alpha-value gmap)])
-                  (gen/return " "))
-                (gen/return " "))]])
-          (gen/return ")")
-          (gen/return " "))
+                    (:nonprop-alpha-value gmap)])))]])
+          (gen/return ")"))
         gmap (assoc gmap :func-rgba gen-func-rgba)
 
         gen-nonprop-color
         (gen/frequency [
           [(get weights [:nonprop-color :alt 0] 100)
             (gen/tuple
-              (:func-rgb gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:func-rgb gmap))]
           [(get weights [:nonprop-color :alt 1] 100)
             (gen/tuple
-              (:func-rgba gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:func-rgba gmap))]
           [(get weights [:nonprop-color :alt 2] 100)
             (gen/tuple
-              (:func-hsl gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:func-hsl gmap))]
           [(get weights [:nonprop-color :alt 3] 100)
             (gen/tuple
-              (:func-hsla gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:func-hsla gmap))]
           [(get weights [:nonprop-color :alt 4] 100)
             (gen/tuple
-              (:nonprop-hex-color gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-hex-color gmap))]
           [(get weights [:nonprop-color :alt 5] 100)
             (gen/tuple
-              (:nonprop-named-color gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-named-color gmap))]
           [(get weights [:nonprop-color :alt 6] 100)
             (gen/tuple
-              (gen/return "currentcolor")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "currentcolor"))]
           [(get weights [:nonprop-color :alt 7] 100)
             (gen/tuple
-              (:nonprop-deprecated-system-color gmap)
-              (gen/return " "))]])
+              (gen/return " ")
+              (:nonprop-deprecated-system-color gmap))]])
         gmap (assoc gmap :nonprop-color gen-nonprop-color)
 
         gen-nonprop-shadow
         (gen/tuple
+          (gen/return " ")
           (gen/one-of [
             (gen/return "")
             (gen/return "inset")])
           (gen/return " ")
           (gen/frequency [
-            [(get weights [:nonprop-shadow :cat 2 :alt 0] 100)
+            [(get weights [:nonprop-shadow :cat 3 :alt 0] 100)
               (gen/tuple
                 (:nonprop-length gmap)
                 (:nonprop-length gmap))]
-            [(get weights [:nonprop-shadow :cat 2 :alt 1] 100)
+            [(get weights [:nonprop-shadow :cat 3 :alt 1] 100)
               (gen/tuple
                 (:nonprop-length gmap)
                 (:nonprop-length gmap)
                 (:nonprop-length gmap))]
-            [(get weights [:nonprop-shadow :cat 2 :alt 2] 100)
+            [(get weights [:nonprop-shadow :cat 3 :alt 2] 100)
               (gen/tuple
                 (:nonprop-length gmap)
                 (:nonprop-length gmap)
@@ -1345,78 +1350,77 @@
           (gen/return " ")
           (gen/one-of [
             (gen/return "")
-            (:nonprop-color gmap)])
-          (gen/return " "))
+            (:nonprop-color gmap)]))
         gmap (assoc gmap :nonprop-shadow gen-nonprop-shadow)
 
         gen-prop-box-shadow
         (gen/frequency [
           [(get weights [:prop-box-shadow :alt 0] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "none"))]
           [(get weights [:prop-box-shadow :alt 1] 100)
             (gen/tuple
+              (gen/return " ")
               (:nonprop-shadow gmap)
               (gen/vector
                 (gen/tuple
-                  (gen/return ", ")
-                  (:nonprop-shadow gmap)))
-              (gen/return " "))]])
+                  (gen/return ",")
+                  (:nonprop-shadow gmap))))]])
         gmap (assoc gmap :prop-box-shadow gen-prop-box-shadow)
 
         gen-prop-flex-grow
         (gen/tuple
-          (:nonprop-number gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-number gmap))
         gmap (assoc gmap :prop-flex-grow gen-prop-flex-grow)
 
         gen-prop-width
         (gen/frequency [
           [(get weights [:prop-width :alt 0] 100)
             (gen/tuple
+              (gen/return " ")
               (gen/frequency [
-                [(get weights [:prop-width :alt 0 :cat 0 :alt 0] 100)
+                [(get weights [:prop-width :alt 0 :cat 1 :alt 0] 100)
                   (gen/tuple
-                    (:nonprop-length gmap)
-                    (gen/return " "))]
-                [(get weights [:prop-width :alt 0 :cat 0 :alt 1] 100)
+                    (gen/return " ")
+                    (:nonprop-length gmap))]
+                [(get weights [:prop-width :alt 0 :cat 1 :alt 1] 100)
                   (gen/tuple
-                    (:nonprop-percentage gmap)
-                    (gen/return " "))]])
+                    (gen/return " ")
+                    (:nonprop-percentage gmap))]])
               (gen/return " ")
               (gen/one-of [
                 (gen/return "")
                 (gen/frequency [
-                  [(get weights [:prop-width :alt 0 :cat 2 :opt :alt 0] 100)
+                  [(get weights [:prop-width :alt 0 :cat 3 :opt :alt 0] 100)
                     (gen/tuple
-                      (gen/return "border-box")
-                      (gen/return " "))]
-                  [(get weights [:prop-width :alt 0 :cat 2 :opt :alt 1] 100)
+                      (gen/return " ")
+                      (gen/return "border-box"))]
+                  [(get weights [:prop-width :alt 0 :cat 3 :opt :alt 1] 100)
                     (gen/tuple
-                      (gen/return "content-box")
-                      (gen/return " "))]])])
-              (gen/return " "))]
+                      (gen/return " ")
+                      (gen/return "content-box"))]])]))]
           [(get weights [:prop-width :alt 1] 100)
             (gen/tuple
-              (gen/return "available")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "available"))]
           [(get weights [:prop-width :alt 2] 100)
             (gen/tuple
-              (gen/return "min-content")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "min-content"))]
           [(get weights [:prop-width :alt 3] 100)
             (gen/tuple
-              (gen/return "max-content")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "max-content"))]
           [(get weights [:prop-width :alt 4] 100)
             (gen/tuple
-              (gen/return "fit-content")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "fit-content"))]
           [(get weights [:prop-width :alt 5] 100)
             (gen/tuple
-              (gen/return "auto")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "auto"))]])
         gmap (assoc gmap :prop-width gen-prop-width)
 
         gen-nonprop-width
@@ -1427,12 +1431,12 @@
         (gen/frequency [
           [(get weights [:prop-flex-basis :alt 0] 100)
             (gen/tuple
-              (gen/return "content")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "content"))]
           [(get weights [:prop-flex-basis :alt 1] 100)
             (gen/tuple
-              (:nonprop-width gmap)
-              (gen/return " "))]])
+              (gen/return " ")
+              (:nonprop-width gmap))]])
         gmap (assoc gmap :prop-flex-basis gen-prop-flex-basis)
 
         gen-nonprop-flex-basis
@@ -1443,18 +1447,18 @@
         (gen/frequency [
           [(get weights [:nonprop-length-percentage :alt 0] 100)
             (gen/tuple
-              (:nonprop-length gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-length gmap))]
           [(get weights [:nonprop-length-percentage :alt 1] 100)
             (gen/tuple
-              (:nonprop-percentage gmap)
-              (gen/return " "))]])
+              (gen/return " ")
+              (:nonprop-percentage gmap))]])
         gmap (assoc gmap :nonprop-length-percentage gen-nonprop-length-percentage)
 
         gen-prop-flex-shrink
         (gen/tuple
-          (:nonprop-number gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-number gmap))
         gmap (assoc gmap :prop-flex-shrink gen-prop-flex-shrink)
 
         gen-nonprop-flex-shrink
@@ -1469,26 +1473,25 @@
         (gen/frequency [
           [(get weights [:prop-flex :alt 0] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "none"))]
           [(get weights [:prop-flex :alt 1] 100)
             (gen/tuple
-              (gen/tuple
-                (:nonprop-flex-grow gmap)
-                (gen/return " ")
-                (gen/such-that not-empty (gen/vector
-                  (gen/frequency [
-                    [(get weights [:prop-flex :alt 1 :cat 0 :cat 2 :plus :alt 0] 100)
-                      (gen/tuple
-                        (gen/one-of [
-                          (gen/return "")
-                          (:nonprop-flex-shrink gmap)])
-                        (gen/return " "))]
-                    [(get weights [:prop-flex :alt 1 :cat 0 :cat 2 :plus :alt 1] 100)
-                      (gen/tuple
-                        (:nonprop-flex-basis gmap)
-                        (gen/return " "))]]))))
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/such-that not-empty (gen/vector
+                (gen/frequency [
+                  [(get weights [:prop-flex :alt 1 :cat 1 :plus :alt 0] 100)
+                    (gen/tuple
+                      (gen/return " ")
+                      (:nonprop-flex-grow gmap)
+                      (gen/return " ")
+                      (gen/one-of [
+                        (gen/return "")
+                        (:nonprop-flex-shrink gmap)]))]
+                  [(get weights [:prop-flex :alt 1 :cat 1 :plus :alt 1] 100)
+                    (gen/tuple
+                      (gen/return " ")
+                      (:nonprop-flex-basis gmap))]]))))]])
         gmap (assoc gmap :prop-flex gen-prop-flex)
 
         gen-nonprop-flex
@@ -1502,86 +1505,86 @@
         (gen/frequency [
           [(get weights [:nonprop-track-breadth :alt 0] 100)
             (gen/tuple
-              (:nonprop-length-percentage gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-length-percentage gmap))]
           [(get weights [:nonprop-track-breadth :alt 1] 100)
             (gen/tuple
-              (:nonprop-flex gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-flex gmap))]
           [(get weights [:nonprop-track-breadth :alt 2] 100)
             (gen/tuple
-              (gen/return "min-content")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "min-content"))]
           [(get weights [:nonprop-track-breadth :alt 3] 100)
             (gen/tuple
-              (gen/return "max-content")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "max-content"))]
           [(get weights [:nonprop-track-breadth :alt 4] 100)
             (gen/tuple
-              (gen/return "auto")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "auto"))]])
         gmap (assoc gmap :nonprop-track-breadth gen-nonprop-track-breadth)
 
         gen-nonprop-fixed-breadth
         (gen/tuple
-          (:nonprop-length-percentage gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-length-percentage gmap))
         gmap (assoc gmap :nonprop-fixed-breadth gen-nonprop-fixed-breadth)
 
         gen-nonprop-inflexible-breadth
         (gen/frequency [
           [(get weights [:nonprop-inflexible-breadth :alt 0] 100)
             (gen/tuple
-              (:nonprop-length gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-length gmap))]
           [(get weights [:nonprop-inflexible-breadth :alt 1] 100)
             (gen/tuple
-              (:nonprop-percentage gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-percentage gmap))]
           [(get weights [:nonprop-inflexible-breadth :alt 2] 100)
             (gen/tuple
-              (gen/return "min-content")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "min-content"))]
           [(get weights [:nonprop-inflexible-breadth :alt 3] 100)
             (gen/tuple
-              (gen/return "max-content")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "max-content"))]
           [(get weights [:nonprop-inflexible-breadth :alt 4] 100)
             (gen/tuple
-              (gen/return "auto")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "auto"))]])
         gmap (assoc gmap :nonprop-inflexible-breadth gen-nonprop-inflexible-breadth)
 
         gen-nonprop-fixed-size
         (gen/frequency [
           [(get weights [:nonprop-fixed-size :alt 0] 100)
             (gen/tuple
-              (:nonprop-fixed-breadth gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-fixed-breadth gmap))]
           [(get weights [:nonprop-fixed-size :alt 1] 100)
             (gen/tuple
+              (gen/return " ")
               (gen/return "minmax(")
               (gen/tuple
+                (gen/return " ")
                 (:nonprop-fixed-breadth gmap)
                 (gen/return " ")
                 (gen/return ",")
                 (gen/return " ")
-                (:nonprop-track-breadth gmap)
-                (gen/return " "))
-              (gen/return ")")
-              (gen/return " "))]
+                (:nonprop-track-breadth gmap))
+              (gen/return ")"))]
           [(get weights [:nonprop-fixed-size :alt 2] 100)
             (gen/tuple
+              (gen/return " ")
               (gen/return "minmax(")
               (gen/tuple
+                (gen/return " ")
                 (:nonprop-inflexible-breadth gmap)
                 (gen/return " ")
                 (gen/return ",")
                 (gen/return " ")
-                (:nonprop-fixed-breadth gmap)
-                (gen/return " "))
-              (gen/return ")")
-              (gen/return " "))]])
+                (:nonprop-fixed-breadth gmap))
+              (gen/return ")"))]])
         gmap (assoc gmap :nonprop-fixed-size gen-nonprop-fixed-size)
 
         gen-nonprop-custom-ident
@@ -1599,178 +1602,179 @@
 
         gen-nonprop-line-names
         (gen/tuple
+          (gen/return " ")
           (gen/return "[")
           (gen/return " ")
           (gen/vector
             (:nonprop-custom-ident gmap))
           (gen/return " ")
-          (gen/return "]")
-          (gen/return " "))
+          (gen/return "]"))
         gmap (assoc gmap :nonprop-line-names gen-nonprop-line-names)
 
         gen-nonprop-track-size
         (gen/frequency [
           [(get weights [:nonprop-track-size :alt 0] 100)
             (gen/tuple
-              (:nonprop-track-breadth gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-track-breadth gmap))]
           [(get weights [:nonprop-track-size :alt 1] 100)
             (gen/tuple
+              (gen/return " ")
               (gen/return "minmax(")
               (gen/tuple
+                (gen/return " ")
                 (:nonprop-inflexible-breadth gmap)
                 (gen/return " ")
                 (gen/return ",")
                 (gen/return " ")
-                (:nonprop-track-breadth gmap)
-                (gen/return " "))
-              (gen/return ")")
-              (gen/return " "))]
+                (:nonprop-track-breadth gmap))
+              (gen/return ")"))]
           [(get weights [:nonprop-track-size :alt 2] 100)
             (gen/tuple
-              (gen/return "fit-content(")
-              (gen/frequency [
-                [(get weights [:nonprop-track-size :alt 2 :cat 1 :alt 0] 100)
-                  (gen/tuple
-                    (:nonprop-length gmap)
-                    (gen/return " "))]
-                [(get weights [:nonprop-track-size :alt 2 :cat 1 :alt 1] 100)
-                  (gen/tuple
-                    (:nonprop-percentage gmap)
-                    (gen/return " "))]])
               (gen/return " ")
-              (gen/return ")")
-              (gen/return " "))]])
+              (gen/return "fit-content(")
+              (gen/return " ")
+              (gen/frequency [
+                [(get weights [:nonprop-track-size :alt 2 :cat 3 :alt 0] 100)
+                  (gen/tuple
+                    (gen/return " ")
+                    (:nonprop-length gmap))]
+                [(get weights [:nonprop-track-size :alt 2 :cat 3 :alt 1] 100)
+                  (gen/tuple
+                    (gen/return " ")
+                    (:nonprop-percentage gmap))]])
+              (gen/return ")"))]])
         gmap (assoc gmap :nonprop-track-size gen-nonprop-track-size)
 
         gen-nonprop-track-repeat
         (gen/tuple
+          (gen/return " ")
           (gen/return "repeat(")
           (gen/tuple
-            (:nonprop-positive-integer gmap)
             (gen/return " ")
+            (gen/return " ")
+            (:nonprop-positive-integer gmap)
             (gen/return " ")
             (gen/return ",")
             (gen/return " ")
             (gen/such-that not-empty (gen/vector
               (gen/tuple
+                (gen/return " ")
                 (gen/one-of [
                   (gen/return "")
                   (:nonprop-line-names gmap)])
                 (gen/return " ")
-                (:nonprop-track-size gmap)
-                (gen/return " "))))
+                (:nonprop-track-size gmap))))
             (gen/return " ")
             (gen/one-of [
               (gen/return "")
-              (:nonprop-line-names gmap)])
-            (gen/return " "))
-          (gen/return ")")
-          (gen/return " "))
+              (:nonprop-line-names gmap)]))
+          (gen/return ")"))
         gmap (assoc gmap :nonprop-track-repeat gen-nonprop-track-repeat)
 
         gen-nonprop-track-list
         (gen/tuple
+          (gen/return " ")
           (gen/such-that not-empty (gen/vector
             (gen/tuple
+              (gen/return " ")
               (gen/one-of [
                 (gen/return "")
                 (:nonprop-line-names gmap)])
               (gen/return " ")
               (gen/frequency [
-                [(get weights [:nonprop-track-list :cat 0 :plus :cat 2 :alt 0] 100)
+                [(get weights [:nonprop-track-list :cat 1 :plus :cat 3 :alt 0] 100)
                   (gen/tuple
-                    (:nonprop-track-size gmap)
-                    (gen/return " "))]
-                [(get weights [:nonprop-track-list :cat 0 :plus :cat 2 :alt 1] 100)
+                    (gen/return " ")
+                    (:nonprop-track-size gmap))]
+                [(get weights [:nonprop-track-list :cat 1 :plus :cat 3 :alt 1] 100)
                   (gen/tuple
-                    (:nonprop-track-repeat gmap)
-                    (gen/return " "))]])
-              (gen/return " "))))
+                    (gen/return " ")
+                    (:nonprop-track-repeat gmap))]]))))
           (gen/return " ")
           (gen/one-of [
             (gen/return "")
-            (:nonprop-line-names gmap)])
-          (gen/return " "))
+            (:nonprop-line-names gmap)]))
         gmap (assoc gmap :nonprop-track-list gen-nonprop-track-list)
 
         gen-nonprop-fixed-repeat
         (gen/tuple
+          (gen/return " ")
           (gen/return "repeat(")
           (gen/tuple
-            (:nonprop-positive-integer gmap)
             (gen/return " ")
+            (gen/return " ")
+            (:nonprop-positive-integer gmap)
             (gen/return " ")
             (gen/return ",")
             (gen/return " ")
             (gen/such-that not-empty (gen/vector
               (gen/tuple
+                (gen/return " ")
                 (gen/one-of [
                   (gen/return "")
                   (:nonprop-line-names gmap)])
                 (gen/return " ")
-                (:nonprop-fixed-size gmap)
-                (gen/return " "))))
+                (:nonprop-fixed-size gmap))))
             (gen/return " ")
             (gen/one-of [
               (gen/return "")
-              (:nonprop-line-names gmap)])
-            (gen/return " "))
-          (gen/return ")")
-          (gen/return " "))
+              (:nonprop-line-names gmap)]))
+          (gen/return ")"))
         gmap (assoc gmap :nonprop-fixed-repeat gen-nonprop-fixed-repeat)
 
         gen-nonprop-auto-repeat
         (gen/tuple
+          (gen/return " ")
           (gen/return "repeat(")
           (gen/tuple
+            (gen/return " ")
             (gen/frequency [
-              [(get weights [:nonprop-auto-repeat :cat 1 :cat 0 :alt 0] 100)
+              [(get weights [:nonprop-auto-repeat :cat 2 :cat 1 :alt 0] 100)
                 (gen/tuple
-                  (gen/return "auto-fill")
-                  (gen/return " "))]
-              [(get weights [:nonprop-auto-repeat :cat 1 :cat 0 :alt 1] 100)
+                  (gen/return " ")
+                  (gen/return "auto-fill"))]
+              [(get weights [:nonprop-auto-repeat :cat 2 :cat 1 :alt 1] 100)
                 (gen/tuple
-                  (gen/return "auto-fit")
-                  (gen/return " "))]])
+                  (gen/return " ")
+                  (gen/return "auto-fit"))]])
             (gen/return " ")
             (gen/return ",")
             (gen/return " ")
             (gen/such-that not-empty (gen/vector
               (gen/tuple
+                (gen/return " ")
                 (gen/one-of [
                   (gen/return "")
                   (:nonprop-line-names gmap)])
                 (gen/return " ")
-                (:nonprop-fixed-size gmap)
-                (gen/return " "))))
+                (:nonprop-fixed-size gmap))))
             (gen/return " ")
             (gen/one-of [
               (gen/return "")
-              (:nonprop-line-names gmap)])
-            (gen/return " "))
-          (gen/return ")")
-          (gen/return " "))
+              (:nonprop-line-names gmap)]))
+          (gen/return ")"))
         gmap (assoc gmap :nonprop-auto-repeat gen-nonprop-auto-repeat)
 
         gen-nonprop-auto-track-list
         (gen/tuple
+          (gen/return " ")
           (gen/vector
             (gen/tuple
+              (gen/return " ")
               (gen/one-of [
                 (gen/return "")
                 (:nonprop-line-names gmap)])
               (gen/return " ")
               (gen/frequency [
-                [(get weights [:nonprop-auto-track-list :cat 0 :star :cat 2 :alt 0] 100)
+                [(get weights [:nonprop-auto-track-list :cat 1 :star :cat 3 :alt 0] 100)
                   (gen/tuple
-                    (:nonprop-fixed-size gmap)
-                    (gen/return " "))]
-                [(get weights [:nonprop-auto-track-list :cat 0 :star :cat 2 :alt 1] 100)
+                    (gen/return " ")
+                    (:nonprop-fixed-size gmap))]
+                [(get weights [:nonprop-auto-track-list :cat 1 :star :cat 3 :alt 1] 100)
                   (gen/tuple
-                    (:nonprop-fixed-repeat gmap)
-                    (gen/return " "))]])
-              (gen/return " ")))
+                    (gen/return " ")
+                    (:nonprop-fixed-repeat gmap))]])))
           (gen/return " ")
           (gen/one-of [
             (gen/return "")
@@ -1780,41 +1784,40 @@
           (gen/return " ")
           (gen/vector
             (gen/tuple
+              (gen/return " ")
               (gen/one-of [
                 (gen/return "")
                 (:nonprop-line-names gmap)])
               (gen/return " ")
               (gen/frequency [
-                [(get weights [:nonprop-auto-track-list :cat 6 :star :cat 2 :alt 0] 100)
+                [(get weights [:nonprop-auto-track-list :cat 7 :star :cat 3 :alt 0] 100)
                   (gen/tuple
-                    (:nonprop-fixed-size gmap)
-                    (gen/return " "))]
-                [(get weights [:nonprop-auto-track-list :cat 6 :star :cat 2 :alt 1] 100)
+                    (gen/return " ")
+                    (:nonprop-fixed-size gmap))]
+                [(get weights [:nonprop-auto-track-list :cat 7 :star :cat 3 :alt 1] 100)
                   (gen/tuple
-                    (:nonprop-fixed-repeat gmap)
-                    (gen/return " "))]])
-              (gen/return " ")))
+                    (gen/return " ")
+                    (:nonprop-fixed-repeat gmap))]])))
           (gen/return " ")
           (gen/one-of [
             (gen/return "")
-            (:nonprop-line-names gmap)])
-          (gen/return " "))
+            (:nonprop-line-names gmap)]))
         gmap (assoc gmap :nonprop-auto-track-list gen-nonprop-auto-track-list)
 
         gen-prop-grid-template-columns
         (gen/frequency [
           [(get weights [:prop-grid-template-columns :alt 0] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "none"))]
           [(get weights [:prop-grid-template-columns :alt 1] 100)
             (gen/tuple
-              (:nonprop-track-list gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-track-list gmap))]
           [(get weights [:prop-grid-template-columns :alt 2] 100)
             (gen/tuple
-              (:nonprop-auto-track-list gmap)
-              (gen/return " "))]])
+              (gen/return " ")
+              (:nonprop-auto-track-list gmap))]])
         gmap (assoc gmap :prop-grid-template-columns gen-prop-grid-template-columns)
 
         gen-nonprop-grid-template-columns
@@ -1825,32 +1828,32 @@
         (gen/frequency [
           [(get weights [:prop-resize :alt 0] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "none"))]
           [(get weights [:prop-resize :alt 1] 100)
             (gen/tuple
-              (gen/return "both")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "both"))]
           [(get weights [:prop-resize :alt 2] 100)
             (gen/tuple
-              (gen/return "horizontal")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "horizontal"))]
           [(get weights [:prop-resize :alt 3] 100)
             (gen/tuple
-              (gen/return "vertical")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "vertical"))]])
         gmap (assoc gmap :prop-resize gen-prop-resize)
 
         gen-prop-column-width
         (gen/frequency [
           [(get weights [:prop-column-width :alt 0] 100)
             (gen/tuple
-              (:nonprop-length gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-length gmap))]
           [(get weights [:prop-column-width :alt 1] 100)
             (gen/tuple
-              (gen/return "auto")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "auto"))]])
         gmap (assoc gmap :prop-column-width gen-prop-column-width)
 
         gen-nonprop-column-width
@@ -1861,12 +1864,12 @@
         (gen/frequency [
           [(get weights [:prop-column-count :alt 0] 100)
             (gen/tuple
-              (:nonprop-number gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-number gmap))]
           [(get weights [:prop-column-count :alt 1] 100)
             (gen/tuple
-              (gen/return "auto")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "auto"))]])
         gmap (assoc gmap :prop-column-count gen-prop-column-count)
 
         gen-nonprop-column-count
@@ -1878,24 +1881,24 @@
           (gen/frequency [
             [(get weights [:prop-columns :plus :alt 0] 100)
               (gen/tuple
-                (:nonprop-column-width gmap)
-                (gen/return " "))]
+                (gen/return " ")
+                (:nonprop-column-width gmap))]
             [(get weights [:prop-columns :plus :alt 1] 100)
               (gen/tuple
-                (:nonprop-column-count gmap)
-                (gen/return " "))]])))
+                (gen/return " ")
+                (:nonprop-column-count gmap))]])))
         gmap (assoc gmap :prop-columns gen-prop-columns)
 
         gen-prop-list-style-position
         (gen/frequency [
           [(get weights [:prop-list-style-position :alt 0] 100)
             (gen/tuple
-              (gen/return "inside")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "inside"))]
           [(get weights [:prop-list-style-position :alt 1] 100)
             (gen/tuple
-              (gen/return "outside")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "outside"))]])
         gmap (assoc gmap :prop-list-style-position gen-prop-list-style-position)
 
         gen-nonprop-list-style-position
@@ -1906,20 +1909,21 @@
         (gen/frequency [
           [(get weights [:nonprop-display-outside :alt 0] 100)
             (gen/tuple
-              (gen/return "block")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "block"))]
           [(get weights [:nonprop-display-outside :alt 1] 100)
             (gen/tuple
-              (gen/return "inline")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "inline"))]
           [(get weights [:nonprop-display-outside :alt 2] 100)
             (gen/tuple
-              (gen/return "run-in")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "run-in"))]])
         gmap (assoc gmap :nonprop-display-outside gen-nonprop-display-outside)
 
         gen-nonprop-display-listitem
         (gen/tuple
+          (gen/return " ")
           (gen/return "list-item")
           (gen/return " ")
           (gen/one-of [
@@ -1929,45 +1933,44 @@
           (gen/one-of [
             (gen/return "")
             (gen/frequency [
-              [(get weights [:nonprop-display-listitem :cat 4 :opt :alt 0] 100)
+              [(get weights [:nonprop-display-listitem :cat 5 :opt :alt 0] 100)
                 (gen/tuple
-                  (gen/return "flow")
-                  (gen/return " "))]
-              [(get weights [:nonprop-display-listitem :cat 4 :opt :alt 1] 100)
+                  (gen/return " ")
+                  (gen/return "flow"))]
+              [(get weights [:nonprop-display-listitem :cat 5 :opt :alt 1] 100)
                 (gen/tuple
-                  (gen/return "flow-root")
-                  (gen/return " "))]])])
-          (gen/return " "))
+                  (gen/return " ")
+                  (gen/return "flow-root"))]])]))
         gmap (assoc gmap :nonprop-display-listitem gen-nonprop-display-listitem)
 
         gen-prop-text-decoration-style
         (gen/frequency [
           [(get weights [:prop-text-decoration-style :alt 0] 100)
             (gen/tuple
-              (gen/return "solid")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "solid"))]
           [(get weights [:prop-text-decoration-style :alt 1] 100)
             (gen/tuple
-              (gen/return "double")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "double"))]
           [(get weights [:prop-text-decoration-style :alt 2] 100)
             (gen/tuple
-              (gen/return "dotted")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "dotted"))]
           [(get weights [:prop-text-decoration-style :alt 3] 100)
             (gen/tuple
-              (gen/return "dashed")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "dashed"))]
           [(get weights [:prop-text-decoration-style :alt 4] 100)
             (gen/tuple
-              (gen/return "wavy")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "wavy"))]])
         gmap (assoc gmap :prop-text-decoration-style gen-prop-text-decoration-style)
 
         gen-prop-text-decoration-color
         (gen/tuple
-          (:nonprop-color gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-color gmap))
         gmap (assoc gmap :prop-text-decoration-color gen-prop-text-decoration-color)
 
         gen-nonprop-text-decoration-style
@@ -1978,29 +1981,29 @@
         (gen/frequency [
           [(get weights [:prop-text-decoration-line :alt 0] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "none"))]
           [(get weights [:prop-text-decoration-line :alt 1] 100)
             (gen/tuple
+              (gen/return " ")
               (gen/such-that not-empty (gen/vector
                 (gen/frequency [
-                  [(get weights [:prop-text-decoration-line :alt 1 :cat 0 :plus :alt 0] 100)
+                  [(get weights [:prop-text-decoration-line :alt 1 :cat 1 :plus :alt 0] 100)
                     (gen/tuple
-                      (gen/return "underline")
-                      (gen/return " "))]
-                  [(get weights [:prop-text-decoration-line :alt 1 :cat 0 :plus :alt 1] 100)
+                      (gen/return " ")
+                      (gen/return "underline"))]
+                  [(get weights [:prop-text-decoration-line :alt 1 :cat 1 :plus :alt 1] 100)
                     (gen/tuple
-                      (gen/return "overline")
-                      (gen/return " "))]
-                  [(get weights [:prop-text-decoration-line :alt 1 :cat 0 :plus :alt 2] 100)
+                      (gen/return " ")
+                      (gen/return "overline"))]
+                  [(get weights [:prop-text-decoration-line :alt 1 :cat 1 :plus :alt 2] 100)
                     (gen/tuple
-                      (gen/return "line-through")
-                      (gen/return " "))]
-                  [(get weights [:prop-text-decoration-line :alt 1 :cat 0 :plus :alt 3] 100)
+                      (gen/return " ")
+                      (gen/return "line-through"))]
+                  [(get weights [:prop-text-decoration-line :alt 1 :cat 1 :plus :alt 3] 100)
                     (gen/tuple
-                      (gen/return "blink")
-                      (gen/return " "))]])))
-              (gen/return " "))]])
+                      (gen/return " ")
+                      (gen/return "blink"))]]))))]])
         gmap (assoc gmap :prop-text-decoration-line gen-prop-text-decoration-line)
 
         gen-nonprop-text-decoration-line
@@ -2016,16 +2019,16 @@
           (gen/frequency [
             [(get weights [:prop-text-decoration :plus :alt 0] 100)
               (gen/tuple
-                (:nonprop-text-decoration-line gmap)
-                (gen/return " "))]
+                (gen/return " ")
+                (:nonprop-text-decoration-line gmap))]
             [(get weights [:prop-text-decoration :plus :alt 1] 100)
               (gen/tuple
-                (:nonprop-text-decoration-style gmap)
-                (gen/return " "))]
+                (gen/return " ")
+                (:nonprop-text-decoration-style gmap))]
             [(get weights [:prop-text-decoration :plus :alt 2] 100)
               (gen/tuple
-                (:nonprop-text-decoration-color gmap)
-                (gen/return " "))]])))
+                (gen/return " ")
+                (:nonprop-text-decoration-color gmap))]])))
         gmap (assoc gmap :prop-text-decoration gen-prop-text-decoration)
 
         gen-nonprop-resolution
@@ -2041,10 +2044,17 @@
         gmap (assoc gmap :nonprop-resolution gen-nonprop-resolution)
 
         gen-nonprop-string
-        (gen/tuple
-          (gen/return "'")
-          (chuck/string-from-regex #"[A-Za-z0-9 _\"-]")
-          (gen/return "'"))
+        (gen/frequency [
+          [(get weights [:nonprop-string :alt 0] 100)
+            (gen/tuple
+              (gen/return "'")
+              (chuck/string-from-regex #"[A-Za-z0-9 _\"-]*")
+              (gen/return "'"))]
+          [(get weights [:nonprop-string :alt 1] 100)
+            (gen/tuple
+              (gen/return "\"")
+              (chuck/string-from-regex #"[A-Za-z0-9 _'-]*")
+              (gen/return "\""))]])
         gmap (assoc gmap :nonprop-string gen-nonprop-string)
 
         gen-nonprop-id-selector
@@ -2053,103 +2063,103 @@
 
         gen-func-element
         (gen/tuple
-          (gen/return "element(")
-          (:nonprop-id-selector gmap)
           (gen/return " ")
-          (gen/return ")")
-          (gen/return " "))
+          (gen/return "element(")
+          (gen/return " ")
+          (:nonprop-id-selector gmap)
+          (gen/return ")"))
         gmap (assoc gmap :func-element gen-func-element)
 
         gen-nonprop-image
         (gen/frequency [
           [(get weights [:nonprop-image :alt 0] 100)
             (gen/tuple
-              (:nonprop-url gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-url gmap))]
           [(get weights [:nonprop-image :alt 1] 100)
             (gen/tuple
-              (:func-element gmap)
-              (gen/return " "))]])
+              (gen/return " ")
+              (:func-element gmap))]])
         gmap (assoc gmap :nonprop-image gen-nonprop-image)
 
         gen-nonprop-image-set-option
         (gen/tuple
-          (gen/frequency [
-            [(get weights [:nonprop-image-set-option :cat 0 :alt 0] 100)
-              (gen/tuple
-                (:nonprop-image gmap)
-                (gen/return " "))]
-            [(get weights [:nonprop-image-set-option :cat 0 :alt 1] 100)
-              (gen/tuple
-                (:nonprop-string gmap)
-                (gen/return " "))]])
           (gen/return " ")
-          (:nonprop-resolution gmap)
-          (gen/return " "))
+          (gen/frequency [
+            [(get weights [:nonprop-image-set-option :cat 1 :alt 0] 100)
+              (gen/tuple
+                (gen/return " ")
+                (:nonprop-image gmap))]
+            [(get weights [:nonprop-image-set-option :cat 1 :alt 1] 100)
+              (gen/tuple
+                (gen/return " ")
+                (:nonprop-string gmap))]])
+          (gen/return " ")
+          (:nonprop-resolution gmap))
         gmap (assoc gmap :nonprop-image-set-option gen-nonprop-image-set-option)
 
         gen-nonprop-br-width
         (gen/frequency [
           [(get weights [:nonprop-br-width :alt 0] 100)
             (gen/tuple
-              (:nonprop-length gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-length gmap))]
           [(get weights [:nonprop-br-width :alt 1] 100)
             (gen/tuple
-              (gen/return "thin")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "thin"))]
           [(get weights [:nonprop-br-width :alt 2] 100)
             (gen/tuple
-              (gen/return "medium")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "medium"))]
           [(get weights [:nonprop-br-width :alt 3] 100)
             (gen/tuple
-              (gen/return "thick")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "thick"))]])
         gmap (assoc gmap :nonprop-br-width gen-nonprop-br-width)
 
         gen-nonprop-br-style
         (gen/frequency [
           [(get weights [:nonprop-br-style :alt 0] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "none"))]
           [(get weights [:nonprop-br-style :alt 1] 100)
             (gen/tuple
-              (gen/return "hidden")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "hidden"))]
           [(get weights [:nonprop-br-style :alt 2] 100)
             (gen/tuple
-              (gen/return "dotted")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "dotted"))]
           [(get weights [:nonprop-br-style :alt 3] 100)
             (gen/tuple
-              (gen/return "dashed")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "dashed"))]
           [(get weights [:nonprop-br-style :alt 4] 100)
             (gen/tuple
-              (gen/return "solid")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "solid"))]
           [(get weights [:nonprop-br-style :alt 5] 100)
             (gen/tuple
-              (gen/return "double")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "double"))]
           [(get weights [:nonprop-br-style :alt 6] 100)
             (gen/tuple
-              (gen/return "groove")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "groove"))]
           [(get weights [:nonprop-br-style :alt 7] 100)
             (gen/tuple
-              (gen/return "ridge")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "ridge"))]
           [(get weights [:nonprop-br-style :alt 8] 100)
             (gen/tuple
-              (gen/return "inset")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "inset"))]
           [(get weights [:nonprop-br-style :alt 9] 100)
             (gen/tuple
-              (gen/return "outset")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "outset"))]])
         gmap (assoc gmap :nonprop-br-style gen-nonprop-br-style)
 
         gen-prop-border
@@ -2157,48 +2167,48 @@
           (gen/frequency [
             [(get weights [:prop-border :plus :alt 0] 100)
               (gen/tuple
-                (:nonprop-br-width gmap)
-                (gen/return " "))]
+                (gen/return " ")
+                (:nonprop-br-width gmap))]
             [(get weights [:prop-border :plus :alt 1] 100)
               (gen/tuple
-                (:nonprop-br-style gmap)
-                (gen/return " "))]
+                (gen/return " ")
+                (:nonprop-br-style gmap))]
             [(get weights [:prop-border :plus :alt 2] 100)
               (gen/tuple
-                (:nonprop-color gmap)
-                (gen/return " "))]])))
+                (gen/return " ")
+                (:nonprop-color gmap))]])))
         gmap (assoc gmap :prop-border gen-prop-border)
 
         gen-prop-font-variant-caps
         (gen/frequency [
           [(get weights [:prop-font-variant-caps :alt 0] 100)
             (gen/tuple
-              (gen/return "normal")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "normal"))]
           [(get weights [:prop-font-variant-caps :alt 1] 100)
             (gen/tuple
-              (gen/return "small-caps")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "small-caps"))]
           [(get weights [:prop-font-variant-caps :alt 2] 100)
             (gen/tuple
-              (gen/return "all-small-caps")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "all-small-caps"))]
           [(get weights [:prop-font-variant-caps :alt 3] 100)
             (gen/tuple
-              (gen/return "petite-caps")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "petite-caps"))]
           [(get weights [:prop-font-variant-caps :alt 4] 100)
             (gen/tuple
-              (gen/return "all-petite-caps")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "all-petite-caps"))]
           [(get weights [:prop-font-variant-caps :alt 5] 100)
             (gen/tuple
-              (gen/return "unicase")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "unicase"))]
           [(get weights [:prop-font-variant-caps :alt 6] 100)
             (gen/tuple
-              (gen/return "titling-caps")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "titling-caps"))]])
         gmap (assoc gmap :prop-font-variant-caps gen-prop-font-variant-caps)
 
         gen-nonprop-ident
@@ -2221,178 +2231,178 @@
 
         gen-prop-transition-duration
         (gen/tuple
+          (gen/return " ")
           (:nonprop-time gmap)
           (gen/vector
             (gen/tuple
-              (gen/return ", ")
-              (:nonprop-time gmap)))
-          (gen/return " "))
+              (gen/return ",")
+              (:nonprop-time gmap))))
         gmap (assoc gmap :prop-transition-duration gen-prop-transition-duration)
 
         gen-prop-offset-block-end
         (gen/tuple
-          (:nonprop-left gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-left gmap))
         gmap (assoc gmap :prop-offset-block-end gen-prop-offset-block-end)
 
         gen-nonprop-ending-shape
         (gen/frequency [
           [(get weights [:nonprop-ending-shape :alt 0] 100)
             (gen/tuple
-              (gen/return "circle")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "circle"))]
           [(get weights [:nonprop-ending-shape :alt 1] 100)
             (gen/tuple
-              (gen/return "ellipse")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "ellipse"))]])
         gmap (assoc gmap :nonprop-ending-shape gen-nonprop-ending-shape)
 
         gen-nonprop-position
         (gen/tuple
+          (gen/return " ")
           (gen/frequency [
-            [(get weights [:nonprop-position :cat 0 :alt 0] 100)
+            [(get weights [:nonprop-position :cat 1 :alt 0] 100)
               (gen/tuple
-                (gen/frequency [
-                  [(get weights [:nonprop-position :cat 0 :alt 0 :cat 0 :alt 0] 100)
-                    (gen/tuple
-                      (gen/return "left")
-                      (gen/return " "))]
-                  [(get weights [:nonprop-position :cat 0 :alt 0 :cat 0 :alt 1] 100)
-                    (gen/tuple
-                      (gen/return "center")
-                      (gen/return " "))]
-                  [(get weights [:nonprop-position :cat 0 :alt 0 :cat 0 :alt 2] 100)
-                    (gen/tuple
-                      (gen/return "right")
-                      (gen/return " "))]
-                  [(get weights [:nonprop-position :cat 0 :alt 0 :cat 0 :alt 3] 100)
-                    (gen/tuple
-                      (gen/return "top")
-                      (gen/return " "))]
-                  [(get weights [:nonprop-position :cat 0 :alt 0 :cat 0 :alt 4] 100)
-                    (gen/tuple
-                      (gen/return "bottom")
-                      (gen/return " "))]
-                  [(get weights [:nonprop-position :cat 0 :alt 0 :cat 0 :alt 5] 100)
-                    (gen/tuple
-                      (:nonprop-length-percentage gmap)
-                      (gen/return " "))]])
-                (gen/return " "))]
-            [(get weights [:nonprop-position :cat 0 :alt 1] 100)
-              (gen/tuple
-                (gen/frequency [
-                  [(get weights [:nonprop-position :cat 0 :alt 1 :cat 0 :alt 0] 100)
-                    (gen/tuple
-                      (gen/return "left")
-                      (gen/return " "))]
-                  [(get weights [:nonprop-position :cat 0 :alt 1 :cat 0 :alt 1] 100)
-                    (gen/tuple
-                      (gen/return "center")
-                      (gen/return " "))]
-                  [(get weights [:nonprop-position :cat 0 :alt 1 :cat 0 :alt 2] 100)
-                    (gen/tuple
-                      (gen/return "right")
-                      (gen/return " "))]
-                  [(get weights [:nonprop-position :cat 0 :alt 1 :cat 0 :alt 3] 100)
-                    (gen/tuple
-                      (:nonprop-length-percentage gmap)
-                      (gen/return " "))]])
                 (gen/return " ")
                 (gen/frequency [
-                  [(get weights [:nonprop-position :cat 0 :alt 1 :cat 2 :alt 0] 100)
+                  [(get weights [:nonprop-position :cat 1 :alt 0 :cat 1 :alt 0] 100)
                     (gen/tuple
-                      (gen/return "top")
-                      (gen/return " "))]
-                  [(get weights [:nonprop-position :cat 0 :alt 1 :cat 2 :alt 1] 100)
+                      (gen/return " ")
+                      (gen/return "left"))]
+                  [(get weights [:nonprop-position :cat 1 :alt 0 :cat 1 :alt 1] 100)
                     (gen/tuple
-                      (gen/return "center")
-                      (gen/return " "))]
-                  [(get weights [:nonprop-position :cat 0 :alt 1 :cat 2 :alt 2] 100)
+                      (gen/return " ")
+                      (gen/return "center"))]
+                  [(get weights [:nonprop-position :cat 1 :alt 0 :cat 1 :alt 2] 100)
                     (gen/tuple
-                      (gen/return "bottom")
-                      (gen/return " "))]
-                  [(get weights [:nonprop-position :cat 0 :alt 1 :cat 2 :alt 3] 100)
+                      (gen/return " ")
+                      (gen/return "right"))]
+                  [(get weights [:nonprop-position :cat 1 :alt 0 :cat 1 :alt 3] 100)
                     (gen/tuple
-                      (:nonprop-length-percentage gmap)
-                      (gen/return " "))]])
-                (gen/return " "))]
-            [(get weights [:nonprop-position :cat 0 :alt 2] 100)
+                      (gen/return " ")
+                      (gen/return "top"))]
+                  [(get weights [:nonprop-position :cat 1 :alt 0 :cat 1 :alt 4] 100)
+                    (gen/tuple
+                      (gen/return " ")
+                      (gen/return "bottom"))]
+                  [(get weights [:nonprop-position :cat 1 :alt 0 :cat 1 :alt 5] 100)
+                    (gen/tuple
+                      (gen/return " ")
+                      (:nonprop-length-percentage gmap))]]))]
+            [(get weights [:nonprop-position :cat 1 :alt 1] 100)
               (gen/tuple
+                (gen/return " ")
                 (gen/frequency [
-                  [(get weights [:nonprop-position :cat 0 :alt 2 :cat 0 :alt 0] 100)
+                  [(get weights [:nonprop-position :cat 1 :alt 1 :cat 1 :alt 0] 100)
                     (gen/tuple
-                      (gen/return "center")
-                      (gen/return " "))]
-                  [(get weights [:nonprop-position :cat 0 :alt 2 :cat 0 :alt 1] 100)
+                      (gen/return " ")
+                      (gen/return "left"))]
+                  [(get weights [:nonprop-position :cat 1 :alt 1 :cat 1 :alt 1] 100)
                     (gen/tuple
+                      (gen/return " ")
+                      (gen/return "center"))]
+                  [(get weights [:nonprop-position :cat 1 :alt 1 :cat 1 :alt 2] 100)
+                    (gen/tuple
+                      (gen/return " ")
+                      (gen/return "right"))]
+                  [(get weights [:nonprop-position :cat 1 :alt 1 :cat 1 :alt 3] 100)
+                    (gen/tuple
+                      (gen/return " ")
+                      (:nonprop-length-percentage gmap))]])
+                (gen/return " ")
+                (gen/frequency [
+                  [(get weights [:nonprop-position :cat 1 :alt 1 :cat 3 :alt 0] 100)
+                    (gen/tuple
+                      (gen/return " ")
+                      (gen/return "top"))]
+                  [(get weights [:nonprop-position :cat 1 :alt 1 :cat 3 :alt 1] 100)
+                    (gen/tuple
+                      (gen/return " ")
+                      (gen/return "center"))]
+                  [(get weights [:nonprop-position :cat 1 :alt 1 :cat 3 :alt 2] 100)
+                    (gen/tuple
+                      (gen/return " ")
+                      (gen/return "bottom"))]
+                  [(get weights [:nonprop-position :cat 1 :alt 1 :cat 3 :alt 3] 100)
+                    (gen/tuple
+                      (gen/return " ")
+                      (:nonprop-length-percentage gmap))]]))]
+            [(get weights [:nonprop-position :cat 1 :alt 2] 100)
+              (gen/tuple
+                (gen/return " ")
+                (gen/frequency [
+                  [(get weights [:nonprop-position :cat 1 :alt 2 :cat 1 :alt 0] 100)
+                    (gen/tuple
+                      (gen/return " ")
+                      (gen/return "center"))]
+                  [(get weights [:nonprop-position :cat 1 :alt 2 :cat 1 :alt 1] 100)
+                    (gen/tuple
+                      (gen/return " ")
                       (gen/frequency [
-                        [(get weights [:nonprop-position :cat 0 :alt 2 :cat 0 :alt 1 :cat 0 :alt 0] 100)
+                        [(get weights [:nonprop-position :cat 1 :alt 2 :cat 1 :alt 1 :cat 1 :alt 0] 100)
                           (gen/tuple
-                            (gen/return "left")
-                            (gen/return " "))]
-                        [(get weights [:nonprop-position :cat 0 :alt 2 :cat 0 :alt 1 :cat 0 :alt 1] 100)
+                            (gen/return " ")
+                            (gen/return "left"))]
+                        [(get weights [:nonprop-position :cat 1 :alt 2 :cat 1 :alt 1 :cat 1 :alt 1] 100)
                           (gen/tuple
-                            (gen/return "right")
-                            (gen/return " "))]])
+                            (gen/return " ")
+                            (gen/return "right"))]])
                       (gen/return " ")
                       (gen/one-of [
                         (gen/return "")
-                        (:nonprop-length-percentage gmap)])
-                      (gen/return " "))]])
+                        (:nonprop-length-percentage gmap)]))]])
                 (gen/return " ")
                 (gen/frequency [
-                  [(get weights [:nonprop-position :cat 0 :alt 2 :cat 2 :alt 0] 100)
+                  [(get weights [:nonprop-position :cat 1 :alt 2 :cat 3 :alt 0] 100)
                     (gen/tuple
-                      (gen/return "center")
-                      (gen/return " "))]
-                  [(get weights [:nonprop-position :cat 0 :alt 2 :cat 2 :alt 1] 100)
+                      (gen/return " ")
+                      (gen/return "center"))]
+                  [(get weights [:nonprop-position :cat 1 :alt 2 :cat 3 :alt 1] 100)
                     (gen/tuple
+                      (gen/return " ")
                       (gen/frequency [
-                        [(get weights [:nonprop-position :cat 0 :alt 2 :cat 2 :alt 1 :cat 0 :alt 0] 100)
+                        [(get weights [:nonprop-position :cat 1 :alt 2 :cat 3 :alt 1 :cat 1 :alt 0] 100)
                           (gen/tuple
-                            (gen/return "top")
-                            (gen/return " "))]
-                        [(get weights [:nonprop-position :cat 0 :alt 2 :cat 2 :alt 1 :cat 0 :alt 1] 100)
+                            (gen/return " ")
+                            (gen/return "top"))]
+                        [(get weights [:nonprop-position :cat 1 :alt 2 :cat 3 :alt 1 :cat 1 :alt 1] 100)
                           (gen/tuple
-                            (gen/return "bottom")
-                            (gen/return " "))]])
+                            (gen/return " ")
+                            (gen/return "bottom"))]])
                       (gen/return " ")
                       (gen/one-of [
                         (gen/return "")
-                        (:nonprop-length-percentage gmap)])
-                      (gen/return " "))]])
-                (gen/return " "))]])
-          (gen/return " "))
+                        (:nonprop-length-percentage gmap)]))]]))]]))
         gmap (assoc gmap :nonprop-position gen-nonprop-position)
 
         gen-nonprop-size
         (gen/frequency [
           [(get weights [:nonprop-size :alt 0] 100)
             (gen/tuple
-              (gen/return "closest-side")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "closest-side"))]
           [(get weights [:nonprop-size :alt 1] 100)
             (gen/tuple
-              (gen/return "farthest-side")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "farthest-side"))]
           [(get weights [:nonprop-size :alt 2] 100)
             (gen/tuple
-              (gen/return "closest-corner")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "closest-corner"))]
           [(get weights [:nonprop-size :alt 3] 100)
             (gen/tuple
-              (gen/return "farthest-corner")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "farthest-corner"))]
           [(get weights [:nonprop-size :alt 4] 100)
             (gen/tuple
-              (:nonprop-length gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-length gmap))]
           [(get weights [:nonprop-size :alt 5] 100)
             (gen/tuple
+              (gen/return " ")
               (gen/tuple
                 (:nonprop-length-percentage gmap)
-                (:nonprop-length-percentage gmap))
-              (gen/return " "))]])
+                (:nonprop-length-percentage gmap)))]])
         gmap (assoc gmap :nonprop-size gen-nonprop-size)]
     gmap))
 
@@ -2400,227 +2410,227 @@
   (let [
         gen-nonprop-color-stop
         (gen/tuple
+          (gen/return " ")
           (:nonprop-color gmap)
           (gen/return " ")
           (gen/one-of [
             (gen/return "")
-            (:nonprop-length-percentage gmap)])
-          (gen/return " "))
+            (:nonprop-length-percentage gmap)]))
         gmap (assoc gmap :nonprop-color-stop gen-nonprop-color-stop)
 
         gen-nonprop-color-stop-list
         (gen/tuple
+          (gen/return " ")
           (gen/tuple
             (:nonprop-color-stop gmap)
             (gen/return ", ")
-            (:nonprop-color-stop gmap))
-          (gen/return " "))
+            (:nonprop-color-stop gmap)))
         gmap (assoc gmap :nonprop-color-stop-list gen-nonprop-color-stop-list)
 
         gen-func-repeating-radial-gradient
         (gen/tuple
+          (gen/return " ")
           (gen/return "repeating-radial-gradient(")
           (gen/tuple
+            (gen/return " ")
             (gen/one-of [
               (gen/return "")
               (gen/such-that not-empty (gen/vector
                 (gen/frequency [
-                  [(get weights [:func-repeating-radial-gradient :cat 1 :cat 0 :opt :plus :alt 0] 100)
+                  [(get weights [:func-repeating-radial-gradient :cat 2 :cat 1 :opt :plus :alt 0] 100)
                     (gen/tuple
-                      (:nonprop-ending-shape gmap)
-                      (gen/return " "))]
-                  [(get weights [:func-repeating-radial-gradient :cat 1 :cat 0 :opt :plus :alt 1] 100)
+                      (gen/return " ")
+                      (:nonprop-ending-shape gmap))]
+                  [(get weights [:func-repeating-radial-gradient :cat 2 :cat 1 :opt :plus :alt 1] 100)
                     (gen/tuple
-                      (:nonprop-size gmap)
-                      (gen/return " "))]])))])
+                      (gen/return " ")
+                      (:nonprop-size gmap))]])))])
             (gen/return " ")
             (gen/one-of [
               (gen/return "")
               (gen/tuple
+                (gen/return " ")
                 (gen/return "at")
                 (gen/return " ")
-                (:nonprop-position gmap)
-                (gen/return " "))])
+                (:nonprop-position gmap))])
             (gen/return " ")
             (gen/return ",")
             (gen/return " ")
-            (:nonprop-color-stop-list gmap)
-            (gen/return " "))
-          (gen/return ")")
-          (gen/return " "))
+            (:nonprop-color-stop-list gmap))
+          (gen/return ")"))
         gmap (assoc gmap :func-repeating-radial-gradient gen-func-repeating-radial-gradient)
 
         gen-prop-overflow-x
         (gen/frequency [
           [(get weights [:prop-overflow-x :alt 0] 100)
             (gen/tuple
-              (gen/return "visible")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "visible"))]
           [(get weights [:prop-overflow-x :alt 1] 100)
             (gen/tuple
-              (gen/return "hidden")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "hidden"))]
           [(get weights [:prop-overflow-x :alt 2] 100)
             (gen/tuple
-              (gen/return "scroll")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "scroll"))]
           [(get weights [:prop-overflow-x :alt 3] 100)
             (gen/tuple
-              (gen/return "auto")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "auto"))]])
         gmap (assoc gmap :prop-overflow-x gen-prop-overflow-x)
 
         gen-nonprop-angle-percentage
         (gen/frequency [
           [(get weights [:nonprop-angle-percentage :alt 0] 100)
             (gen/tuple
-              (:nonprop-angle gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-angle gmap))]
           [(get weights [:nonprop-angle-percentage :alt 1] 100)
             (gen/tuple
-              (:nonprop-percentage gmap)
-              (gen/return " "))]])
+              (gen/return " ")
+              (:nonprop-percentage gmap))]])
         gmap (assoc gmap :nonprop-angle-percentage gen-nonprop-angle-percentage)
 
         gen-nonprop-shape-radius
         (gen/frequency [
           [(get weights [:nonprop-shape-radius :alt 0] 100)
             (gen/tuple
-              (:nonprop-length-percentage gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-length-percentage gmap))]
           [(get weights [:nonprop-shape-radius :alt 1] 100)
             (gen/tuple
-              (gen/return "closest-side")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "closest-side"))]
           [(get weights [:nonprop-shape-radius :alt 2] 100)
             (gen/tuple
-              (gen/return "farthest-side")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "farthest-side"))]])
         gmap (assoc gmap :nonprop-shape-radius gen-nonprop-shape-radius)
 
         gen-func-circle
         (gen/tuple
+          (gen/return " ")
           (gen/return "circle(")
           (gen/tuple
-            (:nonprop-shape-radius gmap)
+            (gen/return " ")
+            (gen/return " ")
             (gen/one-of [
               (gen/return "")
-              (gen/return " ")])
+              (:nonprop-shape-radius gmap)])
             (gen/return " ")
             (gen/one-of [
               (gen/return "")
               (gen/tuple
+                (gen/return " ")
                 (gen/return "at")
                 (gen/return " ")
-                (:nonprop-position gmap)
-                (gen/return " "))])
-            (gen/return " "))
-          (gen/return ")")
-          (gen/return " "))
+                (:nonprop-position gmap))]))
+          (gen/return ")"))
         gmap (assoc gmap :func-circle gen-func-circle)
 
         gen-prop--moz-border-top-colors
         (gen/frequency [
           [(get weights [:prop--moz-border-top-colors :alt 0] 100)
             (gen/tuple
-              (:nonprop-color gmap)
-              (gen/vector
-                (gen/return " "))
               (gen/return " ")
-              (:nonprop-color gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/vector
+                (:nonprop-color gmap))
+              (gen/return " ")
+              (:nonprop-color gmap))]
           [(get weights [:prop--moz-border-top-colors :alt 1] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "none"))]])
         gmap (assoc gmap :prop--moz-border-top-colors gen-prop--moz-border-top-colors)
 
         gen-prop-vertical-align
         (gen/frequency [
           [(get weights [:prop-vertical-align :alt 0] 100)
             (gen/tuple
-              (gen/return "baseline")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "baseline"))]
           [(get weights [:prop-vertical-align :alt 1] 100)
             (gen/tuple
-              (gen/return "sub")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "sub"))]
           [(get weights [:prop-vertical-align :alt 2] 100)
             (gen/tuple
-              (gen/return "super")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "super"))]
           [(get weights [:prop-vertical-align :alt 3] 100)
             (gen/tuple
-              (gen/return "text-top")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "text-top"))]
           [(get weights [:prop-vertical-align :alt 4] 100)
             (gen/tuple
-              (gen/return "text-bottom")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "text-bottom"))]
           [(get weights [:prop-vertical-align :alt 5] 100)
             (gen/tuple
-              (gen/return "middle")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "middle"))]
           [(get weights [:prop-vertical-align :alt 6] 100)
             (gen/tuple
-              (gen/return "top")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "top"))]
           [(get weights [:prop-vertical-align :alt 7] 100)
             (gen/tuple
-              (gen/return "bottom")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "bottom"))]
           [(get weights [:prop-vertical-align :alt 8] 100)
             (gen/tuple
-              (:nonprop-percentage gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-percentage gmap))]
           [(get weights [:prop-vertical-align :alt 9] 100)
             (gen/tuple
-              (:nonprop-length gmap)
-              (gen/return " "))]])
+              (gen/return " ")
+              (:nonprop-length gmap))]])
         gmap (assoc gmap :prop-vertical-align gen-prop-vertical-align)
 
         gen-prop-animation-delay
         (gen/tuple
+          (gen/return " ")
           (:nonprop-time gmap)
           (gen/vector
             (gen/tuple
-              (gen/return ", ")
-              (:nonprop-time gmap)))
-          (gen/return " "))
+              (gen/return ",")
+              (:nonprop-time gmap))))
         gmap (assoc gmap :prop-animation-delay gen-prop-animation-delay)
 
         gen-nonprop-counter-style-name
         (gen/tuple
-          (:nonprop-custom-ident gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-custom-ident gmap))
         gmap (assoc gmap :nonprop-counter-style-name gen-nonprop-counter-style-name)
 
         gen-nonprop-counter-style
         (gen/frequency [
           [(get weights [:nonprop-counter-style :alt 0] 100)
             (gen/tuple
-              (:nonprop-counter-style-name gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-counter-style-name gmap))]
           [(get weights [:nonprop-counter-style :alt 1] 100)
             (gen/tuple
-              (gen/return "symbols()")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "symbols()"))]])
         gmap (assoc gmap :nonprop-counter-style gen-nonprop-counter-style)
 
         gen-prop-list-style-type
         (gen/frequency [
           [(get weights [:prop-list-style-type :alt 0] 100)
             (gen/tuple
-              (:nonprop-counter-style gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-counter-style gmap))]
           [(get weights [:prop-list-style-type :alt 1] 100)
             (gen/tuple
-              (:nonprop-string gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-string gmap))]
           [(get weights [:prop-list-style-type :alt 2] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "none"))]])
         gmap (assoc gmap :prop-list-style-type gen-prop-list-style-type)
 
         gen-nonprop-list-style-type
@@ -2631,382 +2641,382 @@
         (gen/frequency [
           [(get weights [:prop-scroll-snap-type-y :alt 0] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "none"))]
           [(get weights [:prop-scroll-snap-type-y :alt 1] 100)
             (gen/tuple
-              (gen/return "mandatory")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "mandatory"))]
           [(get weights [:prop-scroll-snap-type-y :alt 2] 100)
             (gen/tuple
-              (gen/return "proximity")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "proximity"))]])
         gmap (assoc gmap :prop-scroll-snap-type-y gen-prop-scroll-snap-type-y)
 
         gen-prop-caption-side
         (gen/frequency [
           [(get weights [:prop-caption-side :alt 0] 100)
             (gen/tuple
-              (gen/return "top")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "top"))]
           [(get weights [:prop-caption-side :alt 1] 100)
             (gen/tuple
-              (gen/return "bottom")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "bottom"))]
           [(get weights [:prop-caption-side :alt 2] 100)
             (gen/tuple
-              (gen/return "block-start")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "block-start"))]
           [(get weights [:prop-caption-side :alt 3] 100)
             (gen/tuple
-              (gen/return "block-end")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "block-end"))]
           [(get weights [:prop-caption-side :alt 4] 100)
             (gen/tuple
-              (gen/return "inline-start")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "inline-start"))]
           [(get weights [:prop-caption-side :alt 5] 100)
             (gen/tuple
-              (gen/return "inline-end")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "inline-end"))]])
         gmap (assoc gmap :prop-caption-side gen-prop-caption-side)
 
         gen-prop-text-transform
         (gen/frequency [
           [(get weights [:prop-text-transform :alt 0] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "none"))]
           [(get weights [:prop-text-transform :alt 1] 100)
             (gen/tuple
-              (gen/return "capitalize")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "capitalize"))]
           [(get weights [:prop-text-transform :alt 2] 100)
             (gen/tuple
-              (gen/return "uppercase")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "uppercase"))]
           [(get weights [:prop-text-transform :alt 3] 100)
             (gen/tuple
-              (gen/return "lowercase")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "lowercase"))]
           [(get weights [:prop-text-transform :alt 4] 100)
             (gen/tuple
-              (gen/return "full-width")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "full-width"))]])
         gmap (assoc gmap :prop-text-transform gen-prop-text-transform)
 
         gen-func-minmax
         (gen/tuple
+          (gen/return " ")
           (gen/return "minmax(")
           (gen/tuple
+            (gen/return " ")
             (gen/frequency [
-              [(get weights [:func-minmax :cat 1 :cat 0 :alt 0] 100)
+              [(get weights [:func-minmax :cat 2 :cat 1 :alt 0] 100)
                 (gen/tuple
-                  (:nonprop-length gmap)
-                  (gen/return " "))]
-              [(get weights [:func-minmax :cat 1 :cat 0 :alt 1] 100)
+                  (gen/return " ")
+                  (:nonprop-length gmap))]
+              [(get weights [:func-minmax :cat 2 :cat 1 :alt 1] 100)
                 (gen/tuple
-                  (:nonprop-percentage gmap)
-                  (gen/return " "))]
-              [(get weights [:func-minmax :cat 1 :cat 0 :alt 2] 100)
+                  (gen/return " ")
+                  (:nonprop-percentage gmap))]
+              [(get weights [:func-minmax :cat 2 :cat 1 :alt 2] 100)
                 (gen/tuple
-                  (:nonprop-flex gmap)
-                  (gen/return " "))]
-              [(get weights [:func-minmax :cat 1 :cat 0 :alt 3] 100)
+                  (gen/return " ")
+                  (:nonprop-flex gmap))]
+              [(get weights [:func-minmax :cat 2 :cat 1 :alt 3] 100)
                 (gen/tuple
-                  (gen/return "min-content")
-                  (gen/return " "))]
-              [(get weights [:func-minmax :cat 1 :cat 0 :alt 4] 100)
+                  (gen/return " ")
+                  (gen/return "min-content"))]
+              [(get weights [:func-minmax :cat 2 :cat 1 :alt 4] 100)
                 (gen/tuple
-                  (gen/return "max-content")
-                  (gen/return " "))]
-              [(get weights [:func-minmax :cat 1 :cat 0 :alt 5] 100)
+                  (gen/return " ")
+                  (gen/return "max-content"))]
+              [(get weights [:func-minmax :cat 2 :cat 1 :alt 5] 100)
                 (gen/tuple
-                  (gen/return "auto")
-                  (gen/return " "))]])
+                  (gen/return " ")
+                  (gen/return "auto"))]])
             (gen/return " ")
             (gen/return ",")
             (gen/return " ")
             (gen/frequency [
-              [(get weights [:func-minmax :cat 1 :cat 4 :alt 0] 100)
+              [(get weights [:func-minmax :cat 2 :cat 5 :alt 0] 100)
                 (gen/tuple
-                  (:nonprop-length gmap)
-                  (gen/return " "))]
-              [(get weights [:func-minmax :cat 1 :cat 4 :alt 1] 100)
+                  (gen/return " ")
+                  (:nonprop-length gmap))]
+              [(get weights [:func-minmax :cat 2 :cat 5 :alt 1] 100)
                 (gen/tuple
-                  (:nonprop-percentage gmap)
-                  (gen/return " "))]
-              [(get weights [:func-minmax :cat 1 :cat 4 :alt 2] 100)
+                  (gen/return " ")
+                  (:nonprop-percentage gmap))]
+              [(get weights [:func-minmax :cat 2 :cat 5 :alt 2] 100)
                 (gen/tuple
-                  (:nonprop-flex gmap)
-                  (gen/return " "))]
-              [(get weights [:func-minmax :cat 1 :cat 4 :alt 3] 100)
+                  (gen/return " ")
+                  (:nonprop-flex gmap))]
+              [(get weights [:func-minmax :cat 2 :cat 5 :alt 3] 100)
                 (gen/tuple
-                  (gen/return "min-content")
-                  (gen/return " "))]
-              [(get weights [:func-minmax :cat 1 :cat 4 :alt 4] 100)
+                  (gen/return " ")
+                  (gen/return "min-content"))]
+              [(get weights [:func-minmax :cat 2 :cat 5 :alt 4] 100)
                 (gen/tuple
-                  (gen/return "max-content")
-                  (gen/return " "))]
-              [(get weights [:func-minmax :cat 1 :cat 4 :alt 5] 100)
+                  (gen/return " ")
+                  (gen/return "max-content"))]
+              [(get weights [:func-minmax :cat 2 :cat 5 :alt 5] 100)
                 (gen/tuple
-                  (gen/return "auto")
-                  (gen/return " "))]])
-            (gen/return " "))
-          (gen/return ")")
-          (gen/return " "))
+                  (gen/return " ")
+                  (gen/return "auto"))]]))
+          (gen/return ")"))
         gmap (assoc gmap :func-minmax gen-func-minmax)
 
         gen-nonprop-repeat-style
         (gen/frequency [
           [(get weights [:nonprop-repeat-style :alt 0] 100)
             (gen/tuple
-              (gen/return "repeat-x")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "repeat-x"))]
           [(get weights [:nonprop-repeat-style :alt 1] 100)
             (gen/tuple
-              (gen/return "repeat-y")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "repeat-y"))]
           [(get weights [:nonprop-repeat-style :alt 2] 100)
             (gen/tuple
+              (gen/return " ")
               (gen/frequency [
-                [(get weights [:nonprop-repeat-style :alt 2 :cat 0 :alt 0] 100)
+                [(get weights [:nonprop-repeat-style :alt 2 :cat 1 :alt 0] 100)
                   (gen/frequency [
-                    [(get weights [:nonprop-repeat-style :alt 2 :cat 0 :alt 0 :alt 0] 100)
+                    [(get weights [:nonprop-repeat-style :alt 2 :cat 1 :alt 0 :alt 0] 100)
                       (gen/tuple
-                        (gen/return "repeat")
-                        (gen/return " "))]
-                    [(get weights [:nonprop-repeat-style :alt 2 :cat 0 :alt 0 :alt 1] 100)
+                        (gen/return " ")
+                        (gen/return "repeat"))]
+                    [(get weights [:nonprop-repeat-style :alt 2 :cat 1 :alt 0 :alt 1] 100)
                       (gen/tuple
-                        (gen/return "space")
-                        (gen/return " "))]
-                    [(get weights [:nonprop-repeat-style :alt 2 :cat 0 :alt 0 :alt 2] 100)
+                        (gen/return " ")
+                        (gen/return "space"))]
+                    [(get weights [:nonprop-repeat-style :alt 2 :cat 1 :alt 0 :alt 2] 100)
                       (gen/tuple
-                        (gen/return "round")
-                        (gen/return " "))]
-                    [(get weights [:nonprop-repeat-style :alt 2 :cat 0 :alt 0 :alt 3] 100)
+                        (gen/return " ")
+                        (gen/return "round"))]
+                    [(get weights [:nonprop-repeat-style :alt 2 :cat 1 :alt 0 :alt 3] 100)
                       (gen/tuple
-                        (gen/return "no-repeat")
-                        (gen/return " "))]])]
-                [(get weights [:nonprop-repeat-style :alt 2 :cat 0 :alt 1] 100)
+                        (gen/return " ")
+                        (gen/return "no-repeat"))]])]
+                [(get weights [:nonprop-repeat-style :alt 2 :cat 1 :alt 1] 100)
                   (gen/tuple
                     (gen/frequency [
-                      [(get weights [:nonprop-repeat-style :alt 2 :cat 0 :alt 1 :cat 0 :alt 0] 100)
+                      [(get weights [:nonprop-repeat-style :alt 2 :cat 1 :alt 1 :cat 0 :alt 0] 100)
                         (gen/tuple
-                          (gen/return "repeat")
-                          (gen/return " "))]
-                      [(get weights [:nonprop-repeat-style :alt 2 :cat 0 :alt 1 :cat 0 :alt 1] 100)
+                          (gen/return " ")
+                          (gen/return "repeat"))]
+                      [(get weights [:nonprop-repeat-style :alt 2 :cat 1 :alt 1 :cat 0 :alt 1] 100)
                         (gen/tuple
-                          (gen/return "space")
-                          (gen/return " "))]
-                      [(get weights [:nonprop-repeat-style :alt 2 :cat 0 :alt 1 :cat 0 :alt 2] 100)
+                          (gen/return " ")
+                          (gen/return "space"))]
+                      [(get weights [:nonprop-repeat-style :alt 2 :cat 1 :alt 1 :cat 0 :alt 2] 100)
                         (gen/tuple
-                          (gen/return "round")
-                          (gen/return " "))]
-                      [(get weights [:nonprop-repeat-style :alt 2 :cat 0 :alt 1 :cat 0 :alt 3] 100)
+                          (gen/return " ")
+                          (gen/return "round"))]
+                      [(get weights [:nonprop-repeat-style :alt 2 :cat 1 :alt 1 :cat 0 :alt 3] 100)
                         (gen/tuple
-                          (gen/return "no-repeat")
-                          (gen/return " "))]])
+                          (gen/return " ")
+                          (gen/return "no-repeat"))]])
                     (gen/frequency [
-                      [(get weights [:nonprop-repeat-style :alt 2 :cat 0 :alt 1 :cat 1 :alt 0] 100)
+                      [(get weights [:nonprop-repeat-style :alt 2 :cat 1 :alt 1 :cat 1 :alt 0] 100)
                         (gen/tuple
-                          (gen/return "repeat")
-                          (gen/return " "))]
-                      [(get weights [:nonprop-repeat-style :alt 2 :cat 0 :alt 1 :cat 1 :alt 1] 100)
+                          (gen/return " ")
+                          (gen/return "repeat"))]
+                      [(get weights [:nonprop-repeat-style :alt 2 :cat 1 :alt 1 :cat 1 :alt 1] 100)
                         (gen/tuple
-                          (gen/return "space")
-                          (gen/return " "))]
-                      [(get weights [:nonprop-repeat-style :alt 2 :cat 0 :alt 1 :cat 1 :alt 2] 100)
+                          (gen/return " ")
+                          (gen/return "space"))]
+                      [(get weights [:nonprop-repeat-style :alt 2 :cat 1 :alt 1 :cat 1 :alt 2] 100)
                         (gen/tuple
-                          (gen/return "round")
-                          (gen/return " "))]
-                      [(get weights [:nonprop-repeat-style :alt 2 :cat 0 :alt 1 :cat 1 :alt 3] 100)
+                          (gen/return " ")
+                          (gen/return "round"))]
+                      [(get weights [:nonprop-repeat-style :alt 2 :cat 1 :alt 1 :cat 1 :alt 3] 100)
                         (gen/tuple
-                          (gen/return "no-repeat")
-                          (gen/return " "))]]))]])
-              (gen/return " "))]])
+                          (gen/return " ")
+                          (gen/return "no-repeat"))]]))]]))]])
         gmap (assoc gmap :nonprop-repeat-style gen-nonprop-repeat-style)
 
         gen-prop-font-synthesis
         (gen/frequency [
           [(get weights [:prop-font-synthesis :alt 0] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "none"))]
           [(get weights [:prop-font-synthesis :alt 1] 100)
             (gen/tuple
+              (gen/return " ")
               (gen/such-that not-empty (gen/vector
                 (gen/frequency [
-                  [(get weights [:prop-font-synthesis :alt 1 :cat 0 :plus :alt 0] 100)
+                  [(get weights [:prop-font-synthesis :alt 1 :cat 1 :plus :alt 0] 100)
                     (gen/tuple
-                      (gen/return "weight")
-                      (gen/return " "))]
-                  [(get weights [:prop-font-synthesis :alt 1 :cat 0 :plus :alt 1] 100)
+                      (gen/return " ")
+                      (gen/return "weight"))]
+                  [(get weights [:prop-font-synthesis :alt 1 :cat 1 :plus :alt 1] 100)
                     (gen/tuple
-                      (gen/return "style")
-                      (gen/return " "))]])))
-              (gen/return " "))]])
+                      (gen/return " ")
+                      (gen/return "style"))]]))))]])
         gmap (assoc gmap :prop-font-synthesis gen-prop-font-synthesis)
 
         gen-prop-min-height
         (gen/frequency [
           [(get weights [:prop-min-height :alt 0] 100)
             (gen/tuple
-              (:nonprop-length gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-length gmap))]
           [(get weights [:prop-min-height :alt 1] 100)
             (gen/tuple
-              (:nonprop-percentage gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-percentage gmap))]
           [(get weights [:prop-min-height :alt 2] 100)
             (gen/tuple
-              (gen/return "auto")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "auto"))]
           [(get weights [:prop-min-height :alt 3] 100)
             (gen/tuple
-              (gen/return "max-content")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "max-content"))]
           [(get weights [:prop-min-height :alt 4] 100)
             (gen/tuple
-              (gen/return "min-content")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "min-content"))]
           [(get weights [:prop-min-height :alt 5] 100)
             (gen/tuple
-              (gen/return "fit-content")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "fit-content"))]
           [(get weights [:prop-min-height :alt 6] 100)
             (gen/tuple
-              (gen/return "fill-available")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "fill-available"))]])
         gmap (assoc gmap :prop-min-height gen-prop-min-height)
 
         gen-prop--webkit-text-stroke-width
         (gen/tuple
-          (:nonprop-length gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-length gmap))
         gmap (assoc gmap :prop--webkit-text-stroke-width gen-prop--webkit-text-stroke-width)
 
         gen-nonprop-keyframe-selector
         (gen/frequency [
           [(get weights [:nonprop-keyframe-selector :alt 0] 100)
             (gen/tuple
-              (gen/return "from")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "from"))]
           [(get weights [:nonprop-keyframe-selector :alt 1] 100)
             (gen/tuple
-              (gen/return "to")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "to"))]
           [(get weights [:nonprop-keyframe-selector :alt 2] 100)
             (gen/tuple
-              (:nonprop-percentage gmap)
-              (gen/return " "))]])
+              (gen/return " ")
+              (:nonprop-percentage gmap))]])
         gmap (assoc gmap :nonprop-keyframe-selector gen-nonprop-keyframe-selector)
 
         gen-prop-grid-column-gap
         (gen/tuple
-          (:nonprop-length-percentage gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-length-percentage gmap))
         gmap (assoc gmap :prop-grid-column-gap gen-prop-grid-column-gap)
 
         gen-prop-border-right-style
         (gen/tuple
-          (:nonprop-br-style gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-br-style gmap))
         gmap (assoc gmap :prop-border-right-style gen-prop-border-right-style)
 
         gen-prop-transform-origin
         (gen/frequency [
           [(get weights [:prop-transform-origin :alt 0] 100)
             (gen/tuple
+              (gen/return " ")
               (gen/frequency [
-                [(get weights [:prop-transform-origin :alt 0 :cat 0 :alt 0] 100)
+                [(get weights [:prop-transform-origin :alt 0 :cat 1 :alt 0] 100)
                   (gen/tuple
-                    (:nonprop-length-percentage gmap)
-                    (gen/return " "))]
-                [(get weights [:prop-transform-origin :alt 0 :cat 0 :alt 1] 100)
+                    (gen/return " ")
+                    (:nonprop-length-percentage gmap))]
+                [(get weights [:prop-transform-origin :alt 0 :cat 1 :alt 1] 100)
                   (gen/tuple
-                    (gen/return "left")
-                    (gen/return " "))]
-                [(get weights [:prop-transform-origin :alt 0 :cat 0 :alt 2] 100)
+                    (gen/return " ")
+                    (gen/return "left"))]
+                [(get weights [:prop-transform-origin :alt 0 :cat 1 :alt 2] 100)
                   (gen/tuple
-                    (gen/return "center")
-                    (gen/return " "))]
-                [(get weights [:prop-transform-origin :alt 0 :cat 0 :alt 3] 100)
+                    (gen/return " ")
+                    (gen/return "center"))]
+                [(get weights [:prop-transform-origin :alt 0 :cat 1 :alt 3] 100)
                   (gen/tuple
-                    (gen/return "right")
-                    (gen/return " "))]
-                [(get weights [:prop-transform-origin :alt 0 :cat 0 :alt 4] 100)
+                    (gen/return " ")
+                    (gen/return "right"))]
+                [(get weights [:prop-transform-origin :alt 0 :cat 1 :alt 4] 100)
                   (gen/tuple
-                    (gen/return "top")
-                    (gen/return " "))]
-                [(get weights [:prop-transform-origin :alt 0 :cat 0 :alt 5] 100)
+                    (gen/return " ")
+                    (gen/return "top"))]
+                [(get weights [:prop-transform-origin :alt 0 :cat 1 :alt 5] 100)
                   (gen/tuple
-                    (gen/return "bottom")
-                    (gen/return " "))]])
-              (gen/return " "))]
+                    (gen/return " ")
+                    (gen/return "bottom"))]]))]
           [(get weights [:prop-transform-origin :alt 1] 100)
             (gen/tuple
+              (gen/return " ")
               (gen/tuple
-                (gen/frequency [
-                  [(get weights [:prop-transform-origin :alt 1 :cat 0 :cat 0 :alt 0] 100)
-                    (gen/tuple
-                      (:nonprop-length-percentage gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-transform-origin :alt 1 :cat 0 :cat 0 :alt 1] 100)
-                    (gen/tuple
-                      (gen/return "left")
-                      (gen/return " "))]
-                  [(get weights [:prop-transform-origin :alt 1 :cat 0 :cat 0 :alt 2] 100)
-                    (gen/tuple
-                      (gen/return "center")
-                      (gen/return " "))]
-                  [(get weights [:prop-transform-origin :alt 1 :cat 0 :cat 0 :alt 3] 100)
-                    (gen/tuple
-                      (gen/return "right")
-                      (gen/return " "))]])
                 (gen/return " ")
                 (gen/frequency [
-                  [(get weights [:prop-transform-origin :alt 1 :cat 0 :cat 2 :alt 0] 100)
+                  [(get weights [:prop-transform-origin :alt 1 :cat 1 :cat 1 :alt 0] 100)
                     (gen/tuple
-                      (:nonprop-length-percentage gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-transform-origin :alt 1 :cat 0 :cat 2 :alt 1] 100)
+                      (gen/return " ")
+                      (:nonprop-length-percentage gmap))]
+                  [(get weights [:prop-transform-origin :alt 1 :cat 1 :cat 1 :alt 1] 100)
                     (gen/tuple
-                      (gen/return "top")
-                      (gen/return " "))]
-                  [(get weights [:prop-transform-origin :alt 1 :cat 0 :cat 2 :alt 2] 100)
+                      (gen/return " ")
+                      (gen/return "left"))]
+                  [(get weights [:prop-transform-origin :alt 1 :cat 1 :cat 1 :alt 2] 100)
                     (gen/tuple
-                      (gen/return "center")
-                      (gen/return " "))]
-                  [(get weights [:prop-transform-origin :alt 1 :cat 0 :cat 2 :alt 3] 100)
+                      (gen/return " ")
+                      (gen/return "center"))]
+                  [(get weights [:prop-transform-origin :alt 1 :cat 1 :cat 1 :alt 3] 100)
                     (gen/tuple
-                      (gen/return "bottom")
-                      (gen/return " "))]])
-                (gen/return " "))
+                      (gen/return " ")
+                      (gen/return "right"))]])
+                (gen/return " ")
+                (gen/frequency [
+                  [(get weights [:prop-transform-origin :alt 1 :cat 1 :cat 3 :alt 0] 100)
+                    (gen/tuple
+                      (gen/return " ")
+                      (:nonprop-length-percentage gmap))]
+                  [(get weights [:prop-transform-origin :alt 1 :cat 1 :cat 3 :alt 1] 100)
+                    (gen/tuple
+                      (gen/return " ")
+                      (gen/return "top"))]
+                  [(get weights [:prop-transform-origin :alt 1 :cat 1 :cat 3 :alt 2] 100)
+                    (gen/tuple
+                      (gen/return " ")
+                      (gen/return "center"))]
+                  [(get weights [:prop-transform-origin :alt 1 :cat 1 :cat 3 :alt 3] 100)
+                    (gen/tuple
+                      (gen/return " ")
+                      (gen/return "bottom"))]]))
               (gen/return " ")
               (gen/one-of [
                 (gen/return "")
-                (:nonprop-length gmap)])
-              (gen/return " "))]])
+                (:nonprop-length gmap)]))]])
         gmap (assoc gmap :prop-transform-origin gen-prop-transform-origin)
 
         gen-prop-font-size-adjust
         (gen/frequency [
           [(get weights [:prop-font-size-adjust :alt 0] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "none"))]
           [(get weights [:prop-font-size-adjust :alt 1] 100)
             (gen/tuple
-              (:nonprop-number gmap)
-              (gen/return " "))]])
+              (gen/return " ")
+              (:nonprop-number gmap))]])
         gmap (assoc gmap :prop-font-size-adjust gen-prop-font-size-adjust)
 
         gen-prop-grid-auto-rows
         (gen/tuple
+          (gen/return " ")
           (gen/such-that not-empty (gen/vector
-            (:nonprop-track-size gmap)))
-          (gen/return " "))
+            (:nonprop-track-size gmap))))
         gmap (assoc gmap :prop-grid-auto-rows gen-prop-grid-auto-rows)
 
         gen-nonprop-grid-auto-rows
@@ -3017,40 +3027,40 @@
         (gen/frequency [
           [(get weights [:prop-text-size-adjust :alt 0] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "none"))]
           [(get weights [:prop-text-size-adjust :alt 1] 100)
             (gen/tuple
-              (gen/return "auto")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "auto"))]
           [(get weights [:prop-text-size-adjust :alt 2] 100)
             (gen/tuple
-              (:nonprop-percentage gmap)
-              (gen/return " "))]])
+              (gen/return " ")
+              (:nonprop-percentage gmap))]])
         gmap (assoc gmap :prop-text-size-adjust gen-prop-text-size-adjust)
 
         gen-prop-align-items
         (gen/frequency [
           [(get weights [:prop-align-items :alt 0] 100)
             (gen/tuple
-              (gen/return "flex-start")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "flex-start"))]
           [(get weights [:prop-align-items :alt 1] 100)
             (gen/tuple
-              (gen/return "flex-end")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "flex-end"))]
           [(get weights [:prop-align-items :alt 2] 100)
             (gen/tuple
-              (gen/return "center")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "center"))]
           [(get weights [:prop-align-items :alt 3] 100)
             (gen/tuple
-              (gen/return "baseline")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "baseline"))]
           [(get weights [:prop-align-items :alt 4] 100)
             (gen/tuple
-              (gen/return "stretch")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "stretch"))]])
         gmap (assoc gmap :prop-align-items gen-prop-align-items)
 
         gen-prop-border-right
@@ -3058,135 +3068,135 @@
           (gen/frequency [
             [(get weights [:prop-border-right :plus :alt 0] 100)
               (gen/tuple
-                (:nonprop-br-width gmap)
-                (gen/return " "))]
+                (gen/return " ")
+                (:nonprop-br-width gmap))]
             [(get weights [:prop-border-right :plus :alt 1] 100)
               (gen/tuple
-                (:nonprop-br-style gmap)
-                (gen/return " "))]
+                (gen/return " ")
+                (:nonprop-br-style gmap))]
             [(get weights [:prop-border-right :plus :alt 2] 100)
               (gen/tuple
-                (:nonprop-color gmap)
-                (gen/return " "))]])))
+                (gen/return " ")
+                (:nonprop-color gmap))]])))
         gmap (assoc gmap :prop-border-right gen-prop-border-right)
 
         gen-prop-all
         (gen/frequency [
           [(get weights [:prop-all :alt 0] 100)
             (gen/tuple
-              (gen/return "initial")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "initial"))]
           [(get weights [:prop-all :alt 1] 100)
             (gen/tuple
-              (gen/return "inherit")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "inherit"))]
           [(get weights [:prop-all :alt 2] 100)
             (gen/tuple
-              (gen/return "unset")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "unset"))]])
         gmap (assoc gmap :prop-all gen-prop-all)
 
         gen-nonprop-box
         (gen/frequency [
           [(get weights [:nonprop-box :alt 0] 100)
             (gen/tuple
-              (gen/return "border-box")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "border-box"))]
           [(get weights [:nonprop-box :alt 1] 100)
             (gen/tuple
-              (gen/return "padding-box")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "padding-box"))]
           [(get weights [:nonprop-box :alt 2] 100)
             (gen/tuple
-              (gen/return "content-box")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "content-box"))]])
         gmap (assoc gmap :nonprop-box gen-nonprop-box)
 
         gen-nonprop-shape-box
         (gen/frequency [
           [(get weights [:nonprop-shape-box :alt 0] 100)
             (gen/tuple
-              (:nonprop-box gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-box gmap))]
           [(get weights [:nonprop-shape-box :alt 1] 100)
             (gen/tuple
-              (gen/return "margin-box")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "margin-box"))]])
         gmap (assoc gmap :nonprop-shape-box gen-nonprop-shape-box)
 
         gen-nonprop-geometry-box
         (gen/frequency [
           [(get weights [:nonprop-geometry-box :alt 0] 100)
             (gen/tuple
-              (:nonprop-shape-box gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-shape-box gmap))]
           [(get weights [:nonprop-geometry-box :alt 1] 100)
             (gen/tuple
-              (gen/return "fill-box")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "fill-box"))]
           [(get weights [:nonprop-geometry-box :alt 2] 100)
             (gen/tuple
-              (gen/return "stroke-box")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "stroke-box"))]
           [(get weights [:nonprop-geometry-box :alt 3] 100)
             (gen/tuple
-              (gen/return "view-box")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "view-box"))]])
         gmap (assoc gmap :nonprop-geometry-box gen-nonprop-geometry-box)
 
         gen-prop-column-fill
         (gen/frequency [
           [(get weights [:prop-column-fill :alt 0] 100)
             (gen/tuple
-              (gen/return "auto")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "auto"))]
           [(get weights [:prop-column-fill :alt 1] 100)
             (gen/tuple
-              (gen/return "balance")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "balance"))]])
         gmap (assoc gmap :prop-column-fill gen-prop-column-fill)
 
         gen-func-rotate
         (gen/tuple
-          (gen/return "rotate(")
-          (:nonprop-angle gmap)
           (gen/return " ")
-          (gen/return ")")
-          (gen/return " "))
+          (gen/return "rotate(")
+          (gen/return " ")
+          (:nonprop-angle gmap)
+          (gen/return ")"))
         gmap (assoc gmap :func-rotate gen-func-rotate)
 
         gen-prop-column-rule-style
         (gen/tuple
-          (:nonprop-br-style gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-br-style gmap))
         gmap (assoc gmap :prop-column-rule-style gen-prop-column-rule-style)
 
         gen-prop-scroll-snap-type-x
         (gen/frequency [
           [(get weights [:prop-scroll-snap-type-x :alt 0] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "none"))]
           [(get weights [:prop-scroll-snap-type-x :alt 1] 100)
             (gen/tuple
-              (gen/return "mandatory")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "mandatory"))]
           [(get weights [:prop-scroll-snap-type-x :alt 2] 100)
             (gen/tuple
-              (gen/return "proximity")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "proximity"))]])
         gmap (assoc gmap :prop-scroll-snap-type-x gen-prop-scroll-snap-type-x)
 
         gen-nonprop-single-transition-property
         (gen/frequency [
           [(get weights [:nonprop-single-transition-property :alt 0] 100)
             (gen/tuple
-              (gen/return "all")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "all"))]
           [(get weights [:nonprop-single-transition-property :alt 1] 100)
             (gen/tuple
-              (:nonprop-custom-ident gmap)
-              (gen/return " "))]])
+              (gen/return " ")
+              (:nonprop-custom-ident gmap))]])
         gmap (assoc gmap :nonprop-single-transition-property gen-nonprop-single-transition-property)
 
         gen-nonprop-side-or-corner
@@ -3194,298 +3204,302 @@
           (gen/frequency [
             [(get weights [:nonprop-side-or-corner :plus :alt 0] 100)
               (gen/tuple
+                (gen/return " ")
                 (gen/frequency [
-                  [(get weights [:nonprop-side-or-corner :plus :alt 0 :cat 0 :alt 0] 100)
+                  [(get weights [:nonprop-side-or-corner :plus :alt 0 :cat 1 :alt 0] 100)
                     (gen/tuple
-                      (gen/return "left")
-                      (gen/return " "))]
-                  [(get weights [:nonprop-side-or-corner :plus :alt 0 :cat 0 :alt 1] 100)
+                      (gen/return " ")
+                      (gen/return "left"))]
+                  [(get weights [:nonprop-side-or-corner :plus :alt 0 :cat 1 :alt 1] 100)
                     (gen/tuple
-                      (gen/return "right")
-                      (gen/return " "))]])
-                (gen/return " "))]
+                      (gen/return " ")
+                      (gen/return "right"))]]))]
             [(get weights [:nonprop-side-or-corner :plus :alt 1] 100)
               (gen/tuple
+                (gen/return " ")
                 (gen/frequency [
-                  [(get weights [:nonprop-side-or-corner :plus :alt 1 :cat 0 :alt 0] 100)
+                  [(get weights [:nonprop-side-or-corner :plus :alt 1 :cat 1 :alt 0] 100)
                     (gen/tuple
-                      (gen/return "top")
-                      (gen/return " "))]
-                  [(get weights [:nonprop-side-or-corner :plus :alt 1 :cat 0 :alt 1] 100)
+                      (gen/return " ")
+                      (gen/return "top"))]
+                  [(get weights [:nonprop-side-or-corner :plus :alt 1 :cat 1 :alt 1] 100)
                     (gen/tuple
-                      (gen/return "bottom")
-                      (gen/return " "))]])
-                (gen/return " "))]])))
+                      (gen/return " ")
+                      (gen/return "bottom"))]]))]])))
         gmap (assoc gmap :nonprop-side-or-corner gen-nonprop-side-or-corner)
 
         gen-func-linear-gradient
         (gen/tuple
+          (gen/return " ")
           (gen/return "linear-gradient(")
           (gen/tuple
+            (gen/return " ")
             (gen/one-of [
               (gen/return "")
               (gen/frequency [
-                [(get weights [:func-linear-gradient :cat 1 :cat 0 :opt :alt 0] 100)
+                [(get weights [:func-linear-gradient :cat 2 :cat 1 :opt :alt 0] 100)
                   (gen/tuple
-                    (:nonprop-angle gmap)
-                    (gen/return " "))]
-                [(get weights [:func-linear-gradient :cat 1 :cat 0 :opt :alt 1] 100)
+                    (gen/return " ")
+                    (:nonprop-angle gmap))]
+                [(get weights [:func-linear-gradient :cat 2 :cat 1 :opt :alt 1] 100)
                   (gen/tuple
+                    (gen/return " ")
                     (gen/return "to")
                     (gen/return " ")
-                    (:nonprop-side-or-corner gmap)
-                    (gen/return " "))]])])
+                    (:nonprop-side-or-corner gmap))]])])
             (gen/return " ")
             (gen/return ",")
             (gen/return " ")
-            (:nonprop-color-stop-list gmap)
-            (gen/return " "))
-          (gen/return ")")
-          (gen/return " "))
+            (:nonprop-color-stop-list gmap))
+          (gen/return ")"))
         gmap (assoc gmap :func-linear-gradient gen-func-linear-gradient)
 
         gen-nonprop-numeric-figure-values
         (gen/tuple
+          (gen/return " ")
           (gen/frequency [
-            [(get weights [:nonprop-numeric-figure-values :cat 0 :alt 0] 100)
+            [(get weights [:nonprop-numeric-figure-values :cat 1 :alt 0] 100)
               (gen/tuple
-                (gen/return "lining-nums")
-                (gen/return " "))]
-            [(get weights [:nonprop-numeric-figure-values :cat 0 :alt 1] 100)
+                (gen/return " ")
+                (gen/return "lining-nums"))]
+            [(get weights [:nonprop-numeric-figure-values :cat 1 :alt 1] 100)
               (gen/tuple
-                (gen/return "oldstyle-nums")
-                (gen/return " "))]])
-          (gen/return " "))
+                (gen/return " ")
+                (gen/return "oldstyle-nums"))]]))
         gmap (assoc gmap :nonprop-numeric-figure-values gen-nonprop-numeric-figure-values)
 
         gen-nonprop-numeric-spacing-values
         (gen/tuple
+          (gen/return " ")
           (gen/frequency [
-            [(get weights [:nonprop-numeric-spacing-values :cat 0 :alt 0] 100)
+            [(get weights [:nonprop-numeric-spacing-values :cat 1 :alt 0] 100)
               (gen/tuple
-                (gen/return "proportional-nums")
-                (gen/return " "))]
-            [(get weights [:nonprop-numeric-spacing-values :cat 0 :alt 1] 100)
+                (gen/return " ")
+                (gen/return "proportional-nums"))]
+            [(get weights [:nonprop-numeric-spacing-values :cat 1 :alt 1] 100)
               (gen/tuple
-                (gen/return "tabular-nums")
-                (gen/return " "))]])
-          (gen/return " "))
+                (gen/return " ")
+                (gen/return "tabular-nums"))]]))
         gmap (assoc gmap :nonprop-numeric-spacing-values gen-nonprop-numeric-spacing-values)
 
         gen-nonprop-numeric-fraction-values
         (gen/tuple
+          (gen/return " ")
           (gen/frequency [
-            [(get weights [:nonprop-numeric-fraction-values :cat 0 :alt 0] 100)
+            [(get weights [:nonprop-numeric-fraction-values :cat 1 :alt 0] 100)
               (gen/tuple
-                (gen/return "diagonal-fractions")
-                (gen/return " "))]
-            [(get weights [:nonprop-numeric-fraction-values :cat 0 :alt 1] 100)
+                (gen/return " ")
+                (gen/return "diagonal-fractions"))]
+            [(get weights [:nonprop-numeric-fraction-values :cat 1 :alt 1] 100)
               (gen/tuple
-                (gen/return "stacked-fractions")
-                (gen/return " "))]])
-          (gen/return " "))
+                (gen/return " ")
+                (gen/return "stacked-fractions"))]]))
         gmap (assoc gmap :nonprop-numeric-fraction-values gen-nonprop-numeric-fraction-values)
 
         gen-prop-font-variant-numeric
         (gen/frequency [
           [(get weights [:prop-font-variant-numeric :alt 0] 100)
             (gen/tuple
-              (gen/return "normal")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "normal"))]
           [(get weights [:prop-font-variant-numeric :alt 1] 100)
             (gen/tuple
+              (gen/return " ")
               (gen/such-that not-empty (gen/vector
                 (gen/frequency [
-                  [(get weights [:prop-font-variant-numeric :alt 1 :cat 0 :plus :alt 0] 100)
+                  [(get weights [:prop-font-variant-numeric :alt 1 :cat 1 :plus :alt 0] 100)
                     (gen/tuple
-                      (:nonprop-numeric-figure-values gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-font-variant-numeric :alt 1 :cat 0 :plus :alt 1] 100)
+                      (gen/return " ")
+                      (:nonprop-numeric-figure-values gmap))]
+                  [(get weights [:prop-font-variant-numeric :alt 1 :cat 1 :plus :alt 1] 100)
                     (gen/tuple
-                      (:nonprop-numeric-spacing-values gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-font-variant-numeric :alt 1 :cat 0 :plus :alt 2] 100)
+                      (gen/return " ")
+                      (:nonprop-numeric-spacing-values gmap))]
+                  [(get weights [:prop-font-variant-numeric :alt 1 :cat 1 :plus :alt 2] 100)
                     (gen/tuple
-                      (:nonprop-numeric-fraction-values gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-font-variant-numeric :alt 1 :cat 0 :plus :alt 3] 100)
+                      (gen/return " ")
+                      (:nonprop-numeric-fraction-values gmap))]
+                  [(get weights [:prop-font-variant-numeric :alt 1 :cat 1 :plus :alt 3] 100)
                     (gen/tuple
-                      (gen/return "ordinal")
-                      (gen/return " "))]
-                  [(get weights [:prop-font-variant-numeric :alt 1 :cat 0 :plus :alt 4] 100)
+                      (gen/return " ")
+                      (gen/return "ordinal"))]
+                  [(get weights [:prop-font-variant-numeric :alt 1 :cat 1 :plus :alt 4] 100)
                     (gen/tuple
-                      (gen/return "slashed-zero")
-                      (gen/return " "))]])))
-              (gen/return " "))]])
+                      (gen/return " ")
+                      (gen/return "slashed-zero"))]]))))]])
         gmap (assoc gmap :prop-font-variant-numeric gen-prop-font-variant-numeric)
 
         gen-prop-text-emphasis-style
         (gen/frequency [
           [(get weights [:prop-text-emphasis-style :alt 0] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "none"))]
           [(get weights [:prop-text-emphasis-style :alt 1] 100)
             (gen/tuple
+              (gen/return " ")
               (gen/such-that not-empty (gen/vector
                 (gen/frequency [
-                  [(get weights [:prop-text-emphasis-style :alt 1 :cat 0 :plus :alt 0] 100)
+                  [(get weights [:prop-text-emphasis-style :alt 1 :cat 1 :plus :alt 0] 100)
                     (gen/tuple
+                      (gen/return " ")
                       (gen/frequency [
-                        [(get weights [:prop-text-emphasis-style :alt 1 :cat 0 :plus :alt 0 :cat 0 :alt 0] 100)
+                        [(get weights [:prop-text-emphasis-style :alt 1 :cat 1 :plus :alt 0 :cat 1 :alt 0] 100)
                           (gen/tuple
-                            (gen/return "filled")
-                            (gen/return " "))]
-                        [(get weights [:prop-text-emphasis-style :alt 1 :cat 0 :plus :alt 0 :cat 0 :alt 1] 100)
+                            (gen/return " ")
+                            (gen/return "filled"))]
+                        [(get weights [:prop-text-emphasis-style :alt 1 :cat 1 :plus :alt 0 :cat 1 :alt 1] 100)
                           (gen/tuple
-                            (gen/return "open")
-                            (gen/return " "))]])
-                      (gen/return " "))]
-                  [(get weights [:prop-text-emphasis-style :alt 1 :cat 0 :plus :alt 1] 100)
+                            (gen/return " ")
+                            (gen/return "open"))]]))]
+                  [(get weights [:prop-text-emphasis-style :alt 1 :cat 1 :plus :alt 1] 100)
                     (gen/tuple
+                      (gen/return " ")
                       (gen/frequency [
-                        [(get weights [:prop-text-emphasis-style :alt 1 :cat 0 :plus :alt 1 :cat 0 :alt 0] 100)
+                        [(get weights [:prop-text-emphasis-style :alt 1 :cat 1 :plus :alt 1 :cat 1 :alt 0] 100)
                           (gen/tuple
-                            (gen/return "dot")
-                            (gen/return " "))]
-                        [(get weights [:prop-text-emphasis-style :alt 1 :cat 0 :plus :alt 1 :cat 0 :alt 1] 100)
+                            (gen/return " ")
+                            (gen/return "dot"))]
+                        [(get weights [:prop-text-emphasis-style :alt 1 :cat 1 :plus :alt 1 :cat 1 :alt 1] 100)
                           (gen/tuple
-                            (gen/return "circle")
-                            (gen/return " "))]
-                        [(get weights [:prop-text-emphasis-style :alt 1 :cat 0 :plus :alt 1 :cat 0 :alt 2] 100)
+                            (gen/return " ")
+                            (gen/return "circle"))]
+                        [(get weights [:prop-text-emphasis-style :alt 1 :cat 1 :plus :alt 1 :cat 1 :alt 2] 100)
                           (gen/tuple
-                            (gen/return "double-circle")
-                            (gen/return " "))]
-                        [(get weights [:prop-text-emphasis-style :alt 1 :cat 0 :plus :alt 1 :cat 0 :alt 3] 100)
+                            (gen/return " ")
+                            (gen/return "double-circle"))]
+                        [(get weights [:prop-text-emphasis-style :alt 1 :cat 1 :plus :alt 1 :cat 1 :alt 3] 100)
                           (gen/tuple
-                            (gen/return "triangle")
-                            (gen/return " "))]
-                        [(get weights [:prop-text-emphasis-style :alt 1 :cat 0 :plus :alt 1 :cat 0 :alt 4] 100)
+                            (gen/return " ")
+                            (gen/return "triangle"))]
+                        [(get weights [:prop-text-emphasis-style :alt 1 :cat 1 :plus :alt 1 :cat 1 :alt 4] 100)
                           (gen/tuple
-                            (gen/return "sesame")
-                            (gen/return " "))]])
-                      (gen/return " "))]])))
-              (gen/return " "))]
+                            (gen/return " ")
+                            (gen/return "sesame"))]]))]]))))]
           [(get weights [:prop-text-emphasis-style :alt 2] 100)
             (gen/tuple
-              (:nonprop-string gmap)
-              (gen/return " "))]])
+              (gen/return " ")
+              (:nonprop-string gmap))]])
         gmap (assoc gmap :prop-text-emphasis-style gen-prop-text-emphasis-style)
 
         gen-nonprop-text-emphasis-style
         (:prop-text-emphasis-style gmap)
         gmap (assoc gmap :nonprop-text-emphasis-style gen-nonprop-text-emphasis-style)
 
-        gen-func-leader
-        (gen/tuple
-          (gen/return "leader(")
-          (gen/frequency [
-            [(get weights [:func-leader :cat 1 :alt 0] 100)
-              (gen/tuple
-                (gen/return "dotted")
-                (gen/return " "))]
-            [(get weights [:func-leader :cat 1 :alt 1] 100)
-              (gen/tuple
-                (gen/return "solid")
-                (gen/return " "))]
-            [(get weights [:func-leader :cat 1 :alt 2] 100)
-              (gen/tuple
-                (gen/return "space")
-                (gen/return " "))]
-            [(get weights [:func-leader :cat 1 :alt 3] 100)
-              (gen/tuple
-                (:nonprop-string gmap)
-                (gen/return " "))]])
-          (gen/return ")")
-          (gen/return " "))
-        gmap (assoc gmap :func-leader gen-func-leader)]
+        gen-NAME
+        (chuck/string-from-regex #"[_a-z0-9-]+")
+        gmap (assoc gmap :NAME gen-NAME)]
     gmap))
 
 (defn- css3-generators-part-3 [gmap weights]
   (let [
+        gen-func-leader
+        (gen/tuple
+          (gen/return " ")
+          (gen/return "leader(")
+          (gen/frequency [
+            [(get weights [:func-leader :cat 2 :alt 0] 100)
+              (gen/tuple
+                (gen/return " ")
+                (gen/return "dotted"))]
+            [(get weights [:func-leader :cat 2 :alt 1] 100)
+              (gen/tuple
+                (gen/return " ")
+                (gen/return "solid"))]
+            [(get weights [:func-leader :cat 2 :alt 2] 100)
+              (gen/tuple
+                (gen/return " ")
+                (gen/return "space"))]
+            [(get weights [:func-leader :cat 2 :alt 3] 100)
+              (gen/tuple
+                (gen/return " ")
+                (:nonprop-string gmap))]])
+          (gen/return ")"))
+        gmap (assoc gmap :func-leader gen-func-leader)
+
         gen-nonprop-grid-line
         (gen/frequency [
           [(get weights [:nonprop-grid-line :alt 0] 100)
             (gen/tuple
-              (gen/return "auto")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "auto"))]
           [(get weights [:nonprop-grid-line :alt 1] 100)
             (gen/tuple
-              (:nonprop-custom-ident gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-custom-ident gmap))]
           [(get weights [:nonprop-grid-line :alt 2] 100)
             (gen/tuple
+              (gen/return " ")
               (gen/tuple
+                (gen/return " ")
                 (:nonprop-integer gmap)
                 (gen/return " ")
                 (gen/one-of [
                   (gen/return "")
-                  (:nonprop-custom-ident gmap)])
-                (gen/return " "))
-              (gen/return " "))]
+                  (:nonprop-custom-ident gmap)])))]
           [(get weights [:nonprop-grid-line :alt 3] 100)
             (gen/tuple
+              (gen/return " ")
               (gen/tuple
+                (gen/return " ")
                 (gen/return "span")
                 (gen/return " ")
                 (gen/such-that not-empty (gen/vector
                   (gen/frequency [
-                    [(get weights [:nonprop-grid-line :alt 3 :cat 0 :cat 2 :plus :alt 0] 100)
+                    [(get weights [:nonprop-grid-line :alt 3 :cat 1 :cat 3 :plus :alt 0] 100)
                       (gen/tuple
-                        (:nonprop-integer gmap)
-                        (gen/return " "))]
-                    [(get weights [:nonprop-grid-line :alt 3 :cat 0 :cat 2 :plus :alt 1] 100)
+                        (gen/return " ")
+                        (:nonprop-integer gmap))]
+                    [(get weights [:nonprop-grid-line :alt 3 :cat 1 :cat 3 :plus :alt 1] 100)
                       (gen/tuple
-                        (:nonprop-custom-ident gmap)
-                        (gen/return " "))]])))
-                (gen/return " "))
-              (gen/return " "))]])
+                        (gen/return " ")
+                        (:nonprop-custom-ident gmap))]])))))]])
         gmap (assoc gmap :nonprop-grid-line gen-nonprop-grid-line)
 
         gen-prop-grid-row-end
         (gen/tuple
-          (:nonprop-grid-line gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-grid-line gmap))
         gmap (assoc gmap :prop-grid-row-end gen-prop-grid-row-end)
 
         gen-prop--webkit-mask-repeat-x
         (gen/frequency [
           [(get weights [:prop--webkit-mask-repeat-x :alt 0] 100)
             (gen/tuple
-              (gen/return "repeat")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "repeat"))]
           [(get weights [:prop--webkit-mask-repeat-x :alt 1] 100)
             (gen/tuple
-              (gen/return "no-repeat")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "no-repeat"))]
           [(get weights [:prop--webkit-mask-repeat-x :alt 2] 100)
             (gen/tuple
-              (gen/return "space")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "space"))]
           [(get weights [:prop--webkit-mask-repeat-x :alt 3] 100)
             (gen/tuple
-              (gen/return "round")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "round"))]])
         gmap (assoc gmap :prop--webkit-mask-repeat-x gen-prop--webkit-mask-repeat-x)
 
         gen-prop-line-height
         (gen/frequency [
           [(get weights [:prop-line-height :alt 0] 100)
             (gen/tuple
-              (gen/return "normal")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "normal"))]
           [(get weights [:prop-line-height :alt 1] 100)
             (gen/tuple
-              (:nonprop-number gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-number gmap))]
           [(get weights [:prop-line-height :alt 2] 100)
             (gen/tuple
-              (:nonprop-length gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-length gmap))]
           [(get weights [:prop-line-height :alt 3] 100)
             (gen/tuple
-              (:nonprop-percentage gmap)
-              (gen/return " "))]])
+              (gen/return " ")
+              (:nonprop-percentage gmap))]])
         gmap (assoc gmap :prop-line-height gen-prop-line-height)
 
         gen-nonprop-line-height
@@ -3496,90 +3510,90 @@
         (gen/frequency [
           [(get weights [:prop--moz-user-input :alt 0] 100)
             (gen/tuple
-              (gen/return "auto")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "auto"))]
           [(get weights [:prop--moz-user-input :alt 1] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "none"))]
           [(get weights [:prop--moz-user-input :alt 2] 100)
             (gen/tuple
-              (gen/return "enabled")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "enabled"))]
           [(get weights [:prop--moz-user-input :alt 3] 100)
             (gen/tuple
-              (gen/return "disabled")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "disabled"))]])
         gmap (assoc gmap :prop--moz-user-input gen-prop--moz-user-input)
 
         gen-prop-scroll-snap-destination
         (gen/tuple
-          (:nonprop-position gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-position gmap))
         gmap (assoc gmap :prop-scroll-snap-destination gen-prop-scroll-snap-destination)
 
         gen-prop-clear
         (gen/frequency [
           [(get weights [:prop-clear :alt 0] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "none"))]
           [(get weights [:prop-clear :alt 1] 100)
             (gen/tuple
-              (gen/return "left")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "left"))]
           [(get weights [:prop-clear :alt 2] 100)
             (gen/tuple
-              (gen/return "right")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "right"))]
           [(get weights [:prop-clear :alt 3] 100)
             (gen/tuple
-              (gen/return "both")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "both"))]
           [(get weights [:prop-clear :alt 4] 100)
             (gen/tuple
-              (gen/return "inline-start")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "inline-start"))]
           [(get weights [:prop-clear :alt 5] 100)
             (gen/tuple
-              (gen/return "inline-end")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "inline-end"))]])
         gmap (assoc gmap :prop-clear gen-prop-clear)
 
         gen-nonprop-east-asian-variant-values
         (gen/tuple
+          (gen/return " ")
           (gen/frequency [
-            [(get weights [:nonprop-east-asian-variant-values :cat 0 :alt 0] 100)
+            [(get weights [:nonprop-east-asian-variant-values :cat 1 :alt 0] 100)
               (gen/tuple
-                (gen/return "jis78")
-                (gen/return " "))]
-            [(get weights [:nonprop-east-asian-variant-values :cat 0 :alt 1] 100)
+                (gen/return " ")
+                (gen/return "jis78"))]
+            [(get weights [:nonprop-east-asian-variant-values :cat 1 :alt 1] 100)
               (gen/tuple
-                (gen/return "jis83")
-                (gen/return " "))]
-            [(get weights [:nonprop-east-asian-variant-values :cat 0 :alt 2] 100)
+                (gen/return " ")
+                (gen/return "jis83"))]
+            [(get weights [:nonprop-east-asian-variant-values :cat 1 :alt 2] 100)
               (gen/tuple
-                (gen/return "jis90")
-                (gen/return " "))]
-            [(get weights [:nonprop-east-asian-variant-values :cat 0 :alt 3] 100)
+                (gen/return " ")
+                (gen/return "jis90"))]
+            [(get weights [:nonprop-east-asian-variant-values :cat 1 :alt 3] 100)
               (gen/tuple
-                (gen/return "jis04")
-                (gen/return " "))]
-            [(get weights [:nonprop-east-asian-variant-values :cat 0 :alt 4] 100)
+                (gen/return " ")
+                (gen/return "jis04"))]
+            [(get weights [:nonprop-east-asian-variant-values :cat 1 :alt 4] 100)
               (gen/tuple
-                (gen/return "simplified")
-                (gen/return " "))]
-            [(get weights [:nonprop-east-asian-variant-values :cat 0 :alt 5] 100)
+                (gen/return " ")
+                (gen/return "simplified"))]
+            [(get weights [:nonprop-east-asian-variant-values :cat 1 :alt 5] 100)
               (gen/tuple
-                (gen/return "traditional")
-                (gen/return " "))]])
-          (gen/return " "))
+                (gen/return " ")
+                (gen/return "traditional"))]]))
         gmap (assoc gmap :nonprop-east-asian-variant-values gen-nonprop-east-asian-variant-values)
 
         gen-prop-outline-offset
         (gen/tuple
-          (:nonprop-length gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-length gmap))
         gmap (assoc gmap :prop-outline-offset gen-prop-outline-offset)
 
         gen-nonprop-ratio
@@ -3593,18 +3607,18 @@
         (gen/frequency [
           [(get weights [:nonprop-viewport-length :alt 0] 100)
             (gen/tuple
-              (gen/return "auto")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "auto"))]
           [(get weights [:nonprop-viewport-length :alt 1] 100)
             (gen/tuple
-              (:nonprop-length-percentage gmap)
-              (gen/return " "))]])
+              (gen/return " ")
+              (:nonprop-length-percentage gmap))]])
         gmap (assoc gmap :nonprop-viewport-length gen-nonprop-viewport-length)
 
         gen-prop-column-rule-width
         (gen/tuple
-          (:nonprop-br-width gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-br-width gmap))
         gmap (assoc gmap :prop-column-rule-width gen-prop-column-rule-width)
 
         gen-nonprop-column-rule-width
@@ -3613,8 +3627,8 @@
 
         gen-prop-column-rule-color
         (gen/tuple
-          (:nonprop-color gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-color gmap))
         gmap (assoc gmap :prop-column-rule-color gen-prop-column-rule-color)
 
         gen-nonprop-column-rule-color
@@ -3630,60 +3644,60 @@
           (gen/frequency [
             [(get weights [:prop-column-rule :plus :alt 0] 100)
               (gen/tuple
-                (:nonprop-column-rule-width gmap)
-                (gen/return " "))]
+                (gen/return " ")
+                (:nonprop-column-rule-width gmap))]
             [(get weights [:prop-column-rule :plus :alt 1] 100)
               (gen/tuple
-                (:nonprop-column-rule-style gmap)
-                (gen/return " "))]
+                (gen/return " ")
+                (:nonprop-column-rule-style gmap))]
             [(get weights [:prop-column-rule :plus :alt 2] 100)
               (gen/tuple
-                (:nonprop-column-rule-color gmap)
-                (gen/return " "))]])))
+                (gen/return " ")
+                (:nonprop-column-rule-color gmap))]])))
         gmap (assoc gmap :prop-column-rule gen-prop-column-rule)
 
         gen-nonprop-bg-image
         (gen/frequency [
           [(get weights [:nonprop-bg-image :alt 0] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "none"))]
           [(get weights [:nonprop-bg-image :alt 1] 100)
             (gen/tuple
-              (:nonprop-image gmap)
-              (gen/return " "))]])
+              (gen/return " ")
+              (:nonprop-image gmap))]])
         gmap (assoc gmap :nonprop-bg-image gen-nonprop-bg-image)
 
         gen-func-skewY
         (gen/tuple
-          (gen/return "skewY(")
-          (:nonprop-angle gmap)
           (gen/return " ")
-          (gen/return ")")
-          (gen/return " "))
+          (gen/return "skewY(")
+          (gen/return " ")
+          (:nonprop-angle gmap)
+          (gen/return ")"))
         gmap (assoc gmap :func-skewY gen-func-skewY)
 
         gen-prop-border-style
         (gen/tuple
+          (gen/return " ")
           (gen/frequency [
-            [(get weights [:prop-border-style :cat 0 :alt 0] 100)
+            [(get weights [:prop-border-style :cat 1 :alt 0] 100)
               (:nonprop-br-style gmap)]
-            [(get weights [:prop-border-style :cat 0 :alt 1] 100)
+            [(get weights [:prop-border-style :cat 1 :alt 1] 100)
               (gen/tuple
                 (:nonprop-br-style gmap)
                 (:nonprop-br-style gmap))]
-            [(get weights [:prop-border-style :cat 0 :alt 2] 100)
+            [(get weights [:prop-border-style :cat 1 :alt 2] 100)
               (gen/tuple
                 (:nonprop-br-style gmap)
                 (:nonprop-br-style gmap)
                 (:nonprop-br-style gmap))]
-            [(get weights [:prop-border-style :cat 0 :alt 3] 100)
+            [(get weights [:prop-border-style :cat 1 :alt 3] 100)
               (gen/tuple
                 (:nonprop-br-style gmap)
                 (:nonprop-br-style gmap)
                 (:nonprop-br-style gmap)
-                (:nonprop-br-style gmap))]])
-          (gen/return " "))
+                (:nonprop-br-style gmap))]]))
         gmap (assoc gmap :prop-border-style gen-prop-border-style)
 
         gen-nonprop-border-style
@@ -3692,174 +3706,178 @@
 
         gen-prop--webkit-border-before-style
         (gen/tuple
-          (:nonprop-border-style gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-border-style gmap))
         gmap (assoc gmap :prop--webkit-border-before-style gen-prop--webkit-border-before-style)
 
         gen-prop-orphans
         (gen/tuple
-          (:nonprop-integer gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-integer gmap))
         gmap (assoc gmap :prop-orphans gen-prop-orphans)
+
+        gen-S
+        (gen/return "")
+        gmap (assoc gmap :S gen-S)
 
         gen-prop-shape-image-threshold
         (gen/tuple
-          (:nonprop-number gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-number gmap))
         gmap (assoc gmap :prop-shape-image-threshold gen-prop-shape-image-threshold)
 
         gen-func-scaleY
         (gen/tuple
-          (gen/return "scaleY(")
-          (:nonprop-number gmap)
           (gen/return " ")
-          (gen/return ")")
-          (gen/return " "))
+          (gen/return "scaleY(")
+          (gen/return " ")
+          (:nonprop-number gmap)
+          (gen/return ")"))
         gmap (assoc gmap :func-scaleY gen-func-scaleY)
 
         gen-nonprop-discretionary-lig-values
         (gen/tuple
+          (gen/return " ")
           (gen/frequency [
-            [(get weights [:nonprop-discretionary-lig-values :cat 0 :alt 0] 100)
+            [(get weights [:nonprop-discretionary-lig-values :cat 1 :alt 0] 100)
               (gen/tuple
-                (gen/return "discretionary-ligatures")
-                (gen/return " "))]
-            [(get weights [:nonprop-discretionary-lig-values :cat 0 :alt 1] 100)
+                (gen/return " ")
+                (gen/return "discretionary-ligatures"))]
+            [(get weights [:nonprop-discretionary-lig-values :cat 1 :alt 1] 100)
               (gen/tuple
-                (gen/return "no-discretionary-ligatures")
-                (gen/return " "))]])
-          (gen/return " "))
+                (gen/return " ")
+                (gen/return "no-discretionary-ligatures"))]]))
         gmap (assoc gmap :nonprop-discretionary-lig-values gen-nonprop-discretionary-lig-values)
 
         gen-prop-border-block-start-style
         (gen/tuple
-          (:nonprop-border-style gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-border-style gmap))
         gmap (assoc gmap :prop-border-block-start-style gen-prop-border-block-start-style)
 
         gen-nonprop-blend-mode
         (gen/frequency [
           [(get weights [:nonprop-blend-mode :alt 0] 100)
             (gen/tuple
-              (gen/return "normal")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "normal"))]
           [(get weights [:nonprop-blend-mode :alt 1] 100)
             (gen/tuple
-              (gen/return "multiply")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "multiply"))]
           [(get weights [:nonprop-blend-mode :alt 2] 100)
             (gen/tuple
-              (gen/return "screen")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "screen"))]
           [(get weights [:nonprop-blend-mode :alt 3] 100)
             (gen/tuple
-              (gen/return "overlay")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "overlay"))]
           [(get weights [:nonprop-blend-mode :alt 4] 100)
             (gen/tuple
-              (gen/return "darken")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "darken"))]
           [(get weights [:nonprop-blend-mode :alt 5] 100)
             (gen/tuple
-              (gen/return "lighten")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "lighten"))]
           [(get weights [:nonprop-blend-mode :alt 6] 100)
             (gen/tuple
-              (gen/return "color-dodge")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "color-dodge"))]
           [(get weights [:nonprop-blend-mode :alt 7] 100)
             (gen/tuple
-              (gen/return "color-burn")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "color-burn"))]
           [(get weights [:nonprop-blend-mode :alt 8] 100)
             (gen/tuple
-              (gen/return "hard-light")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "hard-light"))]
           [(get weights [:nonprop-blend-mode :alt 9] 100)
             (gen/tuple
-              (gen/return "soft-light")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "soft-light"))]
           [(get weights [:nonprop-blend-mode :alt 10] 100)
             (gen/tuple
-              (gen/return "difference")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "difference"))]
           [(get weights [:nonprop-blend-mode :alt 11] 100)
             (gen/tuple
-              (gen/return "exclusion")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "exclusion"))]
           [(get weights [:nonprop-blend-mode :alt 12] 100)
             (gen/tuple
-              (gen/return "hue")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "hue"))]
           [(get weights [:nonprop-blend-mode :alt 13] 100)
             (gen/tuple
-              (gen/return "saturation")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "saturation"))]
           [(get weights [:nonprop-blend-mode :alt 14] 100)
             (gen/tuple
-              (gen/return "color")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "color"))]
           [(get weights [:nonprop-blend-mode :alt 15] 100)
             (gen/tuple
-              (gen/return "luminosity")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "luminosity"))]])
         gmap (assoc gmap :nonprop-blend-mode gen-nonprop-blend-mode)
 
         gen-prop-background-blend-mode
         (gen/tuple
+          (gen/return " ")
           (:nonprop-blend-mode gmap)
           (gen/vector
             (gen/tuple
-              (gen/return ", ")
-              (:nonprop-blend-mode gmap)))
-          (gen/return " "))
+              (gen/return ",")
+              (:nonprop-blend-mode gmap))))
         gmap (assoc gmap :prop-background-blend-mode gen-prop-background-blend-mode)
 
         gen-prop-overflow-clip-box
         (gen/frequency [
           [(get weights [:prop-overflow-clip-box :alt 0] 100)
             (gen/tuple
-              (gen/return "padding-box")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "padding-box"))]
           [(get weights [:prop-overflow-clip-box :alt 1] 100)
             (gen/tuple
-              (gen/return "content-box")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "content-box"))]])
         gmap (assoc gmap :prop-overflow-clip-box gen-prop-overflow-clip-box)
 
         gen-prop-box-lines
         (gen/frequency [
           [(get weights [:prop-box-lines :alt 0] 100)
             (gen/tuple
-              (gen/return "single")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "single"))]
           [(get weights [:prop-box-lines :alt 1] 100)
             (gen/tuple
-              (gen/return "multiple")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "multiple"))]])
         gmap (assoc gmap :prop-box-lines gen-prop-box-lines)
 
         gen-prop-border-width
         (gen/tuple
+          (gen/return " ")
           (gen/frequency [
-            [(get weights [:prop-border-width :cat 0 :alt 0] 100)
+            [(get weights [:prop-border-width :cat 1 :alt 0] 100)
               (:nonprop-br-width gmap)]
-            [(get weights [:prop-border-width :cat 0 :alt 1] 100)
+            [(get weights [:prop-border-width :cat 1 :alt 1] 100)
               (gen/tuple
                 (:nonprop-br-width gmap)
                 (:nonprop-br-width gmap))]
-            [(get weights [:prop-border-width :cat 0 :alt 2] 100)
+            [(get weights [:prop-border-width :cat 1 :alt 2] 100)
               (gen/tuple
                 (:nonprop-br-width gmap)
                 (:nonprop-br-width gmap)
                 (:nonprop-br-width gmap))]
-            [(get weights [:prop-border-width :cat 0 :alt 3] 100)
+            [(get weights [:prop-border-width :cat 1 :alt 3] 100)
               (gen/tuple
                 (:nonprop-br-width gmap)
                 (:nonprop-br-width gmap)
                 (:nonprop-br-width gmap)
-                (:nonprop-br-width gmap))]])
-          (gen/return " "))
+                (:nonprop-br-width gmap))]]))
         gmap (assoc gmap :prop-border-width gen-prop-border-width)
 
         gen-nonprop-border-width
@@ -3868,8 +3886,8 @@
 
         gen-prop-border-inline-end-width
         (gen/tuple
-          (:nonprop-border-width gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-border-width gmap))
         gmap (assoc gmap :prop-border-inline-end-width gen-prop-border-inline-end-width)
 
         gen-nonprop-custom-property-name
@@ -3882,184 +3900,186 @@
 
         gen-func-var
         (gen/tuple
+          (gen/return " ")
           (gen/return "var(")
           (gen/tuple
+            (gen/return " ")
             (:nonprop-custom-property-name gmap)
             (gen/return " ")
             (gen/one-of [
               (gen/return "")
               (gen/tuple
+                (gen/return " ")
                 (gen/return ",")
                 (gen/return " ")
-                (:nonprop-declaration-value gmap)
-                (gen/return " "))])
-            (gen/return " "))
-          (gen/return ")")
-          (gen/return " "))
+                (:nonprop-declaration-value gmap))]))
+          (gen/return ")"))
         gmap (assoc gmap :func-var gen-func-var)
 
         gen-prop-border-image-source
         (gen/frequency [
           [(get weights [:prop-border-image-source :alt 0] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "none"))]
           [(get weights [:prop-border-image-source :alt 1] 100)
             (gen/tuple
-              (:nonprop-image gmap)
-              (gen/return " "))]])
+              (gen/return " ")
+              (:nonprop-image gmap))]])
         gmap (assoc gmap :prop-border-image-source gen-prop-border-image-source)
 
         gen-prop-font-language-override
         (gen/frequency [
           [(get weights [:prop-font-language-override :alt 0] 100)
             (gen/tuple
-              (gen/return "normal")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "normal"))]
           [(get weights [:prop-font-language-override :alt 1] 100)
             (gen/tuple
-              (:nonprop-string gmap)
-              (gen/return " "))]])
+              (gen/return " ")
+              (:nonprop-string gmap))]])
         gmap (assoc gmap :prop-font-language-override gen-prop-font-language-override)
 
         gen-prop-word-spacing
         (gen/frequency [
           [(get weights [:prop-word-spacing :alt 0] 100)
             (gen/tuple
-              (gen/return "normal")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "normal"))]
           [(get weights [:prop-word-spacing :alt 1] 100)
             (gen/tuple
-              (:nonprop-length-percentage gmap)
-              (gen/return " "))]])
+              (gen/return " ")
+              (:nonprop-length-percentage gmap))]])
         gmap (assoc gmap :prop-word-spacing gen-prop-word-spacing)
 
         gen-prop-opacity
         (gen/tuple
-          (:nonprop-number gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-number gmap))
         gmap (assoc gmap :prop-opacity gen-prop-opacity)
 
         gen-nonprop-attachment
         (gen/frequency [
           [(get weights [:nonprop-attachment :alt 0] 100)
             (gen/tuple
-              (gen/return "scroll")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "scroll"))]
           [(get weights [:nonprop-attachment :alt 1] 100)
             (gen/tuple
-              (gen/return "fixed")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "fixed"))]
           [(get weights [:nonprop-attachment :alt 2] 100)
             (gen/tuple
-              (gen/return "local")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "local"))]])
         gmap (assoc gmap :nonprop-attachment gen-nonprop-attachment)
 
         gen-nonprop-single-animation-fill-mode
         (gen/frequency [
           [(get weights [:nonprop-single-animation-fill-mode :alt 0] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "none"))]
           [(get weights [:nonprop-single-animation-fill-mode :alt 1] 100)
             (gen/tuple
-              (gen/return "forwards")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "forwards"))]
           [(get weights [:nonprop-single-animation-fill-mode :alt 2] 100)
             (gen/tuple
-              (gen/return "backwards")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "backwards"))]
           [(get weights [:nonprop-single-animation-fill-mode :alt 3] 100)
             (gen/tuple
-              (gen/return "both")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "both"))]])
         gmap (assoc gmap :nonprop-single-animation-fill-mode gen-nonprop-single-animation-fill-mode)
 
         gen-prop-display-list
         (gen/frequency [
           [(get weights [:prop-display-list :alt 0] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "none"))]
           [(get weights [:prop-display-list :alt 1] 100)
             (gen/tuple
-              (gen/return "list-item")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "list-item"))]])
         gmap (assoc gmap :prop-display-list gen-prop-display-list)
 
         gen-prop-inline-size
         (gen/tuple
-          (:nonprop-width gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-width gmap))
         gmap (assoc gmap :prop-inline-size gen-prop-inline-size)
 
         gen-prop-grid-row-gap
         (gen/tuple
-          (:nonprop-length-percentage gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-length-percentage gmap))
         gmap (assoc gmap :prop-grid-row-gap gen-prop-grid-row-gap)
 
         gen-prop-grid-template-rows
         (gen/frequency [
           [(get weights [:prop-grid-template-rows :alt 0] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "none"))]
           [(get weights [:prop-grid-template-rows :alt 1] 100)
             (gen/tuple
-              (:nonprop-track-list gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-track-list gmap))]
           [(get weights [:prop-grid-template-rows :alt 2] 100)
             (gen/tuple
-              (:nonprop-auto-track-list gmap)
-              (gen/return " "))]])
-        gmap (assoc gmap :prop-grid-template-rows gen-prop-grid-template-rows)
+              (gen/return " ")
+              (:nonprop-auto-track-list gmap))]])
+        gmap (assoc gmap :prop-grid-template-rows gen-prop-grid-template-rows)]
+    gmap))
 
+(defn- css3-generators-part-4 [gmap weights]
+  (let [
         gen-nonprop-grid-template-rows
         (:prop-grid-template-rows gmap)
         gmap (assoc gmap :nonprop-grid-template-rows gen-nonprop-grid-template-rows)
 
         gen-nonprop-explicit-track-list
         (gen/tuple
+          (gen/return " ")
           (gen/such-that not-empty (gen/vector
             (gen/tuple
+              (gen/return " ")
               (gen/one-of [
                 (gen/return "")
                 (:nonprop-line-names gmap)])
               (gen/return " ")
-              (:nonprop-track-size gmap)
-              (gen/return " "))))
+              (:nonprop-track-size gmap))))
           (gen/return " ")
           (gen/one-of [
             (gen/return "")
-            (:nonprop-line-names gmap)])
-          (gen/return " "))
-        gmap (assoc gmap :nonprop-explicit-track-list gen-nonprop-explicit-track-list)]
-    gmap))
+            (:nonprop-line-names gmap)]))
+        gmap (assoc gmap :nonprop-explicit-track-list gen-nonprop-explicit-track-list)
 
-(defn- css3-generators-part-4 [gmap weights]
-  (let [
         gen-prop-grid-template
         (gen/frequency [
           [(get weights [:prop-grid-template :alt 0] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "none"))]
           [(get weights [:prop-grid-template :alt 1] 100)
             (gen/tuple
+              (gen/return " ")
               (gen/tuple
+                (gen/return " ")
                 (:nonprop-grid-template-rows gmap)
                 (gen/return " ")
                 (gen/return "/")
                 (gen/return " ")
-                (:nonprop-grid-template-columns gmap)
-                (gen/return " "))
-              (gen/return " "))]
+                (:nonprop-grid-template-columns gmap)))]
           [(get weights [:prop-grid-template :alt 2] 100)
             (gen/tuple
+              (gen/return " ")
               (gen/such-that not-empty (gen/vector
                 (gen/tuple
+                  (gen/return " ")
                   (gen/one-of [
                     (gen/return "")
                     (:nonprop-line-names gmap)])
@@ -4072,29 +4092,27 @@
                   (gen/return " ")
                   (gen/one-of [
                     (gen/return "")
-                    (:nonprop-line-names gmap)])
-                  (gen/return " "))))
+                    (:nonprop-line-names gmap)]))))
               (gen/return " ")
               (gen/one-of [
                 (gen/return "")
                 (gen/tuple
+                  (gen/return " ")
                   (gen/return "/")
                   (gen/return " ")
-                  (:nonprop-explicit-track-list gmap)
-                  (gen/return " "))])
-              (gen/return " "))]])
+                  (:nonprop-explicit-track-list gmap))]))]])
         gmap (assoc gmap :prop-grid-template gen-prop-grid-template)
 
         gen-prop-outline-color
         (gen/frequency [
           [(get weights [:prop-outline-color :alt 0] 100)
             (gen/tuple
-              (:nonprop-color gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-color gmap))]
           [(get weights [:prop-outline-color :alt 1] 100)
             (gen/tuple
-              (gen/return "invert")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "invert"))]])
         gmap (assoc gmap :prop-outline-color gen-prop-outline-color)
 
         gen-nonprop-outline-color
@@ -4103,97 +4121,99 @@
 
         gen-prop-border-left-style
         (gen/tuple
-          (:nonprop-br-style gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-br-style gmap))
         gmap (assoc gmap :prop-border-left-style gen-prop-border-left-style)
 
         gen-prop-widows
         (gen/tuple
-          (:nonprop-integer gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-integer gmap))
         gmap (assoc gmap :prop-widows gen-prop-widows)
 
         gen-prop-break-inside
         (gen/frequency [
           [(get weights [:prop-break-inside :alt 0] 100)
             (gen/tuple
-              (gen/return "auto")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "auto"))]
           [(get weights [:prop-break-inside :alt 1] 100)
             (gen/tuple
-              (gen/return "avoid")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "avoid"))]
           [(get weights [:prop-break-inside :alt 2] 100)
             (gen/tuple
-              (gen/return "avoid-page")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "avoid-page"))]
           [(get weights [:prop-break-inside :alt 3] 100)
             (gen/tuple
-              (gen/return "avoid-column")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "avoid-column"))]
           [(get weights [:prop-break-inside :alt 4] 100)
             (gen/tuple
-              (gen/return "avoid-region")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "avoid-region"))]])
         gmap (assoc gmap :prop-break-inside gen-prop-break-inside)
 
         gen-nonprop-keyframes-name
         (gen/frequency [
           [(get weights [:nonprop-keyframes-name :alt 0] 100)
             (gen/tuple
-              (:nonprop-custom-ident gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-custom-ident gmap))]
           [(get weights [:nonprop-keyframes-name :alt 1] 100)
             (gen/tuple
-              (:nonprop-string gmap)
-              (gen/return " "))]])
+              (gen/return " ")
+              (:nonprop-string gmap))]])
         gmap (assoc gmap :nonprop-keyframes-name gen-nonprop-keyframes-name)
 
         gen-prop-animation-name
         (gen/tuple
+          (gen/return " ")
           (gen/frequency [
-            [(get weights [:prop-animation-name :cat 0 :alt 0] 100)
+            [(get weights [:prop-animation-name :cat 1 :alt 0] 100)
               (gen/tuple
-                (gen/return "none")
-                (gen/return " "))]
-            [(get weights [:prop-animation-name :cat 0 :alt 1] 100)
+                (gen/return " ")
+                (gen/return "none"))]
+            [(get weights [:prop-animation-name :cat 1 :alt 1] 100)
               (gen/tuple
-                (:nonprop-keyframes-name gmap)
-                (gen/return " "))]])
+                (gen/return " ")
+                (:nonprop-keyframes-name gmap))]])
           (gen/vector
             (gen/tuple
-              (gen/return ", ")
+              (gen/return ",")
               (gen/frequency [
-                [(get weights [:prop-animation-name :cat 1 :star :cat 1 :alt 0] 100)
+                [(get weights [:prop-animation-name :cat 2 :star :cat 1 :alt 0] 100)
                   (gen/tuple
-                    (gen/return "none")
-                    (gen/return " "))]
-                [(get weights [:prop-animation-name :cat 1 :star :cat 1 :alt 1] 100)
+                    (gen/return " ")
+                    (gen/return "none"))]
+                [(get weights [:prop-animation-name :cat 2 :star :cat 1 :alt 1] 100)
                   (gen/tuple
-                    (:nonprop-keyframes-name gmap)
-                    (gen/return " "))]])))
-          (gen/return " "))
+                    (gen/return " ")
+                    (:nonprop-keyframes-name gmap))]]))))
         gmap (assoc gmap :prop-animation-name gen-prop-animation-name)
 
         gen-prop-padding-block-end
         (gen/tuple
-          (:nonprop-padding-left gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-padding-left gmap))
         gmap (assoc gmap :prop-padding-block-end gen-prop-padding-block-end)
 
         gen-func-target-counters
         (gen/tuple
+          (gen/return " ")
           (gen/return "target-counters(")
           (gen/tuple
+            (gen/return " ")
             (gen/frequency [
-              [(get weights [:func-target-counters :cat 1 :cat 0 :alt 0] 100)
+              [(get weights [:func-target-counters :cat 2 :cat 1 :alt 0] 100)
                 (gen/tuple
-                  (:nonprop-string gmap)
-                  (gen/return " "))]
-              [(get weights [:func-target-counters :cat 1 :cat 0 :alt 1] 100)
+                  (gen/return " ")
+                  (:nonprop-string gmap))]
+              [(get weights [:func-target-counters :cat 2 :cat 1 :alt 1] 100)
                 (gen/tuple
-                  (:nonprop-url gmap)
-                  (gen/return " "))]])
+                  (gen/return " ")
+                  (:nonprop-url gmap))]])
             (gen/return " ")
             (gen/return ",")
             (gen/return " ")
@@ -4206,70 +4226,70 @@
             (gen/one-of [
               (gen/return "")
               (gen/tuple
+                (gen/return " ")
                 (gen/return ",")
                 (gen/return " ")
-                (:nonprop-counter-style gmap)
-                (gen/return " "))])
-            (gen/return " "))
-          (gen/return ")")
-          (gen/return " "))
+                (:nonprop-counter-style gmap))]))
+          (gen/return ")"))
         gmap (assoc gmap :func-target-counters gen-func-target-counters)
 
         gen-func-target-text
         (gen/tuple
+          (gen/return " ")
           (gen/return "target-text(")
           (gen/tuple
+            (gen/return " ")
             (gen/frequency [
-              [(get weights [:func-target-text :cat 1 :cat 0 :alt 0] 100)
+              [(get weights [:func-target-text :cat 2 :cat 1 :alt 0] 100)
                 (gen/tuple
-                  (:nonprop-string gmap)
-                  (gen/return " "))]
-              [(get weights [:func-target-text :cat 1 :cat 0 :alt 1] 100)
+                  (gen/return " ")
+                  (:nonprop-string gmap))]
+              [(get weights [:func-target-text :cat 2 :cat 1 :alt 1] 100)
                 (gen/tuple
-                  (:nonprop-url gmap)
-                  (gen/return " "))]])
+                  (gen/return " ")
+                  (:nonprop-url gmap))]])
             (gen/return " ")
             (gen/one-of [
               (gen/return "")
               (gen/tuple
+                (gen/return " ")
                 (gen/return ",")
                 (gen/return " ")
                 (gen/frequency [
-                  [(get weights [:func-target-text :cat 1 :cat 2 :opt :cat 2 :alt 0] 100)
+                  [(get weights [:func-target-text :cat 2 :cat 3 :opt :cat 3 :alt 0] 100)
                     (gen/tuple
-                      (gen/return "content")
-                      (gen/return " "))]
-                  [(get weights [:func-target-text :cat 1 :cat 2 :opt :cat 2 :alt 1] 100)
+                      (gen/return " ")
+                      (gen/return "content"))]
+                  [(get weights [:func-target-text :cat 2 :cat 3 :opt :cat 3 :alt 1] 100)
                     (gen/tuple
-                      (gen/return "before")
-                      (gen/return " "))]
-                  [(get weights [:func-target-text :cat 1 :cat 2 :opt :cat 2 :alt 2] 100)
+                      (gen/return " ")
+                      (gen/return "before"))]
+                  [(get weights [:func-target-text :cat 2 :cat 3 :opt :cat 3 :alt 2] 100)
                     (gen/tuple
-                      (gen/return "after")
-                      (gen/return " "))]
-                  [(get weights [:func-target-text :cat 1 :cat 2 :opt :cat 2 :alt 3] 100)
+                      (gen/return " ")
+                      (gen/return "after"))]
+                  [(get weights [:func-target-text :cat 2 :cat 3 :opt :cat 3 :alt 3] 100)
                     (gen/tuple
-                      (gen/return "first-letter")
-                      (gen/return " "))]])
-                (gen/return " "))])
-            (gen/return " "))
-          (gen/return ")")
-          (gen/return " "))
+                      (gen/return " ")
+                      (gen/return "first-letter"))]]))]))
+          (gen/return ")"))
         gmap (assoc gmap :func-target-text gen-func-target-text)
 
         gen-func-target-counter
         (gen/tuple
+          (gen/return " ")
           (gen/return "target-counter(")
           (gen/tuple
+            (gen/return " ")
             (gen/frequency [
-              [(get weights [:func-target-counter :cat 1 :cat 0 :alt 0] 100)
+              [(get weights [:func-target-counter :cat 2 :cat 1 :alt 0] 100)
                 (gen/tuple
-                  (:nonprop-string gmap)
-                  (gen/return " "))]
-              [(get weights [:func-target-counter :cat 1 :cat 0 :alt 1] 100)
+                  (gen/return " ")
+                  (:nonprop-string gmap))]
+              [(get weights [:func-target-counter :cat 2 :cat 1 :alt 1] 100)
                 (gen/tuple
-                  (:nonprop-url gmap)
-                  (gen/return " "))]])
+                  (gen/return " ")
+                  (:nonprop-url gmap))]])
             (gen/return " ")
             (gen/return ",")
             (gen/return " ")
@@ -4278,64 +4298,62 @@
             (gen/one-of [
               (gen/return "")
               (gen/tuple
+                (gen/return " ")
                 (gen/return ",")
                 (gen/return " ")
-                (:nonprop-counter-style gmap)
-                (gen/return " "))])
-            (gen/return " "))
-          (gen/return ")")
-          (gen/return " "))
+                (:nonprop-counter-style gmap))]))
+          (gen/return ")"))
         gmap (assoc gmap :func-target-counter gen-func-target-counter)
 
         gen-nonprop-target
         (gen/frequency [
           [(get weights [:nonprop-target :alt 0] 100)
             (gen/tuple
-              (:func-target-counter gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:func-target-counter gmap))]
           [(get weights [:nonprop-target :alt 1] 100)
             (gen/tuple
-              (:func-target-counters gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:func-target-counters gmap))]
           [(get weights [:nonprop-target :alt 2] 100)
             (gen/tuple
-              (:func-target-text gmap)
-              (gen/return " "))]])
+              (gen/return " ")
+              (:func-target-text gmap))]])
         gmap (assoc gmap :nonprop-target gen-nonprop-target)
 
         gen-func-rotateY
         (gen/tuple
-          (gen/return "rotateY(")
-          (:nonprop-angle gmap)
           (gen/return " ")
-          (gen/return ")")
-          (gen/return " "))
+          (gen/return "rotateY(")
+          (gen/return " ")
+          (:nonprop-angle gmap)
+          (gen/return ")"))
         gmap (assoc gmap :func-rotateY gen-func-rotateY)
 
         gen-prop-mask-clip
         (gen/tuple
+          (gen/return " ")
           (gen/frequency [
-            [(get weights [:prop-mask-clip :cat 0 :alt 0] 100)
+            [(get weights [:prop-mask-clip :cat 1 :alt 0] 100)
               (gen/tuple
-                (:nonprop-geometry-box gmap)
-                (gen/return " "))]
-            [(get weights [:prop-mask-clip :cat 0 :alt 1] 100)
+                (gen/return " ")
+                (:nonprop-geometry-box gmap))]
+            [(get weights [:prop-mask-clip :cat 1 :alt 1] 100)
               (gen/tuple
-                (gen/return "no-clip")
-                (gen/return " "))]])
+                (gen/return " ")
+                (gen/return "no-clip"))]])
           (gen/vector
             (gen/tuple
-              (gen/return ", ")
+              (gen/return ",")
               (gen/frequency [
-                [(get weights [:prop-mask-clip :cat 1 :star :cat 1 :alt 0] 100)
+                [(get weights [:prop-mask-clip :cat 2 :star :cat 1 :alt 0] 100)
                   (gen/tuple
-                    (:nonprop-geometry-box gmap)
-                    (gen/return " "))]
-                [(get weights [:prop-mask-clip :cat 1 :star :cat 1 :alt 1] 100)
+                    (gen/return " ")
+                    (:nonprop-geometry-box gmap))]
+                [(get weights [:prop-mask-clip :cat 2 :star :cat 1 :alt 1] 100)
                   (gen/tuple
-                    (gen/return "no-clip")
-                    (gen/return " "))]])))
-          (gen/return " "))
+                    (gen/return " ")
+                    (gen/return "no-clip"))]]))))
         gmap (assoc gmap :prop-mask-clip gen-prop-mask-clip)
 
         gen-nonprop-mask-clip
@@ -4346,16 +4364,16 @@
         (gen/frequency [
           [(get weights [:prop-flex-wrap :alt 0] 100)
             (gen/tuple
-              (gen/return "nowrap")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "nowrap"))]
           [(get weights [:prop-flex-wrap :alt 1] 100)
             (gen/tuple
-              (gen/return "wrap")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "wrap"))]
           [(get weights [:prop-flex-wrap :alt 2] 100)
             (gen/tuple
-              (gen/return "wrap-reverse")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "wrap-reverse"))]])
         gmap (assoc gmap :prop-flex-wrap gen-prop-flex-wrap)
 
         gen-nonprop-flex-wrap
@@ -4364,15 +4382,25 @@
 
         gen-prop-outline-width
         (gen/tuple
-          (:nonprop-br-width gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-br-width gmap))
         gmap (assoc gmap :prop-outline-width gen-prop-outline-width)
+
+        gen-IDENT
+        (chuck/string-from-regex #"-?[_a-z][_a-z0-9-]*")
+        gmap (assoc gmap :IDENT gen-IDENT)
+
+        gen-css-class
+        (gen/tuple
+          (gen/return ".")
+          (:IDENT gmap))
+        gmap (assoc gmap :css-class gen-css-class)
 
         gen-prop-grid-auto-columns
         (gen/tuple
+          (gen/return " ")
           (gen/such-that not-empty (gen/vector
-            (:nonprop-track-size gmap)))
-          (gen/return " "))
+            (:nonprop-track-size gmap))))
         gmap (assoc gmap :prop-grid-auto-columns gen-prop-grid-auto-columns)
 
         gen-nonprop-grid-template
@@ -4387,35 +4415,36 @@
         (gen/frequency [
           [(get weights [:prop-grid :alt 0] 100)
             (gen/tuple
-              (:nonprop-grid-template gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-grid-template gmap))]
           [(get weights [:prop-grid :alt 1] 100)
             (gen/tuple
+              (gen/return " ")
               (:nonprop-grid-template-rows gmap)
               (gen/return " ")
               (gen/return "/")
               (gen/return " ")
               (gen/tuple
+                (gen/return " ")
                 (gen/return "auto-flow")
                 (gen/return " ")
                 (gen/one-of [
                   (gen/return "")
-                  (gen/return "dense")])
-                (gen/return " "))
+                  (gen/return "dense")]))
               (gen/return " ")
               (gen/one-of [
                 (gen/return "")
-                (:nonprop-grid-auto-columns gmap)])
-              (gen/return " "))]
+                (:nonprop-grid-auto-columns gmap)]))]
           [(get weights [:prop-grid :alt 2] 100)
             (gen/tuple
+              (gen/return " ")
               (gen/tuple
+                (gen/return " ")
                 (gen/return "auto-flow")
                 (gen/return " ")
                 (gen/one-of [
                   (gen/return "")
-                  (gen/return "dense")])
-                (gen/return " "))
+                  (gen/return "dense")]))
               (gen/return " ")
               (gen/one-of [
                 (gen/return "")
@@ -4423,97 +4452,96 @@
               (gen/return " ")
               (gen/return "/")
               (gen/return " ")
-              (:nonprop-grid-template-columns gmap)
-              (gen/return " "))]])
+              (:nonprop-grid-template-columns gmap))]])
         gmap (assoc gmap :prop-grid gen-prop-grid)
 
         gen-prop-padding-inline-end
         (gen/tuple
-          (:nonprop-padding-left gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-padding-left gmap))
         gmap (assoc gmap :prop-padding-inline-end gen-prop-padding-inline-end)
 
         gen-prop-counter-reset
         (gen/frequency [
           [(get weights [:prop-counter-reset :alt 0] 100)
             (gen/tuple
+              (gen/return " ")
               (gen/such-that not-empty (gen/vector
                 (gen/tuple
+                  (gen/return " ")
                   (:nonprop-custom-ident gmap)
                   (gen/return " ")
                   (gen/one-of [
                     (gen/return "")
-                    (:nonprop-integer gmap)])
-                  (gen/return " "))))
-              (gen/return " "))]
+                    (:nonprop-integer gmap)])))))]
           [(get weights [:prop-counter-reset :alt 1] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "none"))]])
         gmap (assoc gmap :prop-counter-reset gen-prop-counter-reset)
 
         gen-prop-text-align-last
         (gen/frequency [
           [(get weights [:prop-text-align-last :alt 0] 100)
             (gen/tuple
-              (gen/return "auto")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "auto"))]
           [(get weights [:prop-text-align-last :alt 1] 100)
             (gen/tuple
-              (gen/return "start")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "start"))]
           [(get weights [:prop-text-align-last :alt 2] 100)
             (gen/tuple
-              (gen/return "end")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "end"))]
           [(get weights [:prop-text-align-last :alt 3] 100)
             (gen/tuple
-              (gen/return "left")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "left"))]
           [(get weights [:prop-text-align-last :alt 4] 100)
             (gen/tuple
-              (gen/return "right")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "right"))]
           [(get weights [:prop-text-align-last :alt 5] 100)
             (gen/tuple
-              (gen/return "center")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "center"))]
           [(get weights [:prop-text-align-last :alt 6] 100)
             (gen/tuple
-              (gen/return "justify")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "justify"))]])
         gmap (assoc gmap :prop-text-align-last gen-prop-text-align-last)
 
         gen-nonprop-display-inside
         (gen/frequency [
           [(get weights [:nonprop-display-inside :alt 0] 100)
             (gen/tuple
-              (gen/return "flow")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "flow"))]
           [(get weights [:nonprop-display-inside :alt 1] 100)
             (gen/tuple
-              (gen/return "flow-root")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "flow-root"))]
           [(get weights [:nonprop-display-inside :alt 2] 100)
             (gen/tuple
-              (gen/return "table")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "table"))]
           [(get weights [:nonprop-display-inside :alt 3] 100)
             (gen/tuple
-              (gen/return "flex")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "flex"))]
           [(get weights [:nonprop-display-inside :alt 4] 100)
             (gen/tuple
-              (gen/return "grid")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "grid"))]
           [(get weights [:nonprop-display-inside :alt 5] 100)
             (gen/tuple
-              (gen/return "subgrid")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "subgrid"))]
           [(get weights [:nonprop-display-inside :alt 6] 100)
             (gen/tuple
-              (gen/return "ruby")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "ruby"))]])
         gmap (assoc gmap :nonprop-display-inside gen-nonprop-display-inside)
 
         gen-nonprop-mask-attachment
@@ -4524,43 +4552,45 @@
         (gen/frequency [
           [(get weights [:nonprop-number-percentage :alt 0] 100)
             (gen/tuple
-              (:nonprop-number gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-number gmap))]
           [(get weights [:nonprop-number-percentage :alt 1] 100)
             (gen/tuple
-              (:nonprop-percentage gmap)
-              (gen/return " "))]])
+              (gen/return " ")
+              (:nonprop-percentage gmap))]])
         gmap (assoc gmap :nonprop-number-percentage gen-nonprop-number-percentage)
 
         gen-func-contrast
         (gen/tuple
+          (gen/return " ")
           (gen/return "contrast(")
+          (gen/return " ")
+          (gen/return " ")
           (:nonprop-number-percentage gmap)
-          (gen/return " ")
-          (gen/return " ")
-          (gen/return ")")
-          (gen/return " "))
+          (gen/return ")"))
         gmap (assoc gmap :func-contrast gen-func-contrast)
 
         gen-func-brightness
         (gen/tuple
-          (gen/return "brightness(")
-          (:nonprop-number-percentage gmap)
           (gen/return " ")
-          (gen/return ")")
-          (gen/return " "))
+          (gen/return "brightness(")
+          (gen/return " ")
+          (:nonprop-number-percentage gmap)
+          (gen/return ")"))
         gmap (assoc gmap :func-brightness gen-func-brightness)
 
         gen-func-drop-shadow
         (gen/tuple
+          (gen/return " ")
           (gen/return "drop-shadow(")
           (gen/tuple
+            (gen/return " ")
             (gen/frequency [
-              [(get weights [:func-drop-shadow :cat 1 :cat 0 :alt 0] 100)
+              [(get weights [:func-drop-shadow :cat 2 :cat 1 :alt 0] 100)
                 (gen/tuple
                   (:nonprop-length gmap)
                   (:nonprop-length gmap))]
-              [(get weights [:func-drop-shadow :cat 1 :cat 0 :alt 1] 100)
+              [(get weights [:func-drop-shadow :cat 2 :cat 1 :alt 1] 100)
                 (gen/tuple
                   (:nonprop-length gmap)
                   (:nonprop-length gmap)
@@ -4568,173 +4598,171 @@
             (gen/return " ")
             (gen/one-of [
               (gen/return "")
-              (:nonprop-color gmap)])
-            (gen/return " "))
-          (gen/return ")")
-          (gen/return " "))
+              (:nonprop-color gmap)]))
+          (gen/return ")"))
         gmap (assoc gmap :func-drop-shadow gen-func-drop-shadow)
 
         gen-func-saturate
         (gen/tuple
-          (gen/return "saturate(")
-          (:nonprop-number-percentage gmap)
           (gen/return " ")
-          (gen/return ")")
-          (gen/return " "))
+          (gen/return "saturate(")
+          (gen/return " ")
+          (:nonprop-number-percentage gmap)
+          (gen/return ")"))
         gmap (assoc gmap :func-saturate gen-func-saturate)
 
         gen-func-hue-rotate
         (gen/tuple
-          (gen/return "hue-rotate(")
-          (:nonprop-angle gmap)
           (gen/return " ")
-          (gen/return ")")
-          (gen/return " "))
+          (gen/return "hue-rotate(")
+          (gen/return " ")
+          (:nonprop-angle gmap)
+          (gen/return ")"))
         gmap (assoc gmap :func-hue-rotate gen-func-hue-rotate)
 
         gen-func-blur
         (gen/tuple
-          (gen/return "blur(")
-          (:nonprop-length gmap)
           (gen/return " ")
-          (gen/return ")")
-          (gen/return " "))
+          (gen/return "blur(")
+          (gen/return " ")
+          (:nonprop-length gmap)
+          (gen/return ")"))
         gmap (assoc gmap :func-blur gen-func-blur)
 
         gen-func-opacity
         (gen/tuple
+          (gen/return " ")
           (gen/return "opacity(")
+          (gen/return " ")
+          (gen/return " ")
           (:nonprop-number-percentage gmap)
-          (gen/return " ")
-          (gen/return " ")
-          (gen/return ")")
-          (gen/return " "))
+          (gen/return ")"))
         gmap (assoc gmap :func-opacity gen-func-opacity)
 
         gen-func-grayscale
         (gen/tuple
-          (gen/return "grayscale(")
-          (:nonprop-number-percentage gmap)
           (gen/return " ")
-          (gen/return ")")
-          (gen/return " "))
+          (gen/return "grayscale(")
+          (gen/return " ")
+          (:nonprop-number-percentage gmap)
+          (gen/return ")"))
         gmap (assoc gmap :func-grayscale gen-func-grayscale)
 
         gen-func-sepia
         (gen/tuple
-          (gen/return "sepia(")
-          (:nonprop-number-percentage gmap)
           (gen/return " ")
-          (gen/return ")")
-          (gen/return " "))
+          (gen/return "sepia(")
+          (gen/return " ")
+          (:nonprop-number-percentage gmap)
+          (gen/return ")"))
         gmap (assoc gmap :func-sepia gen-func-sepia)
 
         gen-func-invert
         (gen/tuple
-          (gen/return "invert(")
-          (:nonprop-number-percentage gmap)
           (gen/return " ")
-          (gen/return ")")
-          (gen/return " "))
+          (gen/return "invert(")
+          (gen/return " ")
+          (:nonprop-number-percentage gmap)
+          (gen/return ")"))
         gmap (assoc gmap :func-invert gen-func-invert)
 
         gen-nonprop-filter-function
         (gen/frequency [
           [(get weights [:nonprop-filter-function :alt 0] 100)
             (gen/tuple
-              (:func-blur gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:func-blur gmap))]
           [(get weights [:nonprop-filter-function :alt 1] 100)
             (gen/tuple
-              (:func-brightness gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:func-brightness gmap))]
           [(get weights [:nonprop-filter-function :alt 2] 100)
             (gen/tuple
-              (:func-contrast gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:func-contrast gmap))]
           [(get weights [:nonprop-filter-function :alt 3] 100)
             (gen/tuple
-              (:func-drop-shadow gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:func-drop-shadow gmap))]
           [(get weights [:nonprop-filter-function :alt 4] 100)
             (gen/tuple
-              (:func-grayscale gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:func-grayscale gmap))]
           [(get weights [:nonprop-filter-function :alt 5] 100)
             (gen/tuple
-              (:func-hue-rotate gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:func-hue-rotate gmap))]
           [(get weights [:nonprop-filter-function :alt 6] 100)
             (gen/tuple
-              (:func-invert gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:func-invert gmap))]
           [(get weights [:nonprop-filter-function :alt 7] 100)
             (gen/tuple
-              (:func-opacity gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:func-opacity gmap))]
           [(get weights [:nonprop-filter-function :alt 8] 100)
             (gen/tuple
-              (:func-sepia gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:func-sepia gmap))]
           [(get weights [:nonprop-filter-function :alt 9] 100)
             (gen/tuple
-              (:func-saturate gmap)
-              (gen/return " "))]])
+              (gen/return " ")
+              (:func-saturate gmap))]])
         gmap (assoc gmap :nonprop-filter-function gen-nonprop-filter-function)
 
         gen-nonprop-filter-function-list
         (gen/tuple
+          (gen/return " ")
           (gen/such-that not-empty (gen/vector
             (gen/frequency [
-              [(get weights [:nonprop-filter-function-list :cat 0 :plus :alt 0] 100)
+              [(get weights [:nonprop-filter-function-list :cat 1 :plus :alt 0] 100)
                 (gen/tuple
-                  (:nonprop-filter-function gmap)
-                  (gen/return " "))]
-              [(get weights [:nonprop-filter-function-list :cat 0 :plus :alt 1] 100)
+                  (gen/return " ")
+                  (:nonprop-filter-function gmap))]
+              [(get weights [:nonprop-filter-function-list :cat 1 :plus :alt 1] 100)
                 (gen/tuple
-                  (:nonprop-url gmap)
-                  (gen/return " "))]])))
-          (gen/return " "))
+                  (gen/return " ")
+                  (:nonprop-url gmap))]]))))
         gmap (assoc gmap :nonprop-filter-function-list gen-nonprop-filter-function-list)
 
         gen-prop-backdrop-filter
         (gen/frequency [
           [(get weights [:prop-backdrop-filter :alt 0] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "none"))]
           [(get weights [:prop-backdrop-filter :alt 1] 100)
             (gen/tuple
-              (:nonprop-filter-function-list gmap)
-              (gen/return " "))]])
+              (gen/return " ")
+              (:nonprop-filter-function-list gmap))]])
         gmap (assoc gmap :prop-backdrop-filter gen-prop-backdrop-filter)
 
         gen-prop-display-inside
         (gen/frequency [
           [(get weights [:prop-display-inside :alt 0] 100)
             (gen/tuple
-              (gen/return "auto")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "auto"))]
           [(get weights [:prop-display-inside :alt 1] 100)
             (gen/tuple
-              (gen/return "block")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "block"))]
           [(get weights [:prop-display-inside :alt 2] 100)
             (gen/tuple
-              (gen/return "table")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "table"))]
           [(get weights [:prop-display-inside :alt 3] 100)
             (gen/tuple
-              (gen/return "flex")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "flex"))]
           [(get weights [:prop-display-inside :alt 4] 100)
             (gen/tuple
-              (gen/return "grid")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "grid"))]
           [(get weights [:prop-display-inside :alt 5] 100)
             (gen/tuple
-              (gen/return "ruby")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "ruby"))]])
         gmap (assoc gmap :prop-display-inside gen-prop-display-inside)
 
         gen-nonprop-attr-fallback
@@ -4749,138 +4777,143 @@
         (gen/frequency [
           [(get weights [:nonprop-type-or-unit :alt 0] 100)
             (gen/tuple
-              (gen/return "string")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "string"))]
           [(get weights [:nonprop-type-or-unit :alt 1] 100)
             (gen/tuple
-              (gen/return "integer")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "integer"))]
           [(get weights [:nonprop-type-or-unit :alt 2] 100)
             (gen/tuple
-              (gen/return "color")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "color"))]
           [(get weights [:nonprop-type-or-unit :alt 3] 100)
             (gen/tuple
-              (gen/return "url")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "url"))]
           [(get weights [:nonprop-type-or-unit :alt 4] 100)
             (gen/tuple
-              (gen/return "integer")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "integer"))]
           [(get weights [:nonprop-type-or-unit :alt 5] 100)
             (gen/tuple
-              (gen/return "number")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "number"))]
           [(get weights [:nonprop-type-or-unit :alt 6] 100)
             (gen/tuple
-              (gen/return "length")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "length"))]
           [(get weights [:nonprop-type-or-unit :alt 7] 100)
             (gen/tuple
-              (gen/return "angle")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "angle"))]
           [(get weights [:nonprop-type-or-unit :alt 8] 100)
             (gen/tuple
-              (gen/return "time")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "time"))]
           [(get weights [:nonprop-type-or-unit :alt 9] 100)
             (gen/tuple
-              (gen/return "frequency")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "frequency"))]
           [(get weights [:nonprop-type-or-unit :alt 10] 100)
             (gen/tuple
-              (gen/return "em")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "em"))]
           [(get weights [:nonprop-type-or-unit :alt 11] 100)
             (gen/tuple
-              (gen/return "ex")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "ex"))]
           [(get weights [:nonprop-type-or-unit :alt 12] 100)
             (gen/tuple
-              (gen/return "px")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "px"))]
           [(get weights [:nonprop-type-or-unit :alt 13] 100)
             (gen/tuple
-              (gen/return "rem")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "rem"))]
           [(get weights [:nonprop-type-or-unit :alt 14] 100)
             (gen/tuple
-              (gen/return "vw")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "vw"))]
           [(get weights [:nonprop-type-or-unit :alt 15] 100)
             (gen/tuple
-              (gen/return "vh")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "vh"))]
           [(get weights [:nonprop-type-or-unit :alt 16] 100)
             (gen/tuple
-              (gen/return "vmin")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "vmin"))]
           [(get weights [:nonprop-type-or-unit :alt 17] 100)
             (gen/tuple
-              (gen/return "vmax")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "vmax"))]
           [(get weights [:nonprop-type-or-unit :alt 18] 100)
             (gen/tuple
-              (gen/return "mm")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "mm"))]
           [(get weights [:nonprop-type-or-unit :alt 19] 100)
             (gen/tuple
-              (gen/return "q")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "q"))]
           [(get weights [:nonprop-type-or-unit :alt 20] 100)
             (gen/tuple
-              (gen/return "cm")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "cm"))]
           [(get weights [:nonprop-type-or-unit :alt 21] 100)
             (gen/tuple
-              (gen/return "in")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "in"))]
           [(get weights [:nonprop-type-or-unit :alt 22] 100)
             (gen/tuple
-              (gen/return "pt")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "pt"))]
           [(get weights [:nonprop-type-or-unit :alt 23] 100)
             (gen/tuple
-              (gen/return "pc")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "pc"))]
           [(get weights [:nonprop-type-or-unit :alt 24] 100)
             (gen/tuple
-              (gen/return "deg")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "deg"))]
           [(get weights [:nonprop-type-or-unit :alt 25] 100)
             (gen/tuple
-              (gen/return "grad")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "grad"))]
           [(get weights [:nonprop-type-or-unit :alt 26] 100)
             (gen/tuple
-              (gen/return "rad")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "rad"))]
           [(get weights [:nonprop-type-or-unit :alt 27] 100)
             (gen/tuple
-              (gen/return "ms")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "ms"))]
           [(get weights [:nonprop-type-or-unit :alt 28] 100)
             (gen/tuple
-              (gen/return "s")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "s"))]
           [(get weights [:nonprop-type-or-unit :alt 29] 100)
             (gen/tuple
-              (gen/return "Hz")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "Hz"))]
           [(get weights [:nonprop-type-or-unit :alt 30] 100)
             (gen/tuple
-              (gen/return "kHz")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "kHz"))]
           [(get weights [:nonprop-type-or-unit :alt 31] 100)
             (gen/tuple
-              (gen/return "%")
-              (gen/return " "))]])
-        gmap (assoc gmap :nonprop-type-or-unit gen-nonprop-type-or-unit)
+              (gen/return " ")
+              (gen/return "%"))]])
+        gmap (assoc gmap :nonprop-type-or-unit gen-nonprop-type-or-unit)]
+    gmap))
 
+(defn- css3-generators-part-5 [gmap weights]
+  (let [
         gen-func-attr
         (gen/tuple
+          (gen/return " ")
           (gen/return "attr(")
           (gen/tuple
+            (gen/return " ")
             (:nonprop-attr-name gmap)
             (gen/return " ")
             (gen/one-of [
@@ -4890,71 +4923,66 @@
             (gen/one-of [
               (gen/return "")
               (gen/tuple
+                (gen/return " ")
                 (gen/return ",")
                 (gen/return " ")
-                (:nonprop-attr-fallback gmap)
-                (gen/return " "))])
-            (gen/return " "))
-          (gen/return ")")
-          (gen/return " "))
+                (:nonprop-attr-fallback gmap))]))
+          (gen/return ")"))
         gmap (assoc gmap :func-attr gen-func-attr)
 
         gen-prop--webkit-text-stroke-color
         (gen/tuple
-          (:nonprop-color gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-color gmap))
         gmap (assoc gmap :prop--webkit-text-stroke-color gen-prop--webkit-text-stroke-color)
 
         gen-prop-animation-duration
         (gen/tuple
+          (gen/return " ")
           (:nonprop-time gmap)
           (gen/vector
             (gen/tuple
-              (gen/return ", ")
-              (:nonprop-time gmap)))
-          (gen/return " "))
+              (gen/return ",")
+              (:nonprop-time gmap))))
         gmap (assoc gmap :prop-animation-duration gen-prop-animation-duration)
 
         gen-prop-scroll-snap-points-y
         (gen/frequency [
           [(get weights [:prop-scroll-snap-points-y :alt 0] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "none"))]
           [(get weights [:prop-scroll-snap-points-y :alt 1] 100)
             (gen/tuple
-              (gen/return "repeat(")
-              (:nonprop-length-percentage gmap)
               (gen/return " ")
-              (gen/return ")")
-              (gen/return " "))]])
-        gmap (assoc gmap :prop-scroll-snap-points-y gen-prop-scroll-snap-points-y)]
-    gmap))
+              (gen/return "repeat(")
+              (gen/return " ")
+              (:nonprop-length-percentage gmap)
+              (gen/return ")"))]])
+        gmap (assoc gmap :prop-scroll-snap-points-y gen-prop-scroll-snap-points-y)
 
-(defn- css3-generators-part-5 [gmap weights]
-  (let [
         gen-prop-user-select
         (gen/frequency [
           [(get weights [:prop-user-select :alt 0] 100)
             (gen/tuple
-              (gen/return "auto")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "auto"))]
           [(get weights [:prop-user-select :alt 1] 100)
             (gen/tuple
-              (gen/return "text")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "text"))]
           [(get weights [:prop-user-select :alt 2] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "none"))]
           [(get weights [:prop-user-select :alt 3] 100)
             (gen/tuple
-              (gen/return "contain")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "contain"))]
           [(get weights [:prop-user-select :alt 4] 100)
             (gen/tuple
-              (gen/return "all")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "all"))]])
         gmap (assoc gmap :prop-user-select gen-prop-user-select)
 
         gen-prop-border-block-start
@@ -4962,27 +4990,29 @@
           (gen/frequency [
             [(get weights [:prop-border-block-start :plus :alt 0] 100)
               (gen/tuple
-                (:nonprop-border-width gmap)
-                (gen/return " "))]
+                (gen/return " ")
+                (:nonprop-border-width gmap))]
             [(get weights [:prop-border-block-start :plus :alt 1] 100)
               (gen/tuple
-                (:nonprop-border-style gmap)
-                (gen/return " "))]
+                (gen/return " ")
+                (:nonprop-border-style gmap))]
             [(get weights [:prop-border-block-start :plus :alt 2] 100)
               (gen/tuple
-                (:nonprop-color gmap)
-                (gen/return " "))]])))
+                (gen/return " ")
+                (:nonprop-color gmap))]])))
         gmap (assoc gmap :prop-border-block-start gen-prop-border-block-start)
 
         gen-nonprop-shadow-t
         (gen/tuple
+          (gen/return " ")
           (gen/tuple
+            (gen/return " ")
             (gen/frequency [
-              [(get weights [:nonprop-shadow-t :cat 0 :cat 0 :alt 0] 100)
+              [(get weights [:nonprop-shadow-t :cat 1 :cat 1 :alt 0] 100)
                 (gen/tuple
                   (:nonprop-length gmap)
                   (:nonprop-length gmap))]
-              [(get weights [:nonprop-shadow-t :cat 0 :cat 0 :alt 1] 100)
+              [(get weights [:nonprop-shadow-t :cat 1 :cat 1 :alt 1] 100)
                 (gen/tuple
                   (:nonprop-length gmap)
                   (:nonprop-length gmap)
@@ -4990,55 +5020,53 @@
             (gen/return " ")
             (gen/one-of [
               (gen/return "")
-              (:nonprop-color gmap)])
-            (gen/return " "))
-          (gen/return " "))
+              (:nonprop-color gmap)])))
         gmap (assoc gmap :nonprop-shadow-t gen-nonprop-shadow-t)
 
         gen-prop-text-shadow
         (gen/frequency [
           [(get weights [:prop-text-shadow :alt 0] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "none"))]
           [(get weights [:prop-text-shadow :alt 1] 100)
             (gen/tuple
+              (gen/return " ")
               (:nonprop-shadow-t gmap)
               (gen/vector
                 (gen/tuple
-                  (gen/return ", ")
-                  (:nonprop-shadow-t gmap)))
-              (gen/return " "))]])
+                  (gen/return ",")
+                  (:nonprop-shadow-t gmap))))]])
         gmap (assoc gmap :prop-text-shadow gen-prop-text-shadow)
 
         gen-nonprop-feature-value-name
         (gen/tuple
-          (:nonprop-custom-ident gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-custom-ident gmap))
         gmap (assoc gmap :nonprop-feature-value-name gen-nonprop-feature-value-name)
 
         gen-prop--moz-window-shadow
         (gen/frequency [
           [(get weights [:prop--moz-window-shadow :alt 0] 100)
             (gen/tuple
-              (gen/return "default")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "default"))]
           [(get weights [:prop--moz-window-shadow :alt 1] 100)
             (gen/tuple
-              (gen/return "menu")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "menu"))]
           [(get weights [:prop--moz-window-shadow :alt 2] 100)
             (gen/tuple
-              (gen/return "tooltip")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "tooltip"))]
           [(get weights [:prop--moz-window-shadow :alt 3] 100)
             (gen/tuple
-              (gen/return "sheet")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "sheet"))]
           [(get weights [:prop--moz-window-shadow :alt 4] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "none"))]])
         gmap (assoc gmap :prop--moz-window-shadow gen-prop--moz-window-shadow)
 
         gen-prop--webkit-text-stroke
@@ -5046,62 +5074,62 @@
           (gen/frequency [
             [(get weights [:prop--webkit-text-stroke :plus :alt 0] 100)
               (gen/tuple
-                (:nonprop-length gmap)
-                (gen/return " "))]
+                (gen/return " ")
+                (:nonprop-length gmap))]
             [(get weights [:prop--webkit-text-stroke :plus :alt 1] 100)
               (gen/tuple
-                (:nonprop-color gmap)
-                (gen/return " "))]])))
+                (gen/return " ")
+                (:nonprop-color gmap))]])))
         gmap (assoc gmap :prop--webkit-text-stroke gen-prop--webkit-text-stroke)
 
         gen-prop-border-left-color
         (gen/tuple
-          (:nonprop-color gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-color gmap))
         gmap (assoc gmap :prop-border-left-color gen-prop-border-left-color)
 
         gen-prop-direction
         (gen/frequency [
           [(get weights [:prop-direction :alt 0] 100)
             (gen/tuple
-              (gen/return "ltr")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "ltr"))]
           [(get weights [:prop-direction :alt 1] 100)
             (gen/tuple
-              (gen/return "rtl")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "rtl"))]])
         gmap (assoc gmap :prop-direction gen-prop-direction)
 
         gen-prop-min-width
         (gen/frequency [
           [(get weights [:prop-min-width :alt 0] 100)
             (gen/tuple
-              (:nonprop-length gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-length gmap))]
           [(get weights [:prop-min-width :alt 1] 100)
             (gen/tuple
-              (:nonprop-percentage gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-percentage gmap))]
           [(get weights [:prop-min-width :alt 2] 100)
             (gen/tuple
-              (gen/return "auto")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "auto"))]
           [(get weights [:prop-min-width :alt 3] 100)
             (gen/tuple
-              (gen/return "max-content")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "max-content"))]
           [(get weights [:prop-min-width :alt 4] 100)
             (gen/tuple
-              (gen/return "min-content")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "min-content"))]
           [(get weights [:prop-min-width :alt 5] 100)
             (gen/tuple
-              (gen/return "fit-content")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "fit-content"))]
           [(get weights [:prop-min-width :alt 6] 100)
             (gen/tuple
-              (gen/return "fill-available")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "fill-available"))]])
         gmap (assoc gmap :prop-min-width gen-prop-min-width)
 
         gen-nonprop-min-width
@@ -5110,81 +5138,81 @@
 
         gen-prop-min-block-size
         (gen/tuple
-          (:nonprop-min-width gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-min-width gmap))
         gmap (assoc gmap :prop-min-block-size gen-prop-min-block-size)
 
         gen-nonprop-single-transition-timing-function
         (gen/frequency [
           [(get weights [:nonprop-single-transition-timing-function :alt 0] 100)
             (gen/tuple
-              (gen/return "ease")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "ease"))]
           [(get weights [:nonprop-single-transition-timing-function :alt 1] 100)
             (gen/tuple
-              (gen/return "linear")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "linear"))]
           [(get weights [:nonprop-single-transition-timing-function :alt 2] 100)
             (gen/tuple
-              (gen/return "ease-in")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "ease-in"))]
           [(get weights [:nonprop-single-transition-timing-function :alt 3] 100)
             (gen/tuple
-              (gen/return "ease-out")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "ease-out"))]
           [(get weights [:nonprop-single-transition-timing-function :alt 4] 100)
             (gen/tuple
-              (gen/return "ease-in-out")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "ease-in-out"))]
           [(get weights [:nonprop-single-transition-timing-function :alt 5] 100)
             (gen/tuple
-              (gen/return "step-start")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "step-start"))]
           [(get weights [:nonprop-single-transition-timing-function :alt 6] 100)
             (gen/tuple
-              (gen/return "step-end")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "step-end"))]
           [(get weights [:nonprop-single-transition-timing-function :alt 7] 100)
             (gen/tuple
+              (gen/return " ")
               (gen/return "steps(")
               (gen/tuple
+                (gen/return " ")
                 (:nonprop-integer gmap)
                 (gen/return " ")
                 (gen/one-of [
                   (gen/return "")
                   (gen/tuple
+                    (gen/return " ")
                     (gen/return ",")
                     (gen/return " ")
                     (gen/frequency [
-                      [(get weights [:nonprop-single-transition-timing-function :alt 7 :cat 1 :cat 2 :opt :cat 2 :alt 0] 100)
+                      [(get weights [:nonprop-single-transition-timing-function :alt 7 :cat 2 :cat 3 :opt :cat 3 :alt 0] 100)
                         (gen/tuple
-                          (gen/return "start")
-                          (gen/return " "))]
-                      [(get weights [:nonprop-single-transition-timing-function :alt 7 :cat 1 :cat 2 :opt :cat 2 :alt 1] 100)
+                          (gen/return " ")
+                          (gen/return "start"))]
+                      [(get weights [:nonprop-single-transition-timing-function :alt 7 :cat 2 :cat 3 :opt :cat 3 :alt 1] 100)
                         (gen/tuple
-                          (gen/return "end")
-                          (gen/return " "))]])
-                    (gen/return " "))])
-                (gen/return " "))
-              (gen/return ")")
-              (gen/return " "))]
+                          (gen/return " ")
+                          (gen/return "end"))]]))]))
+              (gen/return ")"))]
           [(get weights [:nonprop-single-transition-timing-function :alt 8] 100)
             (gen/tuple
+              (gen/return " ")
               (gen/return "cubic-bezier(")
               (gen/tuple
-                (:nonprop-number gmap)
                 (gen/return " ")
-                (gen/return ", ")
                 (:nonprop-number gmap)
+                (gen/return ", ")
                 (gen/return " ")
-                (gen/return ", ")
                 (:nonprop-number gmap)
+                (gen/return ", ")
                 (gen/return " ")
-                (gen/return ", ")
                 (:nonprop-number gmap)
-                (gen/return " "))
-              (gen/return ")")
-              (gen/return " "))]])
+                (gen/return ", ")
+                (gen/return " ")
+                (:nonprop-number gmap))
+              (gen/return ")"))]])
         gmap (assoc gmap :nonprop-single-transition-timing-function gen-nonprop-single-transition-timing-function)
 
         gen-nonprop-single-transition
@@ -5192,97 +5220,97 @@
           (gen/frequency [
             [(get weights [:nonprop-single-transition :plus :alt 0] 100)
               (gen/tuple
+                (gen/return " ")
                 (gen/frequency [
-                  [(get weights [:nonprop-single-transition :plus :alt 0 :cat 0 :alt 0] 100)
+                  [(get weights [:nonprop-single-transition :plus :alt 0 :cat 1 :alt 0] 100)
                     (gen/tuple
-                      (gen/return "none")
-                      (gen/return " "))]
-                  [(get weights [:nonprop-single-transition :plus :alt 0 :cat 0 :alt 1] 100)
+                      (gen/return " ")
+                      (gen/return "none"))]
+                  [(get weights [:nonprop-single-transition :plus :alt 0 :cat 1 :alt 1] 100)
                     (gen/tuple
-                      (:nonprop-single-transition-property gmap)
-                      (gen/return " "))]])
-                (gen/return " "))]
+                      (gen/return " ")
+                      (:nonprop-single-transition-property gmap))]]))]
             [(get weights [:nonprop-single-transition :plus :alt 1] 100)
               (gen/tuple
-                (:nonprop-time gmap)
-                (gen/return " "))]
+                (gen/return " ")
+                (:nonprop-time gmap))]
             [(get weights [:nonprop-single-transition :plus :alt 2] 100)
               (gen/tuple
-                (:nonprop-single-transition-timing-function gmap)
-                (gen/return " "))]
+                (gen/return " ")
+                (:nonprop-single-transition-timing-function gmap))]
             [(get weights [:nonprop-single-transition :plus :alt 3] 100)
               (gen/tuple
-                (:nonprop-time gmap)
-                (gen/return " "))]])))
+                (gen/return " ")
+                (:nonprop-time gmap))]])))
         gmap (assoc gmap :nonprop-single-transition gen-nonprop-single-transition)
 
         gen-prop-marker-offset
         (gen/frequency [
           [(get weights [:prop-marker-offset :alt 0] 100)
             (gen/tuple
-              (:nonprop-length gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-length gmap))]
           [(get weights [:prop-marker-offset :alt 1] 100)
             (gen/tuple
-              (gen/return "auto")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "auto"))]])
         gmap (assoc gmap :prop-marker-offset gen-prop-marker-offset)
 
         gen-prop-image-resolution
         (gen/tuple
+          (gen/return " ")
           (gen/such-that not-empty (gen/vector
             (gen/frequency [
-              [(get weights [:prop-image-resolution :cat 0 :plus :alt 0] 100)
+              [(get weights [:prop-image-resolution :cat 1 :plus :alt 0] 100)
                 (gen/tuple
-                  (gen/return "from-image")
-                  (gen/return " "))]
-              [(get weights [:prop-image-resolution :cat 0 :plus :alt 1] 100)
+                  (gen/return " ")
+                  (gen/return "from-image"))]
+              [(get weights [:prop-image-resolution :cat 1 :plus :alt 1] 100)
                 (gen/tuple
-                  (:nonprop-resolution gmap)
-                  (gen/return " "))]])))
+                  (gen/return " ")
+                  (:nonprop-resolution gmap))]])))
           (gen/return " ")
           (gen/one-of [
             (gen/return "")
-            (gen/return "snap")])
-          (gen/return " "))
+            (gen/return "snap")]))
         gmap (assoc gmap :prop-image-resolution gen-prop-image-resolution)
 
         gen-prop-offset-inline-start
         (gen/tuple
-          (:nonprop-left gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-left gmap))
         gmap (assoc gmap :prop-offset-inline-start gen-prop-offset-inline-start)
 
         gen-nonprop-mask-source
         (gen/tuple
-          (:nonprop-url gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-url gmap))
         gmap (assoc gmap :nonprop-mask-source gen-nonprop-mask-source)
 
         gen-nonprop-mask-reference
         (gen/frequency [
           [(get weights [:nonprop-mask-reference :alt 0] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "none"))]
           [(get weights [:nonprop-mask-reference :alt 1] 100)
             (gen/tuple
-              (:nonprop-image gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-image gmap))]
           [(get weights [:nonprop-mask-reference :alt 2] 100)
             (gen/tuple
-              (:nonprop-mask-source gmap)
-              (gen/return " "))]])
+              (gen/return " ")
+              (:nonprop-mask-source gmap))]])
         gmap (assoc gmap :nonprop-mask-reference gen-nonprop-mask-reference)
 
         gen-prop-mask-image
         (gen/tuple
+          (gen/return " ")
           (:nonprop-mask-reference gmap)
           (gen/vector
             (gen/tuple
-              (gen/return ", ")
-              (:nonprop-mask-reference gmap)))
-          (gen/return " "))
+              (gen/return ",")
+              (:nonprop-mask-reference gmap))))
         gmap (assoc gmap :prop-mask-image gen-prop-mask-image)
 
         gen-nonprop-mask-image
@@ -5291,95 +5319,95 @@
 
         gen-prop--webkit-mask-image
         (gen/tuple
+          (gen/return " ")
           (:nonprop-mask-image gmap)
           (gen/return " ")
           (gen/vector
             (gen/tuple
+              (gen/return " ")
               (gen/return ",")
               (gen/return " ")
-              (:nonprop-mask-image gmap)
-              (gen/return " ")))
-          (gen/return " "))
+              (:nonprop-mask-image gmap))))
         gmap (assoc gmap :prop--webkit-mask-image gen-prop--webkit-mask-image)
 
         gen-prop-border-top-color
         (gen/tuple
-          (:nonprop-color gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-color gmap))
         gmap (assoc gmap :prop-border-top-color gen-prop-border-top-color)
 
         gen-prop-border-right-color
         (gen/tuple
-          (:nonprop-color gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-color gmap))
         gmap (assoc gmap :prop-border-right-color gen-prop-border-right-color)
 
         gen-nonprop-page-margin-box-type
         (gen/frequency [
           [(get weights [:nonprop-page-margin-box-type :alt 0] 100)
             (gen/tuple
-              (gen/return "@top-left-corner")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "@top-left-corner"))]
           [(get weights [:nonprop-page-margin-box-type :alt 1] 100)
             (gen/tuple
-              (gen/return "@top-left")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "@top-left"))]
           [(get weights [:nonprop-page-margin-box-type :alt 2] 100)
             (gen/tuple
-              (gen/return "@top-center")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "@top-center"))]
           [(get weights [:nonprop-page-margin-box-type :alt 3] 100)
             (gen/tuple
-              (gen/return "@top-right")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "@top-right"))]
           [(get weights [:nonprop-page-margin-box-type :alt 4] 100)
             (gen/tuple
-              (gen/return "@top-right-corner")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "@top-right-corner"))]
           [(get weights [:nonprop-page-margin-box-type :alt 5] 100)
             (gen/tuple
-              (gen/return "@bottom-left-corner")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "@bottom-left-corner"))]
           [(get weights [:nonprop-page-margin-box-type :alt 6] 100)
             (gen/tuple
-              (gen/return "@bottom-left")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "@bottom-left"))]
           [(get weights [:nonprop-page-margin-box-type :alt 7] 100)
             (gen/tuple
-              (gen/return "@bottom-center")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "@bottom-center"))]
           [(get weights [:nonprop-page-margin-box-type :alt 8] 100)
             (gen/tuple
-              (gen/return "@bottom-right")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "@bottom-right"))]
           [(get weights [:nonprop-page-margin-box-type :alt 9] 100)
             (gen/tuple
-              (gen/return "@bottom-right-corner")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "@bottom-right-corner"))]
           [(get weights [:nonprop-page-margin-box-type :alt 10] 100)
             (gen/tuple
-              (gen/return "@left-top")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "@left-top"))]
           [(get weights [:nonprop-page-margin-box-type :alt 11] 100)
             (gen/tuple
-              (gen/return "@left-middle")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "@left-middle"))]
           [(get weights [:nonprop-page-margin-box-type :alt 12] 100)
             (gen/tuple
-              (gen/return "@left-bottom")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "@left-bottom"))]
           [(get weights [:nonprop-page-margin-box-type :alt 13] 100)
             (gen/tuple
-              (gen/return "@right-top")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "@right-top"))]
           [(get weights [:nonprop-page-margin-box-type :alt 14] 100)
             (gen/tuple
-              (gen/return "@right-middle")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "@right-middle"))]
           [(get weights [:nonprop-page-margin-box-type :alt 15] 100)
             (gen/tuple
-              (gen/return "@right-bottom")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "@right-bottom"))]])
         gmap (assoc gmap :nonprop-page-margin-box-type gen-nonprop-page-margin-box-type)
 
         gen-nonprop-declaration-list
@@ -5388,58 +5416,56 @@
 
         gen-nonprop-page-margin-box
         (gen/tuple
+          (gen/return " ")
           (:nonprop-page-margin-box-type gmap)
           (gen/return " ")
           (gen/return "{")
-          (:nonprop-declaration-list gmap)
           (gen/return " ")
-          (gen/return "}")
-          (gen/return " "))
+          (:nonprop-declaration-list gmap)
+          (gen/return "}"))
         gmap (assoc gmap :nonprop-page-margin-box gen-nonprop-page-margin-box)
 
         gen-func-translateY
         (gen/tuple
-          (gen/return "translateY(")
-          (:nonprop-length-percentage gmap)
           (gen/return " ")
-          (gen/return ")")
-          (gen/return " "))
+          (gen/return "translateY(")
+          (gen/return " ")
+          (:nonprop-length-percentage gmap)
+          (gen/return ")"))
         gmap (assoc gmap :func-translateY gen-func-translateY)
 
         gen-func-scale
         (gen/tuple
+          (gen/return " ")
           (gen/return "scale(")
           (gen/tuple
+            (gen/return " ")
             (:nonprop-number gmap)
             (gen/return " ")
             (gen/one-of [
               (gen/return "")
               (gen/tuple
+                (gen/return " ")
                 (gen/return ",")
                 (gen/return " ")
-                (:nonprop-number gmap)
-                (gen/return " "))])
-            (gen/return " "))
-          (gen/return ")")
-          (gen/return " "))
+                (:nonprop-number gmap))]))
+          (gen/return ")"))
         gmap (assoc gmap :func-scale gen-func-scale)
 
         gen-func-rotateZ
         (gen/tuple
-          (gen/return "rotateZ(")
-          (:nonprop-angle gmap)
           (gen/return " ")
-          (gen/return ")")
-          (gen/return " "))
+          (gen/return "rotateZ(")
+          (gen/return " ")
+          (:nonprop-angle gmap)
+          (gen/return ")"))
         gmap (assoc gmap :func-rotateZ gen-func-rotateZ)
 
         gen-func-rotate3d
         (gen/tuple
+          (gen/return " ")
           (gen/return "rotate3d(")
           (gen/tuple
-            (:nonprop-number gmap)
-            (gen/return " ")
-            (gen/return ",")
             (gen/return " ")
             (:nonprop-number gmap)
             (gen/return " ")
@@ -5449,450 +5475,455 @@
             (gen/return " ")
             (gen/return ",")
             (gen/return " ")
-            (:nonprop-angle gmap)
-            (gen/return " "))
-          (gen/return ")")
-          (gen/return " "))
+            (:nonprop-number gmap)
+            (gen/return " ")
+            (gen/return ",")
+            (gen/return " ")
+            (:nonprop-angle gmap))
+          (gen/return ")"))
         gmap (assoc gmap :func-rotate3d gen-func-rotate3d)
 
         gen-func-skewX
         (gen/tuple
-          (gen/return "skewX(")
-          (:nonprop-angle gmap)
           (gen/return " ")
-          (gen/return ")")
-          (gen/return " "))
+          (gen/return "skewX(")
+          (gen/return " ")
+          (:nonprop-angle gmap)
+          (gen/return ")"))
         gmap (assoc gmap :func-skewX gen-func-skewX)
 
         gen-func-matrix3d
         (gen/tuple
+          (gen/return " ")
           (gen/return "matrix3d(")
           (gen/tuple
+            (gen/return " ")
             (:nonprop-number gmap)
             (gen/return " ")
             (gen/frequency [
-              [(get weights [:func-matrix3d :cat 1 :cat 2 :alt 0] 100)
+              [(get weights [:func-matrix3d :cat 2 :cat 3 :alt 0] 100)
                 (gen/tuple
+                  (gen/return " ")
                   (gen/return ",")
                   (gen/return " ")
-                  (:nonprop-number gmap)
-                  (gen/return " "))]
-              [(get weights [:func-matrix3d :cat 1 :cat 2 :alt 1] 100)
+                  (:nonprop-number gmap))]
+              [(get weights [:func-matrix3d :cat 2 :cat 3 :alt 1] 100)
                 (gen/tuple
                   (gen/tuple
+                    (gen/return " ")
                     (gen/return ",")
                     (gen/return " ")
-                    (:nonprop-number gmap)
-                    (gen/return " "))
+                    (:nonprop-number gmap))
                   (gen/tuple
+                    (gen/return " ")
                     (gen/return ",")
                     (gen/return " ")
-                    (:nonprop-number gmap)
-                    (gen/return " ")))]
-              [(get weights [:func-matrix3d :cat 1 :cat 2 :alt 2] 100)
+                    (:nonprop-number gmap)))]
+              [(get weights [:func-matrix3d :cat 2 :cat 3 :alt 2] 100)
                 (gen/tuple
                   (gen/tuple
+                    (gen/return " ")
                     (gen/return ",")
                     (gen/return " ")
-                    (:nonprop-number gmap)
-                    (gen/return " "))
+                    (:nonprop-number gmap))
                   (gen/tuple
+                    (gen/return " ")
                     (gen/return ",")
                     (gen/return " ")
-                    (:nonprop-number gmap)
-                    (gen/return " "))
+                    (:nonprop-number gmap))
                   (gen/tuple
+                    (gen/return " ")
                     (gen/return ",")
                     (gen/return " ")
-                    (:nonprop-number gmap)
-                    (gen/return " ")))]
-              [(get weights [:func-matrix3d :cat 1 :cat 2 :alt 3] 100)
+                    (:nonprop-number gmap)))]
+              [(get weights [:func-matrix3d :cat 2 :cat 3 :alt 3] 100)
                 (gen/tuple
                   (gen/tuple
+                    (gen/return " ")
                     (gen/return ",")
                     (gen/return " ")
-                    (:nonprop-number gmap)
-                    (gen/return " "))
+                    (:nonprop-number gmap))
                   (gen/tuple
+                    (gen/return " ")
                     (gen/return ",")
                     (gen/return " ")
-                    (:nonprop-number gmap)
-                    (gen/return " "))
+                    (:nonprop-number gmap))
                   (gen/tuple
+                    (gen/return " ")
                     (gen/return ",")
                     (gen/return " ")
-                    (:nonprop-number gmap)
-                    (gen/return " "))
+                    (:nonprop-number gmap))
                   (gen/tuple
+                    (gen/return " ")
                     (gen/return ",")
                     (gen/return " ")
-                    (:nonprop-number gmap)
-                    (gen/return " ")))]
-              [(get weights [:func-matrix3d :cat 1 :cat 2 :alt 4] 100)
+                    (:nonprop-number gmap)))]
+              [(get weights [:func-matrix3d :cat 2 :cat 3 :alt 4] 100)
                 (gen/tuple
                   (gen/tuple
+                    (gen/return " ")
                     (gen/return ",")
                     (gen/return " ")
-                    (:nonprop-number gmap)
-                    (gen/return " "))
+                    (:nonprop-number gmap))
                   (gen/tuple
+                    (gen/return " ")
                     (gen/return ",")
                     (gen/return " ")
-                    (:nonprop-number gmap)
-                    (gen/return " "))
+                    (:nonprop-number gmap))
                   (gen/tuple
+                    (gen/return " ")
                     (gen/return ",")
                     (gen/return " ")
-                    (:nonprop-number gmap)
-                    (gen/return " "))
+                    (:nonprop-number gmap))
                   (gen/tuple
+                    (gen/return " ")
                     (gen/return ",")
                     (gen/return " ")
-                    (:nonprop-number gmap)
-                    (gen/return " "))
+                    (:nonprop-number gmap))
                   (gen/tuple
+                    (gen/return " ")
                     (gen/return ",")
                     (gen/return " ")
-                    (:nonprop-number gmap)
-                    (gen/return " ")))]])
-            (gen/return " "))
-          (gen/return ")")
-          (gen/return " "))
+                    (:nonprop-number gmap)))]]))
+          (gen/return ")"))
         gmap (assoc gmap :func-matrix3d gen-func-matrix3d)
 
         gen-func-translate
         (gen/tuple
+          (gen/return " ")
           (gen/return "translate(")
           (gen/tuple
+            (gen/return " ")
             (:nonprop-length-percentage gmap)
             (gen/return " ")
             (gen/one-of [
               (gen/return "")
               (gen/tuple
+                (gen/return " ")
                 (gen/return ",")
                 (gen/return " ")
-                (:nonprop-length-percentage gmap)
-                (gen/return " "))])
-            (gen/return " "))
-          (gen/return ")")
-          (gen/return " "))
+                (:nonprop-length-percentage gmap))]))
+          (gen/return ")"))
         gmap (assoc gmap :func-translate gen-func-translate)
 
         gen-func-scaleZ
         (gen/tuple
-          (gen/return "scaleZ(")
-          (:nonprop-number gmap)
           (gen/return " ")
-          (gen/return ")")
-          (gen/return " "))
+          (gen/return "scaleZ(")
+          (gen/return " ")
+          (:nonprop-number gmap)
+          (gen/return ")"))
         gmap (assoc gmap :func-scaleZ gen-func-scaleZ)
 
         gen-func-scale3d
         (gen/tuple
+          (gen/return " ")
           (gen/return "scale3d(")
           (gen/tuple
-            (:nonprop-number gmap)
-            (gen/return " ")
-            (gen/return ",")
             (gen/return " ")
             (:nonprop-number gmap)
             (gen/return " ")
             (gen/return ",")
             (gen/return " ")
             (:nonprop-number gmap)
-            (gen/return " "))
-          (gen/return ")")
-          (gen/return " "))
+            (gen/return " ")
+            (gen/return ",")
+            (gen/return " ")
+            (:nonprop-number gmap))
+          (gen/return ")"))
         gmap (assoc gmap :func-scale3d gen-func-scale3d)
 
         gen-func-rotateX
         (gen/tuple
-          (gen/return "rotateX(")
-          (:nonprop-angle gmap)
           (gen/return " ")
-          (gen/return ")")
-          (gen/return " "))
+          (gen/return "rotateX(")
+          (gen/return " ")
+          (:nonprop-angle gmap)
+          (gen/return ")"))
         gmap (assoc gmap :func-rotateX gen-func-rotateX)
 
         gen-func-scaleX
         (gen/tuple
-          (gen/return "scaleX(")
-          (:nonprop-number gmap)
           (gen/return " ")
-          (gen/return ")")
-          (gen/return " "))
+          (gen/return "scaleX(")
+          (gen/return " ")
+          (:nonprop-number gmap)
+          (gen/return ")"))
         gmap (assoc gmap :func-scaleX gen-func-scaleX)
 
         gen-func-matrix
         (gen/tuple
+          (gen/return " ")
           (gen/return "matrix(")
           (gen/tuple
+            (gen/return " ")
             (:nonprop-number gmap)
             (gen/return " ")
             (gen/tuple
               (gen/tuple
+                (gen/return " ")
                 (gen/return ",")
                 (gen/return " ")
-                (:nonprop-number gmap)
-                (gen/return " "))
+                (:nonprop-number gmap))
               (gen/tuple
+                (gen/return " ")
                 (gen/return ",")
                 (gen/return " ")
-                (:nonprop-number gmap)
-                (gen/return " "))
+                (:nonprop-number gmap))
               (gen/tuple
+                (gen/return " ")
                 (gen/return ",")
                 (gen/return " ")
-                (:nonprop-number gmap)
-                (gen/return " "))
+                (:nonprop-number gmap))
               (gen/tuple
+                (gen/return " ")
                 (gen/return ",")
                 (gen/return " ")
-                (:nonprop-number gmap)
-                (gen/return " "))
+                (:nonprop-number gmap))
               (gen/tuple
+                (gen/return " ")
                 (gen/return ",")
                 (gen/return " ")
-                (:nonprop-number gmap)
-                (gen/return " ")))
-            (gen/return " "))
-          (gen/return ")")
-          (gen/return " "))
+                (:nonprop-number gmap))))
+          (gen/return ")"))
         gmap (assoc gmap :func-matrix gen-func-matrix)
 
         gen-func-perspective
         (gen/tuple
-          (gen/return "perspective(")
-          (:nonprop-length gmap)
           (gen/return " ")
-          (gen/return ")")
-          (gen/return " "))
+          (gen/return "perspective(")
+          (gen/return " ")
+          (:nonprop-length gmap)
+          (gen/return ")"))
         gmap (assoc gmap :func-perspective gen-func-perspective)
 
         gen-func-translate3d
         (gen/tuple
+          (gen/return " ")
           (gen/return "translate3d(")
           (gen/tuple
-            (:nonprop-length-percentage gmap)
-            (gen/return " ")
-            (gen/return ",")
             (gen/return " ")
             (:nonprop-length-percentage gmap)
             (gen/return " ")
             (gen/return ",")
             (gen/return " ")
-            (:nonprop-length gmap)
-            (gen/return " "))
-          (gen/return ")")
-          (gen/return " "))
+            (:nonprop-length-percentage gmap)
+            (gen/return " ")
+            (gen/return ",")
+            (gen/return " ")
+            (:nonprop-length gmap))
+          (gen/return ")"))
         gmap (assoc gmap :func-translate3d gen-func-translate3d)
 
         gen-func-translateX
         (gen/tuple
-          (gen/return "translateX(")
-          (:nonprop-length-percentage gmap)
           (gen/return " ")
-          (gen/return ")")
-          (gen/return " "))
+          (gen/return "translateX(")
+          (gen/return " ")
+          (:nonprop-length-percentage gmap)
+          (gen/return ")"))
         gmap (assoc gmap :func-translateX gen-func-translateX)
 
         gen-func-translateZ
         (gen/tuple
-          (gen/return "translateZ(")
-          (:nonprop-length gmap)
           (gen/return " ")
-          (gen/return ")")
-          (gen/return " "))
+          (gen/return "translateZ(")
+          (gen/return " ")
+          (:nonprop-length gmap)
+          (gen/return ")"))
         gmap (assoc gmap :func-translateZ gen-func-translateZ)
 
         gen-nonprop-transform-function
         (gen/tuple
+          (gen/return " ")
           (gen/such-that not-empty (gen/vector
             (gen/such-that not-empty (gen/vector
               (gen/frequency [
-                [(get weights [:nonprop-transform-function :cat 0 :plus :plus :alt 0] 100)
+                [(get weights [:nonprop-transform-function :cat 1 :plus :plus :alt 0] 100)
                   (gen/tuple
-                    (:func-matrix gmap)
-                    (gen/return " "))]
-                [(get weights [:nonprop-transform-function :cat 0 :plus :plus :alt 1] 100)
+                    (gen/return " ")
+                    (:func-matrix gmap))]
+                [(get weights [:nonprop-transform-function :cat 1 :plus :plus :alt 1] 100)
                   (gen/tuple
-                    (:func-translate gmap)
-                    (gen/return " "))]
-                [(get weights [:nonprop-transform-function :cat 0 :plus :plus :alt 2] 100)
+                    (gen/return " ")
+                    (:func-translate gmap))]
+                [(get weights [:nonprop-transform-function :cat 1 :plus :plus :alt 2] 100)
                   (gen/tuple
-                    (:func-translateX gmap)
-                    (gen/return " "))]
-                [(get weights [:nonprop-transform-function :cat 0 :plus :plus :alt 3] 100)
+                    (gen/return " ")
+                    (:func-translateX gmap))]
+                [(get weights [:nonprop-transform-function :cat 1 :plus :plus :alt 3] 100)
                   (gen/tuple
-                    (:func-translateY gmap)
-                    (gen/return " "))]
-                [(get weights [:nonprop-transform-function :cat 0 :plus :plus :alt 4] 100)
+                    (gen/return " ")
+                    (:func-translateY gmap))]
+                [(get weights [:nonprop-transform-function :cat 1 :plus :plus :alt 4] 100)
                   (gen/tuple
-                    (:func-scale gmap)
-                    (gen/return " "))]
-                [(get weights [:nonprop-transform-function :cat 0 :plus :plus :alt 5] 100)
+                    (gen/return " ")
+                    (:func-scale gmap))]
+                [(get weights [:nonprop-transform-function :cat 1 :plus :plus :alt 5] 100)
                   (gen/tuple
-                    (:func-scaleX gmap)
-                    (gen/return " "))]
-                [(get weights [:nonprop-transform-function :cat 0 :plus :plus :alt 6] 100)
+                    (gen/return " ")
+                    (:func-scaleX gmap))]
+                [(get weights [:nonprop-transform-function :cat 1 :plus :plus :alt 6] 100)
                   (gen/tuple
-                    (:func-scaleY gmap)
-                    (gen/return " "))]
-                [(get weights [:nonprop-transform-function :cat 0 :plus :plus :alt 7] 100)
+                    (gen/return " ")
+                    (:func-scaleY gmap))]
+                [(get weights [:nonprop-transform-function :cat 1 :plus :plus :alt 7] 100)
                   (gen/tuple
-                    (:func-rotate gmap)
-                    (gen/return " "))]
-                [(get weights [:nonprop-transform-function :cat 0 :plus :plus :alt 8] 100)
+                    (gen/return " ")
+                    (:func-rotate gmap))]
+                [(get weights [:nonprop-transform-function :cat 1 :plus :plus :alt 8] 100)
                   (gen/tuple
-                    (:func-skew gmap)
-                    (gen/return " "))]
-                [(get weights [:nonprop-transform-function :cat 0 :plus :plus :alt 9] 100)
+                    (gen/return " ")
+                    (:func-skew gmap))]
+                [(get weights [:nonprop-transform-function :cat 1 :plus :plus :alt 9] 100)
                   (gen/tuple
-                    (:func-skewX gmap)
-                    (gen/return " "))]
-                [(get weights [:nonprop-transform-function :cat 0 :plus :plus :alt 10] 100)
+                    (gen/return " ")
+                    (:func-skewX gmap))]
+                [(get weights [:nonprop-transform-function :cat 1 :plus :plus :alt 10] 100)
                   (gen/tuple
-                    (:func-skewY gmap)
-                    (gen/return " "))]
-                [(get weights [:nonprop-transform-function :cat 0 :plus :plus :alt 11] 100)
+                    (gen/return " ")
+                    (:func-skewY gmap))]
+                [(get weights [:nonprop-transform-function :cat 1 :plus :plus :alt 11] 100)
                   (gen/tuple
-                    (:func-matrix3d gmap)
-                    (gen/return " "))]
-                [(get weights [:nonprop-transform-function :cat 0 :plus :plus :alt 12] 100)
+                    (gen/return " ")
+                    (:func-matrix3d gmap))]
+                [(get weights [:nonprop-transform-function :cat 1 :plus :plus :alt 12] 100)
                   (gen/tuple
-                    (:func-translate3d gmap)
-                    (gen/return " "))]
-                [(get weights [:nonprop-transform-function :cat 0 :plus :plus :alt 13] 100)
+                    (gen/return " ")
+                    (:func-translate3d gmap))]
+                [(get weights [:nonprop-transform-function :cat 1 :plus :plus :alt 13] 100)
                   (gen/tuple
-                    (:func-translateZ gmap)
-                    (gen/return " "))]
-                [(get weights [:nonprop-transform-function :cat 0 :plus :plus :alt 14] 100)
+                    (gen/return " ")
+                    (:func-translateZ gmap))]
+                [(get weights [:nonprop-transform-function :cat 1 :plus :plus :alt 14] 100)
                   (gen/tuple
-                    (:func-scale3d gmap)
-                    (gen/return " "))]
-                [(get weights [:nonprop-transform-function :cat 0 :plus :plus :alt 15] 100)
+                    (gen/return " ")
+                    (:func-scale3d gmap))]
+                [(get weights [:nonprop-transform-function :cat 1 :plus :plus :alt 15] 100)
                   (gen/tuple
-                    (:func-scaleZ gmap)
-                    (gen/return " "))]
-                [(get weights [:nonprop-transform-function :cat 0 :plus :plus :alt 16] 100)
+                    (gen/return " ")
+                    (:func-scaleZ gmap))]
+                [(get weights [:nonprop-transform-function :cat 1 :plus :plus :alt 16] 100)
                   (gen/tuple
-                    (:func-rotate3d gmap)
-                    (gen/return " "))]
-                [(get weights [:nonprop-transform-function :cat 0 :plus :plus :alt 17] 100)
+                    (gen/return " ")
+                    (:func-rotate3d gmap))]
+                [(get weights [:nonprop-transform-function :cat 1 :plus :plus :alt 17] 100)
                   (gen/tuple
-                    (:func-rotateX gmap)
-                    (gen/return " "))]
-                [(get weights [:nonprop-transform-function :cat 0 :plus :plus :alt 18] 100)
+                    (gen/return " ")
+                    (:func-rotateX gmap))]
+                [(get weights [:nonprop-transform-function :cat 1 :plus :plus :alt 18] 100)
                   (gen/tuple
-                    (:func-rotateY gmap)
-                    (gen/return " "))]
-                [(get weights [:nonprop-transform-function :cat 0 :plus :plus :alt 19] 100)
+                    (gen/return " ")
+                    (:func-rotateY gmap))]
+                [(get weights [:nonprop-transform-function :cat 1 :plus :plus :alt 19] 100)
                   (gen/tuple
-                    (:func-rotateZ gmap)
-                    (gen/return " "))]
-                [(get weights [:nonprop-transform-function :cat 0 :plus :plus :alt 20] 100)
+                    (gen/return " ")
+                    (:func-rotateZ gmap))]
+                [(get weights [:nonprop-transform-function :cat 1 :plus :plus :alt 20] 100)
                   (gen/tuple
-                    (:func-perspective gmap)
-                    (gen/return " "))]])))))
-          (gen/return " "))
+                    (gen/return " ")
+                    (:func-perspective gmap))]]))))))
         gmap (assoc gmap :nonprop-transform-function gen-nonprop-transform-function)
 
         gen-nonprop-transform-list
         (gen/tuple
+          (gen/return " ")
           (gen/such-that not-empty (gen/vector
-            (:nonprop-transform-function gmap)))
-          (gen/return " "))
+            (:nonprop-transform-function gmap))))
         gmap (assoc gmap :nonprop-transform-list gen-nonprop-transform-list)
 
         gen-prop-transform
         (gen/frequency [
           [(get weights [:prop-transform :alt 0] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "none"))]
           [(get weights [:prop-transform :alt 1] 100)
             (gen/tuple
-              (:nonprop-transform-list gmap)
-              (gen/return " "))]])
-        gmap (assoc gmap :prop-transform gen-prop-transform)
+              (gen/return " ")
+              (:nonprop-transform-list gmap))]])
+        gmap (assoc gmap :prop-transform gen-prop-transform)]
+    gmap))
 
+(defn- css3-generators-part-6 [gmap weights]
+  (let [
         gen-func-repeating-linear-gradient
         (gen/tuple
+          (gen/return " ")
           (gen/return "repeating-linear-gradient(")
           (gen/tuple
+            (gen/return " ")
             (gen/one-of [
               (gen/return "")
               (gen/frequency [
-                [(get weights [:func-repeating-linear-gradient :cat 1 :cat 0 :opt :alt 0] 100)
+                [(get weights [:func-repeating-linear-gradient :cat 2 :cat 1 :opt :alt 0] 100)
                   (gen/tuple
-                    (:nonprop-angle gmap)
-                    (gen/return " "))]
-                [(get weights [:func-repeating-linear-gradient :cat 1 :cat 0 :opt :alt 1] 100)
+                    (gen/return " ")
+                    (:nonprop-angle gmap))]
+                [(get weights [:func-repeating-linear-gradient :cat 2 :cat 1 :opt :alt 1] 100)
                   (gen/tuple
+                    (gen/return " ")
                     (gen/return "to")
                     (gen/return " ")
-                    (:nonprop-side-or-corner gmap)
-                    (gen/return " "))]])])
+                    (:nonprop-side-or-corner gmap))]])])
             (gen/return " ")
             (gen/return ",")
             (gen/return " ")
-            (:nonprop-color-stop-list gmap)
-            (gen/return " "))
-          (gen/return ")")
-          (gen/return " "))
+            (:nonprop-color-stop-list gmap))
+          (gen/return ")"))
         gmap (assoc gmap :func-repeating-linear-gradient gen-func-repeating-linear-gradient)
 
         gen-func-radial-gradient
         (gen/tuple
+          (gen/return " ")
           (gen/return "radial-gradient(")
           (gen/tuple
+            (gen/return " ")
             (gen/one-of [
               (gen/return "")
               (gen/such-that not-empty (gen/vector
                 (gen/frequency [
-                  [(get weights [:func-radial-gradient :cat 1 :cat 0 :opt :plus :alt 0] 100)
+                  [(get weights [:func-radial-gradient :cat 2 :cat 1 :opt :plus :alt 0] 100)
                     (gen/tuple
-                      (:nonprop-ending-shape gmap)
-                      (gen/return " "))]
-                  [(get weights [:func-radial-gradient :cat 1 :cat 0 :opt :plus :alt 1] 100)
+                      (gen/return " ")
+                      (:nonprop-ending-shape gmap))]
+                  [(get weights [:func-radial-gradient :cat 2 :cat 1 :opt :plus :alt 1] 100)
                     (gen/tuple
-                      (:nonprop-size gmap)
-                      (gen/return " "))]])))])
+                      (gen/return " ")
+                      (:nonprop-size gmap))]])))])
             (gen/return " ")
             (gen/one-of [
               (gen/return "")
               (gen/tuple
+                (gen/return " ")
                 (gen/return "at")
                 (gen/return " ")
-                (:nonprop-position gmap)
-                (gen/return " "))])
+                (:nonprop-position gmap))])
             (gen/return " ")
             (gen/return ",")
             (gen/return " ")
-            (:nonprop-color-stop-list gmap)
-            (gen/return " "))
-          (gen/return ")")
-          (gen/return " "))
+            (:nonprop-color-stop-list gmap))
+          (gen/return ")"))
         gmap (assoc gmap :func-radial-gradient gen-func-radial-gradient)
 
         gen-nonprop-gradient
         (gen/frequency [
           [(get weights [:nonprop-gradient :alt 0] 100)
             (gen/tuple
-              (:func-linear-gradient gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:func-linear-gradient gmap))]
           [(get weights [:nonprop-gradient :alt 1] 100)
             (gen/tuple
-              (:func-repeating-linear-gradient gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:func-repeating-linear-gradient gmap))]
           [(get weights [:nonprop-gradient :alt 2] 100)
             (gen/tuple
-              (:func-radial-gradient gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:func-radial-gradient gmap))]
           [(get weights [:nonprop-gradient :alt 3] 100)
             (gen/tuple
-              (:func-repeating-radial-gradient gmap)
-              (gen/return " "))]])
+              (gen/return " ")
+              (:func-repeating-radial-gradient gmap))]])
         gmap (assoc gmap :nonprop-gradient gen-nonprop-gradient)
 
         gen-prop-border-inline-start
@@ -5900,207 +5931,204 @@
           (gen/frequency [
             [(get weights [:prop-border-inline-start :plus :alt 0] 100)
               (gen/tuple
-                (:nonprop-border-width gmap)
-                (gen/return " "))]
+                (gen/return " ")
+                (:nonprop-border-width gmap))]
             [(get weights [:prop-border-inline-start :plus :alt 1] 100)
               (gen/tuple
-                (:nonprop-border-style gmap)
-                (gen/return " "))]
+                (gen/return " ")
+                (:nonprop-border-style gmap))]
             [(get weights [:prop-border-inline-start :plus :alt 2] 100)
               (gen/tuple
-                (:nonprop-color gmap)
-                (gen/return " "))]])))
-        gmap (assoc gmap :prop-border-inline-start gen-prop-border-inline-start)]
-    gmap))
+                (gen/return " ")
+                (:nonprop-color gmap))]])))
+        gmap (assoc gmap :prop-border-inline-start gen-prop-border-inline-start)
 
-(defn- css3-generators-part-6 [gmap weights]
-  (let [
         gen-prop-border-right-width
         (gen/tuple
-          (:nonprop-br-width gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-br-width gmap))
         gmap (assoc gmap :prop-border-right-width gen-prop-border-right-width)
 
         gen-nonprop-east-asian-width-values
         (gen/tuple
+          (gen/return " ")
           (gen/frequency [
-            [(get weights [:nonprop-east-asian-width-values :cat 0 :alt 0] 100)
+            [(get weights [:nonprop-east-asian-width-values :cat 1 :alt 0] 100)
               (gen/tuple
-                (gen/return "full-width")
-                (gen/return " "))]
-            [(get weights [:nonprop-east-asian-width-values :cat 0 :alt 1] 100)
+                (gen/return " ")
+                (gen/return "full-width"))]
+            [(get weights [:nonprop-east-asian-width-values :cat 1 :alt 1] 100)
               (gen/tuple
-                (gen/return "proportional-width")
-                (gen/return " "))]])
-          (gen/return " "))
+                (gen/return " ")
+                (gen/return "proportional-width"))]]))
         gmap (assoc gmap :nonprop-east-asian-width-values gen-nonprop-east-asian-width-values)
 
         gen-nonprop-display-legacy
         (gen/frequency [
           [(get weights [:nonprop-display-legacy :alt 0] 100)
             (gen/tuple
-              (gen/return "inline-block")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "inline-block"))]
           [(get weights [:nonprop-display-legacy :alt 1] 100)
             (gen/tuple
-              (gen/return "inline-list-item")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "inline-list-item"))]
           [(get weights [:nonprop-display-legacy :alt 2] 100)
             (gen/tuple
-              (gen/return "inline-table")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "inline-table"))]
           [(get weights [:nonprop-display-legacy :alt 3] 100)
             (gen/tuple
-              (gen/return "inline-flex")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "inline-flex"))]
           [(get weights [:nonprop-display-legacy :alt 4] 100)
             (gen/tuple
-              (gen/return "inline-grid")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "inline-grid"))]])
         gmap (assoc gmap :nonprop-display-legacy gen-nonprop-display-legacy)
 
         gen-nonprop-feature-tag-value
         (gen/tuple
+          (gen/return " ")
           (:nonprop-string gmap)
           (gen/return " ")
           (gen/one-of [
             (gen/return "")
             (gen/frequency [
-              [(get weights [:nonprop-feature-tag-value :cat 2 :opt :alt 0] 100)
+              [(get weights [:nonprop-feature-tag-value :cat 3 :opt :alt 0] 100)
                 (gen/tuple
-                  (:nonprop-integer gmap)
-                  (gen/return " "))]
-              [(get weights [:nonprop-feature-tag-value :cat 2 :opt :alt 1] 100)
+                  (gen/return " ")
+                  (:nonprop-integer gmap))]
+              [(get weights [:nonprop-feature-tag-value :cat 3 :opt :alt 1] 100)
                 (gen/tuple
-                  (gen/return "on")
-                  (gen/return " "))]
-              [(get weights [:nonprop-feature-tag-value :cat 2 :opt :alt 2] 100)
+                  (gen/return " ")
+                  (gen/return "on"))]
+              [(get weights [:nonprop-feature-tag-value :cat 3 :opt :alt 2] 100)
                 (gen/tuple
-                  (gen/return "off")
-                  (gen/return " "))]])])
-          (gen/return " "))
+                  (gen/return " ")
+                  (gen/return "off"))]])]))
         gmap (assoc gmap :nonprop-feature-tag-value gen-nonprop-feature-tag-value)
 
         gen-prop-margin-bottom
         (gen/frequency [
           [(get weights [:prop-margin-bottom :alt 0] 100)
             (gen/tuple
-              (:nonprop-length gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-length gmap))]
           [(get weights [:prop-margin-bottom :alt 1] 100)
             (gen/tuple
-              (:nonprop-percentage gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-percentage gmap))]
           [(get weights [:prop-margin-bottom :alt 2] 100)
             (gen/tuple
-              (gen/return "auto")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "auto"))]])
         gmap (assoc gmap :prop-margin-bottom gen-prop-margin-bottom)
 
         gen-prop-shape-margin
         (gen/tuple
-          (:nonprop-length-percentage gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-length-percentage gmap))
         gmap (assoc gmap :prop-shape-margin gen-prop-shape-margin)
 
         gen-prop-text-emphasis-position
         (gen/tuple
-          (gen/frequency [
-            [(get weights [:prop-text-emphasis-position :cat 0 :alt 0] 100)
-              (gen/tuple
-                (gen/return "over")
-                (gen/return " "))]
-            [(get weights [:prop-text-emphasis-position :cat 0 :alt 1] 100)
-              (gen/tuple
-                (gen/return "under")
-                (gen/return " "))]])
           (gen/return " ")
           (gen/frequency [
-            [(get weights [:prop-text-emphasis-position :cat 2 :alt 0] 100)
+            [(get weights [:prop-text-emphasis-position :cat 1 :alt 0] 100)
               (gen/tuple
-                (gen/return "right")
-                (gen/return " "))]
-            [(get weights [:prop-text-emphasis-position :cat 2 :alt 1] 100)
+                (gen/return " ")
+                (gen/return "over"))]
+            [(get weights [:prop-text-emphasis-position :cat 1 :alt 1] 100)
               (gen/tuple
-                (gen/return "left")
-                (gen/return " "))]])
-          (gen/return " "))
+                (gen/return " ")
+                (gen/return "under"))]])
+          (gen/return " ")
+          (gen/frequency [
+            [(get weights [:prop-text-emphasis-position :cat 3 :alt 0] 100)
+              (gen/tuple
+                (gen/return " ")
+                (gen/return "right"))]
+            [(get weights [:prop-text-emphasis-position :cat 3 :alt 1] 100)
+              (gen/tuple
+                (gen/return " ")
+                (gen/return "left"))]]))
         gmap (assoc gmap :prop-text-emphasis-position gen-prop-text-emphasis-position)
 
         gen-nonprop-display-internal
         (gen/frequency [
           [(get weights [:nonprop-display-internal :alt 0] 100)
             (gen/tuple
-              (gen/return "table-row-group")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "table-row-group"))]
           [(get weights [:nonprop-display-internal :alt 1] 100)
             (gen/tuple
-              (gen/return "table-header-group")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "table-header-group"))]
           [(get weights [:nonprop-display-internal :alt 2] 100)
             (gen/tuple
-              (gen/return "table-footer-group")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "table-footer-group"))]
           [(get weights [:nonprop-display-internal :alt 3] 100)
             (gen/tuple
-              (gen/return "table-row")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "table-row"))]
           [(get weights [:nonprop-display-internal :alt 4] 100)
             (gen/tuple
-              (gen/return "table-cell")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "table-cell"))]
           [(get weights [:nonprop-display-internal :alt 5] 100)
             (gen/tuple
-              (gen/return "table-column-group")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "table-column-group"))]
           [(get weights [:nonprop-display-internal :alt 6] 100)
             (gen/tuple
-              (gen/return "table-column")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "table-column"))]
           [(get weights [:nonprop-display-internal :alt 7] 100)
             (gen/tuple
-              (gen/return "table-caption")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "table-caption"))]
           [(get weights [:nonprop-display-internal :alt 8] 100)
             (gen/tuple
-              (gen/return "ruby-base")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "ruby-base"))]
           [(get weights [:nonprop-display-internal :alt 9] 100)
             (gen/tuple
-              (gen/return "ruby-text")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "ruby-text"))]
           [(get weights [:nonprop-display-internal :alt 10] 100)
             (gen/tuple
-              (gen/return "ruby-base-container")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "ruby-base-container"))]
           [(get weights [:nonprop-display-internal :alt 11] 100)
             (gen/tuple
-              (gen/return "ruby-text-container")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "ruby-text-container"))]])
         gmap (assoc gmap :nonprop-display-internal gen-nonprop-display-internal)
 
         gen-prop-ime-mode
         (gen/frequency [
           [(get weights [:prop-ime-mode :alt 0] 100)
             (gen/tuple
-              (gen/return "auto")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "auto"))]
           [(get weights [:prop-ime-mode :alt 1] 100)
             (gen/tuple
-              (gen/return "normal")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "normal"))]
           [(get weights [:prop-ime-mode :alt 2] 100)
             (gen/tuple
-              (gen/return "active")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "active"))]
           [(get weights [:prop-ime-mode :alt 3] 100)
             (gen/tuple
-              (gen/return "inactive")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "inactive"))]
           [(get weights [:prop-ime-mode :alt 4] 100)
             (gen/tuple
-              (gen/return "disabled")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "disabled"))]])
         gmap (assoc gmap :prop-ime-mode gen-prop-ime-mode)
 
         gen-nonprop-frequency
@@ -6117,18 +6145,18 @@
         (gen/frequency [
           [(get weights [:nonprop-frequency-percentage :alt 0] 100)
             (gen/tuple
-              (:nonprop-frequency gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-frequency gmap))]
           [(get weights [:nonprop-frequency-percentage :alt 1] 100)
             (gen/tuple
-              (:nonprop-percentage gmap)
-              (gen/return " "))]])
+              (gen/return " ")
+              (:nonprop-percentage gmap))]])
         gmap (assoc gmap :nonprop-frequency-percentage gen-nonprop-frequency-percentage)
 
         gen-prop-border-inline-start-width
         (gen/tuple
-          (:nonprop-border-width gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-border-width gmap))
         gmap (assoc gmap :prop-border-inline-start-width gen-prop-border-inline-start-width)
 
         gen-nonprop-an-plus-b
@@ -6139,12 +6167,12 @@
         (gen/frequency [
           [(get weights [:prop-outline-style :alt 0] 100)
             (gen/tuple
-              (gen/return "auto")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "auto"))]
           [(get weights [:prop-outline-style :alt 1] 100)
             (gen/tuple
-              (:nonprop-br-style gmap)
-              (gen/return " "))]])
+              (gen/return " ")
+              (:nonprop-br-style gmap))]])
         gmap (assoc gmap :prop-outline-style gen-prop-outline-style)
 
         gen-nonprop-outline-style
@@ -6153,20 +6181,20 @@
 
         gen-prop-border-inline-end-style
         (gen/tuple
-          (:nonprop-border-style gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-border-style gmap))
         gmap (assoc gmap :prop-border-inline-end-style gen-prop-border-inline-end-style)
 
         gen-prop-backface-visibility
         (gen/frequency [
           [(get weights [:prop-backface-visibility :alt 0] 100)
             (gen/tuple
-              (gen/return "visible")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "visible"))]
           [(get weights [:prop-backface-visibility :alt 1] 100)
             (gen/tuple
-              (gen/return "hidden")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "hidden"))]])
         gmap (assoc gmap :prop-backface-visibility gen-prop-backface-visibility)
 
         gen-prop-border-block-end
@@ -6174,86 +6202,86 @@
           (gen/frequency [
             [(get weights [:prop-border-block-end :plus :alt 0] 100)
               (gen/tuple
-                (:nonprop-border-width gmap)
-                (gen/return " "))]
+                (gen/return " ")
+                (:nonprop-border-width gmap))]
             [(get weights [:prop-border-block-end :plus :alt 1] 100)
               (gen/tuple
-                (:nonprop-border-style gmap)
-                (gen/return " "))]
+                (gen/return " ")
+                (:nonprop-border-style gmap))]
             [(get weights [:prop-border-block-end :plus :alt 2] 100)
               (gen/tuple
-                (:nonprop-color gmap)
-                (gen/return " "))]])))
+                (gen/return " ")
+                (:nonprop-color gmap))]])))
         gmap (assoc gmap :prop-border-block-end gen-prop-border-block-end)
 
         gen-prop-background-position
         (gen/tuple
+          (gen/return " ")
           (:nonprop-position gmap)
           (gen/vector
             (gen/tuple
-              (gen/return ", ")
-              (:nonprop-position gmap)))
-          (gen/return " "))
+              (gen/return ",")
+              (:nonprop-position gmap))))
         gmap (assoc gmap :prop-background-position gen-prop-background-position)
 
         gen-prop-margin-left
         (gen/frequency [
           [(get weights [:prop-margin-left :alt 0] 100)
             (gen/tuple
-              (:nonprop-length gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-length gmap))]
           [(get weights [:prop-margin-left :alt 1] 100)
             (gen/tuple
-              (:nonprop-percentage gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-percentage gmap))]
           [(get weights [:prop-margin-left :alt 2] 100)
             (gen/tuple
-              (gen/return "auto")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "auto"))]])
         gmap (assoc gmap :prop-margin-left gen-prop-margin-left)
 
         gen-prop-border-inline-start-style
         (gen/tuple
-          (:nonprop-border-style gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-border-style gmap))
         gmap (assoc gmap :prop-border-inline-start-style gen-prop-border-inline-start-style)
 
         gen-prop-border-bottom-style
         (gen/tuple
-          (:nonprop-br-style gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-br-style gmap))
         gmap (assoc gmap :prop-border-bottom-style gen-prop-border-bottom-style)
 
         gen-prop-max-width
         (gen/frequency [
           [(get weights [:prop-max-width :alt 0] 100)
             (gen/tuple
-              (:nonprop-length gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-length gmap))]
           [(get weights [:prop-max-width :alt 1] 100)
             (gen/tuple
-              (:nonprop-percentage gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-percentage gmap))]
           [(get weights [:prop-max-width :alt 2] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "none"))]
           [(get weights [:prop-max-width :alt 3] 100)
             (gen/tuple
-              (gen/return "max-content")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "max-content"))]
           [(get weights [:prop-max-width :alt 4] 100)
             (gen/tuple
-              (gen/return "min-content")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "min-content"))]
           [(get weights [:prop-max-width :alt 5] 100)
             (gen/tuple
-              (gen/return "fit-content")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "fit-content"))]
           [(get weights [:prop-max-width :alt 6] 100)
             (gen/tuple
-              (gen/return "fill-available")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "fill-available"))]])
         gmap (assoc gmap :prop-max-width gen-prop-max-width)
 
         gen-nonprop-max-width
@@ -6262,101 +6290,101 @@
 
         gen-prop-max-inline-size
         (gen/tuple
-          (:nonprop-max-width gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-max-width gmap))
         gmap (assoc gmap :prop-max-inline-size gen-prop-max-inline-size)
 
         gen-prop-scroll-snap-points-x
         (gen/frequency [
           [(get weights [:prop-scroll-snap-points-x :alt 0] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "none"))]
           [(get weights [:prop-scroll-snap-points-x :alt 1] 100)
             (gen/tuple
-              (gen/return "repeat(")
-              (:nonprop-length-percentage gmap)
               (gen/return " ")
-              (gen/return ")")
-              (gen/return " "))]])
+              (gen/return "repeat(")
+              (gen/return " ")
+              (:nonprop-length-percentage gmap)
+              (gen/return ")"))]])
         gmap (assoc gmap :prop-scroll-snap-points-x gen-prop-scroll-snap-points-x)
 
         gen-prop-transition-delay
         (gen/tuple
+          (gen/return " ")
           (:nonprop-time gmap)
           (gen/vector
             (gen/tuple
-              (gen/return ", ")
-              (:nonprop-time gmap)))
-          (gen/return " "))
+              (gen/return ",")
+              (:nonprop-time gmap))))
         gmap (assoc gmap :prop-transition-delay gen-prop-transition-delay)
 
         gen-prop--moz-user-modify
         (gen/frequency [
           [(get weights [:prop--moz-user-modify :alt 0] 100)
             (gen/tuple
-              (gen/return "read-only")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "read-only"))]
           [(get weights [:prop--moz-user-modify :alt 1] 100)
             (gen/tuple
-              (gen/return "read-write")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "read-write"))]
           [(get weights [:prop--moz-user-modify :alt 2] 100)
             (gen/tuple
-              (gen/return "write-only")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "write-only"))]])
         gmap (assoc gmap :prop--moz-user-modify gen-prop--moz-user-modify)
 
         gen-nonprop-animateable-feature
         (gen/frequency [
           [(get weights [:nonprop-animateable-feature :alt 0] 100)
             (gen/tuple
-              (gen/return "scroll-position")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "scroll-position"))]
           [(get weights [:nonprop-animateable-feature :alt 1] 100)
             (gen/tuple
-              (gen/return "contents")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "contents"))]
           [(get weights [:nonprop-animateable-feature :alt 2] 100)
             (gen/tuple
-              (:nonprop-custom-ident gmap)
-              (gen/return " "))]])
+              (gen/return " ")
+              (:nonprop-custom-ident gmap))]])
         gmap (assoc gmap :nonprop-animateable-feature gen-nonprop-animateable-feature)
 
         gen-prop-will-change
         (gen/frequency [
           [(get weights [:prop-will-change :alt 0] 100)
             (gen/tuple
-              (gen/return "auto")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "auto"))]
           [(get weights [:prop-will-change :alt 1] 100)
             (gen/tuple
+              (gen/return " ")
               (:nonprop-animateable-feature gmap)
               (gen/vector
                 (gen/tuple
-                  (gen/return ", ")
-                  (:nonprop-animateable-feature gmap)))
-              (gen/return " "))]])
+                  (gen/return ",")
+                  (:nonprop-animateable-feature gmap))))]])
         gmap (assoc gmap :prop-will-change gen-prop-will-change)
 
         gen-prop-overflow
         (gen/frequency [
           [(get weights [:prop-overflow :alt 0] 100)
             (gen/tuple
-              (gen/return "visible")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "visible"))]
           [(get weights [:prop-overflow :alt 1] 100)
             (gen/tuple
-              (gen/return "hidden")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "hidden"))]
           [(get weights [:prop-overflow :alt 2] 100)
             (gen/tuple
-              (gen/return "scroll")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "scroll"))]
           [(get weights [:prop-overflow :alt 3] 100)
             (gen/tuple
-              (gen/return "auto")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "auto"))]])
         gmap (assoc gmap :prop-overflow gen-prop-overflow)
 
         gen-nonprop-grid-row-gap
@@ -6369,12 +6397,12 @@
 
         gen-prop-grid-gap
         (gen/tuple
+          (gen/return " ")
           (:nonprop-grid-row-gap gmap)
           (gen/return " ")
           (gen/one-of [
             (gen/return "")
-            (:nonprop-grid-column-gap gmap)])
-          (gen/return " "))
+            (:nonprop-grid-column-gap gmap)]))
         gmap (assoc gmap :prop-grid-gap gen-prop-grid-gap)
 
         gen-nonprop-x
@@ -6385,48 +6413,48 @@
         (gen/frequency [
           [(get weights [:prop-visibility :alt 0] 100)
             (gen/tuple
-              (gen/return "visible")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "visible"))]
           [(get weights [:prop-visibility :alt 1] 100)
             (gen/tuple
-              (gen/return "hidden")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "hidden"))]
           [(get weights [:prop-visibility :alt 2] 100)
             (gen/tuple
-              (gen/return "collapse")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "collapse"))]])
         gmap (assoc gmap :prop-visibility gen-prop-visibility)
 
         gen-prop-ruby-position
         (gen/frequency [
           [(get weights [:prop-ruby-position :alt 0] 100)
             (gen/tuple
-              (gen/return "over")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "over"))]
           [(get weights [:prop-ruby-position :alt 1] 100)
             (gen/tuple
-              (gen/return "under")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "under"))]
           [(get weights [:prop-ruby-position :alt 2] 100)
             (gen/tuple
-              (gen/return "inter-character")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "inter-character"))]])
         gmap (assoc gmap :prop-ruby-position gen-prop-ruby-position)
 
         gen-prop-text-orientation
         (gen/frequency [
           [(get weights [:prop-text-orientation :alt 0] 100)
             (gen/tuple
-              (gen/return "mixed")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "mixed"))]
           [(get weights [:prop-text-orientation :alt 1] 100)
             (gen/tuple
-              (gen/return "upright")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "upright"))]
           [(get weights [:prop-text-orientation :alt 2] 100)
             (gen/tuple
-              (gen/return "sideways")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "sideways"))]])
         gmap (assoc gmap :prop-text-orientation gen-prop-text-orientation)
 
         gen-nonprop-margin-left
@@ -6435,34 +6463,34 @@
 
         gen-prop-margin-block-end
         (gen/tuple
-          (:nonprop-margin-left gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-margin-left gmap))
         gmap (assoc gmap :prop-margin-block-end gen-prop-margin-block-end)
 
         gen-prop-background-image
         (gen/tuple
+          (gen/return " ")
           (:nonprop-bg-image gmap)
           (gen/vector
             (gen/tuple
-              (gen/return ", ")
-              (:nonprop-bg-image gmap)))
-          (gen/return " "))
+              (gen/return ",")
+              (:nonprop-bg-image gmap))))
         gmap (assoc gmap :prop-background-image gen-prop-background-image)
 
         gen-prop-border-spacing
         (gen/tuple
+          (gen/return " ")
           (:nonprop-length gmap)
           (gen/return " ")
           (gen/one-of [
             (gen/return "")
-            (:nonprop-length gmap)])
-          (gen/return " "))
+            (:nonprop-length gmap)]))
         gmap (assoc gmap :prop-border-spacing gen-prop-border-spacing)
 
         gen-prop-border-top-style
         (gen/tuple
-          (:nonprop-br-style gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-br-style gmap))
         gmap (assoc gmap :prop-border-top-style gen-prop-border-top-style)
 
         gen-nonprop-outline-radius
@@ -6471,150 +6499,154 @@
 
         gen-prop-grid-area
         (gen/tuple
+          (gen/return " ")
           (:nonprop-grid-line gmap)
           (gen/return " ")
           (gen/frequency [
-            [(get weights [:prop-grid-area :cat 2 :alt 0] 100)
+            [(get weights [:prop-grid-area :cat 3 :alt 0] 100)
               (gen/return "\n")]
-            [(get weights [:prop-grid-area :cat 2 :alt 1] 100)
+            [(get weights [:prop-grid-area :cat 3 :alt 1] 100)
               (gen/tuple
+                (gen/return " ")
                 (gen/return "/")
                 (gen/return " ")
-                (:nonprop-grid-line gmap)
-                (gen/return " "))]
-            [(get weights [:prop-grid-area :cat 2 :alt 2] 100)
+                (:nonprop-grid-line gmap))]
+            [(get weights [:prop-grid-area :cat 3 :alt 2] 100)
               (gen/tuple
                 (gen/tuple
+                  (gen/return " ")
                   (gen/return "/")
                   (gen/return " ")
-                  (:nonprop-grid-line gmap)
-                  (gen/return " "))
+                  (:nonprop-grid-line gmap))
                 (gen/tuple
+                  (gen/return " ")
                   (gen/return "/")
                   (gen/return " ")
-                  (:nonprop-grid-line gmap)
-                  (gen/return " ")))]
-            [(get weights [:prop-grid-area :cat 2 :alt 3] 100)
+                  (:nonprop-grid-line gmap)))]
+            [(get weights [:prop-grid-area :cat 3 :alt 3] 100)
               (gen/tuple
                 (gen/tuple
+                  (gen/return " ")
                   (gen/return "/")
                   (gen/return " ")
-                  (:nonprop-grid-line gmap)
-                  (gen/return " "))
+                  (:nonprop-grid-line gmap))
                 (gen/tuple
+                  (gen/return " ")
                   (gen/return "/")
                   (gen/return " ")
-                  (:nonprop-grid-line gmap)
-                  (gen/return " "))
+                  (:nonprop-grid-line gmap))
                 (gen/tuple
+                  (gen/return " ")
                   (gen/return "/")
                   (gen/return " ")
-                  (:nonprop-grid-line gmap)
-                  (gen/return " ")))]])
-          (gen/return " "))
+                  (:nonprop-grid-line gmap)))]]))
         gmap (assoc gmap :prop-grid-area gen-prop-grid-area)
 
         gen-nonprop-family-name
         (gen/frequency [
           [(get weights [:nonprop-family-name :alt 0] 100)
             (gen/tuple
-              (:nonprop-string gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-string gmap))]
           [(get weights [:nonprop-family-name :alt 1] 100)
             (gen/tuple
+              (gen/return " ")
               (gen/such-that not-empty (gen/vector
-                (:nonprop-custom-ident gmap)))
-              (gen/return " "))]])
-        gmap (assoc gmap :nonprop-family-name gen-nonprop-family-name)
+                (:nonprop-custom-ident gmap))))]])
+        gmap (assoc gmap :nonprop-family-name gen-nonprop-family-name)]
+    gmap))
 
+(defn- css3-generators-part-7 [gmap weights]
+  (let [
         gen-nonprop-generic-family
         (gen/frequency [
           [(get weights [:nonprop-generic-family :alt 0] 100)
             (gen/tuple
-              (gen/return "serif")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "serif"))]
           [(get weights [:nonprop-generic-family :alt 1] 100)
             (gen/tuple
-              (gen/return "sans-serif")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "sans-serif"))]
           [(get weights [:nonprop-generic-family :alt 2] 100)
             (gen/tuple
-              (gen/return "cursive")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "cursive"))]
           [(get weights [:nonprop-generic-family :alt 3] 100)
             (gen/tuple
-              (gen/return "fantasy")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "fantasy"))]
           [(get weights [:nonprop-generic-family :alt 4] 100)
             (gen/tuple
-              (gen/return "monospace")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "monospace"))]])
         gmap (assoc gmap :nonprop-generic-family gen-nonprop-generic-family)
 
         gen-prop-font-family
         (gen/tuple
+          (gen/return " ")
           (gen/frequency [
-            [(get weights [:prop-font-family :cat 0 :alt 0] 100)
+            [(get weights [:prop-font-family :cat 1 :alt 0] 100)
               (gen/tuple
-                (:nonprop-family-name gmap)
-                (gen/return " "))]
-            [(get weights [:prop-font-family :cat 0 :alt 1] 100)
+                (gen/return " ")
+                (:nonprop-family-name gmap))]
+            [(get weights [:prop-font-family :cat 1 :alt 1] 100)
               (gen/tuple
-                (:nonprop-generic-family gmap)
-                (gen/return " "))]])
+                (gen/return " ")
+                (:nonprop-generic-family gmap))]])
           (gen/vector
             (gen/tuple
-              (gen/return ", ")
+              (gen/return ",")
               (gen/frequency [
-                [(get weights [:prop-font-family :cat 1 :star :cat 1 :alt 0] 100)
+                [(get weights [:prop-font-family :cat 2 :star :cat 1 :alt 0] 100)
                   (gen/tuple
-                    (:nonprop-family-name gmap)
-                    (gen/return " "))]
-                [(get weights [:prop-font-family :cat 1 :star :cat 1 :alt 1] 100)
+                    (gen/return " ")
+                    (:nonprop-family-name gmap))]
+                [(get weights [:prop-font-family :cat 2 :star :cat 1 :alt 1] 100)
                   (gen/tuple
-                    (:nonprop-generic-family gmap)
-                    (gen/return " "))]])))
-          (gen/return " "))
+                    (gen/return " ")
+                    (:nonprop-generic-family gmap))]]))))
         gmap (assoc gmap :prop-font-family gen-prop-font-family)
 
         gen-func-ellipse
         (gen/tuple
+          (gen/return " ")
           (gen/return "ellipse(")
           (gen/tuple
-            (gen/tuple
-              (:nonprop-shape-radius gmap)
-              (:nonprop-shape-radius gmap))
-            (gen/one-of [
-              (gen/return "")
-              (gen/return " ")])
+            (gen/return " ")
             (gen/return " ")
             (gen/one-of [
               (gen/return "")
               (gen/tuple
+                (:nonprop-shape-radius gmap)
+                (:nonprop-shape-radius gmap))])
+            (gen/return " ")
+            (gen/one-of [
+              (gen/return "")
+              (gen/tuple
+                (gen/return " ")
                 (gen/return "at")
                 (gen/return " ")
-                (:nonprop-position gmap)
-                (gen/return " "))])
-            (gen/return " "))
-          (gen/return ")")
-          (gen/return " "))
+                (:nonprop-position gmap))]))
+          (gen/return ")"))
         gmap (assoc gmap :func-ellipse gen-func-ellipse)
 
         gen-prop-border-radius
         (gen/tuple
+          (gen/return " ")
           (gen/frequency [
-            [(get weights [:prop-border-radius :cat 0 :alt 0] 100)
+            [(get weights [:prop-border-radius :cat 1 :alt 0] 100)
               (:nonprop-length-percentage gmap)]
-            [(get weights [:prop-border-radius :cat 0 :alt 1] 100)
+            [(get weights [:prop-border-radius :cat 1 :alt 1] 100)
               (gen/tuple
                 (:nonprop-length-percentage gmap)
                 (:nonprop-length-percentage gmap))]
-            [(get weights [:prop-border-radius :cat 0 :alt 2] 100)
+            [(get weights [:prop-border-radius :cat 1 :alt 2] 100)
               (gen/tuple
                 (:nonprop-length-percentage gmap)
                 (:nonprop-length-percentage gmap)
                 (:nonprop-length-percentage gmap))]
-            [(get weights [:prop-border-radius :cat 0 :alt 3] 100)
+            [(get weights [:prop-border-radius :cat 1 :alt 3] 100)
               (gen/tuple
                 (:nonprop-length-percentage gmap)
                 (:nonprop-length-percentage gmap)
@@ -6624,33 +6656,29 @@
           (gen/one-of [
             (gen/return "")
             (gen/tuple
+              (gen/return " ")
               (gen/return "/")
               (gen/return " ")
               (gen/frequency [
-                [(get weights [:prop-border-radius :cat 2 :opt :cat 2 :alt 0] 100)
+                [(get weights [:prop-border-radius :cat 3 :opt :cat 3 :alt 0] 100)
                   (:nonprop-length-percentage gmap)]
-                [(get weights [:prop-border-radius :cat 2 :opt :cat 2 :alt 1] 100)
+                [(get weights [:prop-border-radius :cat 3 :opt :cat 3 :alt 1] 100)
                   (gen/tuple
                     (:nonprop-length-percentage gmap)
                     (:nonprop-length-percentage gmap))]
-                [(get weights [:prop-border-radius :cat 2 :opt :cat 2 :alt 2] 100)
+                [(get weights [:prop-border-radius :cat 3 :opt :cat 3 :alt 2] 100)
                   (gen/tuple
                     (:nonprop-length-percentage gmap)
                     (:nonprop-length-percentage gmap)
                     (:nonprop-length-percentage gmap))]
-                [(get weights [:prop-border-radius :cat 2 :opt :cat 2 :alt 3] 100)
+                [(get weights [:prop-border-radius :cat 3 :opt :cat 3 :alt 3] 100)
                   (gen/tuple
                     (:nonprop-length-percentage gmap)
                     (:nonprop-length-percentage gmap)
                     (:nonprop-length-percentage gmap)
-                    (:nonprop-length-percentage gmap))]])
-              (gen/return " "))])
-          (gen/return " "))
-        gmap (assoc gmap :prop-border-radius gen-prop-border-radius)]
-    gmap))
+                    (:nonprop-length-percentage gmap))]]))]))
+        gmap (assoc gmap :prop-border-radius gen-prop-border-radius)
 
-(defn- css3-generators-part-7 [gmap weights]
-  (let [
         gen-nonprop-border-radius
         (:prop-border-radius gmap)
         gmap (assoc gmap :nonprop-border-radius gen-nonprop-border-radius)
@@ -6659,18 +6687,20 @@
         (gen/frequency [
           [(get weights [:nonprop-fill-rule :alt 0] 100)
             (gen/tuple
-              (gen/return "nonzero")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "nonzero"))]
           [(get weights [:nonprop-fill-rule :alt 1] 100)
             (gen/tuple
-              (gen/return "evenodd")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "evenodd"))]])
         gmap (assoc gmap :nonprop-fill-rule gen-nonprop-fill-rule)
 
         gen-func-polygon
         (gen/tuple
+          (gen/return " ")
           (gen/return "polygon(")
           (gen/tuple
+            (gen/return " ")
             (gen/one-of [
               (gen/return "")
               (:nonprop-fill-rule gmap)])
@@ -6678,21 +6708,19 @@
             (gen/return ",")
             (gen/return " ")
             (gen/tuple
-              (:nonprop-length-percentage gmap)
               (gen/return " ")
               (:nonprop-length-percentage gmap)
-              (gen/return " "))
+              (gen/return " ")
+              (:nonprop-length-percentage gmap))
             (gen/vector
               (gen/tuple
-                (gen/return ", ")
+                (gen/return ",")
                 (gen/tuple
-                  (:nonprop-length-percentage gmap)
                   (gen/return " ")
                   (:nonprop-length-percentage gmap)
-                  (gen/return " "))))
-            (gen/return " "))
-          (gen/return ")")
-          (gen/return " "))
+                  (gen/return " ")
+                  (:nonprop-length-percentage gmap)))))
+          (gen/return ")"))
         gmap (assoc gmap :func-polygon gen-func-polygon)
 
         gen-func-path
@@ -6701,21 +6729,23 @@
 
         gen-func-inset
         (gen/tuple
+          (gen/return " ")
           (gen/return "inset(")
           (gen/tuple
+            (gen/return " ")
             (gen/frequency [
-              [(get weights [:func-inset :cat 1 :cat 0 :alt 0] 100)
+              [(get weights [:func-inset :cat 2 :cat 1 :alt 0] 100)
                 (:nonprop-length-percentage gmap)]
-              [(get weights [:func-inset :cat 1 :cat 0 :alt 1] 100)
+              [(get weights [:func-inset :cat 2 :cat 1 :alt 1] 100)
                 (gen/tuple
                   (:nonprop-length-percentage gmap)
                   (:nonprop-length-percentage gmap))]
-              [(get weights [:func-inset :cat 1 :cat 0 :alt 2] 100)
+              [(get weights [:func-inset :cat 2 :cat 1 :alt 2] 100)
                 (gen/tuple
                   (:nonprop-length-percentage gmap)
                   (:nonprop-length-percentage gmap)
                   (:nonprop-length-percentage gmap))]
-              [(get weights [:func-inset :cat 1 :cat 0 :alt 3] 100)
+              [(get weights [:func-inset :cat 2 :cat 1 :alt 3] 100)
                 (gen/tuple
                   (:nonprop-length-percentage gmap)
                   (:nonprop-length-percentage gmap)
@@ -6725,45 +6755,46 @@
             (gen/one-of [
               (gen/return "")
               (gen/tuple
+                (gen/return " ")
                 (gen/return "round")
                 (gen/return " ")
-                (:nonprop-border-radius gmap)
-                (gen/return " "))])
-            (gen/return " "))
-          (gen/return ")")
-          (gen/return " "))
+                (:nonprop-border-radius gmap))]))
+          (gen/return ")"))
         gmap (assoc gmap :func-inset gen-func-inset)
 
         gen-nonprop-basic-shape
         (gen/frequency [
           [(get weights [:nonprop-basic-shape :alt 0] 100)
             (gen/tuple
-              (:func-inset gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:func-inset gmap))]
           [(get weights [:nonprop-basic-shape :alt 1] 100)
             (gen/tuple
-              (:func-circle gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:func-circle gmap))]
           [(get weights [:nonprop-basic-shape :alt 2] 100)
             (gen/tuple
-              (:func-ellipse gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:func-ellipse gmap))]
           [(get weights [:nonprop-basic-shape :alt 3] 100)
             (gen/tuple
-              (:func-polygon gmap)
-              (gen/return " "))]])
+              (gen/return " ")
+              (:func-polygon gmap))]])
         gmap (assoc gmap :nonprop-basic-shape gen-nonprop-basic-shape)
 
         gen-prop-offset-path
         (gen/frequency [
           [(get weights [:prop-offset-path :alt 0] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "none"))]
           [(get weights [:prop-offset-path :alt 1] 100)
             (gen/tuple
+              (gen/return " ")
               (gen/return "ray(")
+              (gen/return " ")
               (gen/tuple
+                (gen/return " ")
                 (:nonprop-angle gmap)
                 (gen/return " ")
                 (gen/one-of [
@@ -6772,109 +6803,75 @@
                 (gen/return " ")
                 (gen/one-of [
                   (gen/return "")
-                  (gen/return "contain")])
-                (gen/return " "))
-              (gen/return " ")
-              (gen/return ")")
-              (gen/return " "))]
+                  (gen/return "contain")]))
+              (gen/return ")"))]
           [(get weights [:prop-offset-path :alt 2] 100)
             (gen/tuple
-              (:func-path gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:func-path gmap))]
           [(get weights [:prop-offset-path :alt 3] 100)
             (gen/tuple
-              (:nonprop-url gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-url gmap))]
           [(get weights [:prop-offset-path :alt 4] 100)
             (gen/tuple
+              (gen/return " ")
               (gen/such-that not-empty (gen/vector
                 (gen/frequency [
-                  [(get weights [:prop-offset-path :alt 4 :cat 0 :plus :alt 0] 100)
+                  [(get weights [:prop-offset-path :alt 4 :cat 1 :plus :alt 0] 100)
                     (gen/tuple
-                      (:nonprop-basic-shape gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-offset-path :alt 4 :cat 0 :plus :alt 1] 100)
+                      (gen/return " ")
+                      (:nonprop-basic-shape gmap))]
+                  [(get weights [:prop-offset-path :alt 4 :cat 1 :plus :alt 1] 100)
                     (gen/tuple
-                      (:nonprop-geometry-box gmap)
-                      (gen/return " "))]])))
-              (gen/return " "))]])
+                      (gen/return " ")
+                      (:nonprop-geometry-box gmap))]]))))]])
         gmap (assoc gmap :prop-offset-path gen-prop-offset-path)
 
         gen-prop-offset-inline-end
         (gen/tuple
-          (:nonprop-left gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-left gmap))
         gmap (assoc gmap :prop-offset-inline-end gen-prop-offset-inline-end)
 
         gen-nonprop-single-animation-play-state
         (gen/frequency [
           [(get weights [:nonprop-single-animation-play-state :alt 0] 100)
             (gen/tuple
-              (gen/return "running")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "running"))]
           [(get weights [:nonprop-single-animation-play-state :alt 1] 100)
             (gen/tuple
-              (gen/return "paused")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "paused"))]])
         gmap (assoc gmap :nonprop-single-animation-play-state gen-nonprop-single-animation-play-state)
 
         gen-prop-animation-play-state
         (gen/tuple
+          (gen/return " ")
           (:nonprop-single-animation-play-state gmap)
           (gen/vector
             (gen/tuple
-              (gen/return ", ")
-              (:nonprop-single-animation-play-state gmap)))
-          (gen/return " "))
+              (gen/return ",")
+              (:nonprop-single-animation-play-state gmap))))
         gmap (assoc gmap :prop-animation-play-state gen-prop-animation-play-state)
-
-        gen-nonprop-feature-type
-        (gen/frequency [
-          [(get weights [:nonprop-feature-type :alt 0] 100)
-            (gen/tuple
-              (gen/return "@stylistic")
-              (gen/return " "))]
-          [(get weights [:nonprop-feature-type :alt 1] 100)
-            (gen/tuple
-              (gen/return "@historical-forms")
-              (gen/return " "))]
-          [(get weights [:nonprop-feature-type :alt 2] 100)
-            (gen/tuple
-              (gen/return "@styleset")
-              (gen/return " "))]
-          [(get weights [:nonprop-feature-type :alt 3] 100)
-            (gen/tuple
-              (gen/return "@character-variant")
-              (gen/return " "))]
-          [(get weights [:nonprop-feature-type :alt 4] 100)
-            (gen/tuple
-              (gen/return "@swash")
-              (gen/return " "))]
-          [(get weights [:nonprop-feature-type :alt 5] 100)
-            (gen/tuple
-              (gen/return "@ornaments")
-              (gen/return " "))]
-          [(get weights [:nonprop-feature-type :alt 6] 100)
-            (gen/tuple
-              (gen/return "@annotation")
-              (gen/return " "))]])
-        gmap (assoc gmap :nonprop-feature-type gen-nonprop-feature-type)
 
         gen-prop--moz-outline-radius
         (gen/tuple
+          (gen/return " ")
           (gen/frequency [
-            [(get weights [:prop--moz-outline-radius :cat 0 :alt 0] 100)
+            [(get weights [:prop--moz-outline-radius :cat 1 :alt 0] 100)
               (:nonprop-outline-radius gmap)]
-            [(get weights [:prop--moz-outline-radius :cat 0 :alt 1] 100)
+            [(get weights [:prop--moz-outline-radius :cat 1 :alt 1] 100)
               (gen/tuple
                 (:nonprop-outline-radius gmap)
                 (:nonprop-outline-radius gmap))]
-            [(get weights [:prop--moz-outline-radius :cat 0 :alt 2] 100)
+            [(get weights [:prop--moz-outline-radius :cat 1 :alt 2] 100)
               (gen/tuple
                 (:nonprop-outline-radius gmap)
                 (:nonprop-outline-radius gmap)
                 (:nonprop-outline-radius gmap))]
-            [(get weights [:prop--moz-outline-radius :cat 0 :alt 3] 100)
+            [(get weights [:prop--moz-outline-radius :cat 1 :alt 3] 100)
               (gen/tuple
                 (:nonprop-outline-radius gmap)
                 (:nonprop-outline-radius gmap)
@@ -6884,90 +6881,89 @@
           (gen/one-of [
             (gen/return "")
             (gen/tuple
+              (gen/return " ")
               (gen/return "/")
               (gen/return " ")
               (gen/frequency [
-                [(get weights [:prop--moz-outline-radius :cat 2 :opt :cat 2 :alt 0] 100)
+                [(get weights [:prop--moz-outline-radius :cat 3 :opt :cat 3 :alt 0] 100)
                   (:nonprop-outline-radius gmap)]
-                [(get weights [:prop--moz-outline-radius :cat 2 :opt :cat 2 :alt 1] 100)
+                [(get weights [:prop--moz-outline-radius :cat 3 :opt :cat 3 :alt 1] 100)
                   (gen/tuple
                     (:nonprop-outline-radius gmap)
                     (:nonprop-outline-radius gmap))]
-                [(get weights [:prop--moz-outline-radius :cat 2 :opt :cat 2 :alt 2] 100)
+                [(get weights [:prop--moz-outline-radius :cat 3 :opt :cat 3 :alt 2] 100)
                   (gen/tuple
                     (:nonprop-outline-radius gmap)
                     (:nonprop-outline-radius gmap)
                     (:nonprop-outline-radius gmap))]
-                [(get weights [:prop--moz-outline-radius :cat 2 :opt :cat 2 :alt 3] 100)
+                [(get weights [:prop--moz-outline-radius :cat 3 :opt :cat 3 :alt 3] 100)
                   (gen/tuple
                     (:nonprop-outline-radius gmap)
                     (:nonprop-outline-radius gmap)
                     (:nonprop-outline-radius gmap)
-                    (:nonprop-outline-radius gmap))]])
-              (gen/return " "))])
-          (gen/return " "))
+                    (:nonprop-outline-radius gmap))]]))]))
         gmap (assoc gmap :prop--moz-outline-radius gen-prop--moz-outline-radius)
 
         gen-prop-tab-size
         (gen/frequency [
           [(get weights [:prop-tab-size :alt 0] 100)
             (gen/tuple
-              (:nonprop-integer gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-integer gmap))]
           [(get weights [:prop-tab-size :alt 1] 100)
             (gen/tuple
-              (:nonprop-length gmap)
-              (gen/return " "))]])
+              (gen/return " ")
+              (:nonprop-length gmap))]])
         gmap (assoc gmap :prop-tab-size gen-prop-tab-size)
 
         gen-prop-column-gap
         (gen/frequency [
           [(get weights [:prop-column-gap :alt 0] 100)
             (gen/tuple
-              (:nonprop-length gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-length gmap))]
           [(get weights [:prop-column-gap :alt 1] 100)
             (gen/tuple
-              (gen/return "normal")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "normal"))]])
         gmap (assoc gmap :prop-column-gap gen-prop-column-gap)
 
         gen-prop-grid-row
         (gen/tuple
+          (gen/return " ")
           (:nonprop-grid-line gmap)
           (gen/return " ")
           (gen/one-of [
             (gen/return "")
             (gen/tuple
+              (gen/return " ")
               (gen/return "/")
               (gen/return " ")
-              (:nonprop-grid-line gmap)
-              (gen/return " "))])
-          (gen/return " "))
+              (:nonprop-grid-line gmap))]))
         gmap (assoc gmap :prop-grid-row gen-prop-grid-row)
 
         gen-prop-white-space
         (gen/frequency [
           [(get weights [:prop-white-space :alt 0] 100)
             (gen/tuple
-              (gen/return "normal")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "normal"))]
           [(get weights [:prop-white-space :alt 1] 100)
             (gen/tuple
-              (gen/return "pre")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "pre"))]
           [(get weights [:prop-white-space :alt 2] 100)
             (gen/tuple
-              (gen/return "nowrap")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "nowrap"))]
           [(get weights [:prop-white-space :alt 3] 100)
             (gen/tuple
-              (gen/return "pre-wrap")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "pre-wrap"))]
           [(get weights [:prop-white-space :alt 4] 100)
             (gen/tuple
-              (gen/return "pre-line")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "pre-line"))]])
         gmap (assoc gmap :prop-white-space gen-prop-white-space)
 
         gen-nonprop-font-family
@@ -6976,190 +6972,190 @@
 
         gen-nonprop-common-lig-values
         (gen/tuple
+          (gen/return " ")
           (gen/frequency [
-            [(get weights [:nonprop-common-lig-values :cat 0 :alt 0] 100)
+            [(get weights [:nonprop-common-lig-values :cat 1 :alt 0] 100)
               (gen/tuple
-                (gen/return "common-ligatures")
-                (gen/return " "))]
-            [(get weights [:nonprop-common-lig-values :cat 0 :alt 1] 100)
+                (gen/return " ")
+                (gen/return "common-ligatures"))]
+            [(get weights [:nonprop-common-lig-values :cat 1 :alt 1] 100)
               (gen/tuple
-                (gen/return "no-common-ligatures")
-                (gen/return " "))]])
-          (gen/return " "))
+                (gen/return " ")
+                (gen/return "no-common-ligatures"))]]))
         gmap (assoc gmap :nonprop-common-lig-values gen-nonprop-common-lig-values)
 
         gen-nonprop-historical-lig-values
         (gen/tuple
+          (gen/return " ")
           (gen/frequency [
-            [(get weights [:nonprop-historical-lig-values :cat 0 :alt 0] 100)
+            [(get weights [:nonprop-historical-lig-values :cat 1 :alt 0] 100)
               (gen/tuple
-                (gen/return "historical-ligatures")
-                (gen/return " "))]
-            [(get weights [:nonprop-historical-lig-values :cat 0 :alt 1] 100)
+                (gen/return " ")
+                (gen/return "historical-ligatures"))]
+            [(get weights [:nonprop-historical-lig-values :cat 1 :alt 1] 100)
               (gen/tuple
-                (gen/return "no-historical-ligatures")
-                (gen/return " "))]])
-          (gen/return " "))
+                (gen/return " ")
+                (gen/return "no-historical-ligatures"))]]))
         gmap (assoc gmap :nonprop-historical-lig-values gen-nonprop-historical-lig-values)
 
         gen-nonprop-contextual-alt-values
         (gen/tuple
+          (gen/return " ")
           (gen/frequency [
-            [(get weights [:nonprop-contextual-alt-values :cat 0 :alt 0] 100)
+            [(get weights [:nonprop-contextual-alt-values :cat 1 :alt 0] 100)
               (gen/tuple
-                (gen/return "contextual")
-                (gen/return " "))]
-            [(get weights [:nonprop-contextual-alt-values :cat 0 :alt 1] 100)
+                (gen/return " ")
+                (gen/return "contextual"))]
+            [(get weights [:nonprop-contextual-alt-values :cat 1 :alt 1] 100)
               (gen/tuple
-                (gen/return "no-contextual")
-                (gen/return " "))]])
-          (gen/return " "))
+                (gen/return " ")
+                (gen/return "no-contextual"))]]))
         gmap (assoc gmap :nonprop-contextual-alt-values gen-nonprop-contextual-alt-values)
 
         gen-prop-font-variant-ligatures
         (gen/frequency [
           [(get weights [:prop-font-variant-ligatures :alt 0] 100)
             (gen/tuple
-              (gen/return "normal")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "normal"))]
           [(get weights [:prop-font-variant-ligatures :alt 1] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "none"))]
           [(get weights [:prop-font-variant-ligatures :alt 2] 100)
             (gen/tuple
+              (gen/return " ")
               (gen/such-that not-empty (gen/vector
                 (gen/frequency [
-                  [(get weights [:prop-font-variant-ligatures :alt 2 :cat 0 :plus :alt 0] 100)
+                  [(get weights [:prop-font-variant-ligatures :alt 2 :cat 1 :plus :alt 0] 100)
                     (gen/tuple
-                      (:nonprop-common-lig-values gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-font-variant-ligatures :alt 2 :cat 0 :plus :alt 1] 100)
+                      (gen/return " ")
+                      (:nonprop-common-lig-values gmap))]
+                  [(get weights [:prop-font-variant-ligatures :alt 2 :cat 1 :plus :alt 1] 100)
                     (gen/tuple
-                      (:nonprop-discretionary-lig-values gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-font-variant-ligatures :alt 2 :cat 0 :plus :alt 2] 100)
+                      (gen/return " ")
+                      (:nonprop-discretionary-lig-values gmap))]
+                  [(get weights [:prop-font-variant-ligatures :alt 2 :cat 1 :plus :alt 2] 100)
                     (gen/tuple
-                      (:nonprop-historical-lig-values gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-font-variant-ligatures :alt 2 :cat 0 :plus :alt 3] 100)
+                      (gen/return " ")
+                      (:nonprop-historical-lig-values gmap))]
+                  [(get weights [:prop-font-variant-ligatures :alt 2 :cat 1 :plus :alt 3] 100)
                     (gen/tuple
-                      (:nonprop-contextual-alt-values gmap)
-                      (gen/return " "))]])))
-              (gen/return " "))]])
+                      (gen/return " ")
+                      (:nonprop-contextual-alt-values gmap))]]))))]])
         gmap (assoc gmap :prop-font-variant-ligatures gen-prop-font-variant-ligatures)
 
         gen-prop--webkit-touch-callout
         (gen/frequency [
           [(get weights [:prop--webkit-touch-callout :alt 0] 100)
             (gen/tuple
-              (gen/return "default")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "default"))]
           [(get weights [:prop--webkit-touch-callout :alt 1] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "none"))]])
         gmap (assoc gmap :prop--webkit-touch-callout gen-prop--webkit-touch-callout)
 
         gen-prop-appearance
         (gen/frequency [
           [(get weights [:prop-appearance :alt 0] 100)
             (gen/tuple
-              (gen/return "auto")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "auto"))]
           [(get weights [:prop-appearance :alt 1] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "none"))]])
         gmap (assoc gmap :prop-appearance gen-prop-appearance)
 
         gen-prop-transform-box
         (gen/frequency [
           [(get weights [:prop-transform-box :alt 0] 100)
             (gen/tuple
-              (gen/return "border-box")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "border-box"))]
           [(get weights [:prop-transform-box :alt 1] 100)
             (gen/tuple
-              (gen/return "fill-box")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "fill-box"))]
           [(get weights [:prop-transform-box :alt 2] 100)
             (gen/tuple
-              (gen/return "view-box")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "view-box"))]])
         gmap (assoc gmap :prop-transform-box gen-prop-transform-box)
 
         gen-prop-scroll-behavior
         (gen/frequency [
           [(get weights [:prop-scroll-behavior :alt 0] 100)
             (gen/tuple
-              (gen/return "auto")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "auto"))]
           [(get weights [:prop-scroll-behavior :alt 1] 100)
             (gen/tuple
-              (gen/return "smooth")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "smooth"))]])
         gmap (assoc gmap :prop-scroll-behavior gen-prop-scroll-behavior)
 
         gen-prop-ruby-merge
         (gen/frequency [
           [(get weights [:prop-ruby-merge :alt 0] 100)
             (gen/tuple
-              (gen/return "separate")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "separate"))]
           [(get weights [:prop-ruby-merge :alt 1] 100)
             (gen/tuple
-              (gen/return "collapse")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "collapse"))]
           [(get weights [:prop-ruby-merge :alt 2] 100)
             (gen/tuple
-              (gen/return "auto")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "auto"))]])
         gmap (assoc gmap :prop-ruby-merge gen-prop-ruby-merge)
 
         gen-prop-grid-template-areas
         (gen/frequency [
           [(get weights [:prop-grid-template-areas :alt 0] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "none"))]
           [(get weights [:prop-grid-template-areas :alt 1] 100)
             (gen/tuple
+              (gen/return " ")
               (gen/such-that not-empty (gen/vector
-                (:nonprop-string gmap)))
-              (gen/return " "))]])
+                (:nonprop-string gmap))))]])
         gmap (assoc gmap :prop-grid-template-areas gen-prop-grid-template-areas)
 
         gen-prop-filter
         (gen/frequency [
           [(get weights [:prop-filter :alt 0] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "none"))]
           [(get weights [:prop-filter :alt 1] 100)
             (gen/tuple
-              (:nonprop-filter-function-list gmap)
-              (gen/return " "))]])
+              (gen/return " ")
+              (:nonprop-filter-function-list gmap))]])
         gmap (assoc gmap :prop-filter gen-prop-filter)
 
         gen-prop-flex-direction
         (gen/frequency [
           [(get weights [:prop-flex-direction :alt 0] 100)
             (gen/tuple
-              (gen/return "row")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "row"))]
           [(get weights [:prop-flex-direction :alt 1] 100)
             (gen/tuple
-              (gen/return "row-reverse")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "row-reverse"))]
           [(get weights [:prop-flex-direction :alt 2] 100)
             (gen/tuple
-              (gen/return "column")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "column"))]
           [(get weights [:prop-flex-direction :alt 3] 100)
             (gen/tuple
-              (gen/return "column-reverse")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "column-reverse"))]])
         gmap (assoc gmap :prop-flex-direction gen-prop-flex-direction)
 
         gen-nonprop-flex-direction
@@ -7171,82 +7167,82 @@
           (gen/frequency [
             [(get weights [:prop-flex-flow :plus :alt 0] 100)
               (gen/tuple
-                (:nonprop-flex-direction gmap)
-                (gen/return " "))]
+                (gen/return " ")
+                (:nonprop-flex-direction gmap))]
             [(get weights [:prop-flex-flow :plus :alt 1] 100)
               (gen/tuple
-                (:nonprop-flex-wrap gmap)
-                (gen/return " "))]])))
+                (gen/return " ")
+                (:nonprop-flex-wrap gmap))]])))
         gmap (assoc gmap :prop-flex-flow gen-prop-flex-flow)
 
         gen-prop-background-repeat
         (gen/tuple
+          (gen/return " ")
           (:nonprop-repeat-style gmap)
           (gen/vector
             (gen/tuple
-              (gen/return ", ")
-              (:nonprop-repeat-style gmap)))
-          (gen/return " "))
+              (gen/return ",")
+              (:nonprop-repeat-style gmap))))
         gmap (assoc gmap :prop-background-repeat gen-prop-background-repeat)
 
         gen-nonprop-absolute-size
         (gen/frequency [
           [(get weights [:nonprop-absolute-size :alt 0] 100)
             (gen/tuple
-              (gen/return "xx-small")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "xx-small"))]
           [(get weights [:nonprop-absolute-size :alt 1] 100)
             (gen/tuple
-              (gen/return "x-small")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "x-small"))]
           [(get weights [:nonprop-absolute-size :alt 2] 100)
             (gen/tuple
-              (gen/return "small")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "small"))]
           [(get weights [:nonprop-absolute-size :alt 3] 100)
             (gen/tuple
-              (gen/return "medium")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "medium"))]
           [(get weights [:nonprop-absolute-size :alt 4] 100)
             (gen/tuple
-              (gen/return "large")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "large"))]
           [(get weights [:nonprop-absolute-size :alt 5] 100)
             (gen/tuple
-              (gen/return "x-large")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "x-large"))]
           [(get weights [:nonprop-absolute-size :alt 6] 100)
             (gen/tuple
-              (gen/return "xx-large")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "xx-large"))]])
         gmap (assoc gmap :nonprop-absolute-size gen-nonprop-absolute-size)
 
         gen-nonprop-relative-size
         (gen/frequency [
           [(get weights [:nonprop-relative-size :alt 0] 100)
             (gen/tuple
-              (gen/return "larger")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "larger"))]
           [(get weights [:nonprop-relative-size :alt 1] 100)
             (gen/tuple
-              (gen/return "smaller")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "smaller"))]])
         gmap (assoc gmap :nonprop-relative-size gen-nonprop-relative-size)
 
         gen-prop-font-size
         (gen/frequency [
           [(get weights [:prop-font-size :alt 0] 100)
             (gen/tuple
-              (:nonprop-absolute-size gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-absolute-size gmap))]
           [(get weights [:prop-font-size :alt 1] 100)
             (gen/tuple
-              (:nonprop-relative-size gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-relative-size gmap))]
           [(get weights [:prop-font-size :alt 2] 100)
             (gen/tuple
-              (:nonprop-length-percentage gmap)
-              (gen/return " "))]])
+              (gen/return " ")
+              (:nonprop-length-percentage gmap))]])
         gmap (assoc gmap :prop-font-size gen-prop-font-size)
 
         gen-prop-border-inline-end
@@ -7254,326 +7250,285 @@
           (gen/frequency [
             [(get weights [:prop-border-inline-end :plus :alt 0] 100)
               (gen/tuple
-                (:nonprop-border-width gmap)
-                (gen/return " "))]
+                (gen/return " ")
+                (:nonprop-border-width gmap))]
             [(get weights [:prop-border-inline-end :plus :alt 1] 100)
               (gen/tuple
-                (:nonprop-border-style gmap)
-                (gen/return " "))]
+                (gen/return " ")
+                (:nonprop-border-style gmap))]
             [(get weights [:prop-border-inline-end :plus :alt 2] 100)
               (gen/tuple
-                (:nonprop-color gmap)
-                (gen/return " "))]])))
+                (gen/return " ")
+                (:nonprop-color gmap))]])))
         gmap (assoc gmap :prop-border-inline-end gen-prop-border-inline-end)
-
-        gen-nonprop-feature-value-declaration
-        (gen/tuple
-          (:nonprop-custom-ident gmap)
-          (gen/return " ")
-          (gen/return ":")
-          (gen/return " ")
-          (gen/such-that not-empty (gen/vector
-            (:nonprop-integer gmap)))
-          (gen/return " ")
-          (gen/return ";")
-          (gen/return " "))
-        gmap (assoc gmap :nonprop-feature-value-declaration gen-nonprop-feature-value-declaration)
-
-        gen-nonprop-feature-value-declaration-list
-        (gen/tuple
-          (:nonprop-feature-value-declaration gmap)
-          (gen/return " "))
-        gmap (assoc gmap :nonprop-feature-value-declaration-list gen-nonprop-feature-value-declaration-list)
 
         gen-nonprop-bg-size
         (gen/frequency [
           [(get weights [:nonprop-bg-size :alt 0] 100)
             (gen/tuple
+              (gen/return " ")
               (gen/frequency [
-                [(get weights [:nonprop-bg-size :alt 0 :cat 0 :alt 0] 100)
+                [(get weights [:nonprop-bg-size :alt 0 :cat 1 :alt 0] 100)
                   (gen/frequency [
-                    [(get weights [:nonprop-bg-size :alt 0 :cat 0 :alt 0 :alt 0] 100)
+                    [(get weights [:nonprop-bg-size :alt 0 :cat 1 :alt 0 :alt 0] 100)
                       (gen/tuple
-                        (:nonprop-length-percentage gmap)
-                        (gen/return " "))]
-                    [(get weights [:nonprop-bg-size :alt 0 :cat 0 :alt 0 :alt 1] 100)
+                        (gen/return " ")
+                        (:nonprop-length-percentage gmap))]
+                    [(get weights [:nonprop-bg-size :alt 0 :cat 1 :alt 0 :alt 1] 100)
                       (gen/tuple
-                        (gen/return "auto")
-                        (gen/return " "))]])]
-                [(get weights [:nonprop-bg-size :alt 0 :cat 0 :alt 1] 100)
+                        (gen/return " ")
+                        (gen/return "auto"))]])]
+                [(get weights [:nonprop-bg-size :alt 0 :cat 1 :alt 1] 100)
                   (gen/tuple
                     (gen/frequency [
-                      [(get weights [:nonprop-bg-size :alt 0 :cat 0 :alt 1 :cat 0 :alt 0] 100)
+                      [(get weights [:nonprop-bg-size :alt 0 :cat 1 :alt 1 :cat 0 :alt 0] 100)
                         (gen/tuple
-                          (:nonprop-length-percentage gmap)
-                          (gen/return " "))]
-                      [(get weights [:nonprop-bg-size :alt 0 :cat 0 :alt 1 :cat 0 :alt 1] 100)
+                          (gen/return " ")
+                          (:nonprop-length-percentage gmap))]
+                      [(get weights [:nonprop-bg-size :alt 0 :cat 1 :alt 1 :cat 0 :alt 1] 100)
                         (gen/tuple
-                          (gen/return "auto")
-                          (gen/return " "))]])
+                          (gen/return " ")
+                          (gen/return "auto"))]])
                     (gen/frequency [
-                      [(get weights [:nonprop-bg-size :alt 0 :cat 0 :alt 1 :cat 1 :alt 0] 100)
+                      [(get weights [:nonprop-bg-size :alt 0 :cat 1 :alt 1 :cat 1 :alt 0] 100)
                         (gen/tuple
-                          (:nonprop-length-percentage gmap)
-                          (gen/return " "))]
-                      [(get weights [:nonprop-bg-size :alt 0 :cat 0 :alt 1 :cat 1 :alt 1] 100)
+                          (gen/return " ")
+                          (:nonprop-length-percentage gmap))]
+                      [(get weights [:nonprop-bg-size :alt 0 :cat 1 :alt 1 :cat 1 :alt 1] 100)
                         (gen/tuple
-                          (gen/return "auto")
-                          (gen/return " "))]]))]])
-              (gen/return " "))]
+                          (gen/return " ")
+                          (gen/return "auto"))]]))]]))]
           [(get weights [:nonprop-bg-size :alt 1] 100)
             (gen/tuple
-              (gen/return "cover")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "cover"))]
           [(get weights [:nonprop-bg-size :alt 2] 100)
             (gen/tuple
-              (gen/return "contain")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "contain"))]])
         gmap (assoc gmap :nonprop-bg-size gen-nonprop-bg-size)
 
         gen-prop-mask-size
         (gen/tuple
+          (gen/return " ")
           (:nonprop-bg-size gmap)
           (gen/vector
             (gen/tuple
-              (gen/return ", ")
-              (:nonprop-bg-size gmap)))
-          (gen/return " "))
+              (gen/return ",")
+              (:nonprop-bg-size gmap))))
         gmap (assoc gmap :prop-mask-size gen-prop-mask-size)
 
         gen-prop-float
         (gen/frequency [
           [(get weights [:prop-float :alt 0] 100)
             (gen/tuple
-              (gen/return "left")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "left"))]
           [(get weights [:prop-float :alt 1] 100)
             (gen/tuple
-              (gen/return "right")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "right"))]
           [(get weights [:prop-float :alt 2] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "none"))]
           [(get weights [:prop-float :alt 3] 100)
             (gen/tuple
-              (gen/return "inline-start")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "inline-start"))]
           [(get weights [:prop-float :alt 4] 100)
             (gen/tuple
-              (gen/return "inline-end")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "inline-end"))]])
         gmap (assoc gmap :prop-float gen-prop-float)
-
-        gen-nonprop-keyframe-block
-        (gen/tuple
-          (:nonprop-keyframe-selector gmap)
-          (gen/vector
-            (gen/tuple
-              (gen/return ", ")
-              (:nonprop-keyframe-selector gmap)))
-          (gen/return " ")
-          (gen/return "{")
-          (:nonprop-declaration-list gmap)
-          (gen/return " ")
-          (gen/return "}")
-          (gen/return " "))
-        gmap (assoc gmap :nonprop-keyframe-block gen-nonprop-keyframe-block)
-
-        gen-nonprop-keyframe-block-list
-        (gen/tuple
-          (gen/such-that not-empty (gen/vector
-            (:nonprop-keyframe-block gmap)))
-          (gen/return " "))
-        gmap (assoc gmap :nonprop-keyframe-block-list gen-nonprop-keyframe-block-list)
 
         gen-prop-initial-letter-align
         (gen/tuple
+          (gen/return " ")
           (gen/frequency [
-            [(get weights [:prop-initial-letter-align :cat 0 :alt 0] 100)
+            [(get weights [:prop-initial-letter-align :cat 1 :alt 0] 100)
               (gen/tuple
-                (gen/return "auto")
-                (gen/return " "))]
-            [(get weights [:prop-initial-letter-align :cat 0 :alt 1] 100)
+                (gen/return " ")
+                (gen/return "auto"))]
+            [(get weights [:prop-initial-letter-align :cat 1 :alt 1] 100)
               (gen/tuple
-                (gen/return "alphabetic")
-                (gen/return " "))]
-            [(get weights [:prop-initial-letter-align :cat 0 :alt 2] 100)
+                (gen/return " ")
+                (gen/return "alphabetic"))]
+            [(get weights [:prop-initial-letter-align :cat 1 :alt 2] 100)
               (gen/tuple
-                (gen/return "hanging")
-                (gen/return " "))]
-            [(get weights [:prop-initial-letter-align :cat 0 :alt 3] 100)
+                (gen/return " ")
+                (gen/return "hanging"))]
+            [(get weights [:prop-initial-letter-align :cat 1 :alt 3] 100)
               (gen/tuple
-                (gen/return "ideographic")
-                (gen/return " "))]])
-          (gen/return " "))
+                (gen/return " ")
+                (gen/return "ideographic"))]]))
         gmap (assoc gmap :prop-initial-letter-align gen-prop-initial-letter-align)
 
         gen-prop-display-outside
         (gen/frequency [
           [(get weights [:prop-display-outside :alt 0] 100)
             (gen/tuple
-              (gen/return "block-level")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "block-level"))]
           [(get weights [:prop-display-outside :alt 1] 100)
             (gen/tuple
-              (gen/return "inline-level")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "inline-level"))]
           [(get weights [:prop-display-outside :alt 2] 100)
             (gen/tuple
-              (gen/return "run-in")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "run-in"))]
           [(get weights [:prop-display-outside :alt 3] 100)
             (gen/tuple
-              (gen/return "contents")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "contents"))]
           [(get weights [:prop-display-outside :alt 4] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "none"))]
           [(get weights [:prop-display-outside :alt 5] 100)
             (gen/tuple
-              (gen/return "table-row-group")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "table-row-group"))]
           [(get weights [:prop-display-outside :alt 6] 100)
             (gen/tuple
-              (gen/return "table-header-group")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "table-header-group"))]
           [(get weights [:prop-display-outside :alt 7] 100)
             (gen/tuple
-              (gen/return "table-footer-group")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "table-footer-group"))]
           [(get weights [:prop-display-outside :alt 8] 100)
             (gen/tuple
-              (gen/return "table-row")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "table-row"))]
           [(get weights [:prop-display-outside :alt 9] 100)
             (gen/tuple
-              (gen/return "table-cell")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "table-cell"))]
           [(get weights [:prop-display-outside :alt 10] 100)
             (gen/tuple
-              (gen/return "table-column-group")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "table-column-group"))]
           [(get weights [:prop-display-outside :alt 11] 100)
             (gen/tuple
-              (gen/return "table-column")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "table-column"))]
           [(get weights [:prop-display-outside :alt 12] 100)
             (gen/tuple
-              (gen/return "table-caption")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "table-caption"))]
           [(get weights [:prop-display-outside :alt 13] 100)
             (gen/tuple
-              (gen/return "ruby-base")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "ruby-base"))]
           [(get weights [:prop-display-outside :alt 14] 100)
             (gen/tuple
-              (gen/return "ruby-text")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "ruby-text"))]
           [(get weights [:prop-display-outside :alt 15] 100)
             (gen/tuple
-              (gen/return "ruby-base-container")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "ruby-base-container"))]
           [(get weights [:prop-display-outside :alt 16] 100)
             (gen/tuple
-              (gen/return "ruby-text-container")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "ruby-text-container"))]])
         gmap (assoc gmap :prop-display-outside gen-prop-display-outside)
 
         gen-nonprop-masking-mode
         (gen/frequency [
           [(get weights [:nonprop-masking-mode :alt 0] 100)
             (gen/tuple
-              (gen/return "alpha")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "alpha"))]
           [(get weights [:nonprop-masking-mode :alt 1] 100)
             (gen/tuple
-              (gen/return "luminance")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "luminance"))]
           [(get weights [:nonprop-masking-mode :alt 2] 100)
             (gen/tuple
-              (gen/return "match-source")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "match-source"))]])
         gmap (assoc gmap :nonprop-masking-mode gen-nonprop-masking-mode)
 
         gen-prop-mask-mode
         (gen/tuple
+          (gen/return " ")
           (:nonprop-masking-mode gmap)
           (gen/vector
             (gen/tuple
-              (gen/return ", ")
-              (:nonprop-masking-mode gmap)))
-          (gen/return " "))
+              (gen/return ",")
+              (:nonprop-masking-mode gmap))))
         gmap (assoc gmap :prop-mask-mode gen-prop-mask-mode)
 
         gen-prop-box-pack
         (gen/frequency [
           [(get weights [:prop-box-pack :alt 0] 100)
             (gen/tuple
-              (gen/return "start")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "start"))]
           [(get weights [:prop-box-pack :alt 1] 100)
             (gen/tuple
-              (gen/return "center")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "center"))]
           [(get weights [:prop-box-pack :alt 2] 100)
             (gen/tuple
-              (gen/return "end")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "end"))]
           [(get weights [:prop-box-pack :alt 3] 100)
             (gen/tuple
-              (gen/return "justify")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "justify"))]])
         gmap (assoc gmap :prop-box-pack gen-prop-box-pack)
 
         gen-nonprop-quote
         (gen/frequency [
           [(get weights [:nonprop-quote :alt 0] 100)
             (gen/tuple
-              (gen/return "open-quote")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "open-quote"))]
           [(get weights [:nonprop-quote :alt 1] 100)
             (gen/tuple
-              (gen/return "close-quote")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "close-quote"))]
           [(get weights [:nonprop-quote :alt 2] 100)
             (gen/tuple
-              (gen/return "no-open-quote")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "no-open-quote"))]
           [(get weights [:nonprop-quote :alt 3] 100)
             (gen/tuple
-              (gen/return "no-close-quote")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "no-close-quote"))]])
         gmap (assoc gmap :nonprop-quote gen-nonprop-quote)
 
         gen-prop--moz-stack-sizing
         (gen/frequency [
           [(get weights [:prop--moz-stack-sizing :alt 0] 100)
             (gen/tuple
-              (gen/return "ignore")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "ignore"))]
           [(get weights [:prop--moz-stack-sizing :alt 1] 100)
             (gen/tuple
-              (gen/return "stretch-to-fit")
-              (gen/return " "))]])
-        gmap (assoc gmap :prop--moz-stack-sizing gen-prop--moz-stack-sizing)]
-    gmap))
+              (gen/return " ")
+              (gen/return "stretch-to-fit"))]])
+        gmap (assoc gmap :prop--moz-stack-sizing gen-prop--moz-stack-sizing)
 
-(defn- css3-generators-part-8 [gmap weights]
-  (let [
         gen-prop-letter-spacing
         (gen/frequency [
           [(get weights [:prop-letter-spacing :alt 0] 100)
             (gen/tuple
-              (gen/return "normal")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "normal"))]
           [(get weights [:prop-letter-spacing :alt 1] 100)
             (gen/tuple
-              (:nonprop-length gmap)
-              (gen/return " "))]])
-        gmap (assoc gmap :prop-letter-spacing gen-prop-letter-spacing)
+              (gen/return " ")
+              (:nonprop-length gmap))]])
+        gmap (assoc gmap :prop-letter-spacing gen-prop-letter-spacing)]
+    gmap))
 
+(defn- css3-generators-part-8 [gmap weights]
+  (let [
         gen-nonprop-clip-style
         (gen/return "STUB_clip_style")
         gmap (assoc gmap :nonprop-clip-style gen-nonprop-clip-style)
@@ -7583,137 +7538,120 @@
           (gen/frequency [
             [(get weights [:prop-border-top :plus :alt 0] 100)
               (gen/tuple
-                (:nonprop-br-width gmap)
-                (gen/return " "))]
+                (gen/return " ")
+                (:nonprop-br-width gmap))]
             [(get weights [:prop-border-top :plus :alt 1] 100)
               (gen/tuple
-                (:nonprop-br-style gmap)
-                (gen/return " "))]
+                (gen/return " ")
+                (:nonprop-br-style gmap))]
             [(get weights [:prop-border-top :plus :alt 2] 100)
               (gen/tuple
-                (:nonprop-color gmap)
-                (gen/return " "))]])))
+                (gen/return " ")
+                (:nonprop-color gmap))]])))
         gmap (assoc gmap :prop-border-top gen-prop-border-top)
 
         gen-prop-text-combine-upright
         (gen/frequency [
           [(get weights [:prop-text-combine-upright :alt 0] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "none"))]
           [(get weights [:prop-text-combine-upright :alt 1] 100)
             (gen/tuple
-              (gen/return "all")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "all"))]
           [(get weights [:prop-text-combine-upright :alt 2] 100)
             (gen/tuple
+              (gen/return " ")
               (gen/tuple
+                (gen/return " ")
                 (gen/return "digits")
                 (gen/return " ")
                 (gen/one-of [
                   (gen/return "")
-                  (:nonprop-integer gmap)])
-                (gen/return " "))
-              (gen/return " "))]])
+                  (:nonprop-integer gmap)])))]])
         gmap (assoc gmap :prop-text-combine-upright gen-prop-text-combine-upright)
 
         gen-prop-border-bottom-right-radius
         (gen/tuple
+          (gen/return " ")
           (gen/frequency [
-            [(get weights [:prop-border-bottom-right-radius :cat 0 :alt 0] 100)
+            [(get weights [:prop-border-bottom-right-radius :cat 1 :alt 0] 100)
               (:nonprop-length-percentage gmap)]
-            [(get weights [:prop-border-bottom-right-radius :cat 0 :alt 1] 100)
+            [(get weights [:prop-border-bottom-right-radius :cat 1 :alt 1] 100)
               (gen/tuple
                 (:nonprop-length-percentage gmap)
-                (:nonprop-length-percentage gmap))]])
-          (gen/return " "))
+                (:nonprop-length-percentage gmap))]]))
         gmap (assoc gmap :prop-border-bottom-right-radius gen-prop-border-bottom-right-radius)
 
         gen-prop-align-self
         (gen/frequency [
           [(get weights [:prop-align-self :alt 0] 100)
             (gen/tuple
-              (gen/return "auto")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "auto"))]
           [(get weights [:prop-align-self :alt 1] 100)
             (gen/tuple
-              (gen/return "flex-start")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "flex-start"))]
           [(get weights [:prop-align-self :alt 2] 100)
             (gen/tuple
-              (gen/return "flex-end")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "flex-end"))]
           [(get weights [:prop-align-self :alt 3] 100)
             (gen/tuple
-              (gen/return "center")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "center"))]
           [(get weights [:prop-align-self :alt 4] 100)
             (gen/tuple
-              (gen/return "baseline")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "baseline"))]
           [(get weights [:prop-align-self :alt 5] 100)
             (gen/tuple
-              (gen/return "stretch")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "stretch"))]])
         gmap (assoc gmap :prop-align-self gen-prop-align-self)
 
         gen-prop-page-break-after
         (gen/frequency [
           [(get weights [:prop-page-break-after :alt 0] 100)
             (gen/tuple
-              (gen/return "auto")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "auto"))]
           [(get weights [:prop-page-break-after :alt 1] 100)
             (gen/tuple
-              (gen/return "always")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "always"))]
           [(get weights [:prop-page-break-after :alt 2] 100)
             (gen/tuple
-              (gen/return "avoid")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "avoid"))]
           [(get weights [:prop-page-break-after :alt 3] 100)
             (gen/tuple
-              (gen/return "left")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "left"))]
           [(get weights [:prop-page-break-after :alt 4] 100)
             (gen/tuple
-              (gen/return "right")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "right"))]])
         gmap (assoc gmap :prop-page-break-after gen-prop-page-break-after)
-
-        gen-nonprop-feature-value-block
-        (gen/tuple
-          (:nonprop-feature-type gmap)
-          (gen/return " ")
-          (gen/return "{")
-          (:nonprop-feature-value-declaration-list gmap)
-          (gen/return " ")
-          (gen/return "}")
-          (gen/return " "))
-        gmap (assoc gmap :nonprop-feature-value-block gen-nonprop-feature-value-block)
-
-        gen-nonprop-feature-value-block-list
-        (gen/tuple
-          (gen/such-that not-empty (gen/vector
-            (:nonprop-feature-value-block gmap)))
-          (gen/return " "))
-        gmap (assoc gmap :nonprop-feature-value-block-list gen-nonprop-feature-value-block-list)
 
         gen-prop-border-image-slice
         (gen/tuple
+          (gen/return " ")
           (gen/frequency [
-            [(get weights [:prop-border-image-slice :cat 0 :alt 0] 100)
+            [(get weights [:prop-border-image-slice :cat 1 :alt 0] 100)
               (:nonprop-number-percentage gmap)]
-            [(get weights [:prop-border-image-slice :cat 0 :alt 1] 100)
+            [(get weights [:prop-border-image-slice :cat 1 :alt 1] 100)
               (gen/tuple
                 (:nonprop-number-percentage gmap)
                 (:nonprop-number-percentage gmap))]
-            [(get weights [:prop-border-image-slice :cat 0 :alt 2] 100)
+            [(get weights [:prop-border-image-slice :cat 1 :alt 2] 100)
               (gen/tuple
                 (:nonprop-number-percentage gmap)
                 (:nonprop-number-percentage gmap)
                 (:nonprop-number-percentage gmap))]
-            [(get weights [:prop-border-image-slice :cat 0 :alt 3] 100)
+            [(get weights [:prop-border-image-slice :cat 1 :alt 3] 100)
               (gen/tuple
                 (:nonprop-number-percentage gmap)
                 (:nonprop-number-percentage gmap)
@@ -7722,8 +7660,7 @@
           (gen/return " ")
           (gen/one-of [
             (gen/return "")
-            (gen/return "fill")])
-          (gen/return " "))
+            (gen/return "fill")]))
         gmap (assoc gmap :prop-border-image-slice gen-prop-border-image-slice)
 
         gen-nonprop-border-image-slice
@@ -7732,248 +7669,248 @@
 
         gen-prop-border-inline-start-color
         (gen/tuple
-          (:nonprop-color gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-color gmap))
         gmap (assoc gmap :prop-border-inline-start-color gen-prop-border-inline-start-color)
 
         gen-prop-mask-position
         (gen/tuple
+          (gen/return " ")
           (:nonprop-position gmap)
           (gen/vector
             (gen/tuple
-              (gen/return ", ")
-              (:nonprop-position gmap)))
-          (gen/return " "))
+              (gen/return ",")
+              (:nonprop-position gmap))))
         gmap (assoc gmap :prop-mask-position gen-prop-mask-position)
 
         gen-prop-hyphens
         (gen/frequency [
           [(get weights [:prop-hyphens :alt 0] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "none"))]
           [(get weights [:prop-hyphens :alt 1] 100)
             (gen/tuple
-              (gen/return "manual")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "manual"))]
           [(get weights [:prop-hyphens :alt 2] 100)
             (gen/tuple
-              (gen/return "auto")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "auto"))]])
         gmap (assoc gmap :prop-hyphens gen-prop-hyphens)
 
         gen-prop-transition
         (gen/tuple
+          (gen/return " ")
           (:nonprop-single-transition gmap)
           (gen/vector
             (gen/tuple
-              (gen/return ", ")
-              (:nonprop-single-transition gmap)))
-          (gen/return " "))
+              (gen/return ",")
+              (:nonprop-single-transition gmap))))
         gmap (assoc gmap :prop-transition gen-prop-transition)
 
         gen-prop-caret-color
         (gen/frequency [
           [(get weights [:prop-caret-color :alt 0] 100)
             (gen/tuple
-              (gen/return "auto")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "auto"))]
           [(get weights [:prop-caret-color :alt 1] 100)
             (gen/tuple
-              (:nonprop-color gmap)
-              (gen/return " "))]])
+              (gen/return " ")
+              (:nonprop-color gmap))]])
         gmap (assoc gmap :prop-caret-color gen-prop-caret-color)
 
         gen-prop-pointer-events
         (gen/frequency [
           [(get weights [:prop-pointer-events :alt 0] 100)
             (gen/tuple
-              (gen/return "auto")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "auto"))]
           [(get weights [:prop-pointer-events :alt 1] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "none"))]
           [(get weights [:prop-pointer-events :alt 2] 100)
             (gen/tuple
-              (gen/return "visiblePainted")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "visiblePainted"))]
           [(get weights [:prop-pointer-events :alt 3] 100)
             (gen/tuple
-              (gen/return "visibleFill")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "visibleFill"))]
           [(get weights [:prop-pointer-events :alt 4] 100)
             (gen/tuple
-              (gen/return "visibleStroke")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "visibleStroke"))]
           [(get weights [:prop-pointer-events :alt 5] 100)
             (gen/tuple
-              (gen/return "visible")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "visible"))]
           [(get weights [:prop-pointer-events :alt 6] 100)
             (gen/tuple
-              (gen/return "painted")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "painted"))]
           [(get weights [:prop-pointer-events :alt 7] 100)
             (gen/tuple
-              (gen/return "fill")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "fill"))]
           [(get weights [:prop-pointer-events :alt 8] 100)
             (gen/tuple
-              (gen/return "stroke")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "stroke"))]
           [(get weights [:prop-pointer-events :alt 9] 100)
             (gen/tuple
-              (gen/return "all")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "all"))]
           [(get weights [:prop-pointer-events :alt 10] 100)
             (gen/tuple
-              (gen/return "inherit")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "inherit"))]])
         gmap (assoc gmap :prop-pointer-events gen-prop-pointer-events)
 
         gen-prop-animation-fill-mode
         (gen/tuple
+          (gen/return " ")
           (:nonprop-single-animation-fill-mode gmap)
           (gen/vector
             (gen/tuple
-              (gen/return ", ")
-              (:nonprop-single-animation-fill-mode gmap)))
-          (gen/return " "))
+              (gen/return ",")
+              (:nonprop-single-animation-fill-mode gmap))))
         gmap (assoc gmap :prop-animation-fill-mode gen-prop-animation-fill-mode)
 
         gen-prop-margin-top
         (gen/frequency [
           [(get weights [:prop-margin-top :alt 0] 100)
             (gen/tuple
-              (:nonprop-length gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-length gmap))]
           [(get weights [:prop-margin-top :alt 1] 100)
             (gen/tuple
-              (:nonprop-percentage gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-percentage gmap))]
           [(get weights [:prop-margin-top :alt 2] 100)
             (gen/tuple
-              (gen/return "auto")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "auto"))]])
         gmap (assoc gmap :prop-margin-top gen-prop-margin-top)
 
         gen-prop-touch-action
         (gen/frequency [
           [(get weights [:prop-touch-action :alt 0] 100)
             (gen/tuple
-              (gen/return "auto")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "auto"))]
           [(get weights [:prop-touch-action :alt 1] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "none"))]
           [(get weights [:prop-touch-action :alt 2] 100)
             (gen/tuple
+              (gen/return " ")
               (gen/such-that not-empty (gen/vector
                 (gen/frequency [
-                  [(get weights [:prop-touch-action :alt 2 :cat 0 :plus :alt 0] 100)
+                  [(get weights [:prop-touch-action :alt 2 :cat 1 :plus :alt 0] 100)
                     (gen/tuple
+                      (gen/return " ")
                       (gen/frequency [
-                        [(get weights [:prop-touch-action :alt 2 :cat 0 :plus :alt 0 :cat 0 :alt 0] 100)
+                        [(get weights [:prop-touch-action :alt 2 :cat 1 :plus :alt 0 :cat 1 :alt 0] 100)
                           (gen/tuple
-                            (gen/return "pan-x")
-                            (gen/return " "))]
-                        [(get weights [:prop-touch-action :alt 2 :cat 0 :plus :alt 0 :cat 0 :alt 1] 100)
+                            (gen/return " ")
+                            (gen/return "pan-x"))]
+                        [(get weights [:prop-touch-action :alt 2 :cat 1 :plus :alt 0 :cat 1 :alt 1] 100)
                           (gen/tuple
-                            (gen/return "pan-left")
-                            (gen/return " "))]
-                        [(get weights [:prop-touch-action :alt 2 :cat 0 :plus :alt 0 :cat 0 :alt 2] 100)
+                            (gen/return " ")
+                            (gen/return "pan-left"))]
+                        [(get weights [:prop-touch-action :alt 2 :cat 1 :plus :alt 0 :cat 1 :alt 2] 100)
                           (gen/tuple
-                            (gen/return "pan-right")
-                            (gen/return " "))]])
-                      (gen/return " "))]
-                  [(get weights [:prop-touch-action :alt 2 :cat 0 :plus :alt 1] 100)
+                            (gen/return " ")
+                            (gen/return "pan-right"))]]))]
+                  [(get weights [:prop-touch-action :alt 2 :cat 1 :plus :alt 1] 100)
                     (gen/tuple
+                      (gen/return " ")
                       (gen/frequency [
-                        [(get weights [:prop-touch-action :alt 2 :cat 0 :plus :alt 1 :cat 0 :alt 0] 100)
+                        [(get weights [:prop-touch-action :alt 2 :cat 1 :plus :alt 1 :cat 1 :alt 0] 100)
                           (gen/tuple
-                            (gen/return "pan-y")
-                            (gen/return " "))]
-                        [(get weights [:prop-touch-action :alt 2 :cat 0 :plus :alt 1 :cat 0 :alt 1] 100)
+                            (gen/return " ")
+                            (gen/return "pan-y"))]
+                        [(get weights [:prop-touch-action :alt 2 :cat 1 :plus :alt 1 :cat 1 :alt 1] 100)
                           (gen/tuple
-                            (gen/return "pan-up")
-                            (gen/return " "))]
-                        [(get weights [:prop-touch-action :alt 2 :cat 0 :plus :alt 1 :cat 0 :alt 2] 100)
+                            (gen/return " ")
+                            (gen/return "pan-up"))]
+                        [(get weights [:prop-touch-action :alt 2 :cat 1 :plus :alt 1 :cat 1 :alt 2] 100)
                           (gen/tuple
-                            (gen/return "pan-down")
-                            (gen/return " "))]])
-                      (gen/return " "))]
-                  [(get weights [:prop-touch-action :alt 2 :cat 0 :plus :alt 2] 100)
+                            (gen/return " ")
+                            (gen/return "pan-down"))]]))]
+                  [(get weights [:prop-touch-action :alt 2 :cat 1 :plus :alt 2] 100)
                     (gen/tuple
-                      (gen/return "pinch-zoom")
-                      (gen/return " "))]])))
-              (gen/return " "))]
+                      (gen/return " ")
+                      (gen/return "pinch-zoom"))]]))))]
           [(get weights [:prop-touch-action :alt 3] 100)
             (gen/tuple
-              (gen/return "manipulation")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "manipulation"))]])
         gmap (assoc gmap :prop-touch-action gen-prop-touch-action)
 
         gen-prop-text-underline-position
         (gen/frequency [
           [(get weights [:prop-text-underline-position :alt 0] 100)
             (gen/tuple
-              (gen/return "auto")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "auto"))]
           [(get weights [:prop-text-underline-position :alt 1] 100)
             (gen/tuple
+              (gen/return " ")
               (gen/such-that not-empty (gen/vector
                 (gen/frequency [
-                  [(get weights [:prop-text-underline-position :alt 1 :cat 0 :plus :alt 0] 100)
+                  [(get weights [:prop-text-underline-position :alt 1 :cat 1 :plus :alt 0] 100)
                     (gen/tuple
-                      (gen/return "under")
-                      (gen/return " "))]
-                  [(get weights [:prop-text-underline-position :alt 1 :cat 0 :plus :alt 1] 100)
+                      (gen/return " ")
+                      (gen/return "under"))]
+                  [(get weights [:prop-text-underline-position :alt 1 :cat 1 :plus :alt 1] 100)
                     (gen/tuple
+                      (gen/return " ")
                       (gen/frequency [
-                        [(get weights [:prop-text-underline-position :alt 1 :cat 0 :plus :alt 1 :cat 0 :alt 0] 100)
+                        [(get weights [:prop-text-underline-position :alt 1 :cat 1 :plus :alt 1 :cat 1 :alt 0] 100)
                           (gen/tuple
-                            (gen/return "left")
-                            (gen/return " "))]
-                        [(get weights [:prop-text-underline-position :alt 1 :cat 0 :plus :alt 1 :cat 0 :alt 1] 100)
+                            (gen/return " ")
+                            (gen/return "left"))]
+                        [(get weights [:prop-text-underline-position :alt 1 :cat 1 :plus :alt 1 :cat 1 :alt 1] 100)
                           (gen/tuple
-                            (gen/return "right")
-                            (gen/return " "))]])
-                      (gen/return " "))]])))
-              (gen/return " "))]])
+                            (gen/return " ")
+                            (gen/return "right"))]]))]]))))]])
         gmap (assoc gmap :prop-text-underline-position gen-prop-text-underline-position)
 
         gen-prop--moz-float-edge
         (gen/frequency [
           [(get weights [:prop--moz-float-edge :alt 0] 100)
             (gen/tuple
-              (gen/return "border-box")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "border-box"))]
           [(get weights [:prop--moz-float-edge :alt 1] 100)
             (gen/tuple
-              (gen/return "content-box")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "content-box"))]
           [(get weights [:prop--moz-float-edge :alt 2] 100)
             (gen/tuple
-              (gen/return "margin-box")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "margin-box"))]
           [(get weights [:prop--moz-float-edge :alt 3] 100)
             (gen/tuple
-              (gen/return "padding-box")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "padding-box"))]])
         gmap (assoc gmap :prop--moz-float-edge gen-prop--moz-float-edge)
 
         gen-prop-offset-anchor
         (gen/frequency [
           [(get weights [:prop-offset-anchor :alt 0] 100)
             (gen/tuple
-              (gen/return "auto")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "auto"))]
           [(get weights [:prop-offset-anchor :alt 1] 100)
             (gen/tuple
-              (:nonprop-position gmap)
-              (gen/return " "))]])
+              (gen/return " ")
+              (:nonprop-position gmap))]])
         gmap (assoc gmap :prop-offset-anchor gen-prop-offset-anchor)
 
         gen-nonprop-offset-anchor
@@ -7984,233 +7921,63 @@
         (gen/frequency [
           [(get weights [:prop-line-break :alt 0] 100)
             (gen/tuple
-              (gen/return "auto")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "auto"))]
           [(get weights [:prop-line-break :alt 1] 100)
             (gen/tuple
-              (gen/return "loose")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "loose"))]
           [(get weights [:prop-line-break :alt 2] 100)
             (gen/tuple
-              (gen/return "normal")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "normal"))]
           [(get weights [:prop-line-break :alt 3] 100)
             (gen/tuple
-              (gen/return "strict")
-              (gen/return " "))]])
-        gmap (assoc gmap :prop-line-break gen-prop-line-break)
-
-        gen-nonprop-pseudo-page
-        (gen/tuple
-          (gen/return ":")
-          (gen/return " ")
-          (gen/frequency [
-            [(get weights [:nonprop-pseudo-page :cat 2 :alt 0] 100)
-              (gen/tuple
-                (gen/return "left")
-                (gen/return " "))]
-            [(get weights [:nonprop-pseudo-page :cat 2 :alt 1] 100)
-              (gen/tuple
-                (gen/return "right")
-                (gen/return " "))]
-            [(get weights [:nonprop-pseudo-page :cat 2 :alt 2] 100)
-              (gen/tuple
-                (gen/return "first")
-                (gen/return " "))]
-            [(get weights [:nonprop-pseudo-page :cat 2 :alt 3] 100)
-              (gen/tuple
-                (gen/return "blank")
-                (gen/return " "))]])
-          (gen/return " "))
-        gmap (assoc gmap :nonprop-pseudo-page gen-nonprop-pseudo-page)
-
-        gen-nonprop-page-selector
-        (gen/frequency [
-          [(get weights [:nonprop-page-selector :alt 0] 100)
-            (gen/tuple
-              (gen/such-that not-empty (gen/vector
-                (:nonprop-pseudo-page gmap)))
-              (gen/return " "))]
-          [(get weights [:nonprop-page-selector :alt 1] 100)
-            (gen/tuple
-              (:nonprop-ident gmap)
               (gen/return " ")
-              (gen/vector
-                (:nonprop-pseudo-page gmap))
-              (gen/return " "))]])
-        gmap (assoc gmap :nonprop-page-selector gen-nonprop-page-selector)
-
-        gen-nonprop-page-selector-list
-        (gen/tuple
-          (:nonprop-page-selector gmap)
-          (gen/vector
-            (gen/tuple
-              (gen/return ", ")
-              (:nonprop-page-selector gmap)))
-          (gen/one-of [
-            (gen/return "")
-            (gen/return " ")])
-          (gen/return " "))
-        gmap (assoc gmap :nonprop-page-selector-list gen-nonprop-page-selector-list)
+              (gen/return "strict"))]])
+        gmap (assoc gmap :prop-line-break gen-prop-line-break)
 
         gen-prop--webkit-text-fill-color
         (gen/tuple
-          (:nonprop-color gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-color gmap))
         gmap (assoc gmap :prop--webkit-text-fill-color gen-prop--webkit-text-fill-color)
 
         gen-prop--webkit-mask-repeat
         (gen/tuple
+          (gen/return " ")
           (:nonprop-repeat-style gmap)
           (gen/return " ")
           (gen/vector
             (gen/tuple
+              (gen/return " ")
               (gen/return ",")
               (gen/return " ")
-              (:nonprop-repeat-style gmap)
-              (gen/return " ")))
-          (gen/return " "))
+              (:nonprop-repeat-style gmap))))
         gmap (assoc gmap :prop--webkit-mask-repeat gen-prop--webkit-mask-repeat)
-
-        gen-nonprop-dimension
-        (gen/return "STUB_dimension")
-        gmap (assoc gmap :nonprop-dimension gen-nonprop-dimension)
-
-        gen-nonprop-mf-value
-        (gen/frequency [
-          [(get weights [:nonprop-mf-value :alt 0] 100)
-            (gen/tuple
-              (:nonprop-number gmap)
-              (gen/return " "))]
-          [(get weights [:nonprop-mf-value :alt 1] 100)
-            (gen/tuple
-              (:nonprop-dimension gmap)
-              (gen/return " "))]
-          [(get weights [:nonprop-mf-value :alt 2] 100)
-            (gen/tuple
-              (:nonprop-ident gmap)
-              (gen/return " "))]
-          [(get weights [:nonprop-mf-value :alt 3] 100)
-            (gen/tuple
-              (:nonprop-ratio gmap)
-              (gen/return " "))]])
-        gmap (assoc gmap :nonprop-mf-value gen-nonprop-mf-value)
-
-        gen-nonprop-mf-name
-        (gen/tuple
-          (:nonprop-ident gmap)
-          (gen/return " "))
-        gmap (assoc gmap :nonprop-mf-name gen-nonprop-mf-name)
-
-        gen-nonprop-mf-range
-        (gen/frequency [
-          [(get weights [:nonprop-mf-range :alt 0] 100)
-            (gen/tuple
-              (:nonprop-mf-name gmap)
-              (gen/return " ")
-              (gen/one-of [
-                (gen/return "")
-                (gen/frequency [
-                  [(get weights [:nonprop-mf-range :alt 0 :cat 2 :opt :alt 0] 100)
-                    (gen/tuple
-                      (gen/return "<")
-                      (gen/return " "))]
-                  [(get weights [:nonprop-mf-range :alt 0 :cat 2 :opt :alt 1] 100)
-                    (gen/tuple
-                      (gen/return ">")
-                      (gen/return " "))]])])
-              (gen/return " ")
-              (gen/one-of [
-                (gen/return "")
-                (gen/return "=")])
-              (gen/return " ")
-              (:nonprop-mf-value gmap)
-              (gen/return " "))]
-          [(get weights [:nonprop-mf-range :alt 1] 100)
-            (gen/tuple
-              (:nonprop-mf-value gmap)
-              (gen/return " ")
-              (gen/one-of [
-                (gen/return "")
-                (gen/frequency [
-                  [(get weights [:nonprop-mf-range :alt 1 :cat 2 :opt :alt 0] 100)
-                    (gen/tuple
-                      (gen/return "<")
-                      (gen/return " "))]
-                  [(get weights [:nonprop-mf-range :alt 1 :cat 2 :opt :alt 1] 100)
-                    (gen/tuple
-                      (gen/return ">")
-                      (gen/return " "))]])])
-              (gen/return " ")
-              (gen/one-of [
-                (gen/return "")
-                (gen/return "=")])
-              (gen/return " ")
-              (:nonprop-mf-name gmap)
-              (gen/return " "))]
-          [(get weights [:nonprop-mf-range :alt 2] 100)
-            (gen/tuple
-              (:nonprop-mf-value gmap)
-              (gen/return " ")
-              (gen/return "<")
-              (gen/return " ")
-              (gen/one-of [
-                (gen/return "")
-                (gen/return "=")])
-              (gen/return " ")
-              (:nonprop-mf-name gmap)
-              (gen/return " ")
-              (gen/return "<")
-              (gen/return " ")
-              (gen/one-of [
-                (gen/return "")
-                (gen/return "=")])
-              (gen/return " ")
-              (:nonprop-mf-value gmap)
-              (gen/return " "))]
-          [(get weights [:nonprop-mf-range :alt 3] 100)
-            (gen/tuple
-              (:nonprop-mf-value gmap)
-              (gen/return " ")
-              (gen/return ">")
-              (gen/return " ")
-              (gen/one-of [
-                (gen/return "")
-                (gen/return "=")])
-              (gen/return " ")
-              (:nonprop-mf-name gmap)
-              (gen/return " ")
-              (gen/return ">")
-              (gen/return " ")
-              (gen/one-of [
-                (gen/return "")
-                (gen/return "=")])
-              (gen/return " ")
-              (:nonprop-mf-value gmap)
-              (gen/return " "))]])
-        gmap (assoc gmap :nonprop-mf-range gen-nonprop-mf-range)
 
         gen-prop--webkit-box-reflect
         (gen/tuple
+          (gen/return " ")
           (gen/one-of [
             (gen/return "")
             (gen/frequency [
-              [(get weights [:prop--webkit-box-reflect :cat 0 :opt :alt 0] 100)
+              [(get weights [:prop--webkit-box-reflect :cat 1 :opt :alt 0] 100)
                 (gen/tuple
-                  (gen/return "above")
-                  (gen/return " "))]
-              [(get weights [:prop--webkit-box-reflect :cat 0 :opt :alt 1] 100)
+                  (gen/return " ")
+                  (gen/return "above"))]
+              [(get weights [:prop--webkit-box-reflect :cat 1 :opt :alt 1] 100)
                 (gen/tuple
-                  (gen/return "below")
-                  (gen/return " "))]
-              [(get weights [:prop--webkit-box-reflect :cat 0 :opt :alt 2] 100)
+                  (gen/return " ")
+                  (gen/return "below"))]
+              [(get weights [:prop--webkit-box-reflect :cat 1 :opt :alt 2] 100)
                 (gen/tuple
-                  (gen/return "right")
-                  (gen/return " "))]
-              [(get weights [:prop--webkit-box-reflect :cat 0 :opt :alt 3] 100)
+                  (gen/return " ")
+                  (gen/return "right"))]
+              [(get weights [:prop--webkit-box-reflect :cat 1 :opt :alt 3] 100)
                 (gen/tuple
-                  (gen/return "left")
-                  (gen/return " "))]])])
+                  (gen/return " ")
+                  (gen/return "left"))]])])
           (gen/return " ")
           (gen/one-of [
             (gen/return "")
@@ -8218,127 +7985,210 @@
           (gen/return " ")
           (gen/one-of [
             (gen/return "")
-            (:nonprop-image gmap)])
-          (gen/return " "))
+            (:nonprop-image gmap)]))
         gmap (assoc gmap :prop--webkit-box-reflect gen-prop--webkit-box-reflect)
 
-        gen-nonprop-mf-plain
-        (gen/tuple
-          (:nonprop-mf-name gmap)
-          (gen/return " ")
-          (gen/return ":")
-          (gen/return " ")
-          (:nonprop-mf-value gmap)
-          (gen/return " "))
-        gmap (assoc gmap :nonprop-mf-plain gen-nonprop-mf-plain)
+        gen-css-element-name
+        (gen/frequency [
+          [(get weights [:css-element-name :alt 0] 100)
+            (:IDENT gmap)]
+          [(get weights [:css-element-name :alt 1] 100)
+            (gen/return "*")]])
+        gmap (assoc gmap :css-element-name gen-css-element-name)
 
-        gen-func-fit-content
+        gen-css-hash
         (gen/tuple
-          (gen/return "fit-content(")
-          (gen/frequency [
-            [(get weights [:func-fit-content :cat 1 :alt 0] 100)
-              (gen/tuple
-                (:nonprop-length gmap)
-                (gen/return " "))]
-            [(get weights [:func-fit-content :cat 1 :alt 1] 100)
-              (gen/tuple
-                (:nonprop-percentage gmap)
-                (gen/return " "))]])
-          (gen/return " ")
-          (gen/return ")")
-          (gen/return " "))
-        gmap (assoc gmap :func-fit-content gen-func-fit-content)
+          (gen/return "#")
+          (:NAME gmap))
+        gmap (assoc gmap :css-hash gen-css-hash)
+
+        gen-css-pseudo
+        (gen/tuple
+          (gen/return ":")
+          (gen/one-of [
+            (gen/return "")
+            (gen/frequency [
+              [(get weights [:css-pseudo :cat 1 :opt :alt 0] 100)
+                (:IDENT gmap)]
+              [(get weights [:css-pseudo :cat 1 :opt :alt 1] 100)
+                (gen/tuple
+                  (:IDENT gmap)
+                  (gen/return "(")
+                  (gen/one-of [
+                    (gen/return "")
+                    (gen/one-of [
+                      (gen/return "")
+                      (:IDENT gmap)])])
+                  (gen/return ")"))]])]))
+        gmap (assoc gmap :css-pseudo gen-css-pseudo)
+
+        gen-css-simple-selector
+        (gen/frequency [
+          [(get weights [:css-simple-selector :alt 0] 100)
+            (gen/tuple
+              (:css-element-name gmap)
+              (gen/vector
+                (gen/one-of [
+                  (gen/return "")
+                  (gen/frequency [
+                    [(get weights [:css-simple-selector :alt 0 :cat 1 :star :opt :alt 0] 100)
+                      (:css-hash gmap)]
+                    [(get weights [:css-simple-selector :alt 0 :cat 1 :star :opt :alt 1] 100)
+                      (:css-class gmap)]
+                    [(get weights [:css-simple-selector :alt 0 :cat 1 :star :opt :alt 2] 100)
+                      (:css-pseudo gmap)]])])))]
+          [(get weights [:css-simple-selector :alt 1] 100)
+            (gen/such-that not-empty (gen/vector
+              (gen/one-of [
+                (gen/return "")
+                (gen/frequency [
+                  [(get weights [:css-simple-selector :alt 1 :plus :opt :alt 0] 100)
+                    (:css-hash gmap)]
+                  [(get weights [:css-simple-selector :alt 1 :plus :opt :alt 1] 100)
+                    (:css-class gmap)]
+                  [(get weights [:css-simple-selector :alt 1 :plus :opt :alt 2] 100)
+                    (:css-pseudo gmap)]])])))]])
+        gmap (assoc gmap :css-simple-selector gen-css-simple-selector)
+
+        gen-css-combinator
+        (gen/frequency [
+          [(get weights [:css-combinator :alt 0] 100)
+            (gen/return "+")]
+          [(get weights [:css-combinator :alt 1] 100)
+            (gen/return ">")]])
+        gmap (assoc gmap :css-combinator gen-css-combinator)
+
+        gen-css-selector
+        (gen/recursive-gen
+          (fn [inner]
+            (gen/tuple
+              (:css-simple-selector gmap)
+              (gen/one-of [
+                (gen/return "")
+                (gen/one-of [
+                  (gen/return "")
+                  (gen/frequency [
+                    [(get weights [:css-selector :cat 1 :opt :opt :alt 0] 100)
+                      (gen/tuple
+                        (:css-combinator gmap)
+                        inner)]
+                    [(get weights [:css-selector :cat 1 :opt :opt :alt 1] 100)
+                      (gen/tuple
+                        (gen/such-that not-empty (gen/vector
+                          (:S gmap)))
+                        (gen/one-of [
+                          (gen/return "")
+                          (gen/one-of [
+                            (gen/return "")
+                            (gen/tuple
+                              (gen/one-of [
+                                (gen/return "")
+                                (:css-combinator gmap)])
+                              inner)])]))]])])])))
+          (gen/tuple
+            (:css-simple-selector gmap)
+            (gen/one-of [
+              (gen/return "")
+              (gen/one-of [
+                (gen/return "")
+                (gen/tuple
+                  (gen/such-that not-empty (gen/vector
+                    (:S gmap)))
+                  (gen/one-of [
+                    (gen/return "")
+                    (gen/return "")]))])])))
+        gmap (assoc gmap :css-selector gen-css-selector)
 
         gen-prop--ms-overflow-style
         (gen/frequency [
           [(get weights [:prop--ms-overflow-style :alt 0] 100)
             (gen/tuple
-              (gen/return "auto")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "auto"))]
           [(get weights [:prop--ms-overflow-style :alt 1] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "none"))]
           [(get weights [:prop--ms-overflow-style :alt 2] 100)
             (gen/tuple
-              (gen/return "scrollbar")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "scrollbar"))]
           [(get weights [:prop--ms-overflow-style :alt 3] 100)
             (gen/tuple
-              (gen/return "-ms-autohiding-scrollbar")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "-ms-autohiding-scrollbar"))]])
         gmap (assoc gmap :prop--ms-overflow-style gen-prop--ms-overflow-style)
 
         gen-prop-padding-top
         (gen/frequency [
           [(get weights [:prop-padding-top :alt 0] 100)
             (gen/tuple
-              (:nonprop-length gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-length gmap))]
           [(get weights [:prop-padding-top :alt 1] 100)
             (gen/tuple
-              (:nonprop-percentage gmap)
-              (gen/return " "))]])
+              (gen/return " ")
+              (:nonprop-percentage gmap))]])
         gmap (assoc gmap :prop-padding-top gen-prop-padding-top)
 
         gen-nonprop-clip-source
         (gen/tuple
-          (:nonprop-url gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-url gmap))
         gmap (assoc gmap :nonprop-clip-source gen-nonprop-clip-source)
 
         gen-prop-shape-outside
         (gen/frequency [
           [(get weights [:prop-shape-outside :alt 0] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "none"))]
           [(get weights [:prop-shape-outside :alt 1] 100)
             (gen/such-that not-empty (gen/vector
               (gen/frequency [
                 [(get weights [:prop-shape-outside :alt 1 :plus :alt 0] 100)
                   (gen/tuple
-                    (:nonprop-shape-box gmap)
-                    (gen/return " "))]
+                    (gen/return " ")
+                    (:nonprop-shape-box gmap))]
                 [(get weights [:prop-shape-outside :alt 1 :plus :alt 1] 100)
                   (gen/tuple
-                    (:nonprop-basic-shape gmap)
-                    (gen/return " "))]])))]
+                    (gen/return " ")
+                    (:nonprop-basic-shape gmap))]])))]
           [(get weights [:prop-shape-outside :alt 2] 100)
             (gen/tuple
-              (:nonprop-image gmap)
-              (gen/return " "))]])
+              (gen/return " ")
+              (:nonprop-image gmap))]])
         gmap (assoc gmap :prop-shape-outside gen-prop-shape-outside)
 
         gen-prop-block-size
         (gen/tuple
-          (:nonprop-width gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-width gmap))
         gmap (assoc gmap :prop-block-size gen-prop-block-size)
 
         gen-prop-clip-path
         (gen/frequency [
           [(get weights [:prop-clip-path :alt 0] 100)
             (gen/tuple
-              (:nonprop-clip-source gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-clip-source gmap))]
           [(get weights [:prop-clip-path :alt 1] 100)
             (gen/tuple
+              (gen/return " ")
               (gen/such-that not-empty (gen/vector
                 (gen/frequency [
-                  [(get weights [:prop-clip-path :alt 1 :cat 0 :plus :alt 0] 100)
+                  [(get weights [:prop-clip-path :alt 1 :cat 1 :plus :alt 0] 100)
                     (gen/tuple
-                      (:nonprop-basic-shape gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-clip-path :alt 1 :cat 0 :plus :alt 1] 100)
+                      (gen/return " ")
+                      (:nonprop-basic-shape gmap))]
+                  [(get weights [:prop-clip-path :alt 1 :cat 1 :plus :alt 1] 100)
                     (gen/tuple
-                      (:nonprop-geometry-box gmap)
-                      (gen/return " "))]])))
-              (gen/return " "))]
+                      (gen/return " ")
+                      (:nonprop-geometry-box gmap))]]))))]
           [(get weights [:prop-clip-path :alt 2] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "none"))]])
         gmap (assoc gmap :prop-clip-path gen-prop-clip-path)
 
         gen-nonprop-y
@@ -8347,109 +8197,106 @@
 
         gen-nonprop-mask-position
         (gen/tuple
+          (gen/return " ")
           (gen/frequency [
-            [(get weights [:nonprop-mask-position :cat 0 :alt 0] 100)
+            [(get weights [:nonprop-mask-position :cat 1 :alt 0] 100)
               (gen/tuple
-                (:nonprop-length-percentage gmap)
-                (gen/return " "))]
-            [(get weights [:nonprop-mask-position :cat 0 :alt 1] 100)
+                (gen/return " ")
+                (:nonprop-length-percentage gmap))]
+            [(get weights [:nonprop-mask-position :cat 1 :alt 1] 100)
               (gen/tuple
-                (gen/return "left")
-                (gen/return " "))]
-            [(get weights [:nonprop-mask-position :cat 0 :alt 2] 100)
+                (gen/return " ")
+                (gen/return "left"))]
+            [(get weights [:nonprop-mask-position :cat 1 :alt 2] 100)
               (gen/tuple
-                (gen/return "center")
-                (gen/return " "))]
-            [(get weights [:nonprop-mask-position :cat 0 :alt 3] 100)
+                (gen/return " ")
+                (gen/return "center"))]
+            [(get weights [:nonprop-mask-position :cat 1 :alt 3] 100)
               (gen/tuple
-                (gen/return "right")
-                (gen/return " "))]])
+                (gen/return " ")
+                (gen/return "right"))]])
           (gen/return " ")
           (gen/one-of [
             (gen/return "")
             (gen/frequency [
-              [(get weights [:nonprop-mask-position :cat 2 :opt :alt 0] 100)
+              [(get weights [:nonprop-mask-position :cat 3 :opt :alt 0] 100)
                 (gen/tuple
-                  (:nonprop-length-percentage gmap)
-                  (gen/return " "))]
-              [(get weights [:nonprop-mask-position :cat 2 :opt :alt 1] 100)
+                  (gen/return " ")
+                  (:nonprop-length-percentage gmap))]
+              [(get weights [:nonprop-mask-position :cat 3 :opt :alt 1] 100)
                 (gen/tuple
-                  (gen/return "top")
-                  (gen/return " "))]
-              [(get weights [:nonprop-mask-position :cat 2 :opt :alt 2] 100)
+                  (gen/return " ")
+                  (gen/return "top"))]
+              [(get weights [:nonprop-mask-position :cat 3 :opt :alt 2] 100)
                 (gen/tuple
-                  (gen/return "center")
-                  (gen/return " "))]
-              [(get weights [:nonprop-mask-position :cat 2 :opt :alt 3] 100)
+                  (gen/return " ")
+                  (gen/return "center"))]
+              [(get weights [:nonprop-mask-position :cat 3 :opt :alt 3] 100)
                 (gen/tuple
-                  (gen/return "bottom")
-                  (gen/return " "))]])])
-          (gen/return " "))
+                  (gen/return " ")
+                  (gen/return "bottom"))]])]))
         gmap (assoc gmap :nonprop-mask-position gen-nonprop-mask-position)
 
         gen-prop--webkit-mask-position
         (gen/tuple
+          (gen/return " ")
           (:nonprop-mask-position gmap)
           (gen/vector
             (gen/tuple
-              (gen/return ", ")
-              (:nonprop-mask-position gmap)))
-          (gen/return " "))
+              (gen/return ",")
+              (:nonprop-mask-position gmap))))
         gmap (assoc gmap :prop--webkit-mask-position gen-prop--webkit-mask-position)
 
         gen-prop-word-break
         (gen/frequency [
           [(get weights [:prop-word-break :alt 0] 100)
             (gen/tuple
-              (gen/return "normal")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "normal"))]
           [(get weights [:prop-word-break :alt 1] 100)
             (gen/tuple
-              (gen/return "break-all")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "break-all"))]
           [(get weights [:prop-word-break :alt 2] 100)
             (gen/tuple
-              (gen/return "keep-all")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "keep-all"))]])
         gmap (assoc gmap :prop-word-break gen-prop-word-break)
 
         gen-prop-transition-property
         (gen/frequency [
           [(get weights [:prop-transition-property :alt 0] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "none"))]
           [(get weights [:prop-transition-property :alt 1] 100)
             (gen/tuple
+              (gen/return " ")
               (:nonprop-single-transition-property gmap)
               (gen/vector
                 (gen/tuple
-                  (gen/return ", ")
-                  (:nonprop-single-transition-property gmap)))
-              (gen/return " "))]])
+                  (gen/return ",")
+                  (:nonprop-single-transition-property gmap))))]])
         gmap (assoc gmap :prop-transition-property gen-prop-transition-property)
 
         gen-prop-list-style-image
         (gen/frequency [
           [(get weights [:prop-list-style-image :alt 0] 100)
             (gen/tuple
-              (:nonprop-url gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-url gmap))]
           [(get weights [:prop-list-style-image :alt 1] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "none"))]])
         gmap (assoc gmap :prop-list-style-image gen-prop-list-style-image)
 
         gen-prop-border-bottom-color
         (gen/tuple
-          (:nonprop-color gmap)
-          (gen/return " "))
-        gmap (assoc gmap :prop-border-bottom-color gen-prop-border-bottom-color)]
-    gmap))
+          (gen/return " ")
+          (:nonprop-color gmap))
+        gmap (assoc gmap :prop-border-bottom-color gen-prop-border-bottom-color)
 
-(defn- css3-generators-part-9 [gmap weights]
-  (let [
         gen-nonprop-list-style-image
         (:prop-list-style-image gmap)
         gmap (assoc gmap :nonprop-list-style-image gen-nonprop-list-style-image)
@@ -8459,16 +8306,16 @@
           (gen/frequency [
             [(get weights [:prop-list-style :plus :alt 0] 100)
               (gen/tuple
-                (:nonprop-list-style-type gmap)
-                (gen/return " "))]
+                (gen/return " ")
+                (:nonprop-list-style-type gmap))]
             [(get weights [:prop-list-style :plus :alt 1] 100)
               (gen/tuple
-                (:nonprop-list-style-position gmap)
-                (gen/return " "))]
+                (gen/return " ")
+                (:nonprop-list-style-position gmap))]
             [(get weights [:prop-list-style :plus :alt 2] 100)
               (gen/tuple
-                (:nonprop-list-style-image gmap)
-                (gen/return " "))]])))
+                (gen/return " ")
+                (:nonprop-list-style-image gmap))]])))
         gmap (assoc gmap :prop-list-style gen-prop-list-style)
 
         gen-nonprop-offset-path
@@ -8479,786 +8326,728 @@
         (gen/frequency [
           [(get weights [:prop-border-collapse :alt 0] 100)
             (gen/tuple
-              (gen/return "collapse")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "collapse"))]
           [(get weights [:prop-border-collapse :alt 1] 100)
             (gen/tuple
-              (gen/return "separate")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "separate"))]])
         gmap (assoc gmap :prop-border-collapse gen-prop-border-collapse)
-
-        gen-nonprop-namespace-prefix
-        (gen/tuple
-          (:nonprop-ident gmap)
-          (gen/return " "))
-        gmap (assoc gmap :nonprop-namespace-prefix gen-nonprop-namespace-prefix)
 
         gen-prop-offset-rotate
         (gen/such-that not-empty (gen/vector
           (gen/frequency [
             [(get weights [:prop-offset-rotate :plus :alt 0] 100)
               (gen/tuple
+                (gen/return " ")
                 (gen/frequency [
-                  [(get weights [:prop-offset-rotate :plus :alt 0 :cat 0 :alt 0] 100)
+                  [(get weights [:prop-offset-rotate :plus :alt 0 :cat 1 :alt 0] 100)
                     (gen/tuple
-                      (gen/return "auto")
-                      (gen/return " "))]
-                  [(get weights [:prop-offset-rotate :plus :alt 0 :cat 0 :alt 1] 100)
+                      (gen/return " ")
+                      (gen/return "auto"))]
+                  [(get weights [:prop-offset-rotate :plus :alt 0 :cat 1 :alt 1] 100)
                     (gen/tuple
-                      (gen/return "reverse")
-                      (gen/return " "))]])
-                (gen/return " "))]
+                      (gen/return " ")
+                      (gen/return "reverse"))]]))]
             [(get weights [:prop-offset-rotate :plus :alt 1] 100)
               (gen/tuple
-                (:nonprop-angle gmap)
-                (gen/return " "))]])))
+                (gen/return " ")
+                (:nonprop-angle gmap))]])))
         gmap (assoc gmap :prop-offset-rotate gen-prop-offset-rotate)
 
         gen-nonprop-offset-rotate
         (:prop-offset-rotate gmap)
-        gmap (assoc gmap :nonprop-offset-rotate gen-nonprop-offset-rotate)
+        gmap (assoc gmap :nonprop-offset-rotate gen-nonprop-offset-rotate)]
+    gmap))
 
+(defn- css3-generators-part-9 [gmap weights]
+  (let [
         gen-prop-break-before
         (gen/frequency [
           [(get weights [:prop-break-before :alt 0] 100)
             (gen/tuple
-              (gen/return "auto")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "auto"))]
           [(get weights [:prop-break-before :alt 1] 100)
             (gen/tuple
-              (gen/return "avoid")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "avoid"))]
           [(get weights [:prop-break-before :alt 2] 100)
             (gen/tuple
-              (gen/return "avoid-page")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "avoid-page"))]
           [(get weights [:prop-break-before :alt 3] 100)
             (gen/tuple
-              (gen/return "page")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "page"))]
           [(get weights [:prop-break-before :alt 4] 100)
             (gen/tuple
-              (gen/return "left")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "left"))]
           [(get weights [:prop-break-before :alt 5] 100)
             (gen/tuple
-              (gen/return "right")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "right"))]
           [(get weights [:prop-break-before :alt 6] 100)
             (gen/tuple
-              (gen/return "recto")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "recto"))]
           [(get weights [:prop-break-before :alt 7] 100)
             (gen/tuple
-              (gen/return "verso")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "verso"))]
           [(get weights [:prop-break-before :alt 8] 100)
             (gen/tuple
-              (gen/return "avoid-column")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "avoid-column"))]
           [(get weights [:prop-break-before :alt 9] 100)
             (gen/tuple
-              (gen/return "column")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "column"))]
           [(get weights [:prop-break-before :alt 10] 100)
             (gen/tuple
-              (gen/return "avoid-region")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "avoid-region"))]
           [(get weights [:prop-break-before :alt 11] 100)
             (gen/tuple
-              (gen/return "region")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "region"))]])
         gmap (assoc gmap :prop-break-before gen-prop-break-before)
 
         gen-prop-background-color
         (gen/tuple
-          (:nonprop-color gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-color gmap))
         gmap (assoc gmap :prop-background-color gen-prop-background-color)
 
         gen-prop-transition-timing-function
         (gen/tuple
+          (gen/return " ")
           (:nonprop-single-transition-timing-function gmap)
           (gen/vector
             (gen/tuple
-              (gen/return ", ")
-              (:nonprop-single-transition-timing-function gmap)))
-          (gen/return " "))
+              (gen/return ",")
+              (:nonprop-single-transition-timing-function gmap))))
         gmap (assoc gmap :prop-transition-timing-function gen-prop-transition-timing-function)
 
         gen-nonprop-single-timing-function
         (gen/tuple
-          (:nonprop-single-transition-timing-function gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-single-transition-timing-function gmap))
         gmap (assoc gmap :nonprop-single-timing-function gen-nonprop-single-timing-function)
 
         gen-prop-background-clip
         (gen/tuple
+          (gen/return " ")
           (:nonprop-box gmap)
           (gen/vector
             (gen/tuple
-              (gen/return ", ")
-              (:nonprop-box gmap)))
-          (gen/return " "))
+              (gen/return ",")
+              (:nonprop-box gmap))))
         gmap (assoc gmap :prop-background-clip gen-prop-background-clip)
 
         gen-prop--moz-border-left-colors
         (gen/frequency [
           [(get weights [:prop--moz-border-left-colors :alt 0] 100)
             (gen/tuple
-              (:nonprop-color gmap)
-              (gen/vector
-                (gen/return " "))
               (gen/return " ")
-              (:nonprop-color gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/vector
+                (:nonprop-color gmap))
+              (gen/return " ")
+              (:nonprop-color gmap))]
           [(get weights [:prop--moz-border-left-colors :alt 1] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "none"))]])
         gmap (assoc gmap :prop--moz-border-left-colors gen-prop--moz-border-left-colors)
 
         gen-prop-word-wrap
         (gen/frequency [
           [(get weights [:prop-word-wrap :alt 0] 100)
             (gen/tuple
-              (gen/return "normal")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "normal"))]
           [(get weights [:prop-word-wrap :alt 1] 100)
             (gen/tuple
-              (gen/return "break-word")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "break-word"))]])
         gmap (assoc gmap :prop-word-wrap gen-prop-word-wrap)
 
         gen-prop--webkit-mask-attachment
         (gen/tuple
+          (gen/return " ")
           (:nonprop-attachment gmap)
           (gen/return " ")
           (gen/vector
             (gen/tuple
+              (gen/return " ")
               (gen/return ",")
               (gen/return " ")
-              (:nonprop-attachment gmap)
-              (gen/return " ")))
-          (gen/return " "))
+              (:nonprop-attachment gmap))))
         gmap (assoc gmap :prop--webkit-mask-attachment gen-prop--webkit-mask-attachment)
 
         gen-prop-font-variant-alternates
         (gen/frequency [
           [(get weights [:prop-font-variant-alternates :alt 0] 100)
             (gen/tuple
-              (gen/return "normal")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "normal"))]
           [(get weights [:prop-font-variant-alternates :alt 1] 100)
             (gen/tuple
+              (gen/return " ")
               (gen/such-that not-empty (gen/vector
                 (gen/frequency [
-                  [(get weights [:prop-font-variant-alternates :alt 1 :cat 0 :plus :alt 0] 100)
+                  [(get weights [:prop-font-variant-alternates :alt 1 :cat 1 :plus :alt 0] 100)
                     (gen/tuple
+                      (gen/return " ")
                       (gen/return "stylistic(")
-                      (:nonprop-feature-value-name gmap)
                       (gen/return " ")
-                      (gen/return ")")
-                      (gen/return " "))]
-                  [(get weights [:prop-font-variant-alternates :alt 1 :cat 0 :plus :alt 1] 100)
+                      (:nonprop-feature-value-name gmap)
+                      (gen/return ")"))]
+                  [(get weights [:prop-font-variant-alternates :alt 1 :cat 1 :plus :alt 1] 100)
                     (gen/tuple
-                      (gen/return "historical-forms")
-                      (gen/return " "))]
-                  [(get weights [:prop-font-variant-alternates :alt 1 :cat 0 :plus :alt 2] 100)
+                      (gen/return " ")
+                      (gen/return "historical-forms"))]
+                  [(get weights [:prop-font-variant-alternates :alt 1 :cat 1 :plus :alt 2] 100)
                     (gen/tuple
+                      (gen/return " ")
                       (gen/return "styleset(")
+                      (gen/return " ")
                       (:nonprop-feature-value-name gmap)
                       (gen/vector
                         (gen/tuple
-                          (gen/return ", ")
+                          (gen/return ",")
                           (:nonprop-feature-value-name gmap)))
-                      (gen/return " ")
-                      (gen/return ")")
-                      (gen/return " "))]
-                  [(get weights [:prop-font-variant-alternates :alt 1 :cat 0 :plus :alt 3] 100)
+                      (gen/return ")"))]
+                  [(get weights [:prop-font-variant-alternates :alt 1 :cat 1 :plus :alt 3] 100)
                     (gen/tuple
+                      (gen/return " ")
                       (gen/return "character-variant(")
+                      (gen/return " ")
                       (:nonprop-feature-value-name gmap)
                       (gen/vector
                         (gen/tuple
-                          (gen/return ", ")
+                          (gen/return ",")
                           (:nonprop-feature-value-name gmap)))
-                      (gen/return " ")
-                      (gen/return ")")
-                      (gen/return " "))]
-                  [(get weights [:prop-font-variant-alternates :alt 1 :cat 0 :plus :alt 4] 100)
+                      (gen/return ")"))]
+                  [(get weights [:prop-font-variant-alternates :alt 1 :cat 1 :plus :alt 4] 100)
                     (gen/tuple
+                      (gen/return " ")
                       (gen/return "swash(")
-                      (:nonprop-feature-value-name gmap)
                       (gen/return " ")
-                      (gen/return ")")
-                      (gen/return " "))]
-                  [(get weights [:prop-font-variant-alternates :alt 1 :cat 0 :plus :alt 5] 100)
+                      (:nonprop-feature-value-name gmap)
+                      (gen/return ")"))]
+                  [(get weights [:prop-font-variant-alternates :alt 1 :cat 1 :plus :alt 5] 100)
                     (gen/tuple
+                      (gen/return " ")
                       (gen/return "ornaments(")
-                      (:nonprop-feature-value-name gmap)
                       (gen/return " ")
-                      (gen/return ")")
-                      (gen/return " "))]
-                  [(get weights [:prop-font-variant-alternates :alt 1 :cat 0 :plus :alt 6] 100)
+                      (:nonprop-feature-value-name gmap)
+                      (gen/return ")"))]
+                  [(get weights [:prop-font-variant-alternates :alt 1 :cat 1 :plus :alt 6] 100)
                     (gen/tuple
-                      (gen/return "annotation(")
-                      (:nonprop-feature-value-name gmap)
                       (gen/return " ")
-                      (gen/return ")")
-                      (gen/return " "))]])))
-              (gen/return " "))]])
+                      (gen/return "annotation(")
+                      (gen/return " ")
+                      (:nonprop-feature-value-name gmap)
+                      (gen/return ")"))]]))))]])
         gmap (assoc gmap :prop-font-variant-alternates gen-prop-font-variant-alternates)
 
         gen-prop-box-direction
         (gen/frequency [
           [(get weights [:prop-box-direction :alt 0] 100)
             (gen/tuple
-              (gen/return "normal")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "normal"))]
           [(get weights [:prop-box-direction :alt 1] 100)
             (gen/tuple
-              (gen/return "reverse")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "reverse"))]
           [(get weights [:prop-box-direction :alt 2] 100)
             (gen/tuple
-              (gen/return "inherit")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "inherit"))]])
         gmap (assoc gmap :prop-box-direction gen-prop-box-direction)
 
         gen-prop-scroll-snap-coordinate
         (gen/frequency [
           [(get weights [:prop-scroll-snap-coordinate :alt 0] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "none"))]
           [(get weights [:prop-scroll-snap-coordinate :alt 1] 100)
             (gen/tuple
+              (gen/return " ")
               (:nonprop-position gmap)
               (gen/vector
                 (gen/tuple
-                  (gen/return ", ")
-                  (:nonprop-position gmap)))
-              (gen/return " "))]])
+                  (gen/return ",")
+                  (:nonprop-position gmap))))]])
         gmap (assoc gmap :prop-scroll-snap-coordinate gen-prop-scroll-snap-coordinate)
-
-        gen-nonprop-cf-mixing-image
-        (gen/tuple
-          (gen/one-of [
-            (gen/return "")
-            (:nonprop-percentage gmap)])
-          (gen/return " ")
-          (:nonprop-image gmap)
-          (gen/return " "))
-        gmap (assoc gmap :nonprop-cf-mixing-image gen-nonprop-cf-mixing-image)
-
-        gen-nonprop-cf-final-image
-        (gen/frequency [
-          [(get weights [:nonprop-cf-final-image :alt 0] 100)
-            (gen/tuple
-              (:nonprop-image gmap)
-              (gen/return " "))]
-          [(get weights [:nonprop-cf-final-image :alt 1] 100)
-            (gen/tuple
-              (:nonprop-color gmap)
-              (gen/return " "))]])
-        gmap (assoc gmap :nonprop-cf-final-image gen-nonprop-cf-final-image)
-
-        gen-func-cross-fade
-        (gen/tuple
-          (gen/return "cross-fade(")
-          (gen/tuple
-            (:nonprop-cf-mixing-image gmap)
-            (gen/return " ")
-            (gen/return ",")
-            (gen/return " ")
-            (gen/one-of [
-              (gen/return "")
-              (:nonprop-cf-final-image gmap)])
-            (gen/return " "))
-          (gen/return ")")
-          (gen/return " "))
-        gmap (assoc gmap :func-cross-fade gen-func-cross-fade)
-
-        gen-nonprop-function-token
-        (gen/return "STUB_flex_function_token")
-        gmap (assoc gmap :nonprop-function-token gen-nonprop-function-token)
 
         gen-prop-azimuth
         (gen/frequency [
           [(get weights [:prop-azimuth :alt 0] 100)
             (gen/tuple
-              (:nonprop-angle gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-angle gmap))]
           [(get weights [:prop-azimuth :alt 1] 100)
             (gen/tuple
+              (gen/return " ")
               (gen/such-that not-empty (gen/vector
                 (gen/frequency [
-                  [(get weights [:prop-azimuth :alt 1 :cat 0 :plus :alt 0] 100)
+                  [(get weights [:prop-azimuth :alt 1 :cat 1 :plus :alt 0] 100)
                     (gen/tuple
+                      (gen/return " ")
                       (gen/frequency [
-                        [(get weights [:prop-azimuth :alt 1 :cat 0 :plus :alt 0 :cat 0 :alt 0] 100)
+                        [(get weights [:prop-azimuth :alt 1 :cat 1 :plus :alt 0 :cat 1 :alt 0] 100)
                           (gen/tuple
-                            (gen/return "left-side")
-                            (gen/return " "))]
-                        [(get weights [:prop-azimuth :alt 1 :cat 0 :plus :alt 0 :cat 0 :alt 1] 100)
+                            (gen/return " ")
+                            (gen/return "left-side"))]
+                        [(get weights [:prop-azimuth :alt 1 :cat 1 :plus :alt 0 :cat 1 :alt 1] 100)
                           (gen/tuple
-                            (gen/return "far-left")
-                            (gen/return " "))]
-                        [(get weights [:prop-azimuth :alt 1 :cat 0 :plus :alt 0 :cat 0 :alt 2] 100)
+                            (gen/return " ")
+                            (gen/return "far-left"))]
+                        [(get weights [:prop-azimuth :alt 1 :cat 1 :plus :alt 0 :cat 1 :alt 2] 100)
                           (gen/tuple
-                            (gen/return "left")
-                            (gen/return " "))]
-                        [(get weights [:prop-azimuth :alt 1 :cat 0 :plus :alt 0 :cat 0 :alt 3] 100)
+                            (gen/return " ")
+                            (gen/return "left"))]
+                        [(get weights [:prop-azimuth :alt 1 :cat 1 :plus :alt 0 :cat 1 :alt 3] 100)
                           (gen/tuple
-                            (gen/return "center-left")
-                            (gen/return " "))]
-                        [(get weights [:prop-azimuth :alt 1 :cat 0 :plus :alt 0 :cat 0 :alt 4] 100)
+                            (gen/return " ")
+                            (gen/return "center-left"))]
+                        [(get weights [:prop-azimuth :alt 1 :cat 1 :plus :alt 0 :cat 1 :alt 4] 100)
                           (gen/tuple
-                            (gen/return "center")
-                            (gen/return " "))]
-                        [(get weights [:prop-azimuth :alt 1 :cat 0 :plus :alt 0 :cat 0 :alt 5] 100)
+                            (gen/return " ")
+                            (gen/return "center"))]
+                        [(get weights [:prop-azimuth :alt 1 :cat 1 :plus :alt 0 :cat 1 :alt 5] 100)
                           (gen/tuple
-                            (gen/return "center-right")
-                            (gen/return " "))]
-                        [(get weights [:prop-azimuth :alt 1 :cat 0 :plus :alt 0 :cat 0 :alt 6] 100)
+                            (gen/return " ")
+                            (gen/return "center-right"))]
+                        [(get weights [:prop-azimuth :alt 1 :cat 1 :plus :alt 0 :cat 1 :alt 6] 100)
                           (gen/tuple
-                            (gen/return "right")
-                            (gen/return " "))]
-                        [(get weights [:prop-azimuth :alt 1 :cat 0 :plus :alt 0 :cat 0 :alt 7] 100)
+                            (gen/return " ")
+                            (gen/return "right"))]
+                        [(get weights [:prop-azimuth :alt 1 :cat 1 :plus :alt 0 :cat 1 :alt 7] 100)
                           (gen/tuple
-                            (gen/return "far-right")
-                            (gen/return " "))]
-                        [(get weights [:prop-azimuth :alt 1 :cat 0 :plus :alt 0 :cat 0 :alt 8] 100)
+                            (gen/return " ")
+                            (gen/return "far-right"))]
+                        [(get weights [:prop-azimuth :alt 1 :cat 1 :plus :alt 0 :cat 1 :alt 8] 100)
                           (gen/tuple
-                            (gen/return "right-side")
-                            (gen/return " "))]])
-                      (gen/return " "))]
-                  [(get weights [:prop-azimuth :alt 1 :cat 0 :plus :alt 1] 100)
+                            (gen/return " ")
+                            (gen/return "right-side"))]]))]
+                  [(get weights [:prop-azimuth :alt 1 :cat 1 :plus :alt 1] 100)
                     (gen/tuple
-                      (gen/return "behind")
-                      (gen/return " "))]])))
-              (gen/return " "))]
+                      (gen/return " ")
+                      (gen/return "behind"))]]))))]
           [(get weights [:prop-azimuth :alt 2] 100)
             (gen/tuple
-              (gen/return "leftwards")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "leftwards"))]
           [(get weights [:prop-azimuth :alt 3] 100)
             (gen/tuple
-              (gen/return "rightwards")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "rightwards"))]])
         gmap (assoc gmap :prop-azimuth gen-prop-azimuth)
 
         gen-prop-image-orientation
         (gen/frequency [
           [(get weights [:prop-image-orientation :alt 0] 100)
             (gen/tuple
-              (gen/return "from-image")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "from-image"))]
           [(get weights [:prop-image-orientation :alt 1] 100)
             (gen/tuple
-              (:nonprop-angle gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-angle gmap))]
           [(get weights [:prop-image-orientation :alt 2] 100)
             (gen/tuple
+              (gen/return " ")
               (gen/tuple
+                (gen/return " ")
                 (gen/one-of [
                   (gen/return "")
                   (:nonprop-angle gmap)])
                 (gen/return " ")
-                (gen/return "flip")
-                (gen/return " "))
-              (gen/return " "))]])
+                (gen/return "flip")))]])
         gmap (assoc gmap :prop-image-orientation gen-prop-image-orientation)
 
         gen-prop-initial-letter
         (gen/frequency [
           [(get weights [:prop-initial-letter :alt 0] 100)
             (gen/tuple
-              (gen/return "normal")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "normal"))]
           [(get weights [:prop-initial-letter :alt 1] 100)
             (gen/tuple
+              (gen/return " ")
               (gen/tuple
+                (gen/return " ")
                 (:nonprop-number gmap)
                 (gen/return " ")
                 (gen/one-of [
                   (gen/return "")
-                  (:nonprop-integer gmap)])
-                (gen/return " "))
-              (gen/return " "))]])
+                  (:nonprop-integer gmap)])))]])
         gmap (assoc gmap :prop-initial-letter gen-prop-initial-letter)
 
         gen-prop-grid-column
         (gen/tuple
+          (gen/return " ")
           (:nonprop-grid-line gmap)
           (gen/return " ")
           (gen/one-of [
             (gen/return "")
             (gen/tuple
+              (gen/return " ")
               (gen/return "/")
               (gen/return " ")
-              (:nonprop-grid-line gmap)
-              (gen/return " "))])
-          (gen/return " "))
+              (:nonprop-grid-line gmap))]))
         gmap (assoc gmap :prop-grid-column gen-prop-grid-column)
 
         gen-prop--moz-outline-radius-bottomright
         (gen/tuple
-          (:nonprop-outline-radius gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-outline-radius gmap))
         gmap (assoc gmap :prop--moz-outline-radius-bottomright gen-prop--moz-outline-radius-bottomright)
 
         gen-prop-position
         (gen/frequency [
           [(get weights [:prop-position :alt 0] 100)
             (gen/tuple
-              (gen/return "static")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "static"))]
           [(get weights [:prop-position :alt 1] 100)
             (gen/tuple
-              (gen/return "relative")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "relative"))]
           [(get weights [:prop-position :alt 2] 100)
             (gen/tuple
-              (gen/return "absolute")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "absolute"))]
           [(get weights [:prop-position :alt 3] 100)
             (gen/tuple
-              (gen/return "sticky")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "sticky"))]
           [(get weights [:prop-position :alt 4] 100)
             (gen/tuple
-              (gen/return "fixed")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "fixed"))]])
         gmap (assoc gmap :prop-position gen-prop-position)
 
         gen-prop-grid-row-start
         (gen/tuple
-          (:nonprop-grid-line gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-grid-line gmap))
         gmap (assoc gmap :prop-grid-row-start gen-prop-grid-row-start)
 
         gen-prop-border-top-left-radius
         (gen/tuple
+          (gen/return " ")
           (gen/frequency [
-            [(get weights [:prop-border-top-left-radius :cat 0 :alt 0] 100)
+            [(get weights [:prop-border-top-left-radius :cat 1 :alt 0] 100)
               (:nonprop-length-percentage gmap)]
-            [(get weights [:prop-border-top-left-radius :cat 0 :alt 1] 100)
+            [(get weights [:prop-border-top-left-radius :cat 1 :alt 1] 100)
               (gen/tuple
                 (:nonprop-length-percentage gmap)
-                (:nonprop-length-percentage gmap))]])
-          (gen/return " "))
+                (:nonprop-length-percentage gmap))]]))
         gmap (assoc gmap :prop-border-top-left-radius gen-prop-border-top-left-radius)
 
         gen-prop-margin-inline-end
         (gen/tuple
-          (:nonprop-margin-left gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-margin-left gmap))
         gmap (assoc gmap :prop-margin-inline-end gen-prop-margin-inline-end)
 
         gen-prop--webkit-tap-highlight-color
         (gen/tuple
-          (:nonprop-color gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-color gmap))
         gmap (assoc gmap :prop--webkit-tap-highlight-color gen-prop--webkit-tap-highlight-color)
 
         gen-nonprop-composite-style
         (gen/frequency [
           [(get weights [:nonprop-composite-style :alt 0] 100)
             (gen/tuple
-              (gen/return "clear")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "clear"))]
           [(get weights [:nonprop-composite-style :alt 1] 100)
             (gen/tuple
-              (gen/return "copy")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "copy"))]
           [(get weights [:nonprop-composite-style :alt 2] 100)
             (gen/tuple
-              (gen/return "source-over")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "source-over"))]
           [(get weights [:nonprop-composite-style :alt 3] 100)
             (gen/tuple
-              (gen/return "source-in")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "source-in"))]
           [(get weights [:nonprop-composite-style :alt 4] 100)
             (gen/tuple
-              (gen/return "source-out")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "source-out"))]
           [(get weights [:nonprop-composite-style :alt 5] 100)
             (gen/tuple
-              (gen/return "source-atop")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "source-atop"))]
           [(get weights [:nonprop-composite-style :alt 6] 100)
             (gen/tuple
-              (gen/return "destination-over")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "destination-over"))]
           [(get weights [:nonprop-composite-style :alt 7] 100)
             (gen/tuple
-              (gen/return "destination-in")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "destination-in"))]
           [(get weights [:nonprop-composite-style :alt 8] 100)
             (gen/tuple
-              (gen/return "destination-out")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "destination-out"))]
           [(get weights [:nonprop-composite-style :alt 9] 100)
             (gen/tuple
-              (gen/return "destination-atop")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "destination-atop"))]
           [(get weights [:nonprop-composite-style :alt 10] 100)
             (gen/tuple
-              (gen/return "xor")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "xor"))]])
         gmap (assoc gmap :nonprop-composite-style gen-nonprop-composite-style)
 
         gen-prop--webkit-mask-composite
         (gen/tuple
+          (gen/return " ")
           (:nonprop-composite-style gmap)
           (gen/return " ")
           (gen/vector
             (gen/tuple
+              (gen/return " ")
               (gen/return ",")
               (gen/return " ")
-              (:nonprop-composite-style gmap)
-              (gen/return " ")))
-          (gen/return " "))
+              (:nonprop-composite-style gmap))))
         gmap (assoc gmap :prop--webkit-mask-composite gen-prop--webkit-mask-composite)
 
         gen-prop--webkit-mask-clip
         (gen/tuple
+          (gen/return " ")
           (:nonprop-clip-style gmap)
           (gen/return " ")
           (gen/vector
             (gen/tuple
+              (gen/return " ")
               (gen/return ",")
               (gen/return " ")
-              (:nonprop-clip-style gmap)
-              (gen/return " ")))
-          (gen/return " "))
+              (:nonprop-clip-style gmap))))
         gmap (assoc gmap :prop--webkit-mask-clip gen-prop--webkit-mask-clip)
 
         gen-prop--moz-border-bottom-colors
         (gen/frequency [
           [(get weights [:prop--moz-border-bottom-colors :alt 0] 100)
             (gen/tuple
-              (:nonprop-color gmap)
-              (gen/vector
-                (gen/return " "))
               (gen/return " ")
-              (:nonprop-color gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/vector
+                (:nonprop-color gmap))
+              (gen/return " ")
+              (:nonprop-color gmap))]
           [(get weights [:prop--moz-border-bottom-colors :alt 1] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "none"))]])
         gmap (assoc gmap :prop--moz-border-bottom-colors gen-prop--moz-border-bottom-colors)
 
         gen-prop-background-attachment
         (gen/tuple
+          (gen/return " ")
           (:nonprop-attachment gmap)
           (gen/vector
             (gen/tuple
-              (gen/return ", ")
-              (:nonprop-attachment gmap)))
-          (gen/return " "))
+              (gen/return ",")
+              (:nonprop-attachment gmap))))
         gmap (assoc gmap :prop-background-attachment gen-prop-background-attachment)
-
-        gen-func-image-set
-        (gen/tuple
-          (gen/return "image-set(")
-          (:nonprop-image-set-option gmap)
-          (gen/vector
-            (gen/tuple
-              (gen/return ", ")
-              (:nonprop-image-set-option gmap)))
-          (gen/return " ")
-          (gen/return ")")
-          (gen/return " "))
-        gmap (assoc gmap :func-image-set gen-func-image-set)
 
         gen-prop-table-layout
         (gen/frequency [
           [(get weights [:prop-table-layout :alt 0] 100)
             (gen/tuple
-              (gen/return "auto")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "auto"))]
           [(get weights [:prop-table-layout :alt 1] 100)
             (gen/tuple
-              (gen/return "fixed")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "fixed"))]])
         gmap (assoc gmap :prop-table-layout gen-prop-table-layout)
 
         gen-prop-border-left-width
         (gen/tuple
-          (:nonprop-br-width gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-br-width gmap))
         gmap (assoc gmap :prop-border-left-width gen-prop-border-left-width)
 
         gen-prop-font-weight
         (gen/frequency [
           [(get weights [:prop-font-weight :alt 0] 100)
             (gen/tuple
-              (gen/return "normal")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "normal"))]
           [(get weights [:prop-font-weight :alt 1] 100)
             (gen/tuple
-              (gen/return "bold")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "bold"))]
           [(get weights [:prop-font-weight :alt 2] 100)
             (gen/tuple
-              (gen/return "bolder")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "bolder"))]
           [(get weights [:prop-font-weight :alt 3] 100)
             (gen/tuple
-              (gen/return "lighter")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "lighter"))]
           [(get weights [:prop-font-weight :alt 4] 100)
             (gen/tuple
-              (gen/return "100")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "100"))]
           [(get weights [:prop-font-weight :alt 5] 100)
             (gen/tuple
-              (gen/return "200")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "200"))]
           [(get weights [:prop-font-weight :alt 6] 100)
             (gen/tuple
-              (gen/return "300")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "300"))]
           [(get weights [:prop-font-weight :alt 7] 100)
             (gen/tuple
-              (gen/return "400")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "400"))]
           [(get weights [:prop-font-weight :alt 8] 100)
             (gen/tuple
-              (gen/return "500")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "500"))]
           [(get weights [:prop-font-weight :alt 9] 100)
             (gen/tuple
-              (gen/return "600")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "600"))]
           [(get weights [:prop-font-weight :alt 10] 100)
             (gen/tuple
-              (gen/return "700")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "700"))]
           [(get weights [:prop-font-weight :alt 11] 100)
             (gen/tuple
-              (gen/return "800")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "800"))]
           [(get weights [:prop-font-weight :alt 12] 100)
             (gen/tuple
-              (gen/return "900")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "900"))]])
         gmap (assoc gmap :prop-font-weight gen-prop-font-weight)
 
         gen-prop--webkit-mask-repeat-y
         (gen/frequency [
           [(get weights [:prop--webkit-mask-repeat-y :alt 0] 100)
             (gen/tuple
-              (gen/return "repeat")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "repeat"))]
           [(get weights [:prop--webkit-mask-repeat-y :alt 1] 100)
             (gen/tuple
-              (gen/return "no-repeat")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "no-repeat"))]
           [(get weights [:prop--webkit-mask-repeat-y :alt 2] 100)
             (gen/tuple
-              (gen/return "space")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "space"))]
           [(get weights [:prop--webkit-mask-repeat-y :alt 3] 100)
             (gen/tuple
-              (gen/return "round")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "round"))]])
         gmap (assoc gmap :prop--webkit-mask-repeat-y gen-prop--webkit-mask-repeat-y)
 
         gen-prop-text-decoration-skip
         (gen/frequency [
           [(get weights [:prop-text-decoration-skip :alt 0] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "none"))]
           [(get weights [:prop-text-decoration-skip :alt 1] 100)
             (gen/tuple
+              (gen/return " ")
               (gen/such-that not-empty (gen/vector
                 (gen/frequency [
-                  [(get weights [:prop-text-decoration-skip :alt 1 :cat 0 :plus :alt 0] 100)
+                  [(get weights [:prop-text-decoration-skip :alt 1 :cat 1 :plus :alt 0] 100)
                     (gen/tuple
-                      (gen/return "objects")
-                      (gen/return " "))]
-                  [(get weights [:prop-text-decoration-skip :alt 1 :cat 0 :plus :alt 1] 100)
+                      (gen/return " ")
+                      (gen/return "objects"))]
+                  [(get weights [:prop-text-decoration-skip :alt 1 :cat 1 :plus :alt 1] 100)
                     (gen/tuple
-                      (gen/return "spaces")
-                      (gen/return " "))]
-                  [(get weights [:prop-text-decoration-skip :alt 1 :cat 0 :plus :alt 2] 100)
+                      (gen/return " ")
+                      (gen/return "spaces"))]
+                  [(get weights [:prop-text-decoration-skip :alt 1 :cat 1 :plus :alt 2] 100)
                     (gen/tuple
-                      (gen/return "ink")
-                      (gen/return " "))]
-                  [(get weights [:prop-text-decoration-skip :alt 1 :cat 0 :plus :alt 3] 100)
+                      (gen/return " ")
+                      (gen/return "ink"))]
+                  [(get weights [:prop-text-decoration-skip :alt 1 :cat 1 :plus :alt 3] 100)
                     (gen/tuple
-                      (gen/return "edges")
-                      (gen/return " "))]
-                  [(get weights [:prop-text-decoration-skip :alt 1 :cat 0 :plus :alt 4] 100)
+                      (gen/return " ")
+                      (gen/return "edges"))]
+                  [(get weights [:prop-text-decoration-skip :alt 1 :cat 1 :plus :alt 4] 100)
                     (gen/tuple
-                      (gen/return "box-decoration")
-                      (gen/return " "))]])))
-              (gen/return " "))]])
+                      (gen/return " ")
+                      (gen/return "box-decoration"))]]))))]])
         gmap (assoc gmap :prop-text-decoration-skip gen-prop-text-decoration-skip)
 
         gen-prop-max-block-size
         (gen/tuple
-          (:nonprop-max-width gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-max-width gmap))
         gmap (assoc gmap :prop-max-block-size gen-prop-max-block-size)
 
         gen-prop--moz-user-focus
         (gen/frequency [
           [(get weights [:prop--moz-user-focus :alt 0] 100)
             (gen/tuple
-              (gen/return "ignore")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "ignore"))]
           [(get weights [:prop--moz-user-focus :alt 1] 100)
             (gen/tuple
-              (gen/return "normal")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "normal"))]
           [(get weights [:prop--moz-user-focus :alt 2] 100)
             (gen/tuple
-              (gen/return "select-after")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "select-after"))]
           [(get weights [:prop--moz-user-focus :alt 3] 100)
             (gen/tuple
-              (gen/return "select-before")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "select-before"))]
           [(get weights [:prop--moz-user-focus :alt 4] 100)
             (gen/tuple
-              (gen/return "select-menu")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "select-menu"))]
           [(get weights [:prop--moz-user-focus :alt 5] 100)
             (gen/tuple
-              (gen/return "select-same")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "select-same"))]
           [(get weights [:prop--moz-user-focus :alt 6] 100)
             (gen/tuple
-              (gen/return "select-all")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "select-all"))]
           [(get weights [:prop--moz-user-focus :alt 7] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "none"))]])
         gmap (assoc gmap :prop--moz-user-focus gen-prop--moz-user-focus)
 
         gen-prop-border-top-width
         (gen/tuple
-          (:nonprop-br-width gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-br-width gmap))
         gmap (assoc gmap :prop-border-top-width gen-prop-border-top-width)
 
         gen-prop-animation-timing-function
         (gen/tuple
+          (gen/return " ")
           (:nonprop-single-timing-function gmap)
           (gen/vector
             (gen/tuple
-              (gen/return ", ")
-              (:nonprop-single-timing-function gmap)))
-          (gen/return " "))
+              (gen/return ",")
+              (:nonprop-single-timing-function gmap))))
         gmap (assoc gmap :prop-animation-timing-function gen-prop-animation-timing-function)
 
         gen-prop--webkit-border-before
@@ -9266,306 +9055,301 @@
           (gen/frequency [
             [(get weights [:prop--webkit-border-before :plus :alt 0] 100)
               (gen/tuple
-                (:nonprop-border-width gmap)
-                (gen/return " "))]
+                (gen/return " ")
+                (:nonprop-border-width gmap))]
             [(get weights [:prop--webkit-border-before :plus :alt 1] 100)
               (gen/tuple
-                (:nonprop-border-style gmap)
-                (gen/return " "))]
+                (gen/return " ")
+                (:nonprop-border-style gmap))]
             [(get weights [:prop--webkit-border-before :plus :alt 2] 100)
               (gen/tuple
-                (:nonprop-color gmap)
-                (gen/return " "))]])))
+                (gen/return " ")
+                (:nonprop-color gmap))]])))
         gmap (assoc gmap :prop--webkit-border-before gen-prop--webkit-border-before)
 
         gen-prop-page-break-before
         (gen/frequency [
           [(get weights [:prop-page-break-before :alt 0] 100)
             (gen/tuple
-              (gen/return "auto")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "auto"))]
           [(get weights [:prop-page-break-before :alt 1] 100)
             (gen/tuple
-              (gen/return "always")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "always"))]
           [(get weights [:prop-page-break-before :alt 2] 100)
             (gen/tuple
-              (gen/return "avoid")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "avoid"))]
           [(get weights [:prop-page-break-before :alt 3] 100)
             (gen/tuple
-              (gen/return "left")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "left"))]
           [(get weights [:prop-page-break-before :alt 4] 100)
             (gen/tuple
-              (gen/return "right")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "right"))]])
         gmap (assoc gmap :prop-page-break-before gen-prop-page-break-before)
 
         gen-nonprop-single-animation-iteration-count
         (gen/frequency [
           [(get weights [:nonprop-single-animation-iteration-count :alt 0] 100)
             (gen/tuple
-              (gen/return "infinite")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "infinite"))]
           [(get weights [:nonprop-single-animation-iteration-count :alt 1] 100)
             (gen/tuple
-              (:nonprop-number gmap)
-              (gen/return " "))]])
-        gmap (assoc gmap :nonprop-single-animation-iteration-count gen-nonprop-single-animation-iteration-count)]
-    gmap))
+              (gen/return " ")
+              (:nonprop-number gmap))]])
+        gmap (assoc gmap :nonprop-single-animation-iteration-count gen-nonprop-single-animation-iteration-count)
 
-(defn- css3-generators-part-10 [gmap weights]
-  (let [
         gen-nonprop-single-animation
         (gen/such-that not-empty (gen/vector
           (gen/frequency [
             [(get weights [:nonprop-single-animation :plus :alt 0] 100)
               (gen/tuple
-                (:nonprop-time gmap)
-                (gen/return " "))]
+                (gen/return " ")
+                (:nonprop-time gmap))]
             [(get weights [:nonprop-single-animation :plus :alt 1] 100)
               (gen/tuple
-                (:nonprop-single-timing-function gmap)
-                (gen/return " "))]
+                (gen/return " ")
+                (:nonprop-single-timing-function gmap))]
             [(get weights [:nonprop-single-animation :plus :alt 2] 100)
               (gen/tuple
-                (:nonprop-time gmap)
-                (gen/return " "))]
+                (gen/return " ")
+                (:nonprop-time gmap))]
             [(get weights [:nonprop-single-animation :plus :alt 3] 100)
               (gen/tuple
-                (:nonprop-single-animation-iteration-count gmap)
-                (gen/return " "))]
+                (gen/return " ")
+                (:nonprop-single-animation-iteration-count gmap))]
             [(get weights [:nonprop-single-animation :plus :alt 4] 100)
               (gen/tuple
-                (:nonprop-single-animation-direction gmap)
-                (gen/return " "))]
+                (gen/return " ")
+                (:nonprop-single-animation-direction gmap))]
             [(get weights [:nonprop-single-animation :plus :alt 5] 100)
               (gen/tuple
-                (:nonprop-single-animation-fill-mode gmap)
-                (gen/return " "))]
+                (gen/return " ")
+                (:nonprop-single-animation-fill-mode gmap))]
             [(get weights [:nonprop-single-animation :plus :alt 6] 100)
               (gen/tuple
-                (:nonprop-single-animation-play-state gmap)
-                (gen/return " "))]
+                (gen/return " ")
+                (:nonprop-single-animation-play-state gmap))]
             [(get weights [:nonprop-single-animation :plus :alt 7] 100)
               (gen/tuple
+                (gen/return " ")
                 (gen/frequency [
-                  [(get weights [:nonprop-single-animation :plus :alt 7 :cat 0 :alt 0] 100)
+                  [(get weights [:nonprop-single-animation :plus :alt 7 :cat 1 :alt 0] 100)
                     (gen/tuple
-                      (gen/return "none")
-                      (gen/return " "))]
-                  [(get weights [:nonprop-single-animation :plus :alt 7 :cat 0 :alt 1] 100)
+                      (gen/return " ")
+                      (gen/return "none"))]
+                  [(get weights [:nonprop-single-animation :plus :alt 7 :cat 1 :alt 1] 100)
                     (gen/tuple
-                      (:nonprop-keyframes-name gmap)
-                      (gen/return " "))]])
-                (gen/return " "))]])))
+                      (gen/return " ")
+                      (:nonprop-keyframes-name gmap))]]))]])))
         gmap (assoc gmap :nonprop-single-animation gen-nonprop-single-animation)
 
         gen-prop-grid-column-start
         (gen/tuple
-          (:nonprop-grid-line gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-grid-line gmap))
         gmap (assoc gmap :prop-grid-column-start gen-prop-grid-column-start)
 
         gen-prop-align-content
         (gen/frequency [
           [(get weights [:prop-align-content :alt 0] 100)
             (gen/tuple
-              (gen/return "flex-start")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "flex-start"))]
           [(get weights [:prop-align-content :alt 1] 100)
             (gen/tuple
-              (gen/return "flex-end")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "flex-end"))]
           [(get weights [:prop-align-content :alt 2] 100)
             (gen/tuple
-              (gen/return "center")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "center"))]
           [(get weights [:prop-align-content :alt 3] 100)
             (gen/tuple
-              (gen/return "space-between")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "space-between"))]
           [(get weights [:prop-align-content :alt 4] 100)
             (gen/tuple
-              (gen/return "space-around")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "space-around"))]
           [(get weights [:prop-align-content :alt 5] 100)
             (gen/tuple
-              (gen/return "space-evenly")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "space-evenly"))]
           [(get weights [:prop-align-content :alt 6] 100)
             (gen/tuple
-              (gen/return "stretch")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "stretch"))]])
         gmap (assoc gmap :prop-align-content gen-prop-align-content)
 
         gen-prop-border-color
         (gen/tuple
+          (gen/return " ")
           (gen/frequency [
-            [(get weights [:prop-border-color :cat 0 :alt 0] 100)
+            [(get weights [:prop-border-color :cat 1 :alt 0] 100)
               (:nonprop-color gmap)]
-            [(get weights [:prop-border-color :cat 0 :alt 1] 100)
+            [(get weights [:prop-border-color :cat 1 :alt 1] 100)
               (gen/tuple
                 (:nonprop-color gmap)
                 (:nonprop-color gmap))]
-            [(get weights [:prop-border-color :cat 0 :alt 2] 100)
+            [(get weights [:prop-border-color :cat 1 :alt 2] 100)
               (gen/tuple
                 (:nonprop-color gmap)
                 (:nonprop-color gmap)
                 (:nonprop-color gmap))]
-            [(get weights [:prop-border-color :cat 0 :alt 3] 100)
+            [(get weights [:prop-border-color :cat 1 :alt 3] 100)
               (gen/tuple
                 (:nonprop-color gmap)
                 (:nonprop-color gmap)
                 (:nonprop-color gmap)
-                (:nonprop-color gmap))]])
-          (gen/return " "))
+                (:nonprop-color gmap))]]))
         gmap (assoc gmap :prop-border-color gen-prop-border-color)
 
         gen-nonprop-bg-layer
-        (gen/tuple
-          (gen/such-that not-empty (gen/vector
-            (gen/frequency [
-              [(get weights [:nonprop-bg-layer :cat 0 :plus :alt 0] 100)
-                (gen/tuple
-                  (:nonprop-bg-image gmap)
-                  (gen/return " "))]
-              [(get weights [:nonprop-bg-layer :cat 0 :plus :alt 1] 100)
-                (gen/tuple
-                  (:nonprop-position gmap)
-                  (gen/return " "))]])))
-          (gen/such-that not-empty (gen/vector
-            (gen/frequency [
-              [(get weights [:nonprop-bg-layer :cat 1 :plus :alt 0] 100)
-                (gen/tuple
-                  (gen/one-of [
-                    (gen/return "")
+        (gen/such-that not-empty (gen/vector
+          (gen/frequency [
+            [(get weights [:nonprop-bg-layer :plus :alt 0] 100)
+              (gen/tuple
+                (gen/return " ")
+                (:nonprop-bg-image gmap))]
+            [(get weights [:nonprop-bg-layer :plus :alt 1] 100)
+              (gen/tuple
+                (gen/return " ")
+                (:nonprop-position gmap)
+                (gen/return " ")
+                (gen/one-of [
+                  (gen/return "")
+                  (gen/tuple
+                    (gen/return " ")
+                    (gen/return "/")
+                    (gen/return " ")
+                    (:nonprop-bg-size gmap))]))]
+            [(get weights [:nonprop-bg-layer :plus :alt 2] 100)
+              (gen/tuple
+                (gen/return " ")
+                (:nonprop-repeat-style gmap))]
+            [(get weights [:nonprop-bg-layer :plus :alt 3] 100)
+              (gen/tuple
+                (gen/return " ")
+                (:nonprop-attachment gmap))]
+            [(get weights [:nonprop-bg-layer :plus :alt 4] 100)
+              (gen/tuple
+                (gen/return " ")
+                (gen/frequency [
+                  [(get weights [:nonprop-bg-layer :plus :alt 4 :cat 1 :alt 0] 100)
+                    (:nonprop-box gmap)]
+                  [(get weights [:nonprop-bg-layer :plus :alt 4 :cat 1 :alt 1] 100)
                     (gen/tuple
-                      (gen/return "/")
-                      (gen/return " ")
-                      (:nonprop-bg-size gmap)
-                      (gen/return " "))])
-                  (gen/return " "))]
-              [(get weights [:nonprop-bg-layer :cat 1 :plus :alt 1] 100)
-                (gen/tuple
-                  (:nonprop-repeat-style gmap)
-                  (gen/return " "))]
-              [(get weights [:nonprop-bg-layer :cat 1 :plus :alt 2] 100)
-                (gen/tuple
-                  (:nonprop-attachment gmap)
-                  (gen/return " "))]
-              [(get weights [:nonprop-bg-layer :cat 1 :plus :alt 3] 100)
-                (gen/tuple
-                  (gen/frequency [
-                    [(get weights [:nonprop-bg-layer :cat 1 :plus :alt 3 :cat 0 :alt 0] 100)
-                      (:nonprop-box gmap)]
-                    [(get weights [:nonprop-bg-layer :cat 1 :plus :alt 3 :cat 0 :alt 1] 100)
-                      (gen/tuple
-                        (:nonprop-box gmap)
-                        (:nonprop-box gmap))]])
-                  (gen/return " "))]]))))
+                      (:nonprop-box gmap)
+                      (:nonprop-box gmap))]]))]])))
         gmap (assoc gmap :nonprop-bg-layer gen-nonprop-bg-layer)
 
         gen-prop-font-variant-position
         (gen/frequency [
           [(get weights [:prop-font-variant-position :alt 0] 100)
             (gen/tuple
-              (gen/return "normal")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "normal"))]
           [(get weights [:prop-font-variant-position :alt 1] 100)
             (gen/tuple
-              (gen/return "sub")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "sub"))]
           [(get weights [:prop-font-variant-position :alt 2] 100)
             (gen/tuple
-              (gen/return "super")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "super"))]])
         gmap (assoc gmap :prop-font-variant-position gen-prop-font-variant-position)
 
         gen-prop-grid-column-end
         (gen/tuple
-          (:nonprop-grid-line gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-grid-line gmap))
         gmap (assoc gmap :prop-grid-column-end gen-prop-grid-column-end)
 
         gen-prop-text-emphasis-color
         (gen/tuple
-          (:nonprop-color gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-color gmap))
         gmap (assoc gmap :prop-text-emphasis-color gen-prop-text-emphasis-color)
 
         gen-prop-background-size
         (gen/tuple
+          (gen/return " ")
           (:nonprop-bg-size gmap)
           (gen/vector
             (gen/tuple
-              (gen/return ", ")
-              (:nonprop-bg-size gmap)))
-          (gen/return " "))
+              (gen/return ",")
+              (:nonprop-bg-size gmap))))
         gmap (assoc gmap :prop-background-size gen-prop-background-size)
 
         gen-prop-font-variant-east-asian
         (gen/frequency [
           [(get weights [:prop-font-variant-east-asian :alt 0] 100)
             (gen/tuple
-              (gen/return "normal")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "normal"))]
           [(get weights [:prop-font-variant-east-asian :alt 1] 100)
             (gen/tuple
+              (gen/return " ")
               (gen/such-that not-empty (gen/vector
                 (gen/frequency [
-                  [(get weights [:prop-font-variant-east-asian :alt 1 :cat 0 :plus :alt 0] 100)
+                  [(get weights [:prop-font-variant-east-asian :alt 1 :cat 1 :plus :alt 0] 100)
                     (gen/tuple
-                      (:nonprop-east-asian-variant-values gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-font-variant-east-asian :alt 1 :cat 0 :plus :alt 1] 100)
+                      (gen/return " ")
+                      (:nonprop-east-asian-variant-values gmap))]
+                  [(get weights [:prop-font-variant-east-asian :alt 1 :cat 1 :plus :alt 1] 100)
                     (gen/tuple
-                      (:nonprop-east-asian-width-values gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-font-variant-east-asian :alt 1 :cat 0 :plus :alt 2] 100)
+                      (gen/return " ")
+                      (:nonprop-east-asian-width-values gmap))]
+                  [(get weights [:prop-font-variant-east-asian :alt 1 :cat 1 :plus :alt 2] 100)
                     (gen/tuple
-                      (gen/return "ruby")
-                      (gen/return " "))]])))
-              (gen/return " "))]])
+                      (gen/return " ")
+                      (gen/return "ruby"))]]))))]])
         gmap (assoc gmap :prop-font-variant-east-asian gen-prop-font-variant-east-asian)
 
         gen-prop-perspective-origin
         (gen/tuple
-          (:nonprop-position gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-position gmap))
         gmap (assoc gmap :prop-perspective-origin gen-prop-perspective-origin)
 
         gen-prop-animation
         (gen/tuple
+          (gen/return " ")
           (:nonprop-single-animation gmap)
           (gen/vector
             (gen/tuple
-              (gen/return ", ")
-              (:nonprop-single-animation gmap)))
-          (gen/return " "))
-        gmap (assoc gmap :prop-animation gen-prop-animation)
+              (gen/return ",")
+              (:nonprop-single-animation gmap))))
+        gmap (assoc gmap :prop-animation gen-prop-animation)]
+    gmap))
 
+(defn- css3-generators-part-10 [gmap weights]
+  (let [
         gen-prop-offset-position
         (gen/frequency [
           [(get weights [:prop-offset-position :alt 0] 100)
             (gen/tuple
-              (gen/return "auto")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "auto"))]
           [(get weights [:prop-offset-position :alt 1] 100)
             (gen/tuple
-              (:nonprop-position gmap)
-              (gen/return " "))]])
+              (gen/return " ")
+              (:nonprop-position gmap))]])
         gmap (assoc gmap :prop-offset-position gen-prop-offset-position)
 
         gen-prop-mask-origin
         (gen/tuple
+          (gen/return " ")
           (:nonprop-geometry-box gmap)
           (gen/vector
             (gen/tuple
-              (gen/return ", ")
-              (:nonprop-geometry-box gmap)))
-          (gen/return " "))
+              (gen/return ",")
+              (:nonprop-geometry-box gmap))))
         gmap (assoc gmap :prop-mask-origin gen-prop-mask-origin)
 
         gen-nonprop-mask-origin
@@ -9574,328 +9358,328 @@
 
         gen-prop-margin-block-start
         (gen/tuple
-          (:nonprop-margin-left gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-margin-left gmap))
         gmap (assoc gmap :prop-margin-block-start gen-prop-margin-block-start)
 
         gen-prop--moz-text-blink
         (gen/frequency [
           [(get weights [:prop--moz-text-blink :alt 0] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "none"))]
           [(get weights [:prop--moz-text-blink :alt 1] 100)
             (gen/tuple
-              (gen/return "blink")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "blink"))]])
         gmap (assoc gmap :prop--moz-text-blink gen-prop--moz-text-blink)
 
         gen-prop--moz-outline-radius-topleft
         (gen/tuple
-          (:nonprop-outline-radius gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-outline-radius gmap))
         gmap (assoc gmap :prop--moz-outline-radius-topleft gen-prop--moz-outline-radius-topleft)
 
         gen-prop-transform-style
         (gen/frequency [
           [(get weights [:prop-transform-style :alt 0] 100)
             (gen/tuple
-              (gen/return "flat")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "flat"))]
           [(get weights [:prop-transform-style :alt 1] 100)
             (gen/tuple
-              (gen/return "preserve-3d")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "preserve-3d"))]])
         gmap (assoc gmap :prop-transform-style gen-prop-transform-style)
 
         gen-prop-animation-direction
         (gen/tuple
+          (gen/return " ")
           (:nonprop-single-animation-direction gmap)
           (gen/vector
             (gen/tuple
-              (gen/return ", ")
-              (:nonprop-single-animation-direction gmap)))
-          (gen/return " "))
+              (gen/return ",")
+              (:nonprop-single-animation-direction gmap))))
         gmap (assoc gmap :prop-animation-direction gen-prop-animation-direction)
 
         gen-prop-border-image-outset
         (gen/tuple
+          (gen/return " ")
           (gen/frequency [
-            [(get weights [:prop-border-image-outset :cat 0 :alt 0] 100)
+            [(get weights [:prop-border-image-outset :cat 1 :alt 0] 100)
               (gen/frequency [
-                [(get weights [:prop-border-image-outset :cat 0 :alt 0 :alt 0] 100)
+                [(get weights [:prop-border-image-outset :cat 1 :alt 0 :alt 0] 100)
                   (gen/tuple
-                    (:nonprop-length gmap)
-                    (gen/return " "))]
-                [(get weights [:prop-border-image-outset :cat 0 :alt 0 :alt 1] 100)
+                    (gen/return " ")
+                    (:nonprop-length gmap))]
+                [(get weights [:prop-border-image-outset :cat 1 :alt 0 :alt 1] 100)
                   (gen/tuple
-                    (:nonprop-number gmap)
-                    (gen/return " "))]])]
-            [(get weights [:prop-border-image-outset :cat 0 :alt 1] 100)
+                    (gen/return " ")
+                    (:nonprop-number gmap))]])]
+            [(get weights [:prop-border-image-outset :cat 1 :alt 1] 100)
               (gen/tuple
                 (gen/frequency [
-                  [(get weights [:prop-border-image-outset :cat 0 :alt 1 :cat 0 :alt 0] 100)
+                  [(get weights [:prop-border-image-outset :cat 1 :alt 1 :cat 0 :alt 0] 100)
                     (gen/tuple
-                      (:nonprop-length gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-border-image-outset :cat 0 :alt 1 :cat 0 :alt 1] 100)
+                      (gen/return " ")
+                      (:nonprop-length gmap))]
+                  [(get weights [:prop-border-image-outset :cat 1 :alt 1 :cat 0 :alt 1] 100)
                     (gen/tuple
-                      (:nonprop-number gmap)
-                      (gen/return " "))]])
+                      (gen/return " ")
+                      (:nonprop-number gmap))]])
                 (gen/frequency [
-                  [(get weights [:prop-border-image-outset :cat 0 :alt 1 :cat 1 :alt 0] 100)
+                  [(get weights [:prop-border-image-outset :cat 1 :alt 1 :cat 1 :alt 0] 100)
                     (gen/tuple
-                      (:nonprop-length gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-border-image-outset :cat 0 :alt 1 :cat 1 :alt 1] 100)
+                      (gen/return " ")
+                      (:nonprop-length gmap))]
+                  [(get weights [:prop-border-image-outset :cat 1 :alt 1 :cat 1 :alt 1] 100)
                     (gen/tuple
-                      (:nonprop-number gmap)
-                      (gen/return " "))]]))]
-            [(get weights [:prop-border-image-outset :cat 0 :alt 2] 100)
+                      (gen/return " ")
+                      (:nonprop-number gmap))]]))]
+            [(get weights [:prop-border-image-outset :cat 1 :alt 2] 100)
               (gen/tuple
                 (gen/frequency [
-                  [(get weights [:prop-border-image-outset :cat 0 :alt 2 :cat 0 :alt 0] 100)
+                  [(get weights [:prop-border-image-outset :cat 1 :alt 2 :cat 0 :alt 0] 100)
                     (gen/tuple
-                      (:nonprop-length gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-border-image-outset :cat 0 :alt 2 :cat 0 :alt 1] 100)
+                      (gen/return " ")
+                      (:nonprop-length gmap))]
+                  [(get weights [:prop-border-image-outset :cat 1 :alt 2 :cat 0 :alt 1] 100)
                     (gen/tuple
-                      (:nonprop-number gmap)
-                      (gen/return " "))]])
+                      (gen/return " ")
+                      (:nonprop-number gmap))]])
                 (gen/frequency [
-                  [(get weights [:prop-border-image-outset :cat 0 :alt 2 :cat 1 :alt 0] 100)
+                  [(get weights [:prop-border-image-outset :cat 1 :alt 2 :cat 1 :alt 0] 100)
                     (gen/tuple
-                      (:nonprop-length gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-border-image-outset :cat 0 :alt 2 :cat 1 :alt 1] 100)
+                      (gen/return " ")
+                      (:nonprop-length gmap))]
+                  [(get weights [:prop-border-image-outset :cat 1 :alt 2 :cat 1 :alt 1] 100)
                     (gen/tuple
-                      (:nonprop-number gmap)
-                      (gen/return " "))]])
+                      (gen/return " ")
+                      (:nonprop-number gmap))]])
                 (gen/frequency [
-                  [(get weights [:prop-border-image-outset :cat 0 :alt 2 :cat 2 :alt 0] 100)
+                  [(get weights [:prop-border-image-outset :cat 1 :alt 2 :cat 2 :alt 0] 100)
                     (gen/tuple
-                      (:nonprop-length gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-border-image-outset :cat 0 :alt 2 :cat 2 :alt 1] 100)
+                      (gen/return " ")
+                      (:nonprop-length gmap))]
+                  [(get weights [:prop-border-image-outset :cat 1 :alt 2 :cat 2 :alt 1] 100)
                     (gen/tuple
-                      (:nonprop-number gmap)
-                      (gen/return " "))]]))]
-            [(get weights [:prop-border-image-outset :cat 0 :alt 3] 100)
+                      (gen/return " ")
+                      (:nonprop-number gmap))]]))]
+            [(get weights [:prop-border-image-outset :cat 1 :alt 3] 100)
               (gen/tuple
                 (gen/frequency [
-                  [(get weights [:prop-border-image-outset :cat 0 :alt 3 :cat 0 :alt 0] 100)
+                  [(get weights [:prop-border-image-outset :cat 1 :alt 3 :cat 0 :alt 0] 100)
                     (gen/tuple
-                      (:nonprop-length gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-border-image-outset :cat 0 :alt 3 :cat 0 :alt 1] 100)
+                      (gen/return " ")
+                      (:nonprop-length gmap))]
+                  [(get weights [:prop-border-image-outset :cat 1 :alt 3 :cat 0 :alt 1] 100)
                     (gen/tuple
-                      (:nonprop-number gmap)
-                      (gen/return " "))]])
+                      (gen/return " ")
+                      (:nonprop-number gmap))]])
                 (gen/frequency [
-                  [(get weights [:prop-border-image-outset :cat 0 :alt 3 :cat 1 :alt 0] 100)
+                  [(get weights [:prop-border-image-outset :cat 1 :alt 3 :cat 1 :alt 0] 100)
                     (gen/tuple
-                      (:nonprop-length gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-border-image-outset :cat 0 :alt 3 :cat 1 :alt 1] 100)
+                      (gen/return " ")
+                      (:nonprop-length gmap))]
+                  [(get weights [:prop-border-image-outset :cat 1 :alt 3 :cat 1 :alt 1] 100)
                     (gen/tuple
-                      (:nonprop-number gmap)
-                      (gen/return " "))]])
+                      (gen/return " ")
+                      (:nonprop-number gmap))]])
                 (gen/frequency [
-                  [(get weights [:prop-border-image-outset :cat 0 :alt 3 :cat 2 :alt 0] 100)
+                  [(get weights [:prop-border-image-outset :cat 1 :alt 3 :cat 2 :alt 0] 100)
                     (gen/tuple
-                      (:nonprop-length gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-border-image-outset :cat 0 :alt 3 :cat 2 :alt 1] 100)
+                      (gen/return " ")
+                      (:nonprop-length gmap))]
+                  [(get weights [:prop-border-image-outset :cat 1 :alt 3 :cat 2 :alt 1] 100)
                     (gen/tuple
-                      (:nonprop-number gmap)
-                      (gen/return " "))]])
+                      (gen/return " ")
+                      (:nonprop-number gmap))]])
                 (gen/frequency [
-                  [(get weights [:prop-border-image-outset :cat 0 :alt 3 :cat 3 :alt 0] 100)
+                  [(get weights [:prop-border-image-outset :cat 1 :alt 3 :cat 3 :alt 0] 100)
                     (gen/tuple
-                      (:nonprop-length gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-border-image-outset :cat 0 :alt 3 :cat 3 :alt 1] 100)
+                      (gen/return " ")
+                      (:nonprop-length gmap))]
+                  [(get weights [:prop-border-image-outset :cat 1 :alt 3 :cat 3 :alt 1] 100)
                     (gen/tuple
-                      (:nonprop-number gmap)
-                      (gen/return " "))]]))]])
-          (gen/return " "))
+                      (gen/return " ")
+                      (:nonprop-number gmap))]]))]]))
         gmap (assoc gmap :prop-border-image-outset gen-prop-border-image-outset)
 
         gen-prop-margin-inline-start
         (gen/tuple
-          (:nonprop-margin-left gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-margin-left gmap))
         gmap (assoc gmap :prop-margin-inline-start gen-prop-margin-inline-start)
 
         gen-prop--webkit-mask-origin
         (gen/tuple
+          (gen/return " ")
           (gen/frequency [
-            [(get weights [:prop--webkit-mask-origin :cat 0 :alt 0] 100)
+            [(get weights [:prop--webkit-mask-origin :cat 1 :alt 0] 100)
               (gen/tuple
-                (gen/return "padding")
-                (gen/return " "))]
-            [(get weights [:prop--webkit-mask-origin :cat 0 :alt 1] 100)
+                (gen/return " ")
+                (gen/return "padding"))]
+            [(get weights [:prop--webkit-mask-origin :cat 1 :alt 1] 100)
               (gen/tuple
-                (gen/return "border")
-                (gen/return " "))]
-            [(get weights [:prop--webkit-mask-origin :cat 0 :alt 2] 100)
+                (gen/return " ")
+                (gen/return "border"))]
+            [(get weights [:prop--webkit-mask-origin :cat 1 :alt 2] 100)
               (gen/tuple
-                (gen/return "content")
-                (gen/return " "))]])
+                (gen/return " ")
+                (gen/return "content"))]])
           (gen/return " ")
           (gen/vector
             (gen/tuple
+              (gen/return " ")
               (gen/return ",")
               (gen/return " ")
               (gen/frequency [
-                [(get weights [:prop--webkit-mask-origin :cat 2 :star :cat 2 :alt 0] 100)
+                [(get weights [:prop--webkit-mask-origin :cat 3 :star :cat 3 :alt 0] 100)
                   (gen/tuple
-                    (gen/return "border")
-                    (gen/return " "))]
-                [(get weights [:prop--webkit-mask-origin :cat 2 :star :cat 2 :alt 1] 100)
+                    (gen/return " ")
+                    (gen/return "border"))]
+                [(get weights [:prop--webkit-mask-origin :cat 3 :star :cat 3 :alt 1] 100)
                   (gen/tuple
-                    (gen/return "padding")
-                    (gen/return " "))]
-                [(get weights [:prop--webkit-mask-origin :cat 2 :star :cat 2 :alt 2] 100)
+                    (gen/return " ")
+                    (gen/return "padding"))]
+                [(get weights [:prop--webkit-mask-origin :cat 3 :star :cat 3 :alt 2] 100)
                   (gen/tuple
-                    (gen/return "content")
-                    (gen/return " "))]])
-              (gen/return " ")))
-          (gen/return " "))
+                    (gen/return " ")
+                    (gen/return "content"))]]))))
         gmap (assoc gmap :prop--webkit-mask-origin gen-prop--webkit-mask-origin)
 
         gen-prop-scroll-snap-type
         (gen/frequency [
           [(get weights [:prop-scroll-snap-type :alt 0] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "none"))]
           [(get weights [:prop-scroll-snap-type :alt 1] 100)
             (gen/tuple
-              (gen/return "mandatory")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "mandatory"))]
           [(get weights [:prop-scroll-snap-type :alt 2] 100)
             (gen/tuple
-              (gen/return "proximity")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "proximity"))]])
         gmap (assoc gmap :prop-scroll-snap-type gen-prop-scroll-snap-type)
 
         gen-prop-max-height
         (gen/frequency [
           [(get weights [:prop-max-height :alt 0] 100)
             (gen/tuple
-              (:nonprop-length gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-length gmap))]
           [(get weights [:prop-max-height :alt 1] 100)
             (gen/tuple
-              (:nonprop-percentage gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-percentage gmap))]
           [(get weights [:prop-max-height :alt 2] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "none"))]
           [(get weights [:prop-max-height :alt 3] 100)
             (gen/tuple
-              (gen/return "max-content")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "max-content"))]
           [(get weights [:prop-max-height :alt 4] 100)
             (gen/tuple
-              (gen/return "min-content")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "min-content"))]
           [(get weights [:prop-max-height :alt 5] 100)
             (gen/tuple
-              (gen/return "fit-content")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "fit-content"))]
           [(get weights [:prop-max-height :alt 6] 100)
             (gen/tuple
-              (gen/return "fill-available")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "fill-available"))]])
         gmap (assoc gmap :prop-max-height gen-prop-max-height)
 
         gen-prop-offset-distance
         (gen/tuple
-          (:nonprop-length-percentage gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-length-percentage gmap))
         gmap (assoc gmap :prop-offset-distance gen-prop-offset-distance)
 
         gen-prop-ruby-align
         (gen/frequency [
           [(get weights [:prop-ruby-align :alt 0] 100)
             (gen/tuple
-              (gen/return "start")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "start"))]
           [(get weights [:prop-ruby-align :alt 1] 100)
             (gen/tuple
-              (gen/return "center")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "center"))]
           [(get weights [:prop-ruby-align :alt 2] 100)
             (gen/tuple
-              (gen/return "space-between")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "space-between"))]
           [(get weights [:prop-ruby-align :alt 3] 100)
             (gen/tuple
-              (gen/return "space-around")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "space-around"))]])
         gmap (assoc gmap :prop-ruby-align gen-prop-ruby-align)
 
         gen-prop-border-image-repeat
         (gen/tuple
+          (gen/return " ")
           (gen/frequency [
-            [(get weights [:prop-border-image-repeat :cat 0 :alt 0] 100)
+            [(get weights [:prop-border-image-repeat :cat 1 :alt 0] 100)
               (gen/frequency [
-                [(get weights [:prop-border-image-repeat :cat 0 :alt 0 :alt 0] 100)
+                [(get weights [:prop-border-image-repeat :cat 1 :alt 0 :alt 0] 100)
                   (gen/tuple
-                    (gen/return "stretch")
-                    (gen/return " "))]
-                [(get weights [:prop-border-image-repeat :cat 0 :alt 0 :alt 1] 100)
+                    (gen/return " ")
+                    (gen/return "stretch"))]
+                [(get weights [:prop-border-image-repeat :cat 1 :alt 0 :alt 1] 100)
                   (gen/tuple
-                    (gen/return "repeat")
-                    (gen/return " "))]
-                [(get weights [:prop-border-image-repeat :cat 0 :alt 0 :alt 2] 100)
+                    (gen/return " ")
+                    (gen/return "repeat"))]
+                [(get weights [:prop-border-image-repeat :cat 1 :alt 0 :alt 2] 100)
                   (gen/tuple
-                    (gen/return "round")
-                    (gen/return " "))]
-                [(get weights [:prop-border-image-repeat :cat 0 :alt 0 :alt 3] 100)
+                    (gen/return " ")
+                    (gen/return "round"))]
+                [(get weights [:prop-border-image-repeat :cat 1 :alt 0 :alt 3] 100)
                   (gen/tuple
-                    (gen/return "space")
-                    (gen/return " "))]])]
-            [(get weights [:prop-border-image-repeat :cat 0 :alt 1] 100)
+                    (gen/return " ")
+                    (gen/return "space"))]])]
+            [(get weights [:prop-border-image-repeat :cat 1 :alt 1] 100)
               (gen/tuple
                 (gen/frequency [
-                  [(get weights [:prop-border-image-repeat :cat 0 :alt 1 :cat 0 :alt 0] 100)
+                  [(get weights [:prop-border-image-repeat :cat 1 :alt 1 :cat 0 :alt 0] 100)
                     (gen/tuple
-                      (gen/return "stretch")
-                      (gen/return " "))]
-                  [(get weights [:prop-border-image-repeat :cat 0 :alt 1 :cat 0 :alt 1] 100)
+                      (gen/return " ")
+                      (gen/return "stretch"))]
+                  [(get weights [:prop-border-image-repeat :cat 1 :alt 1 :cat 0 :alt 1] 100)
                     (gen/tuple
-                      (gen/return "repeat")
-                      (gen/return " "))]
-                  [(get weights [:prop-border-image-repeat :cat 0 :alt 1 :cat 0 :alt 2] 100)
+                      (gen/return " ")
+                      (gen/return "repeat"))]
+                  [(get weights [:prop-border-image-repeat :cat 1 :alt 1 :cat 0 :alt 2] 100)
                     (gen/tuple
-                      (gen/return "round")
-                      (gen/return " "))]
-                  [(get weights [:prop-border-image-repeat :cat 0 :alt 1 :cat 0 :alt 3] 100)
+                      (gen/return " ")
+                      (gen/return "round"))]
+                  [(get weights [:prop-border-image-repeat :cat 1 :alt 1 :cat 0 :alt 3] 100)
                     (gen/tuple
-                      (gen/return "space")
-                      (gen/return " "))]])
+                      (gen/return " ")
+                      (gen/return "space"))]])
                 (gen/frequency [
-                  [(get weights [:prop-border-image-repeat :cat 0 :alt 1 :cat 1 :alt 0] 100)
+                  [(get weights [:prop-border-image-repeat :cat 1 :alt 1 :cat 1 :alt 0] 100)
                     (gen/tuple
-                      (gen/return "stretch")
-                      (gen/return " "))]
-                  [(get weights [:prop-border-image-repeat :cat 0 :alt 1 :cat 1 :alt 1] 100)
+                      (gen/return " ")
+                      (gen/return "stretch"))]
+                  [(get weights [:prop-border-image-repeat :cat 1 :alt 1 :cat 1 :alt 1] 100)
                     (gen/tuple
-                      (gen/return "repeat")
-                      (gen/return " "))]
-                  [(get weights [:prop-border-image-repeat :cat 0 :alt 1 :cat 1 :alt 2] 100)
+                      (gen/return " ")
+                      (gen/return "repeat"))]
+                  [(get weights [:prop-border-image-repeat :cat 1 :alt 1 :cat 1 :alt 2] 100)
                     (gen/tuple
-                      (gen/return "round")
-                      (gen/return " "))]
-                  [(get weights [:prop-border-image-repeat :cat 0 :alt 1 :cat 1 :alt 3] 100)
+                      (gen/return " ")
+                      (gen/return "round"))]
+                  [(get weights [:prop-border-image-repeat :cat 1 :alt 1 :cat 1 :alt 3] 100)
                     (gen/tuple
-                      (gen/return "space")
-                      (gen/return " "))]]))]])
-          (gen/return " "))
+                      (gen/return " ")
+                      (gen/return "space"))]]))]]))
         gmap (assoc gmap :prop-border-image-repeat gen-prop-border-image-repeat)
 
         gen-nonprop-border-image-repeat
@@ -9904,145 +9688,145 @@
 
         gen-prop-border-image-width
         (gen/tuple
+          (gen/return " ")
           (gen/frequency [
-            [(get weights [:prop-border-image-width :cat 0 :alt 0] 100)
+            [(get weights [:prop-border-image-width :cat 1 :alt 0] 100)
               (gen/frequency [
-                [(get weights [:prop-border-image-width :cat 0 :alt 0 :alt 0] 100)
+                [(get weights [:prop-border-image-width :cat 1 :alt 0 :alt 0] 100)
                   (gen/tuple
-                    (:nonprop-length-percentage gmap)
-                    (gen/return " "))]
-                [(get weights [:prop-border-image-width :cat 0 :alt 0 :alt 1] 100)
+                    (gen/return " ")
+                    (:nonprop-length-percentage gmap))]
+                [(get weights [:prop-border-image-width :cat 1 :alt 0 :alt 1] 100)
                   (gen/tuple
-                    (:nonprop-number gmap)
-                    (gen/return " "))]
-                [(get weights [:prop-border-image-width :cat 0 :alt 0 :alt 2] 100)
+                    (gen/return " ")
+                    (:nonprop-number gmap))]
+                [(get weights [:prop-border-image-width :cat 1 :alt 0 :alt 2] 100)
                   (gen/tuple
-                    (gen/return "auto")
-                    (gen/return " "))]])]
-            [(get weights [:prop-border-image-width :cat 0 :alt 1] 100)
+                    (gen/return " ")
+                    (gen/return "auto"))]])]
+            [(get weights [:prop-border-image-width :cat 1 :alt 1] 100)
               (gen/tuple
                 (gen/frequency [
-                  [(get weights [:prop-border-image-width :cat 0 :alt 1 :cat 0 :alt 0] 100)
+                  [(get weights [:prop-border-image-width :cat 1 :alt 1 :cat 0 :alt 0] 100)
                     (gen/tuple
-                      (:nonprop-length-percentage gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-border-image-width :cat 0 :alt 1 :cat 0 :alt 1] 100)
+                      (gen/return " ")
+                      (:nonprop-length-percentage gmap))]
+                  [(get weights [:prop-border-image-width :cat 1 :alt 1 :cat 0 :alt 1] 100)
                     (gen/tuple
-                      (:nonprop-number gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-border-image-width :cat 0 :alt 1 :cat 0 :alt 2] 100)
+                      (gen/return " ")
+                      (:nonprop-number gmap))]
+                  [(get weights [:prop-border-image-width :cat 1 :alt 1 :cat 0 :alt 2] 100)
                     (gen/tuple
-                      (gen/return "auto")
-                      (gen/return " "))]])
+                      (gen/return " ")
+                      (gen/return "auto"))]])
                 (gen/frequency [
-                  [(get weights [:prop-border-image-width :cat 0 :alt 1 :cat 1 :alt 0] 100)
+                  [(get weights [:prop-border-image-width :cat 1 :alt 1 :cat 1 :alt 0] 100)
                     (gen/tuple
-                      (:nonprop-length-percentage gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-border-image-width :cat 0 :alt 1 :cat 1 :alt 1] 100)
+                      (gen/return " ")
+                      (:nonprop-length-percentage gmap))]
+                  [(get weights [:prop-border-image-width :cat 1 :alt 1 :cat 1 :alt 1] 100)
                     (gen/tuple
-                      (:nonprop-number gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-border-image-width :cat 0 :alt 1 :cat 1 :alt 2] 100)
+                      (gen/return " ")
+                      (:nonprop-number gmap))]
+                  [(get weights [:prop-border-image-width :cat 1 :alt 1 :cat 1 :alt 2] 100)
                     (gen/tuple
-                      (gen/return "auto")
-                      (gen/return " "))]]))]
-            [(get weights [:prop-border-image-width :cat 0 :alt 2] 100)
+                      (gen/return " ")
+                      (gen/return "auto"))]]))]
+            [(get weights [:prop-border-image-width :cat 1 :alt 2] 100)
               (gen/tuple
                 (gen/frequency [
-                  [(get weights [:prop-border-image-width :cat 0 :alt 2 :cat 0 :alt 0] 100)
+                  [(get weights [:prop-border-image-width :cat 1 :alt 2 :cat 0 :alt 0] 100)
                     (gen/tuple
-                      (:nonprop-length-percentage gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-border-image-width :cat 0 :alt 2 :cat 0 :alt 1] 100)
+                      (gen/return " ")
+                      (:nonprop-length-percentage gmap))]
+                  [(get weights [:prop-border-image-width :cat 1 :alt 2 :cat 0 :alt 1] 100)
                     (gen/tuple
-                      (:nonprop-number gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-border-image-width :cat 0 :alt 2 :cat 0 :alt 2] 100)
+                      (gen/return " ")
+                      (:nonprop-number gmap))]
+                  [(get weights [:prop-border-image-width :cat 1 :alt 2 :cat 0 :alt 2] 100)
                     (gen/tuple
-                      (gen/return "auto")
-                      (gen/return " "))]])
+                      (gen/return " ")
+                      (gen/return "auto"))]])
                 (gen/frequency [
-                  [(get weights [:prop-border-image-width :cat 0 :alt 2 :cat 1 :alt 0] 100)
+                  [(get weights [:prop-border-image-width :cat 1 :alt 2 :cat 1 :alt 0] 100)
                     (gen/tuple
-                      (:nonprop-length-percentage gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-border-image-width :cat 0 :alt 2 :cat 1 :alt 1] 100)
+                      (gen/return " ")
+                      (:nonprop-length-percentage gmap))]
+                  [(get weights [:prop-border-image-width :cat 1 :alt 2 :cat 1 :alt 1] 100)
                     (gen/tuple
-                      (:nonprop-number gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-border-image-width :cat 0 :alt 2 :cat 1 :alt 2] 100)
+                      (gen/return " ")
+                      (:nonprop-number gmap))]
+                  [(get weights [:prop-border-image-width :cat 1 :alt 2 :cat 1 :alt 2] 100)
                     (gen/tuple
-                      (gen/return "auto")
-                      (gen/return " "))]])
+                      (gen/return " ")
+                      (gen/return "auto"))]])
                 (gen/frequency [
-                  [(get weights [:prop-border-image-width :cat 0 :alt 2 :cat 2 :alt 0] 100)
+                  [(get weights [:prop-border-image-width :cat 1 :alt 2 :cat 2 :alt 0] 100)
                     (gen/tuple
-                      (:nonprop-length-percentage gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-border-image-width :cat 0 :alt 2 :cat 2 :alt 1] 100)
+                      (gen/return " ")
+                      (:nonprop-length-percentage gmap))]
+                  [(get weights [:prop-border-image-width :cat 1 :alt 2 :cat 2 :alt 1] 100)
                     (gen/tuple
-                      (:nonprop-number gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-border-image-width :cat 0 :alt 2 :cat 2 :alt 2] 100)
+                      (gen/return " ")
+                      (:nonprop-number gmap))]
+                  [(get weights [:prop-border-image-width :cat 1 :alt 2 :cat 2 :alt 2] 100)
                     (gen/tuple
-                      (gen/return "auto")
-                      (gen/return " "))]]))]
-            [(get weights [:prop-border-image-width :cat 0 :alt 3] 100)
+                      (gen/return " ")
+                      (gen/return "auto"))]]))]
+            [(get weights [:prop-border-image-width :cat 1 :alt 3] 100)
               (gen/tuple
                 (gen/frequency [
-                  [(get weights [:prop-border-image-width :cat 0 :alt 3 :cat 0 :alt 0] 100)
+                  [(get weights [:prop-border-image-width :cat 1 :alt 3 :cat 0 :alt 0] 100)
                     (gen/tuple
-                      (:nonprop-length-percentage gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-border-image-width :cat 0 :alt 3 :cat 0 :alt 1] 100)
+                      (gen/return " ")
+                      (:nonprop-length-percentage gmap))]
+                  [(get weights [:prop-border-image-width :cat 1 :alt 3 :cat 0 :alt 1] 100)
                     (gen/tuple
-                      (:nonprop-number gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-border-image-width :cat 0 :alt 3 :cat 0 :alt 2] 100)
+                      (gen/return " ")
+                      (:nonprop-number gmap))]
+                  [(get weights [:prop-border-image-width :cat 1 :alt 3 :cat 0 :alt 2] 100)
                     (gen/tuple
-                      (gen/return "auto")
-                      (gen/return " "))]])
+                      (gen/return " ")
+                      (gen/return "auto"))]])
                 (gen/frequency [
-                  [(get weights [:prop-border-image-width :cat 0 :alt 3 :cat 1 :alt 0] 100)
+                  [(get weights [:prop-border-image-width :cat 1 :alt 3 :cat 1 :alt 0] 100)
                     (gen/tuple
-                      (:nonprop-length-percentage gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-border-image-width :cat 0 :alt 3 :cat 1 :alt 1] 100)
+                      (gen/return " ")
+                      (:nonprop-length-percentage gmap))]
+                  [(get weights [:prop-border-image-width :cat 1 :alt 3 :cat 1 :alt 1] 100)
                     (gen/tuple
-                      (:nonprop-number gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-border-image-width :cat 0 :alt 3 :cat 1 :alt 2] 100)
+                      (gen/return " ")
+                      (:nonprop-number gmap))]
+                  [(get weights [:prop-border-image-width :cat 1 :alt 3 :cat 1 :alt 2] 100)
                     (gen/tuple
-                      (gen/return "auto")
-                      (gen/return " "))]])
+                      (gen/return " ")
+                      (gen/return "auto"))]])
                 (gen/frequency [
-                  [(get weights [:prop-border-image-width :cat 0 :alt 3 :cat 2 :alt 0] 100)
+                  [(get weights [:prop-border-image-width :cat 1 :alt 3 :cat 2 :alt 0] 100)
                     (gen/tuple
-                      (:nonprop-length-percentage gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-border-image-width :cat 0 :alt 3 :cat 2 :alt 1] 100)
+                      (gen/return " ")
+                      (:nonprop-length-percentage gmap))]
+                  [(get weights [:prop-border-image-width :cat 1 :alt 3 :cat 2 :alt 1] 100)
                     (gen/tuple
-                      (:nonprop-number gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-border-image-width :cat 0 :alt 3 :cat 2 :alt 2] 100)
+                      (gen/return " ")
+                      (:nonprop-number gmap))]
+                  [(get weights [:prop-border-image-width :cat 1 :alt 3 :cat 2 :alt 2] 100)
                     (gen/tuple
-                      (gen/return "auto")
-                      (gen/return " "))]])
+                      (gen/return " ")
+                      (gen/return "auto"))]])
                 (gen/frequency [
-                  [(get weights [:prop-border-image-width :cat 0 :alt 3 :cat 3 :alt 0] 100)
+                  [(get weights [:prop-border-image-width :cat 1 :alt 3 :cat 3 :alt 0] 100)
                     (gen/tuple
-                      (:nonprop-length-percentage gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-border-image-width :cat 0 :alt 3 :cat 3 :alt 1] 100)
+                      (gen/return " ")
+                      (:nonprop-length-percentage gmap))]
+                  [(get weights [:prop-border-image-width :cat 1 :alt 3 :cat 3 :alt 1] 100)
                     (gen/tuple
-                      (:nonprop-number gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-border-image-width :cat 0 :alt 3 :cat 3 :alt 2] 100)
+                      (gen/return " ")
+                      (:nonprop-number gmap))]
+                  [(get weights [:prop-border-image-width :cat 1 :alt 3 :cat 3 :alt 2] 100)
                     (gen/tuple
-                      (gen/return "auto")
-                      (gen/return " "))]]))]])
-          (gen/return " "))
+                      (gen/return " ")
+                      (gen/return "auto"))]]))]]))
         gmap (assoc gmap :prop-border-image-width gen-prop-border-image-width)
 
         gen-nonprop-border-image-width
@@ -10058,47 +9842,42 @@
         gmap (assoc gmap :nonprop-border-image-source gen-nonprop-border-image-source)
 
         gen-prop-border-image
-        (gen/tuple
-          (gen/such-that not-empty (gen/vector
-            (gen/frequency [
-              [(get weights [:prop-border-image :cat 0 :plus :alt 0] 100)
-                (gen/tuple
-                  (:nonprop-border-image-source gmap)
-                  (gen/return " "))]
-              [(get weights [:prop-border-image :cat 0 :plus :alt 1] 100)
-                (gen/tuple
-                  (:nonprop-border-image-slice gmap)
-                  (gen/return " "))]])))
-          (gen/such-that not-empty (gen/vector
-            (gen/frequency [
-              [(get weights [:prop-border-image :cat 1 :plus :alt 0] 100)
-                (gen/tuple
-                  (gen/one-of [
-                    (gen/return "")
-                    (gen/frequency [
-                      [(get weights [:prop-border-image :cat 1 :plus :alt 0 :cat 0 :opt :alt 0] 100)
-                        (gen/tuple
-                          (gen/return "/")
-                          (gen/return " ")
-                          (:nonprop-border-image-width gmap)
-                          (gen/return " "))]
-                      [(get weights [:prop-border-image :cat 1 :plus :alt 0 :cat 0 :opt :alt 1] 100)
-                        (gen/tuple
-                          (gen/return "/")
-                          (gen/return " ")
-                          (gen/one-of [
-                            (gen/return "")
-                            (:nonprop-border-image-width gmap)])
-                          (gen/return " ")
-                          (gen/return "/")
-                          (gen/return " ")
-                          (:nonprop-border-image-outset gmap)
-                          (gen/return " "))]])])
-                  (gen/return " "))]
-              [(get weights [:prop-border-image :cat 1 :plus :alt 1] 100)
-                (gen/tuple
-                  (:nonprop-border-image-repeat gmap)
-                  (gen/return " "))]]))))
+        (gen/such-that not-empty (gen/vector
+          (gen/frequency [
+            [(get weights [:prop-border-image :plus :alt 0] 100)
+              (gen/tuple
+                (gen/return " ")
+                (:nonprop-border-image-source gmap))]
+            [(get weights [:prop-border-image :plus :alt 1] 100)
+              (gen/tuple
+                (gen/return " ")
+                (:nonprop-border-image-slice gmap)
+                (gen/return " ")
+                (gen/one-of [
+                  (gen/return "")
+                  (gen/frequency [
+                    [(get weights [:prop-border-image :plus :alt 1 :cat 3 :opt :alt 0] 100)
+                      (gen/tuple
+                        (gen/return " ")
+                        (gen/return "/")
+                        (gen/return " ")
+                        (:nonprop-border-image-width gmap))]
+                    [(get weights [:prop-border-image :plus :alt 1 :cat 3 :opt :alt 1] 100)
+                      (gen/tuple
+                        (gen/return " ")
+                        (gen/return "/")
+                        (gen/return " ")
+                        (gen/one-of [
+                          (gen/return "")
+                          (:nonprop-border-image-width gmap)])
+                        (gen/return " ")
+                        (gen/return "/")
+                        (gen/return " ")
+                        (:nonprop-border-image-outset gmap))]])]))]
+            [(get weights [:prop-border-image :plus :alt 2] 100)
+              (gen/tuple
+                (gen/return " ")
+                (:nonprop-border-image-repeat gmap))]])))
         gmap (assoc gmap :prop-border-image gen-prop-border-image)
 
         gen-nonprop-font-weight
@@ -10107,791 +9886,786 @@
 
         gen-prop-margin
         (gen/tuple
+          (gen/return " ")
           (gen/frequency [
-            [(get weights [:prop-margin :cat 0 :alt 0] 100)
+            [(get weights [:prop-margin :cat 1 :alt 0] 100)
               (gen/frequency [
-                [(get weights [:prop-margin :cat 0 :alt 0 :alt 0] 100)
+                [(get weights [:prop-margin :cat 1 :alt 0 :alt 0] 100)
                   (gen/tuple
-                    (:nonprop-length gmap)
-                    (gen/return " "))]
-                [(get weights [:prop-margin :cat 0 :alt 0 :alt 1] 100)
+                    (gen/return " ")
+                    (:nonprop-length gmap))]
+                [(get weights [:prop-margin :cat 1 :alt 0 :alt 1] 100)
                   (gen/tuple
-                    (:nonprop-percentage gmap)
-                    (gen/return " "))]
-                [(get weights [:prop-margin :cat 0 :alt 0 :alt 2] 100)
+                    (gen/return " ")
+                    (:nonprop-percentage gmap))]
+                [(get weights [:prop-margin :cat 1 :alt 0 :alt 2] 100)
                   (gen/tuple
-                    (gen/return "auto")
-                    (gen/return " "))]])]
-            [(get weights [:prop-margin :cat 0 :alt 1] 100)
+                    (gen/return " ")
+                    (gen/return "auto"))]])]
+            [(get weights [:prop-margin :cat 1 :alt 1] 100)
               (gen/tuple
                 (gen/frequency [
-                  [(get weights [:prop-margin :cat 0 :alt 1 :cat 0 :alt 0] 100)
+                  [(get weights [:prop-margin :cat 1 :alt 1 :cat 0 :alt 0] 100)
                     (gen/tuple
-                      (:nonprop-length gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-margin :cat 0 :alt 1 :cat 0 :alt 1] 100)
+                      (gen/return " ")
+                      (:nonprop-length gmap))]
+                  [(get weights [:prop-margin :cat 1 :alt 1 :cat 0 :alt 1] 100)
                     (gen/tuple
-                      (:nonprop-percentage gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-margin :cat 0 :alt 1 :cat 0 :alt 2] 100)
+                      (gen/return " ")
+                      (:nonprop-percentage gmap))]
+                  [(get weights [:prop-margin :cat 1 :alt 1 :cat 0 :alt 2] 100)
                     (gen/tuple
-                      (gen/return "auto")
-                      (gen/return " "))]])
+                      (gen/return " ")
+                      (gen/return "auto"))]])
                 (gen/frequency [
-                  [(get weights [:prop-margin :cat 0 :alt 1 :cat 1 :alt 0] 100)
+                  [(get weights [:prop-margin :cat 1 :alt 1 :cat 1 :alt 0] 100)
                     (gen/tuple
-                      (:nonprop-length gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-margin :cat 0 :alt 1 :cat 1 :alt 1] 100)
+                      (gen/return " ")
+                      (:nonprop-length gmap))]
+                  [(get weights [:prop-margin :cat 1 :alt 1 :cat 1 :alt 1] 100)
                     (gen/tuple
-                      (:nonprop-percentage gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-margin :cat 0 :alt 1 :cat 1 :alt 2] 100)
+                      (gen/return " ")
+                      (:nonprop-percentage gmap))]
+                  [(get weights [:prop-margin :cat 1 :alt 1 :cat 1 :alt 2] 100)
                     (gen/tuple
-                      (gen/return "auto")
-                      (gen/return " "))]]))]
-            [(get weights [:prop-margin :cat 0 :alt 2] 100)
+                      (gen/return " ")
+                      (gen/return "auto"))]]))]
+            [(get weights [:prop-margin :cat 1 :alt 2] 100)
               (gen/tuple
                 (gen/frequency [
-                  [(get weights [:prop-margin :cat 0 :alt 2 :cat 0 :alt 0] 100)
+                  [(get weights [:prop-margin :cat 1 :alt 2 :cat 0 :alt 0] 100)
                     (gen/tuple
-                      (:nonprop-length gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-margin :cat 0 :alt 2 :cat 0 :alt 1] 100)
+                      (gen/return " ")
+                      (:nonprop-length gmap))]
+                  [(get weights [:prop-margin :cat 1 :alt 2 :cat 0 :alt 1] 100)
                     (gen/tuple
-                      (:nonprop-percentage gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-margin :cat 0 :alt 2 :cat 0 :alt 2] 100)
+                      (gen/return " ")
+                      (:nonprop-percentage gmap))]
+                  [(get weights [:prop-margin :cat 1 :alt 2 :cat 0 :alt 2] 100)
                     (gen/tuple
-                      (gen/return "auto")
-                      (gen/return " "))]])
+                      (gen/return " ")
+                      (gen/return "auto"))]])
                 (gen/frequency [
-                  [(get weights [:prop-margin :cat 0 :alt 2 :cat 1 :alt 0] 100)
+                  [(get weights [:prop-margin :cat 1 :alt 2 :cat 1 :alt 0] 100)
                     (gen/tuple
-                      (:nonprop-length gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-margin :cat 0 :alt 2 :cat 1 :alt 1] 100)
+                      (gen/return " ")
+                      (:nonprop-length gmap))]
+                  [(get weights [:prop-margin :cat 1 :alt 2 :cat 1 :alt 1] 100)
                     (gen/tuple
-                      (:nonprop-percentage gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-margin :cat 0 :alt 2 :cat 1 :alt 2] 100)
+                      (gen/return " ")
+                      (:nonprop-percentage gmap))]
+                  [(get weights [:prop-margin :cat 1 :alt 2 :cat 1 :alt 2] 100)
                     (gen/tuple
-                      (gen/return "auto")
-                      (gen/return " "))]])
+                      (gen/return " ")
+                      (gen/return "auto"))]])
                 (gen/frequency [
-                  [(get weights [:prop-margin :cat 0 :alt 2 :cat 2 :alt 0] 100)
+                  [(get weights [:prop-margin :cat 1 :alt 2 :cat 2 :alt 0] 100)
                     (gen/tuple
-                      (:nonprop-length gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-margin :cat 0 :alt 2 :cat 2 :alt 1] 100)
+                      (gen/return " ")
+                      (:nonprop-length gmap))]
+                  [(get weights [:prop-margin :cat 1 :alt 2 :cat 2 :alt 1] 100)
                     (gen/tuple
-                      (:nonprop-percentage gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-margin :cat 0 :alt 2 :cat 2 :alt 2] 100)
+                      (gen/return " ")
+                      (:nonprop-percentage gmap))]
+                  [(get weights [:prop-margin :cat 1 :alt 2 :cat 2 :alt 2] 100)
                     (gen/tuple
-                      (gen/return "auto")
-                      (gen/return " "))]]))]
-            [(get weights [:prop-margin :cat 0 :alt 3] 100)
+                      (gen/return " ")
+                      (gen/return "auto"))]]))]
+            [(get weights [:prop-margin :cat 1 :alt 3] 100)
               (gen/tuple
                 (gen/frequency [
-                  [(get weights [:prop-margin :cat 0 :alt 3 :cat 0 :alt 0] 100)
+                  [(get weights [:prop-margin :cat 1 :alt 3 :cat 0 :alt 0] 100)
                     (gen/tuple
-                      (:nonprop-length gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-margin :cat 0 :alt 3 :cat 0 :alt 1] 100)
+                      (gen/return " ")
+                      (:nonprop-length gmap))]
+                  [(get weights [:prop-margin :cat 1 :alt 3 :cat 0 :alt 1] 100)
                     (gen/tuple
-                      (:nonprop-percentage gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-margin :cat 0 :alt 3 :cat 0 :alt 2] 100)
+                      (gen/return " ")
+                      (:nonprop-percentage gmap))]
+                  [(get weights [:prop-margin :cat 1 :alt 3 :cat 0 :alt 2] 100)
                     (gen/tuple
-                      (gen/return "auto")
-                      (gen/return " "))]])
+                      (gen/return " ")
+                      (gen/return "auto"))]])
                 (gen/frequency [
-                  [(get weights [:prop-margin :cat 0 :alt 3 :cat 1 :alt 0] 100)
+                  [(get weights [:prop-margin :cat 1 :alt 3 :cat 1 :alt 0] 100)
                     (gen/tuple
-                      (:nonprop-length gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-margin :cat 0 :alt 3 :cat 1 :alt 1] 100)
+                      (gen/return " ")
+                      (:nonprop-length gmap))]
+                  [(get weights [:prop-margin :cat 1 :alt 3 :cat 1 :alt 1] 100)
                     (gen/tuple
-                      (:nonprop-percentage gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-margin :cat 0 :alt 3 :cat 1 :alt 2] 100)
+                      (gen/return " ")
+                      (:nonprop-percentage gmap))]
+                  [(get weights [:prop-margin :cat 1 :alt 3 :cat 1 :alt 2] 100)
                     (gen/tuple
-                      (gen/return "auto")
-                      (gen/return " "))]])
+                      (gen/return " ")
+                      (gen/return "auto"))]])
                 (gen/frequency [
-                  [(get weights [:prop-margin :cat 0 :alt 3 :cat 2 :alt 0] 100)
+                  [(get weights [:prop-margin :cat 1 :alt 3 :cat 2 :alt 0] 100)
                     (gen/tuple
-                      (:nonprop-length gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-margin :cat 0 :alt 3 :cat 2 :alt 1] 100)
+                      (gen/return " ")
+                      (:nonprop-length gmap))]
+                  [(get weights [:prop-margin :cat 1 :alt 3 :cat 2 :alt 1] 100)
                     (gen/tuple
-                      (:nonprop-percentage gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-margin :cat 0 :alt 3 :cat 2 :alt 2] 100)
+                      (gen/return " ")
+                      (:nonprop-percentage gmap))]
+                  [(get weights [:prop-margin :cat 1 :alt 3 :cat 2 :alt 2] 100)
                     (gen/tuple
-                      (gen/return "auto")
-                      (gen/return " "))]])
+                      (gen/return " ")
+                      (gen/return "auto"))]])
                 (gen/frequency [
-                  [(get weights [:prop-margin :cat 0 :alt 3 :cat 3 :alt 0] 100)
+                  [(get weights [:prop-margin :cat 1 :alt 3 :cat 3 :alt 0] 100)
                     (gen/tuple
-                      (:nonprop-length gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-margin :cat 0 :alt 3 :cat 3 :alt 1] 100)
+                      (gen/return " ")
+                      (:nonprop-length gmap))]
+                  [(get weights [:prop-margin :cat 1 :alt 3 :cat 3 :alt 1] 100)
                     (gen/tuple
-                      (:nonprop-percentage gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-margin :cat 0 :alt 3 :cat 3 :alt 2] 100)
+                      (gen/return " ")
+                      (:nonprop-percentage gmap))]
+                  [(get weights [:prop-margin :cat 1 :alt 3 :cat 3 :alt 2] 100)
                     (gen/tuple
-                      (gen/return "auto")
-                      (gen/return " "))]]))]])
-          (gen/return " "))
+                      (gen/return " ")
+                      (gen/return "auto"))]]))]]))
         gmap (assoc gmap :prop-margin gen-prop-margin)
 
         gen-prop--moz-appearance
         (gen/frequency [
           [(get weights [:prop--moz-appearance :alt 0] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "none"))]
           [(get weights [:prop--moz-appearance :alt 1] 100)
             (gen/tuple
-              (gen/return "button")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "button"))]
           [(get weights [:prop--moz-appearance :alt 2] 100)
             (gen/tuple
-              (gen/return "button-arrow-down")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "button-arrow-down"))]
           [(get weights [:prop--moz-appearance :alt 3] 100)
             (gen/tuple
-              (gen/return "button-arrow-next")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "button-arrow-next"))]
           [(get weights [:prop--moz-appearance :alt 4] 100)
             (gen/tuple
-              (gen/return "button-arrow-previous")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "button-arrow-previous"))]
           [(get weights [:prop--moz-appearance :alt 5] 100)
             (gen/tuple
-              (gen/return "button-arrow-up")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "button-arrow-up"))]
           [(get weights [:prop--moz-appearance :alt 6] 100)
             (gen/tuple
-              (gen/return "button-bevel")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "button-bevel"))]
           [(get weights [:prop--moz-appearance :alt 7] 100)
             (gen/tuple
-              (gen/return "button-focus")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "button-focus"))]
           [(get weights [:prop--moz-appearance :alt 8] 100)
             (gen/tuple
-              (gen/return "caret")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "caret"))]
           [(get weights [:prop--moz-appearance :alt 9] 100)
             (gen/tuple
-              (gen/return "checkbox")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "checkbox"))]
           [(get weights [:prop--moz-appearance :alt 10] 100)
             (gen/tuple
-              (gen/return "checkbox-container")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "checkbox-container"))]
           [(get weights [:prop--moz-appearance :alt 11] 100)
             (gen/tuple
-              (gen/return "checkbox-label")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "checkbox-label"))]
           [(get weights [:prop--moz-appearance :alt 12] 100)
             (gen/tuple
-              (gen/return "checkmenuitem")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "checkmenuitem"))]
           [(get weights [:prop--moz-appearance :alt 13] 100)
             (gen/tuple
-              (gen/return "dualbutton")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "dualbutton"))]
           [(get weights [:prop--moz-appearance :alt 14] 100)
             (gen/tuple
-              (gen/return "groupbox")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "groupbox"))]
           [(get weights [:prop--moz-appearance :alt 15] 100)
             (gen/tuple
-              (gen/return "listbox")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "listbox"))]
           [(get weights [:prop--moz-appearance :alt 16] 100)
             (gen/tuple
-              (gen/return "listitem")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "listitem"))]
           [(get weights [:prop--moz-appearance :alt 17] 100)
             (gen/tuple
-              (gen/return "menuarrow")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "menuarrow"))]
           [(get weights [:prop--moz-appearance :alt 18] 100)
             (gen/tuple
-              (gen/return "menubar")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "menubar"))]
           [(get weights [:prop--moz-appearance :alt 19] 100)
             (gen/tuple
-              (gen/return "menucheckbox")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "menucheckbox"))]
           [(get weights [:prop--moz-appearance :alt 20] 100)
             (gen/tuple
-              (gen/return "menuimage")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "menuimage"))]
           [(get weights [:prop--moz-appearance :alt 21] 100)
             (gen/tuple
-              (gen/return "menuitem")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "menuitem"))]
           [(get weights [:prop--moz-appearance :alt 22] 100)
             (gen/tuple
-              (gen/return "menuitemtext")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "menuitemtext"))]
           [(get weights [:prop--moz-appearance :alt 23] 100)
             (gen/tuple
-              (gen/return "menulist")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "menulist"))]
           [(get weights [:prop--moz-appearance :alt 24] 100)
             (gen/tuple
-              (gen/return "menulist-button")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "menulist-button"))]
           [(get weights [:prop--moz-appearance :alt 25] 100)
             (gen/tuple
-              (gen/return "menulist-text")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "menulist-text"))]
           [(get weights [:prop--moz-appearance :alt 26] 100)
             (gen/tuple
-              (gen/return "menulist-textfield")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "menulist-textfield"))]
           [(get weights [:prop--moz-appearance :alt 27] 100)
             (gen/tuple
-              (gen/return "menupopup")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "menupopup"))]
           [(get weights [:prop--moz-appearance :alt 28] 100)
             (gen/tuple
-              (gen/return "menuradio")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "menuradio"))]
           [(get weights [:prop--moz-appearance :alt 29] 100)
             (gen/tuple
-              (gen/return "menuseparator")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "menuseparator"))]
           [(get weights [:prop--moz-appearance :alt 30] 100)
             (gen/tuple
-              (gen/return "meterbar")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "meterbar"))]
           [(get weights [:prop--moz-appearance :alt 31] 100)
             (gen/tuple
-              (gen/return "meterchunk")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "meterchunk"))]
           [(get weights [:prop--moz-appearance :alt 32] 100)
             (gen/tuple
-              (gen/return "progressbar")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "progressbar"))]
           [(get weights [:prop--moz-appearance :alt 33] 100)
             (gen/tuple
-              (gen/return "progressbar-vertical")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "progressbar-vertical"))]
           [(get weights [:prop--moz-appearance :alt 34] 100)
             (gen/tuple
-              (gen/return "progresschunk")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "progresschunk"))]
           [(get weights [:prop--moz-appearance :alt 35] 100)
             (gen/tuple
-              (gen/return "progresschunk-vertical")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "progresschunk-vertical"))]
           [(get weights [:prop--moz-appearance :alt 36] 100)
             (gen/tuple
-              (gen/return "radio")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "radio"))]
           [(get weights [:prop--moz-appearance :alt 37] 100)
             (gen/tuple
-              (gen/return "radio-container")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "radio-container"))]
           [(get weights [:prop--moz-appearance :alt 38] 100)
             (gen/tuple
-              (gen/return "radio-label")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "radio-label"))]
           [(get weights [:prop--moz-appearance :alt 39] 100)
             (gen/tuple
-              (gen/return "radiomenuitem")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "radiomenuitem"))]
           [(get weights [:prop--moz-appearance :alt 40] 100)
             (gen/tuple
-              (gen/return "range")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "range"))]
           [(get weights [:prop--moz-appearance :alt 41] 100)
             (gen/tuple
-              (gen/return "range-thumb")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "range-thumb"))]
           [(get weights [:prop--moz-appearance :alt 42] 100)
             (gen/tuple
-              (gen/return "resizer")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "resizer"))]
           [(get weights [:prop--moz-appearance :alt 43] 100)
             (gen/tuple
-              (gen/return "resizerpanel")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "resizerpanel"))]
           [(get weights [:prop--moz-appearance :alt 44] 100)
             (gen/tuple
-              (gen/return "scale-horizontal")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "scale-horizontal"))]
           [(get weights [:prop--moz-appearance :alt 45] 100)
             (gen/tuple
-              (gen/return "scalethumbend")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "scalethumbend"))]
           [(get weights [:prop--moz-appearance :alt 46] 100)
             (gen/tuple
-              (gen/return "scalethumb-horizontal")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "scalethumb-horizontal"))]
           [(get weights [:prop--moz-appearance :alt 47] 100)
             (gen/tuple
-              (gen/return "scalethumbstart")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "scalethumbstart"))]
           [(get weights [:prop--moz-appearance :alt 48] 100)
             (gen/tuple
-              (gen/return "scalethumbtick")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "scalethumbtick"))]
           [(get weights [:prop--moz-appearance :alt 49] 100)
             (gen/tuple
-              (gen/return "scalethumb-vertical")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "scalethumb-vertical"))]
           [(get weights [:prop--moz-appearance :alt 50] 100)
             (gen/tuple
-              (gen/return "scale-vertical")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "scale-vertical"))]
           [(get weights [:prop--moz-appearance :alt 51] 100)
             (gen/tuple
-              (gen/return "scrollbarbutton-down")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "scrollbarbutton-down"))]
           [(get weights [:prop--moz-appearance :alt 52] 100)
             (gen/tuple
-              (gen/return "scrollbarbutton-left")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "scrollbarbutton-left"))]
           [(get weights [:prop--moz-appearance :alt 53] 100)
             (gen/tuple
-              (gen/return "scrollbarbutton-right")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "scrollbarbutton-right"))]
           [(get weights [:prop--moz-appearance :alt 54] 100)
             (gen/tuple
-              (gen/return "scrollbarbutton-up")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "scrollbarbutton-up"))]
           [(get weights [:prop--moz-appearance :alt 55] 100)
             (gen/tuple
-              (gen/return "scrollbarthumb-horizontal")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "scrollbarthumb-horizontal"))]
           [(get weights [:prop--moz-appearance :alt 56] 100)
             (gen/tuple
-              (gen/return "scrollbarthumb-vertical")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "scrollbarthumb-vertical"))]
           [(get weights [:prop--moz-appearance :alt 57] 100)
             (gen/tuple
-              (gen/return "scrollbartrack-horizontal")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "scrollbartrack-horizontal"))]
           [(get weights [:prop--moz-appearance :alt 58] 100)
             (gen/tuple
-              (gen/return "scrollbartrack-vertical")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "scrollbartrack-vertical"))]
           [(get weights [:prop--moz-appearance :alt 59] 100)
             (gen/tuple
-              (gen/return "searchfield")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "searchfield"))]
           [(get weights [:prop--moz-appearance :alt 60] 100)
             (gen/tuple
-              (gen/return "separator")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "separator"))]
           [(get weights [:prop--moz-appearance :alt 61] 100)
             (gen/tuple
-              (gen/return "sheet")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "sheet"))]
           [(get weights [:prop--moz-appearance :alt 62] 100)
             (gen/tuple
-              (gen/return "spinner")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "spinner"))]
           [(get weights [:prop--moz-appearance :alt 63] 100)
             (gen/tuple
-              (gen/return "spinner-downbutton")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "spinner-downbutton"))]
           [(get weights [:prop--moz-appearance :alt 64] 100)
             (gen/tuple
-              (gen/return "spinner-textfield")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "spinner-textfield"))]
           [(get weights [:prop--moz-appearance :alt 65] 100)
             (gen/tuple
-              (gen/return "spinner-upbutton")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "spinner-upbutton"))]
           [(get weights [:prop--moz-appearance :alt 66] 100)
             (gen/tuple
-              (gen/return "splitter")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "splitter"))]
           [(get weights [:prop--moz-appearance :alt 67] 100)
             (gen/tuple
-              (gen/return "statusbar")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "statusbar"))]
           [(get weights [:prop--moz-appearance :alt 68] 100)
             (gen/tuple
-              (gen/return "statusbarpanel")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "statusbarpanel"))]
           [(get weights [:prop--moz-appearance :alt 69] 100)
             (gen/tuple
-              (gen/return "tab")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "tab"))]
           [(get weights [:prop--moz-appearance :alt 70] 100)
             (gen/tuple
-              (gen/return "tabpanel")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "tabpanel"))]
           [(get weights [:prop--moz-appearance :alt 71] 100)
             (gen/tuple
-              (gen/return "tabpanels")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "tabpanels"))]
           [(get weights [:prop--moz-appearance :alt 72] 100)
             (gen/tuple
-              (gen/return "tab-scroll-arrow-back")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "tab-scroll-arrow-back"))]
           [(get weights [:prop--moz-appearance :alt 73] 100)
             (gen/tuple
-              (gen/return "tab-scroll-arrow-forward")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "tab-scroll-arrow-forward"))]
           [(get weights [:prop--moz-appearance :alt 74] 100)
             (gen/tuple
-              (gen/return "textfield")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "textfield"))]
           [(get weights [:prop--moz-appearance :alt 75] 100)
             (gen/tuple
-              (gen/return "textfield-multiline")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "textfield-multiline"))]
           [(get weights [:prop--moz-appearance :alt 76] 100)
             (gen/tuple
-              (gen/return "toolbar")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "toolbar"))]
           [(get weights [:prop--moz-appearance :alt 77] 100)
             (gen/tuple
-              (gen/return "toolbarbutton")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "toolbarbutton"))]
           [(get weights [:prop--moz-appearance :alt 78] 100)
             (gen/tuple
-              (gen/return "toolbarbutton-dropdown")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "toolbarbutton-dropdown"))]
           [(get weights [:prop--moz-appearance :alt 79] 100)
             (gen/tuple
-              (gen/return "toolbargripper")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "toolbargripper"))]
           [(get weights [:prop--moz-appearance :alt 80] 100)
             (gen/tuple
-              (gen/return "toolbox")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "toolbox"))]
           [(get weights [:prop--moz-appearance :alt 81] 100)
             (gen/tuple
-              (gen/return "tooltip")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "tooltip"))]
           [(get weights [:prop--moz-appearance :alt 82] 100)
             (gen/tuple
-              (gen/return "treeheader")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "treeheader"))]
           [(get weights [:prop--moz-appearance :alt 83] 100)
             (gen/tuple
-              (gen/return "treeheadercell")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "treeheadercell"))]
           [(get weights [:prop--moz-appearance :alt 84] 100)
             (gen/tuple
-              (gen/return "treeheadersortarrow")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "treeheadersortarrow"))]
           [(get weights [:prop--moz-appearance :alt 85] 100)
             (gen/tuple
-              (gen/return "treeitem")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "treeitem"))]
           [(get weights [:prop--moz-appearance :alt 86] 100)
             (gen/tuple
-              (gen/return "treeline")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "treeline"))]
           [(get weights [:prop--moz-appearance :alt 87] 100)
             (gen/tuple
-              (gen/return "treetwisty")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "treetwisty"))]
           [(get weights [:prop--moz-appearance :alt 88] 100)
             (gen/tuple
-              (gen/return "treetwistyopen")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "treetwistyopen"))]
           [(get weights [:prop--moz-appearance :alt 89] 100)
             (gen/tuple
-              (gen/return "treeview")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "treeview"))]
           [(get weights [:prop--moz-appearance :alt 90] 100)
             (gen/tuple
-              (gen/return "-moz-mac-unified-toolbar")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "-moz-mac-unified-toolbar"))]
           [(get weights [:prop--moz-appearance :alt 91] 100)
             (gen/tuple
-              (gen/return "-moz-win-borderless-glass")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "-moz-win-borderless-glass"))]
           [(get weights [:prop--moz-appearance :alt 92] 100)
             (gen/tuple
-              (gen/return "-moz-win-browsertabbar-toolbox")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "-moz-win-browsertabbar-toolbox"))]
           [(get weights [:prop--moz-appearance :alt 93] 100)
             (gen/tuple
-              (gen/return "-moz-win-communicationstext")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "-moz-win-communicationstext"))]
           [(get weights [:prop--moz-appearance :alt 94] 100)
             (gen/tuple
-              (gen/return "-moz-win-communications-toolbox")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "-moz-win-communications-toolbox"))]
           [(get weights [:prop--moz-appearance :alt 95] 100)
             (gen/tuple
-              (gen/return "-moz-win-exclude-glass")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "-moz-win-exclude-glass"))]
           [(get weights [:prop--moz-appearance :alt 96] 100)
             (gen/tuple
-              (gen/return "-moz-win-glass")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "-moz-win-glass"))]
           [(get weights [:prop--moz-appearance :alt 97] 100)
             (gen/tuple
-              (gen/return "-moz-win-mediatext")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "-moz-win-mediatext"))]
           [(get weights [:prop--moz-appearance :alt 98] 100)
             (gen/tuple
-              (gen/return "-moz-win-media-toolbox")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "-moz-win-media-toolbox"))]
           [(get weights [:prop--moz-appearance :alt 99] 100)
             (gen/tuple
-              (gen/return "-moz-window-button-box")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "-moz-window-button-box"))]
           [(get weights [:prop--moz-appearance :alt 100] 100)
             (gen/tuple
-              (gen/return "-moz-window-button-box-maximized")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "-moz-window-button-box-maximized"))]
           [(get weights [:prop--moz-appearance :alt 101] 100)
             (gen/tuple
-              (gen/return "-moz-window-button-close")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "-moz-window-button-close"))]
           [(get weights [:prop--moz-appearance :alt 102] 100)
             (gen/tuple
-              (gen/return "-moz-window-button-maximize")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "-moz-window-button-maximize"))]
           [(get weights [:prop--moz-appearance :alt 103] 100)
             (gen/tuple
-              (gen/return "-moz-window-button-minimize")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "-moz-window-button-minimize"))]
           [(get weights [:prop--moz-appearance :alt 104] 100)
             (gen/tuple
-              (gen/return "-moz-window-button-restore")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "-moz-window-button-restore"))]
           [(get weights [:prop--moz-appearance :alt 105] 100)
             (gen/tuple
-              (gen/return "-moz-window-frame-bottom")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "-moz-window-frame-bottom"))]
           [(get weights [:prop--moz-appearance :alt 106] 100)
             (gen/tuple
-              (gen/return "-moz-window-frame-left")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "-moz-window-frame-left"))]
           [(get weights [:prop--moz-appearance :alt 107] 100)
             (gen/tuple
-              (gen/return "-moz-window-frame-right")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "-moz-window-frame-right"))]
           [(get weights [:prop--moz-appearance :alt 108] 100)
             (gen/tuple
-              (gen/return "-moz-window-titlebar")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "-moz-window-titlebar"))]
           [(get weights [:prop--moz-appearance :alt 109] 100)
             (gen/tuple
-              (gen/return "-moz-window-titlebar-maximized")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "-moz-window-titlebar-maximized"))]])
         gmap (assoc gmap :prop--moz-appearance gen-prop--moz-appearance)
 
         gen-prop-box-align
         (gen/frequency [
           [(get weights [:prop-box-align :alt 0] 100)
             (gen/tuple
-              (gen/return "start")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "start"))]
           [(get weights [:prop-box-align :alt 1] 100)
             (gen/tuple
-              (gen/return "center")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "center"))]
           [(get weights [:prop-box-align :alt 2] 100)
             (gen/tuple
-              (gen/return "end")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "end"))]
           [(get weights [:prop-box-align :alt 3] 100)
             (gen/tuple
-              (gen/return "baseline")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "baseline"))]
           [(get weights [:prop-box-align :alt 4] 100)
             (gen/tuple
-              (gen/return "stretch")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "stretch"))]])
         gmap (assoc gmap :prop-box-align gen-prop-box-align)
 
         gen-nonprop-compositing-operator
         (gen/frequency [
           [(get weights [:nonprop-compositing-operator :alt 0] 100)
             (gen/tuple
-              (gen/return "add")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "add"))]
           [(get weights [:nonprop-compositing-operator :alt 1] 100)
             (gen/tuple
-              (gen/return "subtract")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "subtract"))]
           [(get weights [:nonprop-compositing-operator :alt 2] 100)
             (gen/tuple
-              (gen/return "intersect")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "intersect"))]
           [(get weights [:nonprop-compositing-operator :alt 3] 100)
             (gen/tuple
-              (gen/return "exclude")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "exclude"))]])
         gmap (assoc gmap :nonprop-compositing-operator gen-nonprop-compositing-operator)
 
         gen-nonprop-mask-layer
-        (gen/tuple
-          (gen/such-that not-empty (gen/vector
-            (gen/frequency [
-              [(get weights [:nonprop-mask-layer :cat 0 :plus :alt 0] 100)
-                (gen/tuple
-                  (:nonprop-mask-reference gmap)
-                  (gen/return " "))]
-              [(get weights [:nonprop-mask-layer :cat 0 :plus :alt 1] 100)
-                (gen/tuple
-                  (:nonprop-position gmap)
-                  (gen/return " "))]])))
-          (gen/such-that not-empty (gen/vector
-            (gen/frequency [
-              [(get weights [:nonprop-mask-layer :cat 1 :plus :alt 0] 100)
-                (gen/tuple
-                  (gen/one-of [
-                    (gen/return "")
+        (gen/such-that not-empty (gen/vector
+          (gen/frequency [
+            [(get weights [:nonprop-mask-layer :plus :alt 0] 100)
+              (gen/tuple
+                (gen/return " ")
+                (:nonprop-mask-reference gmap))]
+            [(get weights [:nonprop-mask-layer :plus :alt 1] 100)
+              (gen/tuple
+                (gen/return " ")
+                (:nonprop-position gmap)
+                (gen/return " ")
+                (gen/one-of [
+                  (gen/return "")
+                  (gen/tuple
+                    (gen/return " ")
+                    (gen/return "/")
+                    (gen/return " ")
+                    (:nonprop-bg-size gmap))]))]
+            [(get weights [:nonprop-mask-layer :plus :alt 2] 100)
+              (gen/tuple
+                (gen/return " ")
+                (:nonprop-repeat-style gmap))]
+            [(get weights [:nonprop-mask-layer :plus :alt 3] 100)
+              (gen/tuple
+                (gen/return " ")
+                (:nonprop-geometry-box gmap))]
+            [(get weights [:nonprop-mask-layer :plus :alt 4] 100)
+              (gen/tuple
+                (gen/return " ")
+                (gen/frequency [
+                  [(get weights [:nonprop-mask-layer :plus :alt 4 :cat 1 :alt 0] 100)
                     (gen/tuple
-                      (gen/return "/")
                       (gen/return " ")
-                      (:nonprop-bg-size gmap)
-                      (gen/return " "))])
-                  (gen/return " "))]
-              [(get weights [:nonprop-mask-layer :cat 1 :plus :alt 1] 100)
-                (gen/tuple
-                  (:nonprop-repeat-style gmap)
-                  (gen/return " "))]
-              [(get weights [:nonprop-mask-layer :cat 1 :plus :alt 2] 100)
-                (gen/tuple
-                  (:nonprop-geometry-box gmap)
-                  (gen/return " "))]
-              [(get weights [:nonprop-mask-layer :cat 1 :plus :alt 3] 100)
-                (gen/tuple
-                  (gen/frequency [
-                    [(get weights [:nonprop-mask-layer :cat 1 :plus :alt 3 :cat 0 :alt 0] 100)
-                      (gen/tuple
-                        (:nonprop-geometry-box gmap)
-                        (gen/return " "))]
-                    [(get weights [:nonprop-mask-layer :cat 1 :plus :alt 3 :cat 0 :alt 1] 100)
-                      (gen/tuple
-                        (gen/return "no-clip")
-                        (gen/return " "))]])
-                  (gen/return " "))]
-              [(get weights [:nonprop-mask-layer :cat 1 :plus :alt 4] 100)
-                (gen/tuple
-                  (:nonprop-compositing-operator gmap)
-                  (gen/return " "))]
-              [(get weights [:nonprop-mask-layer :cat 1 :plus :alt 5] 100)
-                (gen/tuple
-                  (:nonprop-masking-mode gmap)
-                  (gen/return " "))]]))))
+                      (:nonprop-geometry-box gmap))]
+                  [(get weights [:nonprop-mask-layer :plus :alt 4 :cat 1 :alt 1] 100)
+                    (gen/tuple
+                      (gen/return " ")
+                      (gen/return "no-clip"))]]))]
+            [(get weights [:nonprop-mask-layer :plus :alt 5] 100)
+              (gen/tuple
+                (gen/return " ")
+                (:nonprop-compositing-operator gmap))]
+            [(get weights [:nonprop-mask-layer :plus :alt 6] 100)
+              (gen/tuple
+                (gen/return " ")
+                (:nonprop-masking-mode gmap))]])))
         gmap (assoc gmap :nonprop-mask-layer gen-nonprop-mask-layer)
 
         gen-prop-mask-repeat
         (gen/tuple
+          (gen/return " ")
           (:nonprop-repeat-style gmap)
           (gen/vector
             (gen/tuple
-              (gen/return ", ")
-              (:nonprop-repeat-style gmap)))
-          (gen/return " "))
+              (gen/return ",")
+              (:nonprop-repeat-style gmap))))
         gmap (assoc gmap :prop-mask-repeat gen-prop-mask-repeat)
 
         gen-prop-overflow-wrap
         (gen/frequency [
           [(get weights [:prop-overflow-wrap :alt 0] 100)
             (gen/tuple
-              (gen/return "normal")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "normal"))]
           [(get weights [:prop-overflow-wrap :alt 1] 100)
             (gen/tuple
-              (gen/return "break-word")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "break-word"))]])
         gmap (assoc gmap :prop-overflow-wrap gen-prop-overflow-wrap)
 
         gen-prop-border-inline-end-color
         (gen/tuple
-          (:nonprop-color gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-color gmap))
         gmap (assoc gmap :prop-border-inline-end-color gen-prop-border-inline-end-color)
 
         gen-prop-font-kerning
         (gen/frequency [
           [(get weights [:prop-font-kerning :alt 0] 100)
             (gen/tuple
-              (gen/return "auto")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "auto"))]
           [(get weights [:prop-font-kerning :alt 1] 100)
             (gen/tuple
-              (gen/return "normal")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "normal"))]
           [(get weights [:prop-font-kerning :alt 2] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "none"))]])
         gmap (assoc gmap :prop-font-kerning gen-prop-font-kerning)
 
         gen-prop-text-overflow
         (gen/tuple
+          (gen/return " ")
           (gen/frequency [
-            [(get weights [:prop-text-overflow :cat 0 :alt 0] 100)
+            [(get weights [:prop-text-overflow :cat 1 :alt 0] 100)
               (gen/frequency [
-                [(get weights [:prop-text-overflow :cat 0 :alt 0 :alt 0] 100)
+                [(get weights [:prop-text-overflow :cat 1 :alt 0 :alt 0] 100)
                   (gen/tuple
-                    (gen/return "clip")
-                    (gen/return " "))]
-                [(get weights [:prop-text-overflow :cat 0 :alt 0 :alt 1] 100)
+                    (gen/return " ")
+                    (gen/return "clip"))]
+                [(get weights [:prop-text-overflow :cat 1 :alt 0 :alt 1] 100)
                   (gen/tuple
-                    (gen/return "ellipsis")
-                    (gen/return " "))]
-                [(get weights [:prop-text-overflow :cat 0 :alt 0 :alt 2] 100)
+                    (gen/return " ")
+                    (gen/return "ellipsis"))]
+                [(get weights [:prop-text-overflow :cat 1 :alt 0 :alt 2] 100)
                   (gen/tuple
-                    (:nonprop-string gmap)
-                    (gen/return " "))]])]
-            [(get weights [:prop-text-overflow :cat 0 :alt 1] 100)
+                    (gen/return " ")
+                    (:nonprop-string gmap))]])]
+            [(get weights [:prop-text-overflow :cat 1 :alt 1] 100)
               (gen/tuple
                 (gen/frequency [
-                  [(get weights [:prop-text-overflow :cat 0 :alt 1 :cat 0 :alt 0] 100)
+                  [(get weights [:prop-text-overflow :cat 1 :alt 1 :cat 0 :alt 0] 100)
                     (gen/tuple
-                      (gen/return "clip")
-                      (gen/return " "))]
-                  [(get weights [:prop-text-overflow :cat 0 :alt 1 :cat 0 :alt 1] 100)
+                      (gen/return " ")
+                      (gen/return "clip"))]
+                  [(get weights [:prop-text-overflow :cat 1 :alt 1 :cat 0 :alt 1] 100)
                     (gen/tuple
-                      (gen/return "ellipsis")
-                      (gen/return " "))]
-                  [(get weights [:prop-text-overflow :cat 0 :alt 1 :cat 0 :alt 2] 100)
+                      (gen/return " ")
+                      (gen/return "ellipsis"))]
+                  [(get weights [:prop-text-overflow :cat 1 :alt 1 :cat 0 :alt 2] 100)
                     (gen/tuple
-                      (:nonprop-string gmap)
-                      (gen/return " "))]])
+                      (gen/return " ")
+                      (:nonprop-string gmap))]])
                 (gen/frequency [
-                  [(get weights [:prop-text-overflow :cat 0 :alt 1 :cat 1 :alt 0] 100)
+                  [(get weights [:prop-text-overflow :cat 1 :alt 1 :cat 1 :alt 0] 100)
                     (gen/tuple
-                      (gen/return "clip")
-                      (gen/return " "))]
-                  [(get weights [:prop-text-overflow :cat 0 :alt 1 :cat 1 :alt 1] 100)
+                      (gen/return " ")
+                      (gen/return "clip"))]
+                  [(get weights [:prop-text-overflow :cat 1 :alt 1 :cat 1 :alt 1] 100)
                     (gen/tuple
-                      (gen/return "ellipsis")
-                      (gen/return " "))]
-                  [(get weights [:prop-text-overflow :cat 0 :alt 1 :cat 1 :alt 2] 100)
+                      (gen/return " ")
+                      (gen/return "ellipsis"))]
+                  [(get weights [:prop-text-overflow :cat 1 :alt 1 :cat 1 :alt 2] 100)
                     (gen/tuple
-                      (:nonprop-string gmap)
-                      (gen/return " "))]]))]])
-          (gen/return " "))
+                      (gen/return " ")
+                      (:nonprop-string gmap))]]))]]))
         gmap (assoc gmap :prop-text-overflow gen-prop-text-overflow)
 
         gen-prop-order
         (gen/tuple
-          (:nonprop-integer gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-integer gmap))
         gmap (assoc gmap :prop-order gen-prop-order)
 
         gen-prop--webkit-border-before-color
         (gen/tuple
-          (:nonprop-color gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-color gmap))
         gmap (assoc gmap :prop--webkit-border-before-color gen-prop--webkit-border-before-color)
 
         gen-nonprop-text-emphasis-color
@@ -10904,73 +10678,70 @@
 
         gen-prop-object-position
         (gen/tuple
-          (:nonprop-position gmap)
-          (gen/return " "))
-        gmap (assoc gmap :prop-object-position gen-prop-object-position)]
-    gmap))
+          (gen/return " ")
+          (:nonprop-position gmap))
+        gmap (assoc gmap :prop-object-position gen-prop-object-position)
 
-(defn- css3-generators-part-11 [gmap weights]
-  (let [
         gen-prop-writing-mode
         (gen/frequency [
           [(get weights [:prop-writing-mode :alt 0] 100)
             (gen/tuple
-              (gen/return "horizontal-tb")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "horizontal-tb"))]
           [(get weights [:prop-writing-mode :alt 1] 100)
             (gen/tuple
-              (gen/return "vertical-rl")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "vertical-rl"))]
           [(get weights [:prop-writing-mode :alt 2] 100)
             (gen/tuple
-              (gen/return "vertical-lr")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "vertical-lr"))]
           [(get weights [:prop-writing-mode :alt 3] 100)
             (gen/tuple
-              (gen/return "sideways-rl")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "sideways-rl"))]
           [(get weights [:prop-writing-mode :alt 4] 100)
             (gen/tuple
-              (gen/return "sideways-lr")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "sideways-lr"))]])
         gmap (assoc gmap :prop-writing-mode gen-prop-writing-mode)
 
         gen-prop-overflow-y
         (gen/frequency [
           [(get weights [:prop-overflow-y :alt 0] 100)
             (gen/tuple
-              (gen/return "visible")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "visible"))]
           [(get weights [:prop-overflow-y :alt 1] 100)
             (gen/tuple
-              (gen/return "hidden")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "hidden"))]
           [(get weights [:prop-overflow-y :alt 2] 100)
             (gen/tuple
-              (gen/return "scroll")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "scroll"))]
           [(get weights [:prop-overflow-y :alt 3] 100)
             (gen/tuple
-              (gen/return "auto")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "auto"))]])
         gmap (assoc gmap :prop-overflow-y gen-prop-overflow-y)
 
         gen-prop-border-block-end-style
         (gen/tuple
-          (:nonprop-border-style gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-border-style gmap))
         gmap (assoc gmap :prop-border-block-end-style gen-prop-border-block-end-style)
 
         gen-prop-border-bottom-width
         (gen/tuple
-          (:nonprop-br-width gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-br-width gmap))
         gmap (assoc gmap :prop-border-bottom-width gen-prop-border-bottom-width)
 
         gen-prop-border-block-end-color
         (gen/tuple
-          (:nonprop-color gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-color gmap))
         gmap (assoc gmap :prop-border-block-end-color gen-prop-border-block-end-color)
 
         gen-prop-border-bottom
@@ -10978,92 +10749,86 @@
           (gen/frequency [
             [(get weights [:prop-border-bottom :plus :alt 0] 100)
               (gen/tuple
-                (:nonprop-br-width gmap)
-                (gen/return " "))]
+                (gen/return " ")
+                (:nonprop-br-width gmap))]
             [(get weights [:prop-border-bottom :plus :alt 1] 100)
               (gen/tuple
-                (:nonprop-br-style gmap)
-                (gen/return " "))]
+                (gen/return " ")
+                (:nonprop-br-style gmap))]
             [(get weights [:prop-border-bottom :plus :alt 2] 100)
               (gen/tuple
-                (:nonprop-color gmap)
-                (gen/return " "))]])))
+                (gen/return " ")
+                (:nonprop-color gmap))]])))
         gmap (assoc gmap :prop-border-bottom gen-prop-border-bottom)
 
         gen-prop--moz-border-right-colors
         (gen/frequency [
           [(get weights [:prop--moz-border-right-colors :alt 0] 100)
             (gen/tuple
-              (:nonprop-color gmap)
-              (gen/vector
-                (gen/return " "))
               (gen/return " ")
-              (:nonprop-color gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/vector
+                (:nonprop-color gmap))
+              (gen/return " ")
+              (:nonprop-color gmap))]
           [(get weights [:prop--moz-border-right-colors :alt 1] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "none"))]])
         gmap (assoc gmap :prop--moz-border-right-colors gen-prop--moz-border-right-colors)
-
-        gen-nonprop-mf-boolean
-        (gen/tuple
-          (:nonprop-mf-name gmap)
-          (gen/return " "))
-        gmap (assoc gmap :nonprop-mf-boolean gen-nonprop-mf-boolean)
 
         gen-prop--webkit-mask-position-y
         (gen/tuple
+          (gen/return " ")
           (gen/frequency [
-            [(get weights [:prop--webkit-mask-position-y :cat 0 :alt 0] 100)
+            [(get weights [:prop--webkit-mask-position-y :cat 1 :alt 0] 100)
               (gen/tuple
-                (:nonprop-length-percentage gmap)
-                (gen/return " "))]
-            [(get weights [:prop--webkit-mask-position-y :cat 0 :alt 1] 100)
+                (gen/return " ")
+                (:nonprop-length-percentage gmap))]
+            [(get weights [:prop--webkit-mask-position-y :cat 1 :alt 1] 100)
               (gen/tuple
-                (gen/return "top")
-                (gen/return " "))]
-            [(get weights [:prop--webkit-mask-position-y :cat 0 :alt 2] 100)
+                (gen/return " ")
+                (gen/return "top"))]
+            [(get weights [:prop--webkit-mask-position-y :cat 1 :alt 2] 100)
               (gen/tuple
-                (gen/return "center")
-                (gen/return " "))]
-            [(get weights [:prop--webkit-mask-position-y :cat 0 :alt 3] 100)
+                (gen/return " ")
+                (gen/return "center"))]
+            [(get weights [:prop--webkit-mask-position-y :cat 1 :alt 3] 100)
               (gen/tuple
-                (gen/return "bottom")
-                (gen/return " "))]])
+                (gen/return " ")
+                (gen/return "bottom"))]])
           (gen/vector
             (gen/tuple
-              (gen/return ", ")
+              (gen/return ",")
               (gen/frequency [
-                [(get weights [:prop--webkit-mask-position-y :cat 1 :star :cat 1 :alt 0] 100)
+                [(get weights [:prop--webkit-mask-position-y :cat 2 :star :cat 1 :alt 0] 100)
                   (gen/tuple
-                    (:nonprop-length-percentage gmap)
-                    (gen/return " "))]
-                [(get weights [:prop--webkit-mask-position-y :cat 1 :star :cat 1 :alt 1] 100)
+                    (gen/return " ")
+                    (:nonprop-length-percentage gmap))]
+                [(get weights [:prop--webkit-mask-position-y :cat 2 :star :cat 1 :alt 1] 100)
                   (gen/tuple
-                    (gen/return "top")
-                    (gen/return " "))]
-                [(get weights [:prop--webkit-mask-position-y :cat 1 :star :cat 1 :alt 2] 100)
+                    (gen/return " ")
+                    (gen/return "top"))]
+                [(get weights [:prop--webkit-mask-position-y :cat 2 :star :cat 1 :alt 2] 100)
                   (gen/tuple
-                    (gen/return "center")
-                    (gen/return " "))]
-                [(get weights [:prop--webkit-mask-position-y :cat 1 :star :cat 1 :alt 3] 100)
+                    (gen/return " ")
+                    (gen/return "center"))]
+                [(get weights [:prop--webkit-mask-position-y :cat 2 :star :cat 1 :alt 3] 100)
                   (gen/tuple
-                    (gen/return "bottom")
-                    (gen/return " "))]])))
-          (gen/return " "))
+                    (gen/return " ")
+                    (gen/return "bottom"))]]))))
         gmap (assoc gmap :prop--webkit-mask-position-y gen-prop--webkit-mask-position-y)
 
         gen-prop-page-break-inside
         (gen/frequency [
           [(get weights [:prop-page-break-inside :alt 0] 100)
             (gen/tuple
-              (gen/return "auto")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "auto"))]
           [(get weights [:prop-page-break-inside :alt 1] 100)
             (gen/tuple
-              (gen/return "avoid")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "avoid"))]])
         gmap (assoc gmap :prop-page-break-inside gen-prop-page-break-inside)
 
         gen-nonprop-offset-position
@@ -11074,48 +10839,52 @@
         (gen/frequency [
           [(get weights [:prop-font-stretch :alt 0] 100)
             (gen/tuple
-              (gen/return "normal")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "normal"))]
           [(get weights [:prop-font-stretch :alt 1] 100)
             (gen/tuple
-              (gen/return "ultra-condensed")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "ultra-condensed"))]
           [(get weights [:prop-font-stretch :alt 2] 100)
             (gen/tuple
-              (gen/return "extra-condensed")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "extra-condensed"))]
           [(get weights [:prop-font-stretch :alt 3] 100)
             (gen/tuple
-              (gen/return "condensed")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "condensed"))]
           [(get weights [:prop-font-stretch :alt 4] 100)
             (gen/tuple
-              (gen/return "semi-condensed")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "semi-condensed"))]
           [(get weights [:prop-font-stretch :alt 5] 100)
             (gen/tuple
-              (gen/return "semi-expanded")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "semi-expanded"))]
           [(get weights [:prop-font-stretch :alt 6] 100)
             (gen/tuple
-              (gen/return "expanded")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "expanded"))]
           [(get weights [:prop-font-stretch :alt 7] 100)
             (gen/tuple
-              (gen/return "extra-expanded")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "extra-expanded"))]
           [(get weights [:prop-font-stretch :alt 8] 100)
             (gen/tuple
-              (gen/return "ultra-expanded")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "ultra-expanded"))]])
         gmap (assoc gmap :prop-font-stretch gen-prop-font-stretch)
 
         gen-nonprop-font-stretch
         (:prop-font-stretch gmap)
-        gmap (assoc gmap :nonprop-font-stretch gen-nonprop-font-stretch)
+        gmap (assoc gmap :nonprop-font-stretch gen-nonprop-font-stretch)]
+    gmap))
 
+(defn- css3-generators-part-11 [gmap weights]
+  (let [
         gen-prop-text-indent
         (gen/tuple
+          (gen/return " ")
           (:nonprop-length-percentage gmap)
           (gen/return " ")
           (gen/one-of [
@@ -11124,448 +10893,435 @@
           (gen/return " ")
           (gen/one-of [
             (gen/return "")
-            (gen/return "each-line")])
-          (gen/return " "))
+            (gen/return "each-line")]))
         gmap (assoc gmap :prop-text-indent gen-prop-text-indent)
 
         gen-prop-min-inline-size
         (gen/tuple
-          (:nonprop-min-width gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-min-width gmap))
         gmap (assoc gmap :prop-min-inline-size gen-prop-min-inline-size)
 
         gen-prop-padding-inline-start
         (gen/tuple
-          (:nonprop-padding-left gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-padding-left gmap))
         gmap (assoc gmap :prop-padding-inline-start gen-prop-padding-inline-start)
 
         gen-prop-font-style
         (gen/frequency [
           [(get weights [:prop-font-style :alt 0] 100)
             (gen/tuple
-              (gen/return "normal")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "normal"))]
           [(get weights [:prop-font-style :alt 1] 100)
             (gen/tuple
-              (gen/return "italic")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "italic"))]
           [(get weights [:prop-font-style :alt 2] 100)
             (gen/tuple
-              (gen/return "oblique")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "oblique"))]])
         gmap (assoc gmap :prop-font-style gen-prop-font-style)
 
         gen-prop--moz-force-broken-image-icon
         (gen/tuple
-          (:nonprop-integer gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-integer gmap))
         gmap (assoc gmap :prop--moz-force-broken-image-icon gen-prop--moz-force-broken-image-icon)
 
         gen-prop--webkit-mask-position-x
         (gen/tuple
+          (gen/return " ")
           (gen/frequency [
-            [(get weights [:prop--webkit-mask-position-x :cat 0 :alt 0] 100)
+            [(get weights [:prop--webkit-mask-position-x :cat 1 :alt 0] 100)
               (gen/tuple
-                (:nonprop-length-percentage gmap)
-                (gen/return " "))]
-            [(get weights [:prop--webkit-mask-position-x :cat 0 :alt 1] 100)
+                (gen/return " ")
+                (:nonprop-length-percentage gmap))]
+            [(get weights [:prop--webkit-mask-position-x :cat 1 :alt 1] 100)
               (gen/tuple
-                (gen/return "left")
-                (gen/return " "))]
-            [(get weights [:prop--webkit-mask-position-x :cat 0 :alt 2] 100)
+                (gen/return " ")
+                (gen/return "left"))]
+            [(get weights [:prop--webkit-mask-position-x :cat 1 :alt 2] 100)
               (gen/tuple
-                (gen/return "center")
-                (gen/return " "))]
-            [(get weights [:prop--webkit-mask-position-x :cat 0 :alt 3] 100)
+                (gen/return " ")
+                (gen/return "center"))]
+            [(get weights [:prop--webkit-mask-position-x :cat 1 :alt 3] 100)
               (gen/tuple
-                (gen/return "right")
-                (gen/return " "))]])
+                (gen/return " ")
+                (gen/return "right"))]])
           (gen/vector
             (gen/tuple
-              (gen/return ", ")
+              (gen/return ",")
               (gen/frequency [
-                [(get weights [:prop--webkit-mask-position-x :cat 1 :star :cat 1 :alt 0] 100)
+                [(get weights [:prop--webkit-mask-position-x :cat 2 :star :cat 1 :alt 0] 100)
                   (gen/tuple
-                    (:nonprop-length-percentage gmap)
-                    (gen/return " "))]
-                [(get weights [:prop--webkit-mask-position-x :cat 1 :star :cat 1 :alt 1] 100)
+                    (gen/return " ")
+                    (:nonprop-length-percentage gmap))]
+                [(get weights [:prop--webkit-mask-position-x :cat 2 :star :cat 1 :alt 1] 100)
                   (gen/tuple
-                    (gen/return "left")
-                    (gen/return " "))]
-                [(get weights [:prop--webkit-mask-position-x :cat 1 :star :cat 1 :alt 2] 100)
+                    (gen/return " ")
+                    (gen/return "left"))]
+                [(get weights [:prop--webkit-mask-position-x :cat 2 :star :cat 1 :alt 2] 100)
                   (gen/tuple
-                    (gen/return "center")
-                    (gen/return " "))]
-                [(get weights [:prop--webkit-mask-position-x :cat 1 :star :cat 1 :alt 3] 100)
+                    (gen/return " ")
+                    (gen/return "center"))]
+                [(get weights [:prop--webkit-mask-position-x :cat 2 :star :cat 1 :alt 3] 100)
                   (gen/tuple
-                    (gen/return "right")
-                    (gen/return " "))]])))
-          (gen/return " "))
+                    (gen/return " ")
+                    (gen/return "right"))]]))))
         gmap (assoc gmap :prop--webkit-mask-position-x gen-prop--webkit-mask-position-x)
 
         gen-prop--moz-orient
         (gen/frequency [
           [(get weights [:prop--moz-orient :alt 0] 100)
             (gen/tuple
-              (gen/return "inline")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "inline"))]
           [(get weights [:prop--moz-orient :alt 1] 100)
             (gen/tuple
-              (gen/return "block")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "block"))]
           [(get weights [:prop--moz-orient :alt 2] 100)
             (gen/tuple
-              (gen/return "horizontal")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "horizontal"))]
           [(get weights [:prop--moz-orient :alt 3] 100)
             (gen/tuple
-              (gen/return "vertical")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "vertical"))]])
         gmap (assoc gmap :prop--moz-orient gen-prop--moz-orient)
 
         gen-prop-padding
         (gen/tuple
+          (gen/return " ")
           (gen/frequency [
-            [(get weights [:prop-padding :cat 0 :alt 0] 100)
+            [(get weights [:prop-padding :cat 1 :alt 0] 100)
               (gen/frequency [
-                [(get weights [:prop-padding :cat 0 :alt 0 :alt 0] 100)
+                [(get weights [:prop-padding :cat 1 :alt 0 :alt 0] 100)
                   (gen/tuple
-                    (:nonprop-length gmap)
-                    (gen/return " "))]
-                [(get weights [:prop-padding :cat 0 :alt 0 :alt 1] 100)
+                    (gen/return " ")
+                    (:nonprop-length gmap))]
+                [(get weights [:prop-padding :cat 1 :alt 0 :alt 1] 100)
                   (gen/tuple
-                    (:nonprop-percentage gmap)
-                    (gen/return " "))]])]
-            [(get weights [:prop-padding :cat 0 :alt 1] 100)
+                    (gen/return " ")
+                    (:nonprop-percentage gmap))]])]
+            [(get weights [:prop-padding :cat 1 :alt 1] 100)
               (gen/tuple
                 (gen/frequency [
-                  [(get weights [:prop-padding :cat 0 :alt 1 :cat 0 :alt 0] 100)
+                  [(get weights [:prop-padding :cat 1 :alt 1 :cat 0 :alt 0] 100)
                     (gen/tuple
-                      (:nonprop-length gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-padding :cat 0 :alt 1 :cat 0 :alt 1] 100)
+                      (gen/return " ")
+                      (:nonprop-length gmap))]
+                  [(get weights [:prop-padding :cat 1 :alt 1 :cat 0 :alt 1] 100)
                     (gen/tuple
-                      (:nonprop-percentage gmap)
-                      (gen/return " "))]])
+                      (gen/return " ")
+                      (:nonprop-percentage gmap))]])
                 (gen/frequency [
-                  [(get weights [:prop-padding :cat 0 :alt 1 :cat 1 :alt 0] 100)
+                  [(get weights [:prop-padding :cat 1 :alt 1 :cat 1 :alt 0] 100)
                     (gen/tuple
-                      (:nonprop-length gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-padding :cat 0 :alt 1 :cat 1 :alt 1] 100)
+                      (gen/return " ")
+                      (:nonprop-length gmap))]
+                  [(get weights [:prop-padding :cat 1 :alt 1 :cat 1 :alt 1] 100)
                     (gen/tuple
-                      (:nonprop-percentage gmap)
-                      (gen/return " "))]]))]
-            [(get weights [:prop-padding :cat 0 :alt 2] 100)
+                      (gen/return " ")
+                      (:nonprop-percentage gmap))]]))]
+            [(get weights [:prop-padding :cat 1 :alt 2] 100)
               (gen/tuple
                 (gen/frequency [
-                  [(get weights [:prop-padding :cat 0 :alt 2 :cat 0 :alt 0] 100)
+                  [(get weights [:prop-padding :cat 1 :alt 2 :cat 0 :alt 0] 100)
                     (gen/tuple
-                      (:nonprop-length gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-padding :cat 0 :alt 2 :cat 0 :alt 1] 100)
+                      (gen/return " ")
+                      (:nonprop-length gmap))]
+                  [(get weights [:prop-padding :cat 1 :alt 2 :cat 0 :alt 1] 100)
                     (gen/tuple
-                      (:nonprop-percentage gmap)
-                      (gen/return " "))]])
+                      (gen/return " ")
+                      (:nonprop-percentage gmap))]])
                 (gen/frequency [
-                  [(get weights [:prop-padding :cat 0 :alt 2 :cat 1 :alt 0] 100)
+                  [(get weights [:prop-padding :cat 1 :alt 2 :cat 1 :alt 0] 100)
                     (gen/tuple
-                      (:nonprop-length gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-padding :cat 0 :alt 2 :cat 1 :alt 1] 100)
+                      (gen/return " ")
+                      (:nonprop-length gmap))]
+                  [(get weights [:prop-padding :cat 1 :alt 2 :cat 1 :alt 1] 100)
                     (gen/tuple
-                      (:nonprop-percentage gmap)
-                      (gen/return " "))]])
+                      (gen/return " ")
+                      (:nonprop-percentage gmap))]])
                 (gen/frequency [
-                  [(get weights [:prop-padding :cat 0 :alt 2 :cat 2 :alt 0] 100)
+                  [(get weights [:prop-padding :cat 1 :alt 2 :cat 2 :alt 0] 100)
                     (gen/tuple
-                      (:nonprop-length gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-padding :cat 0 :alt 2 :cat 2 :alt 1] 100)
+                      (gen/return " ")
+                      (:nonprop-length gmap))]
+                  [(get weights [:prop-padding :cat 1 :alt 2 :cat 2 :alt 1] 100)
                     (gen/tuple
-                      (:nonprop-percentage gmap)
-                      (gen/return " "))]]))]
-            [(get weights [:prop-padding :cat 0 :alt 3] 100)
+                      (gen/return " ")
+                      (:nonprop-percentage gmap))]]))]
+            [(get weights [:prop-padding :cat 1 :alt 3] 100)
               (gen/tuple
                 (gen/frequency [
-                  [(get weights [:prop-padding :cat 0 :alt 3 :cat 0 :alt 0] 100)
+                  [(get weights [:prop-padding :cat 1 :alt 3 :cat 0 :alt 0] 100)
                     (gen/tuple
-                      (:nonprop-length gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-padding :cat 0 :alt 3 :cat 0 :alt 1] 100)
+                      (gen/return " ")
+                      (:nonprop-length gmap))]
+                  [(get weights [:prop-padding :cat 1 :alt 3 :cat 0 :alt 1] 100)
                     (gen/tuple
-                      (:nonprop-percentage gmap)
-                      (gen/return " "))]])
+                      (gen/return " ")
+                      (:nonprop-percentage gmap))]])
                 (gen/frequency [
-                  [(get weights [:prop-padding :cat 0 :alt 3 :cat 1 :alt 0] 100)
+                  [(get weights [:prop-padding :cat 1 :alt 3 :cat 1 :alt 0] 100)
                     (gen/tuple
-                      (:nonprop-length gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-padding :cat 0 :alt 3 :cat 1 :alt 1] 100)
+                      (gen/return " ")
+                      (:nonprop-length gmap))]
+                  [(get weights [:prop-padding :cat 1 :alt 3 :cat 1 :alt 1] 100)
                     (gen/tuple
-                      (:nonprop-percentage gmap)
-                      (gen/return " "))]])
+                      (gen/return " ")
+                      (:nonprop-percentage gmap))]])
                 (gen/frequency [
-                  [(get weights [:prop-padding :cat 0 :alt 3 :cat 2 :alt 0] 100)
+                  [(get weights [:prop-padding :cat 1 :alt 3 :cat 2 :alt 0] 100)
                     (gen/tuple
-                      (:nonprop-length gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-padding :cat 0 :alt 3 :cat 2 :alt 1] 100)
+                      (gen/return " ")
+                      (:nonprop-length gmap))]
+                  [(get weights [:prop-padding :cat 1 :alt 3 :cat 2 :alt 1] 100)
                     (gen/tuple
-                      (:nonprop-percentage gmap)
-                      (gen/return " "))]])
+                      (gen/return " ")
+                      (:nonprop-percentage gmap))]])
                 (gen/frequency [
-                  [(get weights [:prop-padding :cat 0 :alt 3 :cat 3 :alt 0] 100)
+                  [(get weights [:prop-padding :cat 1 :alt 3 :cat 3 :alt 0] 100)
                     (gen/tuple
-                      (:nonprop-length gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-padding :cat 0 :alt 3 :cat 3 :alt 1] 100)
+                      (gen/return " ")
+                      (:nonprop-length gmap))]
+                  [(get weights [:prop-padding :cat 1 :alt 3 :cat 3 :alt 1] 100)
                     (gen/tuple
-                      (:nonprop-percentage gmap)
-                      (gen/return " "))]]))]])
-          (gen/return " "))
+                      (gen/return " ")
+                      (:nonprop-percentage gmap))]]))]]))
         gmap (assoc gmap :prop-padding gen-prop-padding)
 
         gen-prop-padding-bottom
         (gen/frequency [
           [(get weights [:prop-padding-bottom :alt 0] 100)
             (gen/tuple
-              (:nonprop-length gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-length gmap))]
           [(get weights [:prop-padding-bottom :alt 1] 100)
             (gen/tuple
-              (:nonprop-percentage gmap)
-              (gen/return " "))]])
+              (gen/return " ")
+              (:nonprop-percentage gmap))]])
         gmap (assoc gmap :prop-padding-bottom gen-prop-padding-bottom)
 
         gen-prop-cursor
         (gen/tuple
+          (gen/return " ")
           (gen/tuple
+            (gen/return " ")
             (gen/vector
               (gen/tuple
+                (gen/return " ")
                 (:nonprop-url gmap)
                 (gen/return " ")
                 (gen/one-of [
                   (gen/return "")
                   (gen/tuple
+                    (gen/return " ")
                     (:nonprop-x gmap)
                     (gen/return " ")
-                    (:nonprop-y gmap)
-                    (gen/return " "))])
+                    (:nonprop-y gmap))])
                 (gen/return " ")
-                (gen/return ",")
-                (gen/return " ")))
+                (gen/return ",")))
             (gen/return " ")
             (gen/frequency [
-              [(get weights [:prop-cursor :cat 0 :cat 2 :alt 0] 100)
+              [(get weights [:prop-cursor :cat 1 :cat 3 :alt 0] 100)
                 (gen/tuple
-                  (gen/return "auto")
-                  (gen/return " "))]
-              [(get weights [:prop-cursor :cat 0 :cat 2 :alt 1] 100)
+                  (gen/return " ")
+                  (gen/return "auto"))]
+              [(get weights [:prop-cursor :cat 1 :cat 3 :alt 1] 100)
                 (gen/tuple
-                  (gen/return "default")
-                  (gen/return " "))]
-              [(get weights [:prop-cursor :cat 0 :cat 2 :alt 2] 100)
+                  (gen/return " ")
+                  (gen/return "default"))]
+              [(get weights [:prop-cursor :cat 1 :cat 3 :alt 2] 100)
                 (gen/tuple
-                  (gen/return "none")
-                  (gen/return " "))]
-              [(get weights [:prop-cursor :cat 0 :cat 2 :alt 3] 100)
+                  (gen/return " ")
+                  (gen/return "none"))]
+              [(get weights [:prop-cursor :cat 1 :cat 3 :alt 3] 100)
                 (gen/tuple
-                  (gen/return "context-menu")
-                  (gen/return " "))]
-              [(get weights [:prop-cursor :cat 0 :cat 2 :alt 4] 100)
+                  (gen/return " ")
+                  (gen/return "context-menu"))]
+              [(get weights [:prop-cursor :cat 1 :cat 3 :alt 4] 100)
                 (gen/tuple
-                  (gen/return "help")
-                  (gen/return " "))]
-              [(get weights [:prop-cursor :cat 0 :cat 2 :alt 5] 100)
+                  (gen/return " ")
+                  (gen/return "help"))]
+              [(get weights [:prop-cursor :cat 1 :cat 3 :alt 5] 100)
                 (gen/tuple
-                  (gen/return "pointer")
-                  (gen/return " "))]
-              [(get weights [:prop-cursor :cat 0 :cat 2 :alt 6] 100)
+                  (gen/return " ")
+                  (gen/return "pointer"))]
+              [(get weights [:prop-cursor :cat 1 :cat 3 :alt 6] 100)
                 (gen/tuple
-                  (gen/return "progress")
-                  (gen/return " "))]
-              [(get weights [:prop-cursor :cat 0 :cat 2 :alt 7] 100)
+                  (gen/return " ")
+                  (gen/return "progress"))]
+              [(get weights [:prop-cursor :cat 1 :cat 3 :alt 7] 100)
                 (gen/tuple
-                  (gen/return "wait")
-                  (gen/return " "))]
-              [(get weights [:prop-cursor :cat 0 :cat 2 :alt 8] 100)
+                  (gen/return " ")
+                  (gen/return "wait"))]
+              [(get weights [:prop-cursor :cat 1 :cat 3 :alt 8] 100)
                 (gen/tuple
-                  (gen/return "cell")
-                  (gen/return " "))]
-              [(get weights [:prop-cursor :cat 0 :cat 2 :alt 9] 100)
+                  (gen/return " ")
+                  (gen/return "cell"))]
+              [(get weights [:prop-cursor :cat 1 :cat 3 :alt 9] 100)
                 (gen/tuple
-                  (gen/return "crosshair")
-                  (gen/return " "))]
-              [(get weights [:prop-cursor :cat 0 :cat 2 :alt 10] 100)
+                  (gen/return " ")
+                  (gen/return "crosshair"))]
+              [(get weights [:prop-cursor :cat 1 :cat 3 :alt 10] 100)
                 (gen/tuple
-                  (gen/return "text")
-                  (gen/return " "))]
-              [(get weights [:prop-cursor :cat 0 :cat 2 :alt 11] 100)
+                  (gen/return " ")
+                  (gen/return "text"))]
+              [(get weights [:prop-cursor :cat 1 :cat 3 :alt 11] 100)
                 (gen/tuple
-                  (gen/return "vertical-text")
-                  (gen/return " "))]
-              [(get weights [:prop-cursor :cat 0 :cat 2 :alt 12] 100)
+                  (gen/return " ")
+                  (gen/return "vertical-text"))]
+              [(get weights [:prop-cursor :cat 1 :cat 3 :alt 12] 100)
                 (gen/tuple
-                  (gen/return "alias")
-                  (gen/return " "))]
-              [(get weights [:prop-cursor :cat 0 :cat 2 :alt 13] 100)
+                  (gen/return " ")
+                  (gen/return "alias"))]
+              [(get weights [:prop-cursor :cat 1 :cat 3 :alt 13] 100)
                 (gen/tuple
-                  (gen/return "copy")
-                  (gen/return " "))]
-              [(get weights [:prop-cursor :cat 0 :cat 2 :alt 14] 100)
+                  (gen/return " ")
+                  (gen/return "copy"))]
+              [(get weights [:prop-cursor :cat 1 :cat 3 :alt 14] 100)
                 (gen/tuple
-                  (gen/return "move")
-                  (gen/return " "))]
-              [(get weights [:prop-cursor :cat 0 :cat 2 :alt 15] 100)
+                  (gen/return " ")
+                  (gen/return "move"))]
+              [(get weights [:prop-cursor :cat 1 :cat 3 :alt 15] 100)
                 (gen/tuple
-                  (gen/return "no-drop")
-                  (gen/return " "))]
-              [(get weights [:prop-cursor :cat 0 :cat 2 :alt 16] 100)
+                  (gen/return " ")
+                  (gen/return "no-drop"))]
+              [(get weights [:prop-cursor :cat 1 :cat 3 :alt 16] 100)
                 (gen/tuple
-                  (gen/return "not-allowed")
-                  (gen/return " "))]
-              [(get weights [:prop-cursor :cat 0 :cat 2 :alt 17] 100)
+                  (gen/return " ")
+                  (gen/return "not-allowed"))]
+              [(get weights [:prop-cursor :cat 1 :cat 3 :alt 17] 100)
                 (gen/tuple
-                  (gen/return "e-resize")
-                  (gen/return " "))]
-              [(get weights [:prop-cursor :cat 0 :cat 2 :alt 18] 100)
+                  (gen/return " ")
+                  (gen/return "e-resize"))]
+              [(get weights [:prop-cursor :cat 1 :cat 3 :alt 18] 100)
                 (gen/tuple
-                  (gen/return "n-resize")
-                  (gen/return " "))]
-              [(get weights [:prop-cursor :cat 0 :cat 2 :alt 19] 100)
+                  (gen/return " ")
+                  (gen/return "n-resize"))]
+              [(get weights [:prop-cursor :cat 1 :cat 3 :alt 19] 100)
                 (gen/tuple
-                  (gen/return "ne-resize")
-                  (gen/return " "))]
-              [(get weights [:prop-cursor :cat 0 :cat 2 :alt 20] 100)
+                  (gen/return " ")
+                  (gen/return "ne-resize"))]
+              [(get weights [:prop-cursor :cat 1 :cat 3 :alt 20] 100)
                 (gen/tuple
-                  (gen/return "nw-resize")
-                  (gen/return " "))]
-              [(get weights [:prop-cursor :cat 0 :cat 2 :alt 21] 100)
+                  (gen/return " ")
+                  (gen/return "nw-resize"))]
+              [(get weights [:prop-cursor :cat 1 :cat 3 :alt 21] 100)
                 (gen/tuple
-                  (gen/return "s-resize")
-                  (gen/return " "))]
-              [(get weights [:prop-cursor :cat 0 :cat 2 :alt 22] 100)
+                  (gen/return " ")
+                  (gen/return "s-resize"))]
+              [(get weights [:prop-cursor :cat 1 :cat 3 :alt 22] 100)
                 (gen/tuple
-                  (gen/return "se-resize")
-                  (gen/return " "))]
-              [(get weights [:prop-cursor :cat 0 :cat 2 :alt 23] 100)
+                  (gen/return " ")
+                  (gen/return "se-resize"))]
+              [(get weights [:prop-cursor :cat 1 :cat 3 :alt 23] 100)
                 (gen/tuple
-                  (gen/return "sw-resize")
-                  (gen/return " "))]
-              [(get weights [:prop-cursor :cat 0 :cat 2 :alt 24] 100)
+                  (gen/return " ")
+                  (gen/return "sw-resize"))]
+              [(get weights [:prop-cursor :cat 1 :cat 3 :alt 24] 100)
                 (gen/tuple
-                  (gen/return "w-resize")
-                  (gen/return " "))]
-              [(get weights [:prop-cursor :cat 0 :cat 2 :alt 25] 100)
+                  (gen/return " ")
+                  (gen/return "w-resize"))]
+              [(get weights [:prop-cursor :cat 1 :cat 3 :alt 25] 100)
                 (gen/tuple
-                  (gen/return "ew-resize")
-                  (gen/return " "))]
-              [(get weights [:prop-cursor :cat 0 :cat 2 :alt 26] 100)
+                  (gen/return " ")
+                  (gen/return "ew-resize"))]
+              [(get weights [:prop-cursor :cat 1 :cat 3 :alt 26] 100)
                 (gen/tuple
-                  (gen/return "ns-resize")
-                  (gen/return " "))]
-              [(get weights [:prop-cursor :cat 0 :cat 2 :alt 27] 100)
+                  (gen/return " ")
+                  (gen/return "ns-resize"))]
+              [(get weights [:prop-cursor :cat 1 :cat 3 :alt 27] 100)
                 (gen/tuple
-                  (gen/return "nesw-resize")
-                  (gen/return " "))]
-              [(get weights [:prop-cursor :cat 0 :cat 2 :alt 28] 100)
+                  (gen/return " ")
+                  (gen/return "nesw-resize"))]
+              [(get weights [:prop-cursor :cat 1 :cat 3 :alt 28] 100)
                 (gen/tuple
-                  (gen/return "nwse-resize")
-                  (gen/return " "))]
-              [(get weights [:prop-cursor :cat 0 :cat 2 :alt 29] 100)
+                  (gen/return " ")
+                  (gen/return "nwse-resize"))]
+              [(get weights [:prop-cursor :cat 1 :cat 3 :alt 29] 100)
                 (gen/tuple
-                  (gen/return "col-resize")
-                  (gen/return " "))]
-              [(get weights [:prop-cursor :cat 0 :cat 2 :alt 30] 100)
+                  (gen/return " ")
+                  (gen/return "col-resize"))]
+              [(get weights [:prop-cursor :cat 1 :cat 3 :alt 30] 100)
                 (gen/tuple
-                  (gen/return "row-resize")
-                  (gen/return " "))]
-              [(get weights [:prop-cursor :cat 0 :cat 2 :alt 31] 100)
+                  (gen/return " ")
+                  (gen/return "row-resize"))]
+              [(get weights [:prop-cursor :cat 1 :cat 3 :alt 31] 100)
                 (gen/tuple
-                  (gen/return "all-scroll")
-                  (gen/return " "))]
-              [(get weights [:prop-cursor :cat 0 :cat 2 :alt 32] 100)
+                  (gen/return " ")
+                  (gen/return "all-scroll"))]
+              [(get weights [:prop-cursor :cat 1 :cat 3 :alt 32] 100)
                 (gen/tuple
-                  (gen/return "zoom-in")
-                  (gen/return " "))]
-              [(get weights [:prop-cursor :cat 0 :cat 2 :alt 33] 100)
+                  (gen/return " ")
+                  (gen/return "zoom-in"))]
+              [(get weights [:prop-cursor :cat 1 :cat 3 :alt 33] 100)
                 (gen/tuple
-                  (gen/return "zoom-out")
-                  (gen/return " "))]
-              [(get weights [:prop-cursor :cat 0 :cat 2 :alt 34] 100)
+                  (gen/return " ")
+                  (gen/return "zoom-out"))]
+              [(get weights [:prop-cursor :cat 1 :cat 3 :alt 34] 100)
                 (gen/tuple
-                  (gen/return "grab")
-                  (gen/return " "))]
-              [(get weights [:prop-cursor :cat 0 :cat 2 :alt 35] 100)
+                  (gen/return " ")
+                  (gen/return "grab"))]
+              [(get weights [:prop-cursor :cat 1 :cat 3 :alt 35] 100)
                 (gen/tuple
-                  (gen/return "grabbing")
-                  (gen/return " "))]])
-            (gen/return " "))
-          (gen/return " "))
+                  (gen/return " ")
+                  (gen/return "grabbing"))]])))
         gmap (assoc gmap :prop-cursor gen-prop-cursor)
 
         gen-prop-animation-iteration-count
         (gen/tuple
+          (gen/return " ")
           (:nonprop-single-animation-iteration-count gmap)
           (gen/vector
             (gen/tuple
-              (gen/return ", ")
-              (:nonprop-single-animation-iteration-count gmap)))
-          (gen/return " "))
+              (gen/return ",")
+              (:nonprop-single-animation-iteration-count gmap))))
         gmap (assoc gmap :prop-animation-iteration-count gen-prop-animation-iteration-count)
 
         gen-prop-font-feature-settings
         (gen/frequency [
           [(get weights [:prop-font-feature-settings :alt 0] 100)
             (gen/tuple
-              (gen/return "normal")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "normal"))]
           [(get weights [:prop-font-feature-settings :alt 1] 100)
             (gen/tuple
+              (gen/return " ")
               (:nonprop-feature-tag-value gmap)
               (gen/vector
                 (gen/tuple
-                  (gen/return ", ")
-                  (:nonprop-feature-tag-value gmap)))
-              (gen/return " "))]])
+                  (gen/return ",")
+                  (:nonprop-feature-tag-value gmap))))]])
         gmap (assoc gmap :prop-font-feature-settings gen-prop-font-feature-settings)
 
         gen-prop-perspective
         (gen/frequency [
           [(get weights [:prop-perspective :alt 0] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "none"))]
           [(get weights [:prop-perspective :alt 1] 100)
             (gen/tuple
-              (:nonprop-length gmap)
-              (gen/return " "))]])
+              (gen/return " ")
+              (:nonprop-length gmap))]])
         gmap (assoc gmap :prop-perspective gen-prop-perspective)
-
-        gen-nonprop-time-percentage
-        (gen/frequency [
-          [(get weights [:nonprop-time-percentage :alt 0] 100)
-            (gen/tuple
-              (:nonprop-time gmap)
-              (gen/return " "))]
-          [(get weights [:nonprop-time-percentage :alt 1] 100)
-            (gen/tuple
-              (:nonprop-percentage gmap)
-              (gen/return " "))]])
-        gmap (assoc gmap :nonprop-time-percentage gen-nonprop-time-percentage)
 
         gen-prop-border-top-right-radius
         (gen/tuple
+          (gen/return " ")
           (gen/frequency [
-            [(get weights [:prop-border-top-right-radius :cat 0 :alt 0] 100)
+            [(get weights [:prop-border-top-right-radius :cat 1 :alt 0] 100)
               (:nonprop-length-percentage gmap)]
-            [(get weights [:prop-border-top-right-radius :cat 0 :alt 1] 100)
+            [(get weights [:prop-border-top-right-radius :cat 1 :alt 1] 100)
               (gen/tuple
                 (:nonprop-length-percentage gmap)
-                (:nonprop-length-percentage gmap))]])
-          (gen/return " "))
+                (:nonprop-length-percentage gmap))]]))
         gmap (assoc gmap :prop-border-top-right-radius gen-prop-border-top-right-radius)
 
         gen-nonprop-font-size
@@ -11577,89 +11333,84 @@
         gmap (assoc gmap :nonprop-background-color gen-nonprop-background-color)
 
         gen-nonprop-final-bg-layer
-        (gen/tuple
-          (gen/such-that not-empty (gen/vector
-            (gen/frequency [
-              [(get weights [:nonprop-final-bg-layer :cat 0 :plus :alt 0] 100)
-                (gen/tuple
-                  (:nonprop-bg-image gmap)
-                  (gen/return " "))]
-              [(get weights [:nonprop-final-bg-layer :cat 0 :plus :alt 1] 100)
-                (gen/tuple
-                  (:nonprop-position gmap)
-                  (gen/return " "))]])))
-          (gen/such-that not-empty (gen/vector
-            (gen/frequency [
-              [(get weights [:nonprop-final-bg-layer :cat 1 :plus :alt 0] 100)
-                (gen/tuple
-                  (gen/one-of [
-                    (gen/return "")
-                    (gen/tuple
-                      (gen/return "/")
-                      (gen/return " ")
-                      (:nonprop-bg-size gmap)
-                      (gen/return " "))])
-                  (gen/return " "))]
-              [(get weights [:nonprop-final-bg-layer :cat 1 :plus :alt 1] 100)
-                (gen/tuple
-                  (:nonprop-repeat-style gmap)
-                  (gen/return " "))]
-              [(get weights [:nonprop-final-bg-layer :cat 1 :plus :alt 2] 100)
-                (gen/tuple
-                  (:nonprop-attachment gmap)
-                  (gen/return " "))]
-              [(get weights [:nonprop-final-bg-layer :cat 1 :plus :alt 3] 100)
-                (gen/tuple
-                  (:nonprop-box gmap)
-                  (gen/return " "))]
-              [(get weights [:nonprop-final-bg-layer :cat 1 :plus :alt 4] 100)
-                (gen/tuple
-                  (:nonprop-box gmap)
-                  (gen/return " "))]
-              [(get weights [:nonprop-final-bg-layer :cat 1 :plus :alt 5] 100)
-                (gen/tuple
-                  (:nonprop-background-color gmap)
-                  (gen/return " "))]]))))
+        (gen/such-that not-empty (gen/vector
+          (gen/frequency [
+            [(get weights [:nonprop-final-bg-layer :plus :alt 0] 100)
+              (gen/tuple
+                (gen/return " ")
+                (:nonprop-bg-image gmap))]
+            [(get weights [:nonprop-final-bg-layer :plus :alt 1] 100)
+              (gen/tuple
+                (gen/return " ")
+                (:nonprop-position gmap)
+                (gen/return " ")
+                (gen/one-of [
+                  (gen/return "")
+                  (gen/tuple
+                    (gen/return " ")
+                    (gen/return "/")
+                    (gen/return " ")
+                    (:nonprop-bg-size gmap))]))]
+            [(get weights [:nonprop-final-bg-layer :plus :alt 2] 100)
+              (gen/tuple
+                (gen/return " ")
+                (:nonprop-repeat-style gmap))]
+            [(get weights [:nonprop-final-bg-layer :plus :alt 3] 100)
+              (gen/tuple
+                (gen/return " ")
+                (:nonprop-attachment gmap))]
+            [(get weights [:nonprop-final-bg-layer :plus :alt 4] 100)
+              (gen/tuple
+                (gen/return " ")
+                (:nonprop-box gmap))]
+            [(get weights [:nonprop-final-bg-layer :plus :alt 5] 100)
+              (gen/tuple
+                (gen/return " ")
+                (:nonprop-box gmap))]
+            [(get weights [:nonprop-final-bg-layer :plus :alt 6] 100)
+              (gen/tuple
+                (gen/return " ")
+                (:nonprop-background-color gmap))]])))
         gmap (assoc gmap :nonprop-final-bg-layer gen-nonprop-final-bg-layer)
 
         gen-prop-box-orient
         (gen/frequency [
           [(get weights [:prop-box-orient :alt 0] 100)
             (gen/tuple
-              (gen/return "horizontal")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "horizontal"))]
           [(get weights [:prop-box-orient :alt 1] 100)
             (gen/tuple
-              (gen/return "vertical")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "vertical"))]
           [(get weights [:prop-box-orient :alt 2] 100)
             (gen/tuple
-              (gen/return "inline-axis")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "inline-axis"))]
           [(get weights [:prop-box-orient :alt 3] 100)
             (gen/tuple
-              (gen/return "block-axis")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "block-axis"))]
           [(get weights [:prop-box-orient :alt 4] 100)
             (gen/tuple
-              (gen/return "inherit")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "inherit"))]])
         gmap (assoc gmap :prop-box-orient gen-prop-box-orient)
 
         gen-prop-margin-right
         (gen/frequency [
           [(get weights [:prop-margin-right :alt 0] 100)
             (gen/tuple
-              (:nonprop-length gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-length gmap))]
           [(get weights [:prop-margin-right :alt 1] 100)
             (gen/tuple
-              (:nonprop-percentage gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-percentage gmap))]
           [(get weights [:prop-margin-right :alt 2] 100)
             (gen/tuple
-              (gen/return "auto")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "auto"))]])
         gmap (assoc gmap :prop-margin-right gen-prop-margin-right)
 
         gen-nonprop-outline-width
@@ -11668,41 +11419,41 @@
 
         gen-prop-outline
         (gen/tuple
+          (gen/return " ")
           (gen/such-that not-empty (gen/vector
             (gen/frequency [
-              [(get weights [:prop-outline :cat 0 :plus :alt 0] 100)
+              [(get weights [:prop-outline :cat 1 :plus :alt 0] 100)
                 (gen/tuple
-                  (:nonprop-outline-color gmap)
-                  (gen/return " "))]
-              [(get weights [:prop-outline :cat 0 :plus :alt 1] 100)
+                  (gen/return " ")
+                  (:nonprop-outline-color gmap))]
+              [(get weights [:prop-outline :cat 1 :plus :alt 1] 100)
                 (gen/tuple
-                  (:nonprop-outline-style gmap)
-                  (gen/return " "))]
-              [(get weights [:prop-outline :cat 0 :plus :alt 2] 100)
+                  (gen/return " ")
+                  (:nonprop-outline-style gmap))]
+              [(get weights [:prop-outline :cat 1 :plus :alt 2] 100)
                 (gen/tuple
-                  (:nonprop-outline-width gmap)
-                  (gen/return " "))]])))
-          (gen/return " "))
+                  (gen/return " ")
+                  (:nonprop-outline-width gmap))]]))))
         gmap (assoc gmap :prop-outline gen-prop-outline)
 
         gen-prop-text-rendering
         (gen/frequency [
           [(get weights [:prop-text-rendering :alt 0] 100)
             (gen/tuple
-              (gen/return "auto")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "auto"))]
           [(get weights [:prop-text-rendering :alt 1] 100)
             (gen/tuple
-              (gen/return "optimizeSpeed")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "optimizeSpeed"))]
           [(get weights [:prop-text-rendering :alt 2] 100)
             (gen/tuple
-              (gen/return "optimizeLegibility")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "optimizeLegibility"))]
           [(get weights [:prop-text-rendering :alt 3] 100)
             (gen/tuple
-              (gen/return "geometricPrecision")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "geometricPrecision"))]])
         gmap (assoc gmap :prop-text-rendering gen-prop-text-rendering)
 
         gen-nonprop-offset-distance
@@ -11711,131 +11462,76 @@
 
         gen-prop--webkit-mask
         (gen/tuple
+          (gen/return " ")
           (:nonprop-mask-image gmap)
           (gen/return " ")
           (gen/vector
             (gen/such-that not-empty (gen/vector
               (gen/frequency [
-                [(get weights [:prop--webkit-mask :cat 2 :star :plus :alt 0] 100)
+                [(get weights [:prop--webkit-mask :cat 3 :star :plus :alt 0] 100)
                   (gen/tuple
-                    (:nonprop-mask-repeat gmap)
-                    (gen/return " "))]
-                [(get weights [:prop--webkit-mask :cat 2 :star :plus :alt 1] 100)
+                    (gen/return " ")
+                    (:nonprop-mask-repeat gmap))]
+                [(get weights [:prop--webkit-mask :cat 3 :star :plus :alt 1] 100)
                   (gen/tuple
-                    (:nonprop-mask-attachment gmap)
-                    (gen/return " "))]
-                [(get weights [:prop--webkit-mask :cat 2 :star :plus :alt 2] 100)
+                    (gen/return " ")
+                    (:nonprop-mask-attachment gmap))]
+                [(get weights [:prop--webkit-mask :cat 3 :star :plus :alt 2] 100)
                   (gen/tuple
-                    (:nonprop-mask-position gmap)
-                    (gen/return " "))]
-                [(get weights [:prop--webkit-mask :cat 2 :star :plus :alt 3] 100)
+                    (gen/return " ")
+                    (:nonprop-mask-position gmap))]
+                [(get weights [:prop--webkit-mask :cat 3 :star :plus :alt 3] 100)
                   (gen/tuple
-                    (:nonprop-mask-origin gmap)
-                    (gen/return " "))]
-                [(get weights [:prop--webkit-mask :cat 2 :star :plus :alt 4] 100)
+                    (gen/return " ")
+                    (:nonprop-mask-origin gmap))]
+                [(get weights [:prop--webkit-mask :cat 3 :star :plus :alt 4] 100)
                   (gen/tuple
-                    (:nonprop-mask-clip gmap)
-                    (gen/return " "))]]))))
-          (gen/return " "))
+                    (gen/return " ")
+                    (:nonprop-mask-clip gmap))]])))))
         gmap (assoc gmap :prop--webkit-mask gen-prop--webkit-mask)
 
         gen-prop-border-block-start-color
         (gen/tuple
-          (:nonprop-color gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-color gmap))
         gmap (assoc gmap :prop-border-block-start-color gen-prop-border-block-start-color)
 
         gen-prop-mask
         (gen/tuple
+          (gen/return " ")
           (:nonprop-mask-layer gmap)
           (gen/vector
             (gen/tuple
-              (gen/return ", ")
-              (:nonprop-mask-layer gmap)))
-          (gen/return " "))
+              (gen/return ",")
+              (:nonprop-mask-layer gmap))))
         gmap (assoc gmap :prop-mask gen-prop-mask)
-
-        gen-nonprop-name-repeat
-        (gen/return "STUB_name_repeat")
-        gmap (assoc gmap :nonprop-name-repeat gen-nonprop-name-repeat)
-
-        gen-func-image
-        (gen/tuple
-          (gen/return "image(")
-          (gen/tuple
-            (gen/one-of [
-              (gen/return "")
-              (gen/frequency [
-                [(get weights [:func-image :cat 1 :cat 0 :opt :alt 0] 100)
-                  (gen/tuple
-                    (:nonprop-image gmap)
-                    (gen/return " "))]
-                [(get weights [:func-image :cat 1 :cat 0 :opt :alt 1] 100)
-                  (gen/tuple
-                    (:nonprop-string gmap)
-                    (gen/return " "))]])])
-            (gen/return " ")
-            (gen/return ",")
-            (gen/return " ")
-            (gen/one-of [
-              (gen/return "")
-              (:nonprop-color gmap)])
-            (gen/return " "))
-          (gen/return " ")
-          (gen/return ")")
-          (gen/return " "))
-        gmap (assoc gmap :func-image gen-func-image)
 
         gen-prop-offset-block-start
         (gen/tuple
-          (:nonprop-left gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-left gmap))
         gmap (assoc gmap :prop-offset-block-start gen-prop-offset-block-start)
 
         gen-prop-mix-blend-mode
         (gen/tuple
-          (:nonprop-blend-mode gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-blend-mode gmap))
         gmap (assoc gmap :prop-mix-blend-mode gen-prop-mix-blend-mode)
 
         gen-prop-background-origin
         (gen/tuple
+          (gen/return " ")
           (:nonprop-box gmap)
           (gen/vector
             (gen/tuple
-              (gen/return ", ")
-              (:nonprop-box gmap)))
-          (gen/return " "))
+              (gen/return ",")
+              (:nonprop-box gmap))))
         gmap (assoc gmap :prop-background-origin gen-prop-background-origin)
-
-        gen-nonprop-general-enclosed
-        (gen/frequency [
-          [(get weights [:nonprop-general-enclosed :alt 0] 100)
-            (gen/tuple
-              (gen/tuple
-                (:nonprop-function-token gmap)
-                (gen/return " ")
-                (:nonprop-any-value gmap)
-                (gen/return " ")
-                (gen/return ")")
-                (gen/return " "))
-              (gen/return " "))]
-          [(get weights [:nonprop-general-enclosed :alt 1] 100)
-            (gen/tuple
-              (gen/return "(")
-              (gen/return " ")
-              (:nonprop-ident gmap)
-              (gen/return " ")
-              (:nonprop-any-value gmap)
-              (gen/return " ")
-              (gen/return ")")
-              (gen/return " "))]])
-        gmap (assoc gmap :nonprop-general-enclosed gen-nonprop-general-enclosed)
 
         gen-prop-border-block-start-width
         (gen/tuple
-          (:nonprop-border-width gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-border-width gmap))
         gmap (assoc gmap :prop-border-block-start-width gen-prop-border-block-start-width)
 
         gen-nonprop-font-style
@@ -11844,356 +11540,338 @@
 
         gen-prop--moz-outline-radius-bottomleft
         (gen/tuple
-          (:nonprop-outline-radius gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-outline-radius gmap))
         gmap (assoc gmap :prop--moz-outline-radius-bottomleft gen-prop--moz-outline-radius-bottomleft)
 
         gen-nonprop-display-box
         (gen/frequency [
           [(get weights [:nonprop-display-box :alt 0] 100)
             (gen/tuple
-              (gen/return "contents")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "contents"))]
           [(get weights [:nonprop-display-box :alt 1] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]])
-        gmap (assoc gmap :nonprop-display-box gen-nonprop-display-box)]
-    gmap))
+              (gen/return " ")
+              (gen/return "none"))]])
+        gmap (assoc gmap :nonprop-display-box gen-nonprop-display-box)
 
-(defn- css3-generators-part-12 [gmap weights]
-  (let [
         gen-prop-display
         (gen/frequency [
           [(get weights [:prop-display :alt 0] 100)
             (gen/tuple
+              (gen/return " ")
               (gen/such-that not-empty (gen/vector
                 (gen/frequency [
-                  [(get weights [:prop-display :alt 0 :cat 0 :plus :alt 0] 100)
+                  [(get weights [:prop-display :alt 0 :cat 1 :plus :alt 0] 100)
                     (gen/tuple
-                      (:nonprop-display-outside gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-display :alt 0 :cat 0 :plus :alt 1] 100)
+                      (gen/return " ")
+                      (:nonprop-display-outside gmap))]
+                  [(get weights [:prop-display :alt 0 :cat 1 :plus :alt 1] 100)
                     (gen/tuple
-                      (:nonprop-display-inside gmap)
-                      (gen/return " "))]])))
-              (gen/return " "))]
+                      (gen/return " ")
+                      (:nonprop-display-inside gmap))]]))))]
           [(get weights [:prop-display :alt 1] 100)
             (gen/tuple
-              (:nonprop-display-listitem gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-display-listitem gmap))]
           [(get weights [:prop-display :alt 2] 100)
             (gen/tuple
-              (:nonprop-display-internal gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-display-internal gmap))]
           [(get weights [:prop-display :alt 3] 100)
             (gen/tuple
-              (:nonprop-display-box gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-display-box gmap))]
           [(get weights [:prop-display :alt 4] 100)
             (gen/tuple
-              (:nonprop-display-legacy gmap)
-              (gen/return " "))]])
+              (gen/return " ")
+              (:nonprop-display-legacy gmap))]])
         gmap (assoc gmap :prop-display gen-prop-display)
 
         gen-prop-isolation
         (gen/frequency [
           [(get weights [:prop-isolation :alt 0] 100)
             (gen/tuple
-              (gen/return "auto")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "auto"))]
           [(get weights [:prop-isolation :alt 1] 100)
             (gen/tuple
-              (gen/return "isolate")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "isolate"))]])
         gmap (assoc gmap :prop-isolation gen-prop-isolation)
 
         gen-nonprop-content-list
         (gen/tuple
+          (gen/return " ")
           (gen/such-that not-empty (gen/vector
             (gen/frequency [
-              [(get weights [:nonprop-content-list :cat 0 :plus :alt 0] 100)
+              [(get weights [:nonprop-content-list :cat 1 :plus :alt 0] 100)
                 (gen/tuple
-                  (:nonprop-string gmap)
-                  (gen/return " "))]
-              [(get weights [:nonprop-content-list :cat 0 :plus :alt 1] 100)
+                  (gen/return " ")
+                  (:nonprop-string gmap))]
+              [(get weights [:nonprop-content-list :cat 1 :plus :alt 1] 100)
                 (gen/tuple
-                  (gen/return "contents")
-                  (gen/return " "))]
-              [(get weights [:nonprop-content-list :cat 0 :plus :alt 2] 100)
+                  (gen/return " ")
+                  (gen/return "contents"))]
+              [(get weights [:nonprop-content-list :cat 1 :plus :alt 2] 100)
                 (gen/tuple
-                  (:nonprop-url gmap)
-                  (gen/return " "))]
-              [(get weights [:nonprop-content-list :cat 0 :plus :alt 3] 100)
+                  (gen/return " ")
+                  (:nonprop-url gmap))]
+              [(get weights [:nonprop-content-list :cat 1 :plus :alt 3] 100)
                 (gen/tuple
-                  (:nonprop-quote gmap)
-                  (gen/return " "))]
-              [(get weights [:nonprop-content-list :cat 0 :plus :alt 4] 100)
+                  (gen/return " ")
+                  (:nonprop-quote gmap))]
+              [(get weights [:nonprop-content-list :cat 1 :plus :alt 4] 100)
                 (gen/tuple
-                  (:nonprop-target gmap)
-                  (gen/return " "))]
-              [(get weights [:nonprop-content-list :cat 0 :plus :alt 5] 100)
+                  (gen/return " ")
+                  (:nonprop-target gmap))]
+              [(get weights [:nonprop-content-list :cat 1 :plus :alt 5] 100)
                 (gen/tuple
-                  (:func-leader gmap)
-                  (gen/return " "))]])))
-          (gen/return " "))
+                  (gen/return " ")
+                  (:func-leader gmap))]]))))
         gmap (assoc gmap :nonprop-content-list gen-nonprop-content-list)
 
         gen-prop-content
         (gen/tuple
+          (gen/return " ")
           (gen/vector
             (gen/tuple
+              (gen/return " ")
               (:nonprop-image gmap)
               (gen/return " ")
-              (gen/return ",")
-              (gen/return " ")))
+              (gen/return ",")))
           (gen/return " ")
           (gen/frequency [
-            [(get weights [:prop-content :cat 2 :alt 0] 100)
+            [(get weights [:prop-content :cat 3 :alt 0] 100)
               (gen/tuple
-                (gen/return "normal")
-                (gen/return " "))]
-            [(get weights [:prop-content :cat 2 :alt 1] 100)
+                (gen/return " ")
+                (gen/return "normal"))]
+            [(get weights [:prop-content :cat 3 :alt 1] 100)
               (gen/tuple
-                (gen/return "none")
-                (gen/return " "))]
-            [(get weights [:prop-content :cat 2 :alt 2] 100)
+                (gen/return " ")
+                (gen/return "none"))]
+            [(get weights [:prop-content :cat 3 :alt 2] 100)
               (gen/tuple
-                (:nonprop-content-list gmap)
-                (gen/return " "))]])
+                (gen/return " ")
+                (:nonprop-content-list gmap))]])
           (gen/return " ")
           (gen/one-of [
             (gen/return "")
             (gen/tuple
+              (gen/return " ")
               (gen/return "/")
               (gen/return " ")
-              (:nonprop-string gmap)
-              (gen/return " "))])
-          (gen/return " "))
+              (:nonprop-string gmap))]))
         gmap (assoc gmap :prop-content gen-prop-content)
 
         gen-prop-text-align
         (gen/frequency [
           [(get weights [:prop-text-align :alt 0] 100)
             (gen/tuple
-              (gen/return "start")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "start"))]
           [(get weights [:prop-text-align :alt 1] 100)
             (gen/tuple
-              (gen/return "end")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "end"))]
           [(get weights [:prop-text-align :alt 2] 100)
             (gen/tuple
-              (gen/return "left")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "left"))]
           [(get weights [:prop-text-align :alt 3] 100)
             (gen/tuple
-              (gen/return "right")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "right"))]
           [(get weights [:prop-text-align :alt 4] 100)
             (gen/tuple
-              (gen/return "center")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "center"))]
           [(get weights [:prop-text-align :alt 5] 100)
             (gen/tuple
-              (gen/return "justify")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "justify"))]
           [(get weights [:prop-text-align :alt 6] 100)
             (gen/tuple
-              (gen/return "match-parent")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "match-parent"))]])
         gmap (assoc gmap :prop-text-align gen-prop-text-align)
 
         gen-prop-mask-type
         (gen/frequency [
           [(get weights [:prop-mask-type :alt 0] 100)
             (gen/tuple
-              (gen/return "luminance")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "luminance"))]
           [(get weights [:prop-mask-type :alt 1] 100)
             (gen/tuple
-              (gen/return "alpha")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "alpha"))]])
         gmap (assoc gmap :prop-mask-type gen-prop-mask-type)
 
         gen-prop-counter-increment
         (gen/frequency [
           [(get weights [:prop-counter-increment :alt 0] 100)
             (gen/tuple
+              (gen/return " ")
               (gen/such-that not-empty (gen/vector
                 (gen/tuple
+                  (gen/return " ")
                   (:nonprop-custom-ident gmap)
                   (gen/return " ")
                   (gen/one-of [
                     (gen/return "")
-                    (:nonprop-integer gmap)])
-                  (gen/return " "))))
-              (gen/return " "))]
+                    (:nonprop-integer gmap)])))))]
           [(get weights [:prop-counter-increment :alt 1] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "none"))]])
         gmap (assoc gmap :prop-counter-increment gen-prop-counter-increment)
-
-        gen-nonprop-line-name-list
-        (gen/tuple
-          (gen/such-that not-empty (gen/vector
-            (gen/frequency [
-              [(get weights [:nonprop-line-name-list :cat 0 :plus :alt 0] 100)
-                (gen/tuple
-                  (:nonprop-line-names gmap)
-                  (gen/return " "))]
-              [(get weights [:nonprop-line-name-list :cat 0 :plus :alt 1] 100)
-                (gen/tuple
-                  (:nonprop-name-repeat gmap)
-                  (gen/return " "))]])))
-          (gen/return " "))
-        gmap (assoc gmap :nonprop-line-name-list gen-nonprop-line-name-list)
 
         gen-prop-box-suppress
         (gen/frequency [
           [(get weights [:prop-box-suppress :alt 0] 100)
             (gen/tuple
-              (gen/return "show")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "show"))]
           [(get weights [:prop-box-suppress :alt 1] 100)
             (gen/tuple
-              (gen/return "discard")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "discard"))]
           [(get weights [:prop-box-suppress :alt 2] 100)
             (gen/tuple
-              (gen/return "hide")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "hide"))]])
         gmap (assoc gmap :prop-box-suppress gen-prop-box-suppress)
 
         gen-prop-contain
         (gen/frequency [
           [(get weights [:prop-contain :alt 0] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "none"))]
           [(get weights [:prop-contain :alt 1] 100)
             (gen/tuple
-              (gen/return "strict")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "strict"))]
           [(get weights [:prop-contain :alt 2] 100)
             (gen/tuple
-              (gen/return "content")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "content"))]
           [(get weights [:prop-contain :alt 3] 100)
             (gen/tuple
+              (gen/return " ")
               (gen/such-that not-empty (gen/vector
                 (gen/frequency [
-                  [(get weights [:prop-contain :alt 3 :cat 0 :plus :alt 0] 100)
+                  [(get weights [:prop-contain :alt 3 :cat 1 :plus :alt 0] 100)
                     (gen/tuple
-                      (gen/return "size")
-                      (gen/return " "))]
-                  [(get weights [:prop-contain :alt 3 :cat 0 :plus :alt 1] 100)
+                      (gen/return " ")
+                      (gen/return "size"))]
+                  [(get weights [:prop-contain :alt 3 :cat 1 :plus :alt 1] 100)
                     (gen/tuple
-                      (gen/return "layout")
-                      (gen/return " "))]
-                  [(get weights [:prop-contain :alt 3 :cat 0 :plus :alt 2] 100)
+                      (gen/return " ")
+                      (gen/return "layout"))]
+                  [(get weights [:prop-contain :alt 3 :cat 1 :plus :alt 2] 100)
                     (gen/tuple
-                      (gen/return "style")
-                      (gen/return " "))]
-                  [(get weights [:prop-contain :alt 3 :cat 0 :plus :alt 3] 100)
+                      (gen/return " ")
+                      (gen/return "style"))]
+                  [(get weights [:prop-contain :alt 3 :cat 1 :plus :alt 3] 100)
                     (gen/tuple
-                      (gen/return "paint")
-                      (gen/return " "))]])))
-              (gen/return " "))]])
+                      (gen/return " ")
+                      (gen/return "paint"))]]))))]])
         gmap (assoc gmap :prop-contain gen-prop-contain)
 
         gen-prop-color
         (gen/tuple
-          (:nonprop-color gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-color gmap))
         gmap (assoc gmap :prop-color gen-prop-color)
 
         gen-prop-box-flex-group
         (gen/tuple
-          (:nonprop-integer gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-integer gmap))
         gmap (assoc gmap :prop-box-flex-group gen-prop-box-flex-group)
 
         gen-prop--moz-image-region
         (gen/frequency [
           [(get weights [:prop--moz-image-region :alt 0] 100)
             (gen/tuple
-              (:nonprop-shape gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-shape gmap))]
           [(get weights [:prop--moz-image-region :alt 1] 100)
             (gen/tuple
-              (gen/return "auto")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "auto"))]])
         gmap (assoc gmap :prop--moz-image-region gen-prop--moz-image-region)
 
         gen-prop-font-variation-settings
         (gen/frequency [
           [(get weights [:prop-font-variation-settings :alt 0] 100)
             (gen/tuple
-              (gen/return "normal")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "normal"))]
           [(get weights [:prop-font-variation-settings :alt 1] 100)
             (gen/tuple
+              (gen/return " ")
               (gen/tuple
+                (gen/return " ")
                 (:nonprop-string gmap)
                 (gen/return " ")
-                (:nonprop-number gmap)
-                (gen/return " "))
+                (:nonprop-number gmap))
               (gen/vector
                 (gen/tuple
-                  (gen/return ", ")
+                  (gen/return ",")
                   (gen/tuple
+                    (gen/return " ")
                     (:nonprop-string gmap)
                     (gen/return " ")
-                    (:nonprop-number gmap)
-                    (gen/return " "))))
-              (gen/return " "))]])
+                    (:nonprop-number gmap)))))]])
         gmap (assoc gmap :prop-font-variation-settings gen-prop-font-variation-settings)
 
         gen-prop-quotes
         (gen/frequency [
           [(get weights [:prop-quotes :alt 0] 100)
             (gen/tuple
+              (gen/return " ")
               (gen/such-that not-empty (gen/vector
                 (gen/tuple
-                  (:nonprop-string gmap)
                   (gen/return " ")
                   (:nonprop-string gmap)
-                  (gen/return " "))))
-              (gen/return " "))]
+                  (gen/return " ")
+                  (:nonprop-string gmap)))))]
           [(get weights [:prop-quotes :alt 1] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "none"))]])
         gmap (assoc gmap :prop-quotes gen-prop-quotes)
 
         gen-prop-unicode-bidi
         (gen/frequency [
           [(get weights [:prop-unicode-bidi :alt 0] 100)
             (gen/tuple
-              (gen/return "normal")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "normal"))]
           [(get weights [:prop-unicode-bidi :alt 1] 100)
             (gen/tuple
-              (gen/return "embed")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "embed"))]
           [(get weights [:prop-unicode-bidi :alt 2] 100)
             (gen/tuple
-              (gen/return "isolate")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "isolate"))]
           [(get weights [:prop-unicode-bidi :alt 3] 100)
             (gen/tuple
-              (gen/return "bidi-override")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "bidi-override"))]
           [(get weights [:prop-unicode-bidi :alt 4] 100)
             (gen/tuple
-              (gen/return "isolate-override")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "isolate-override"))]
           [(get weights [:prop-unicode-bidi :alt 5] 100)
             (gen/tuple
-              (gen/return "plaintext")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "plaintext"))]])
         gmap (assoc gmap :prop-unicode-bidi gen-prop-unicode-bidi)
 
         gen-prop-grid-auto-flow
@@ -12201,516 +11879,497 @@
           (gen/frequency [
             [(get weights [:prop-grid-auto-flow :plus :alt 0] 100)
               (gen/tuple
+                (gen/return " ")
                 (gen/frequency [
-                  [(get weights [:prop-grid-auto-flow :plus :alt 0 :cat 0 :alt 0] 100)
+                  [(get weights [:prop-grid-auto-flow :plus :alt 0 :cat 1 :alt 0] 100)
                     (gen/tuple
-                      (gen/return "row")
-                      (gen/return " "))]
-                  [(get weights [:prop-grid-auto-flow :plus :alt 0 :cat 0 :alt 1] 100)
+                      (gen/return " ")
+                      (gen/return "row"))]
+                  [(get weights [:prop-grid-auto-flow :plus :alt 0 :cat 1 :alt 1] 100)
                     (gen/tuple
-                      (gen/return "column")
-                      (gen/return " "))]])
-                (gen/return " "))]
+                      (gen/return " ")
+                      (gen/return "column"))]]))]
             [(get weights [:prop-grid-auto-flow :plus :alt 1] 100)
               (gen/tuple
-                (gen/return "dense")
-                (gen/return " "))]])))
+                (gen/return " ")
+                (gen/return "dense"))]])))
         gmap (assoc gmap :prop-grid-auto-flow gen-prop-grid-auto-flow)
 
         gen-prop-box-flex
         (gen/tuple
-          (:nonprop-number gmap)
-          (gen/return " "))
-        gmap (assoc gmap :prop-box-flex gen-prop-box-flex)
+          (gen/return " ")
+          (:nonprop-number gmap))
+        gmap (assoc gmap :prop-box-flex gen-prop-box-flex)]
+    gmap))
 
+(defn- css3-generators-part-12 [gmap weights]
+  (let [
         gen-prop-border-bottom-left-radius
         (gen/tuple
+          (gen/return " ")
           (gen/frequency [
-            [(get weights [:prop-border-bottom-left-radius :cat 0 :alt 0] 100)
+            [(get weights [:prop-border-bottom-left-radius :cat 1 :alt 0] 100)
               (:nonprop-length-percentage gmap)]
-            [(get weights [:prop-border-bottom-left-radius :cat 0 :alt 1] 100)
+            [(get weights [:prop-border-bottom-left-radius :cat 1 :alt 1] 100)
               (gen/tuple
                 (:nonprop-length-percentage gmap)
-                (:nonprop-length-percentage gmap))]])
-          (gen/return " "))
+                (:nonprop-length-percentage gmap))]]))
         gmap (assoc gmap :prop-border-bottom-left-radius gen-prop-border-bottom-left-radius)
 
         gen-prop-border-block-end-width
         (gen/tuple
-          (:nonprop-border-width gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-border-width gmap))
         gmap (assoc gmap :prop-border-block-end-width gen-prop-border-block-end-width)
-
-        gen-nonprop-generic-name
-        (gen/frequency [
-          [(get weights [:nonprop-generic-name :alt 0] 100)
-            (gen/tuple
-              (gen/return "serif")
-              (gen/return " "))]
-          [(get weights [:nonprop-generic-name :alt 1] 100)
-            (gen/tuple
-              (gen/return "sans-serif")
-              (gen/return " "))]
-          [(get weights [:nonprop-generic-name :alt 2] 100)
-            (gen/tuple
-              (gen/return "cursive")
-              (gen/return " "))]
-          [(get weights [:nonprop-generic-name :alt 3] 100)
-            (gen/tuple
-              (gen/return "fantasy")
-              (gen/return " "))]
-          [(get weights [:nonprop-generic-name :alt 4] 100)
-            (gen/tuple
-              (gen/return "monospace")
-              (gen/return " "))]])
-        gmap (assoc gmap :nonprop-generic-name gen-nonprop-generic-name)
 
         gen-prop-background
         (gen/tuple
+          (gen/return " ")
           (gen/vector
             (gen/tuple
+              (gen/return " ")
               (:nonprop-bg-layer gmap)
               (gen/return " ")
-              (gen/return ",")
-              (gen/return " ")))
+              (gen/return ",")))
           (gen/return " ")
-          (:nonprop-final-bg-layer gmap)
-          (gen/return " "))
+          (:nonprop-final-bg-layer gmap))
         gmap (assoc gmap :prop-background gen-prop-background)
 
         gen-prop-z-index
         (gen/frequency [
           [(get weights [:prop-z-index :alt 0] 100)
             (gen/tuple
-              (gen/return "auto")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "auto"))]
           [(get weights [:prop-z-index :alt 1] 100)
             (gen/tuple
-              (:nonprop-integer gmap)
-              (gen/return " "))]])
+              (gen/return " ")
+              (:nonprop-integer gmap))]])
         gmap (assoc gmap :prop-z-index gen-prop-z-index)
 
         gen-prop-height
         (gen/frequency [
           [(get weights [:prop-height :alt 0] 100)
             (gen/tuple
+              (gen/return " ")
               (gen/frequency [
-                [(get weights [:prop-height :alt 0 :cat 0 :alt 0] 100)
+                [(get weights [:prop-height :alt 0 :cat 1 :alt 0] 100)
                   (gen/tuple
-                    (:nonprop-length gmap)
-                    (gen/return " "))]
-                [(get weights [:prop-height :alt 0 :cat 0 :alt 1] 100)
+                    (gen/return " ")
+                    (:nonprop-length gmap))]
+                [(get weights [:prop-height :alt 0 :cat 1 :alt 1] 100)
                   (gen/tuple
-                    (:nonprop-percentage gmap)
-                    (gen/return " "))]])
+                    (gen/return " ")
+                    (:nonprop-percentage gmap))]])
               (gen/return " ")
               (gen/one-of [
                 (gen/return "")
                 (gen/frequency [
-                  [(get weights [:prop-height :alt 0 :cat 2 :opt :alt 0] 100)
+                  [(get weights [:prop-height :alt 0 :cat 3 :opt :alt 0] 100)
                     (gen/tuple
-                      (gen/return "border-box")
-                      (gen/return " "))]
-                  [(get weights [:prop-height :alt 0 :cat 2 :opt :alt 1] 100)
+                      (gen/return " ")
+                      (gen/return "border-box"))]
+                  [(get weights [:prop-height :alt 0 :cat 3 :opt :alt 1] 100)
                     (gen/tuple
-                      (gen/return "content-box")
-                      (gen/return " "))]])])
-              (gen/return " "))]
+                      (gen/return " ")
+                      (gen/return "content-box"))]])]))]
           [(get weights [:prop-height :alt 1] 100)
             (gen/tuple
-              (gen/return "available")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "available"))]
           [(get weights [:prop-height :alt 2] 100)
             (gen/tuple
-              (gen/return "min-content")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "min-content"))]
           [(get weights [:prop-height :alt 3] 100)
             (gen/tuple
-              (gen/return "max-content")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "max-content"))]
           [(get weights [:prop-height :alt 4] 100)
             (gen/tuple
-              (gen/return "fit-content")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "fit-content"))]
           [(get weights [:prop-height :alt 5] 100)
             (gen/tuple
-              (gen/return "auto")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "auto"))]])
         gmap (assoc gmap :prop-height gen-prop-height)
 
         gen-prop-background-position-y
         (gen/tuple
+          (gen/return " ")
           (gen/frequency [
-            [(get weights [:prop-background-position-y :cat 0 :alt 0] 100)
+            [(get weights [:prop-background-position-y :cat 1 :alt 0] 100)
               (gen/tuple
-                (gen/return "center")
-                (gen/return " "))]
-            [(get weights [:prop-background-position-y :cat 0 :alt 1] 100)
+                (gen/return " ")
+                (gen/return "center"))]
+            [(get weights [:prop-background-position-y :cat 1 :alt 1] 100)
               (gen/tuple
-                (gen/one-of [
-                  (gen/return "")
-                  (gen/frequency [
-                    [(get weights [:prop-background-position-y :cat 0 :alt 1 :cat 0 :opt :alt 0] 100)
-                      (gen/tuple
-                        (gen/return "top")
-                        (gen/return " "))]
-                    [(get weights [:prop-background-position-y :cat 0 :alt 1 :cat 0 :opt :alt 1] 100)
-                      (gen/tuple
-                        (gen/return "bottom")
-                        (gen/return " "))]
-                    [(get weights [:prop-background-position-y :cat 0 :alt 1 :cat 0 :opt :alt 2] 100)
-                      (gen/tuple
-                        (gen/return "y-start")
-                        (gen/return " "))]
-                    [(get weights [:prop-background-position-y :cat 0 :alt 1 :cat 0 :opt :alt 3] 100)
-                      (gen/tuple
-                        (gen/return "y-end")
-                        (gen/return " "))]])])
                 (gen/return " ")
                 (gen/one-of [
                   (gen/return "")
-                  (:nonprop-length-percentage gmap)])
-                (gen/return " "))]])
+                  (gen/frequency [
+                    [(get weights [:prop-background-position-y :cat 1 :alt 1 :cat 1 :opt :alt 0] 100)
+                      (gen/tuple
+                        (gen/return " ")
+                        (gen/return "top"))]
+                    [(get weights [:prop-background-position-y :cat 1 :alt 1 :cat 1 :opt :alt 1] 100)
+                      (gen/tuple
+                        (gen/return " ")
+                        (gen/return "bottom"))]
+                    [(get weights [:prop-background-position-y :cat 1 :alt 1 :cat 1 :opt :alt 2] 100)
+                      (gen/tuple
+                        (gen/return " ")
+                        (gen/return "y-start"))]
+                    [(get weights [:prop-background-position-y :cat 1 :alt 1 :cat 1 :opt :alt 3] 100)
+                      (gen/tuple
+                        (gen/return " ")
+                        (gen/return "y-end"))]])])
+                (gen/return " ")
+                (gen/one-of [
+                  (gen/return "")
+                  (:nonprop-length-percentage gmap)]))]])
           (gen/vector
             (gen/tuple
-              (gen/return ", ")
+              (gen/return ",")
               (gen/frequency [
-                [(get weights [:prop-background-position-y :cat 1 :star :cat 1 :alt 0] 100)
+                [(get weights [:prop-background-position-y :cat 2 :star :cat 1 :alt 0] 100)
                   (gen/tuple
-                    (gen/return "center")
-                    (gen/return " "))]
-                [(get weights [:prop-background-position-y :cat 1 :star :cat 1 :alt 1] 100)
+                    (gen/return " ")
+                    (gen/return "center"))]
+                [(get weights [:prop-background-position-y :cat 2 :star :cat 1 :alt 1] 100)
                   (gen/tuple
-                    (gen/one-of [
-                      (gen/return "")
-                      (gen/frequency [
-                        [(get weights [:prop-background-position-y :cat 1 :star :cat 1 :alt 1 :cat 0 :opt :alt 0] 100)
-                          (gen/tuple
-                            (gen/return "top")
-                            (gen/return " "))]
-                        [(get weights [:prop-background-position-y :cat 1 :star :cat 1 :alt 1 :cat 0 :opt :alt 1] 100)
-                          (gen/tuple
-                            (gen/return "bottom")
-                            (gen/return " "))]
-                        [(get weights [:prop-background-position-y :cat 1 :star :cat 1 :alt 1 :cat 0 :opt :alt 2] 100)
-                          (gen/tuple
-                            (gen/return "y-start")
-                            (gen/return " "))]
-                        [(get weights [:prop-background-position-y :cat 1 :star :cat 1 :alt 1 :cat 0 :opt :alt 3] 100)
-                          (gen/tuple
-                            (gen/return "y-end")
-                            (gen/return " "))]])])
                     (gen/return " ")
                     (gen/one-of [
                       (gen/return "")
-                      (:nonprop-length-percentage gmap)])
-                    (gen/return " "))]])))
-          (gen/return " "))
+                      (gen/frequency [
+                        [(get weights [:prop-background-position-y :cat 2 :star :cat 1 :alt 1 :cat 1 :opt :alt 0] 100)
+                          (gen/tuple
+                            (gen/return " ")
+                            (gen/return "top"))]
+                        [(get weights [:prop-background-position-y :cat 2 :star :cat 1 :alt 1 :cat 1 :opt :alt 1] 100)
+                          (gen/tuple
+                            (gen/return " ")
+                            (gen/return "bottom"))]
+                        [(get weights [:prop-background-position-y :cat 2 :star :cat 1 :alt 1 :cat 1 :opt :alt 2] 100)
+                          (gen/tuple
+                            (gen/return " ")
+                            (gen/return "y-start"))]
+                        [(get weights [:prop-background-position-y :cat 2 :star :cat 1 :alt 1 :cat 1 :opt :alt 3] 100)
+                          (gen/tuple
+                            (gen/return " ")
+                            (gen/return "y-end"))]])])
+                    (gen/return " ")
+                    (gen/one-of [
+                      (gen/return "")
+                      (:nonprop-length-percentage gmap)]))]]))))
         gmap (assoc gmap :prop-background-position-y gen-prop-background-position-y)
 
         gen-prop-font-variant
         (gen/frequency [
           [(get weights [:prop-font-variant :alt 0] 100)
             (gen/tuple
-              (gen/return "normal")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "normal"))]
           [(get weights [:prop-font-variant :alt 1] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "none"))]
           [(get weights [:prop-font-variant :alt 2] 100)
             (gen/tuple
+              (gen/return " ")
               (gen/such-that not-empty (gen/vector
                 (gen/frequency [
-                  [(get weights [:prop-font-variant :alt 2 :cat 0 :plus :alt 0] 100)
+                  [(get weights [:prop-font-variant :alt 2 :cat 1 :plus :alt 0] 100)
                     (gen/tuple
-                      (:nonprop-common-lig-values gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-font-variant :alt 2 :cat 0 :plus :alt 1] 100)
+                      (gen/return " ")
+                      (:nonprop-common-lig-values gmap))]
+                  [(get weights [:prop-font-variant :alt 2 :cat 1 :plus :alt 1] 100)
                     (gen/tuple
-                      (:nonprop-discretionary-lig-values gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-font-variant :alt 2 :cat 0 :plus :alt 2] 100)
+                      (gen/return " ")
+                      (:nonprop-discretionary-lig-values gmap))]
+                  [(get weights [:prop-font-variant :alt 2 :cat 1 :plus :alt 2] 100)
                     (gen/tuple
-                      (:nonprop-historical-lig-values gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-font-variant :alt 2 :cat 0 :plus :alt 3] 100)
+                      (gen/return " ")
+                      (:nonprop-historical-lig-values gmap))]
+                  [(get weights [:prop-font-variant :alt 2 :cat 1 :plus :alt 3] 100)
                     (gen/tuple
-                      (:nonprop-contextual-alt-values gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-font-variant :alt 2 :cat 0 :plus :alt 4] 100)
+                      (gen/return " ")
+                      (:nonprop-contextual-alt-values gmap))]
+                  [(get weights [:prop-font-variant :alt 2 :cat 1 :plus :alt 4] 100)
                     (gen/tuple
+                      (gen/return " ")
                       (gen/return "stylistic(")
-                      (:nonprop-feature-value-name gmap)
                       (gen/return " ")
-                      (gen/return ")")
-                      (gen/return " "))]
-                  [(get weights [:prop-font-variant :alt 2 :cat 0 :plus :alt 5] 100)
+                      (:nonprop-feature-value-name gmap)
+                      (gen/return ")"))]
+                  [(get weights [:prop-font-variant :alt 2 :cat 1 :plus :alt 5] 100)
                     (gen/tuple
-                      (gen/return "historical-forms")
-                      (gen/return " "))]
-                  [(get weights [:prop-font-variant :alt 2 :cat 0 :plus :alt 6] 100)
+                      (gen/return " ")
+                      (gen/return "historical-forms"))]
+                  [(get weights [:prop-font-variant :alt 2 :cat 1 :plus :alt 6] 100)
                     (gen/tuple
+                      (gen/return " ")
                       (gen/return "styleset(")
+                      (gen/return " ")
                       (:nonprop-feature-value-name gmap)
                       (gen/vector
                         (gen/tuple
-                          (gen/return ", ")
+                          (gen/return ",")
                           (:nonprop-feature-value-name gmap)))
-                      (gen/return " ")
-                      (gen/return ")")
-                      (gen/return " "))]
-                  [(get weights [:prop-font-variant :alt 2 :cat 0 :plus :alt 7] 100)
+                      (gen/return ")"))]
+                  [(get weights [:prop-font-variant :alt 2 :cat 1 :plus :alt 7] 100)
                     (gen/tuple
+                      (gen/return " ")
                       (gen/return "character-variant(")
+                      (gen/return " ")
                       (:nonprop-feature-value-name gmap)
                       (gen/vector
                         (gen/tuple
-                          (gen/return ", ")
+                          (gen/return ",")
                           (:nonprop-feature-value-name gmap)))
-                      (gen/return " ")
-                      (gen/return ")")
-                      (gen/return " "))]
-                  [(get weights [:prop-font-variant :alt 2 :cat 0 :plus :alt 8] 100)
+                      (gen/return ")"))]
+                  [(get weights [:prop-font-variant :alt 2 :cat 1 :plus :alt 8] 100)
                     (gen/tuple
+                      (gen/return " ")
                       (gen/return "swash(")
-                      (:nonprop-feature-value-name gmap)
                       (gen/return " ")
-                      (gen/return ")")
-                      (gen/return " "))]
-                  [(get weights [:prop-font-variant :alt 2 :cat 0 :plus :alt 9] 100)
+                      (:nonprop-feature-value-name gmap)
+                      (gen/return ")"))]
+                  [(get weights [:prop-font-variant :alt 2 :cat 1 :plus :alt 9] 100)
                     (gen/tuple
+                      (gen/return " ")
                       (gen/return "ornaments(")
-                      (:nonprop-feature-value-name gmap)
                       (gen/return " ")
-                      (gen/return ")")
-                      (gen/return " "))]
-                  [(get weights [:prop-font-variant :alt 2 :cat 0 :plus :alt 10] 100)
+                      (:nonprop-feature-value-name gmap)
+                      (gen/return ")"))]
+                  [(get weights [:prop-font-variant :alt 2 :cat 1 :plus :alt 10] 100)
                     (gen/tuple
+                      (gen/return " ")
                       (gen/return "annotation(")
-                      (:nonprop-feature-value-name gmap)
                       (gen/return " ")
-                      (gen/return ")")
-                      (gen/return " "))]
-                  [(get weights [:prop-font-variant :alt 2 :cat 0 :plus :alt 11] 100)
+                      (:nonprop-feature-value-name gmap)
+                      (gen/return ")"))]
+                  [(get weights [:prop-font-variant :alt 2 :cat 1 :plus :alt 11] 100)
                     (gen/tuple
+                      (gen/return " ")
                       (gen/frequency [
-                        [(get weights [:prop-font-variant :alt 2 :cat 0 :plus :alt 11 :cat 0 :alt 0] 100)
+                        [(get weights [:prop-font-variant :alt 2 :cat 1 :plus :alt 11 :cat 1 :alt 0] 100)
                           (gen/tuple
-                            (gen/return "small-caps")
-                            (gen/return " "))]
-                        [(get weights [:prop-font-variant :alt 2 :cat 0 :plus :alt 11 :cat 0 :alt 1] 100)
+                            (gen/return " ")
+                            (gen/return "small-caps"))]
+                        [(get weights [:prop-font-variant :alt 2 :cat 1 :plus :alt 11 :cat 1 :alt 1] 100)
                           (gen/tuple
-                            (gen/return "all-small-caps")
-                            (gen/return " "))]
-                        [(get weights [:prop-font-variant :alt 2 :cat 0 :plus :alt 11 :cat 0 :alt 2] 100)
+                            (gen/return " ")
+                            (gen/return "all-small-caps"))]
+                        [(get weights [:prop-font-variant :alt 2 :cat 1 :plus :alt 11 :cat 1 :alt 2] 100)
                           (gen/tuple
-                            (gen/return "petite-caps")
-                            (gen/return " "))]
-                        [(get weights [:prop-font-variant :alt 2 :cat 0 :plus :alt 11 :cat 0 :alt 3] 100)
+                            (gen/return " ")
+                            (gen/return "petite-caps"))]
+                        [(get weights [:prop-font-variant :alt 2 :cat 1 :plus :alt 11 :cat 1 :alt 3] 100)
                           (gen/tuple
-                            (gen/return "all-petite-caps")
-                            (gen/return " "))]
-                        [(get weights [:prop-font-variant :alt 2 :cat 0 :plus :alt 11 :cat 0 :alt 4] 100)
+                            (gen/return " ")
+                            (gen/return "all-petite-caps"))]
+                        [(get weights [:prop-font-variant :alt 2 :cat 1 :plus :alt 11 :cat 1 :alt 4] 100)
                           (gen/tuple
-                            (gen/return "unicase")
-                            (gen/return " "))]
-                        [(get weights [:prop-font-variant :alt 2 :cat 0 :plus :alt 11 :cat 0 :alt 5] 100)
+                            (gen/return " ")
+                            (gen/return "unicase"))]
+                        [(get weights [:prop-font-variant :alt 2 :cat 1 :plus :alt 11 :cat 1 :alt 5] 100)
                           (gen/tuple
-                            (gen/return "titling-caps")
-                            (gen/return " "))]])
-                      (gen/return " "))]
-                  [(get weights [:prop-font-variant :alt 2 :cat 0 :plus :alt 12] 100)
+                            (gen/return " ")
+                            (gen/return "titling-caps"))]]))]
+                  [(get weights [:prop-font-variant :alt 2 :cat 1 :plus :alt 12] 100)
                     (gen/tuple
-                      (:nonprop-numeric-figure-values gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-font-variant :alt 2 :cat 0 :plus :alt 13] 100)
+                      (gen/return " ")
+                      (:nonprop-numeric-figure-values gmap))]
+                  [(get weights [:prop-font-variant :alt 2 :cat 1 :plus :alt 13] 100)
                     (gen/tuple
-                      (:nonprop-numeric-spacing-values gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-font-variant :alt 2 :cat 0 :plus :alt 14] 100)
+                      (gen/return " ")
+                      (:nonprop-numeric-spacing-values gmap))]
+                  [(get weights [:prop-font-variant :alt 2 :cat 1 :plus :alt 14] 100)
                     (gen/tuple
-                      (:nonprop-numeric-fraction-values gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-font-variant :alt 2 :cat 0 :plus :alt 15] 100)
+                      (gen/return " ")
+                      (:nonprop-numeric-fraction-values gmap))]
+                  [(get weights [:prop-font-variant :alt 2 :cat 1 :plus :alt 15] 100)
                     (gen/tuple
-                      (gen/return "ordinal")
-                      (gen/return " "))]
-                  [(get weights [:prop-font-variant :alt 2 :cat 0 :plus :alt 16] 100)
+                      (gen/return " ")
+                      (gen/return "ordinal"))]
+                  [(get weights [:prop-font-variant :alt 2 :cat 1 :plus :alt 16] 100)
                     (gen/tuple
-                      (gen/return "slashed-zero")
-                      (gen/return " "))]
-                  [(get weights [:prop-font-variant :alt 2 :cat 0 :plus :alt 17] 100)
+                      (gen/return " ")
+                      (gen/return "slashed-zero"))]
+                  [(get weights [:prop-font-variant :alt 2 :cat 1 :plus :alt 17] 100)
                     (gen/tuple
-                      (:nonprop-east-asian-variant-values gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-font-variant :alt 2 :cat 0 :plus :alt 18] 100)
+                      (gen/return " ")
+                      (:nonprop-east-asian-variant-values gmap))]
+                  [(get weights [:prop-font-variant :alt 2 :cat 1 :plus :alt 18] 100)
                     (gen/tuple
-                      (:nonprop-east-asian-width-values gmap)
-                      (gen/return " "))]
-                  [(get weights [:prop-font-variant :alt 2 :cat 0 :plus :alt 19] 100)
+                      (gen/return " ")
+                      (:nonprop-east-asian-width-values gmap))]
+                  [(get weights [:prop-font-variant :alt 2 :cat 1 :plus :alt 19] 100)
                     (gen/tuple
-                      (gen/return "ruby")
-                      (gen/return " "))]])))
-              (gen/return " "))]])
+                      (gen/return " ")
+                      (gen/return "ruby"))]]))))]])
         gmap (assoc gmap :prop-font-variant gen-prop-font-variant)
 
         gen-prop-mask-composite
         (gen/tuple
+          (gen/return " ")
           (:nonprop-compositing-operator gmap)
           (gen/vector
             (gen/tuple
-              (gen/return ", ")
-              (:nonprop-compositing-operator gmap)))
-          (gen/return " "))
+              (gen/return ",")
+              (:nonprop-compositing-operator gmap))))
         gmap (assoc gmap :prop-mask-composite gen-prop-mask-composite)
 
         gen-prop-justify-content
         (gen/frequency [
           [(get weights [:prop-justify-content :alt 0] 100)
             (gen/tuple
-              (gen/return "flex-start")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "flex-start"))]
           [(get weights [:prop-justify-content :alt 1] 100)
             (gen/tuple
-              (gen/return "flex-end")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "flex-end"))]
           [(get weights [:prop-justify-content :alt 2] 100)
             (gen/tuple
-              (gen/return "center")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "center"))]
           [(get weights [:prop-justify-content :alt 3] 100)
             (gen/tuple
-              (gen/return "space-between")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "space-between"))]
           [(get weights [:prop-justify-content :alt 4] 100)
             (gen/tuple
-              (gen/return "space-around")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "space-around"))]
           [(get weights [:prop-justify-content :alt 5] 100)
             (gen/tuple
-              (gen/return "space-evenly")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "space-evenly"))]])
         gmap (assoc gmap :prop-justify-content gen-prop-justify-content)
 
         gen-nonprop-font-variant-css21
         (gen/tuple
+          (gen/return " ")
           (gen/frequency [
-            [(get weights [:nonprop-font-variant-css21 :cat 0 :alt 0] 100)
+            [(get weights [:nonprop-font-variant-css21 :cat 1 :alt 0] 100)
               (gen/tuple
-                (gen/return "normal")
-                (gen/return " "))]
-            [(get weights [:nonprop-font-variant-css21 :cat 0 :alt 1] 100)
+                (gen/return " ")
+                (gen/return "normal"))]
+            [(get weights [:nonprop-font-variant-css21 :cat 1 :alt 1] 100)
               (gen/tuple
-                (gen/return "small-caps")
-                (gen/return " "))]])
-          (gen/return " "))
+                (gen/return " ")
+                (gen/return "small-caps"))]]))
         gmap (assoc gmap :nonprop-font-variant-css21 gen-nonprop-font-variant-css21)
 
         gen-prop-font
         (gen/frequency [
           [(get weights [:prop-font :alt 0] 100)
             (gen/tuple
+              (gen/return " ")
               (gen/tuple
+                (gen/return " ")
                 (gen/one-of [
                   (gen/return "")
                   (gen/such-that not-empty (gen/vector
                     (gen/frequency [
-                      [(get weights [:prop-font :alt 0 :cat 0 :cat 0 :opt :plus :alt 0] 100)
+                      [(get weights [:prop-font :alt 0 :cat 1 :cat 1 :opt :plus :alt 0] 100)
                         (gen/tuple
-                          (:nonprop-font-style gmap)
-                          (gen/return " "))]
-                      [(get weights [:prop-font :alt 0 :cat 0 :cat 0 :opt :plus :alt 1] 100)
+                          (gen/return " ")
+                          (:nonprop-font-style gmap))]
+                      [(get weights [:prop-font :alt 0 :cat 1 :cat 1 :opt :plus :alt 1] 100)
                         (gen/tuple
-                          (:nonprop-font-variant-css21 gmap)
-                          (gen/return " "))]
-                      [(get weights [:prop-font :alt 0 :cat 0 :cat 0 :opt :plus :alt 2] 100)
+                          (gen/return " ")
+                          (:nonprop-font-variant-css21 gmap))]
+                      [(get weights [:prop-font :alt 0 :cat 1 :cat 1 :opt :plus :alt 2] 100)
                         (gen/tuple
-                          (:nonprop-font-weight gmap)
-                          (gen/return " "))]
-                      [(get weights [:prop-font :alt 0 :cat 0 :cat 0 :opt :plus :alt 3] 100)
+                          (gen/return " ")
+                          (:nonprop-font-weight gmap))]
+                      [(get weights [:prop-font :alt 0 :cat 1 :cat 1 :opt :plus :alt 3] 100)
                         (gen/tuple
-                          (:nonprop-font-stretch gmap)
-                          (gen/return " "))]])))])
+                          (gen/return " ")
+                          (:nonprop-font-stretch gmap))]])))])
                 (gen/return " ")
                 (:nonprop-font-size gmap)
                 (gen/return " ")
                 (gen/one-of [
                   (gen/return "")
                   (gen/tuple
+                    (gen/return " ")
                     (gen/return "/")
                     (gen/return " ")
-                    (:nonprop-line-height gmap)
-                    (gen/return " "))])
+                    (:nonprop-line-height gmap))])
                 (gen/return " ")
-                (:nonprop-font-family gmap)
-                (gen/return " "))
-              (gen/return " "))]
+                (:nonprop-font-family gmap)))]
           [(get weights [:prop-font :alt 1] 100)
             (gen/tuple
-              (gen/return "caption")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "caption"))]
           [(get weights [:prop-font :alt 2] 100)
             (gen/tuple
-              (gen/return "icon")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "icon"))]
           [(get weights [:prop-font :alt 3] 100)
             (gen/tuple
-              (gen/return "menu")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "menu"))]
           [(get weights [:prop-font :alt 4] 100)
             (gen/tuple
-              (gen/return "message-box")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "message-box"))]
           [(get weights [:prop-font :alt 5] 100)
             (gen/tuple
-              (gen/return "small-caption")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "small-caption"))]
           [(get weights [:prop-font :alt 6] 100)
             (gen/tuple
-              (gen/return "status-bar")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "status-bar"))]])
         gmap (assoc gmap :prop-font gen-prop-font)
 
         gen-prop-box-ordinal-group
         (gen/tuple
-          (:nonprop-integer gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-integer gmap))
         gmap (assoc gmap :prop-box-ordinal-group gen-prop-box-ordinal-group)
 
         gen-prop--webkit-border-before-width
         (gen/tuple
-          (:nonprop-border-width gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-border-width gmap))
         gmap (assoc gmap :prop--webkit-border-before-width gen-prop--webkit-border-before-width)
 
         gen-prop-empty-cells
         (gen/frequency [
           [(get weights [:prop-empty-cells :alt 0] 100)
             (gen/tuple
-              (gen/return "show")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "show"))]
           [(get weights [:prop-empty-cells :alt 1] 100)
             (gen/tuple
-              (gen/return "hide")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "hide"))]])
         gmap (assoc gmap :prop-empty-cells gen-prop-empty-cells)
 
         gen-prop-box-decoration-break
         (gen/frequency [
           [(get weights [:prop-box-decoration-break :alt 0] 100)
             (gen/tuple
-              (gen/return "slice")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "slice"))]
           [(get weights [:prop-box-decoration-break :alt 1] 100)
             (gen/tuple
-              (gen/return "clone")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "clone"))]])
         gmap (assoc gmap :prop-box-decoration-break gen-prop-box-decoration-break)
 
         gen-prop-offset
         (gen/tuple
+          (gen/return " ")
           (gen/tuple
+            (gen/return " ")
             (gen/one-of [
               (gen/return "")
               (:nonprop-offset-position gmap)])
@@ -12718,183 +12377,181 @@
             (gen/one-of [
               (gen/return "")
               (gen/tuple
+                (gen/return " ")
                 (:nonprop-offset-path gmap)
                 (gen/return " ")
                 (gen/one-of [
                   (gen/return "")
                   (gen/such-that not-empty (gen/vector
                     (gen/frequency [
-                      [(get weights [:prop-offset :cat 0 :cat 2 :opt :cat 2 :opt :plus :alt 0] 100)
+                      [(get weights [:prop-offset :cat 1 :cat 3 :opt :cat 3 :opt :plus :alt 0] 100)
                         (gen/tuple
-                          (:nonprop-offset-distance gmap)
-                          (gen/return " "))]
-                      [(get weights [:prop-offset :cat 0 :cat 2 :opt :cat 2 :opt :plus :alt 1] 100)
+                          (gen/return " ")
+                          (:nonprop-offset-distance gmap))]
+                      [(get weights [:prop-offset :cat 1 :cat 3 :opt :cat 3 :opt :plus :alt 1] 100)
                         (gen/tuple
-                          (:nonprop-offset-rotate gmap)
-                          (gen/return " "))]])))])
-                (gen/return " "))])
-            (gen/return " "))
+                          (gen/return " ")
+                          (:nonprop-offset-rotate gmap))]])))]))]))
           (gen/return " ")
           (gen/one-of [
             (gen/return "")
             (gen/tuple
+              (gen/return " ")
               (gen/return "/")
               (gen/return " ")
-              (:nonprop-offset-anchor gmap)
-              (gen/return " "))])
-          (gen/return " "))
+              (:nonprop-offset-anchor gmap))]))
         gmap (assoc gmap :prop-offset gen-prop-offset)
 
         gen-prop-column-span
         (gen/frequency [
           [(get weights [:prop-column-span :alt 0] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "none"))]
           [(get weights [:prop-column-span :alt 1] 100)
             (gen/tuple
-              (gen/return "all")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "all"))]])
         gmap (assoc gmap :prop-column-span gen-prop-column-span)
 
         gen-prop--moz-outline-radius-topright
         (gen/tuple
-          (:nonprop-outline-radius gmap)
-          (gen/return " "))
+          (gen/return " ")
+          (:nonprop-outline-radius gmap))
         gmap (assoc gmap :prop--moz-outline-radius-topright gen-prop--moz-outline-radius-topright)
 
         gen-prop-background-position-x
         (gen/tuple
+          (gen/return " ")
           (gen/frequency [
-            [(get weights [:prop-background-position-x :cat 0 :alt 0] 100)
+            [(get weights [:prop-background-position-x :cat 1 :alt 0] 100)
               (gen/tuple
-                (gen/return "center")
-                (gen/return " "))]
-            [(get weights [:prop-background-position-x :cat 0 :alt 1] 100)
+                (gen/return " ")
+                (gen/return "center"))]
+            [(get weights [:prop-background-position-x :cat 1 :alt 1] 100)
               (gen/tuple
-                (gen/one-of [
-                  (gen/return "")
-                  (gen/frequency [
-                    [(get weights [:prop-background-position-x :cat 0 :alt 1 :cat 0 :opt :alt 0] 100)
-                      (gen/tuple
-                        (gen/return "left")
-                        (gen/return " "))]
-                    [(get weights [:prop-background-position-x :cat 0 :alt 1 :cat 0 :opt :alt 1] 100)
-                      (gen/tuple
-                        (gen/return "right")
-                        (gen/return " "))]
-                    [(get weights [:prop-background-position-x :cat 0 :alt 1 :cat 0 :opt :alt 2] 100)
-                      (gen/tuple
-                        (gen/return "x-start")
-                        (gen/return " "))]
-                    [(get weights [:prop-background-position-x :cat 0 :alt 1 :cat 0 :opt :alt 3] 100)
-                      (gen/tuple
-                        (gen/return "x-end")
-                        (gen/return " "))]])])
                 (gen/return " ")
                 (gen/one-of [
                   (gen/return "")
-                  (:nonprop-length-percentage gmap)])
-                (gen/return " "))]])
+                  (gen/frequency [
+                    [(get weights [:prop-background-position-x :cat 1 :alt 1 :cat 1 :opt :alt 0] 100)
+                      (gen/tuple
+                        (gen/return " ")
+                        (gen/return "left"))]
+                    [(get weights [:prop-background-position-x :cat 1 :alt 1 :cat 1 :opt :alt 1] 100)
+                      (gen/tuple
+                        (gen/return " ")
+                        (gen/return "right"))]
+                    [(get weights [:prop-background-position-x :cat 1 :alt 1 :cat 1 :opt :alt 2] 100)
+                      (gen/tuple
+                        (gen/return " ")
+                        (gen/return "x-start"))]
+                    [(get weights [:prop-background-position-x :cat 1 :alt 1 :cat 1 :opt :alt 3] 100)
+                      (gen/tuple
+                        (gen/return " ")
+                        (gen/return "x-end"))]])])
+                (gen/return " ")
+                (gen/one-of [
+                  (gen/return "")
+                  (:nonprop-length-percentage gmap)]))]])
           (gen/vector
             (gen/tuple
-              (gen/return ", ")
+              (gen/return ",")
               (gen/frequency [
-                [(get weights [:prop-background-position-x :cat 1 :star :cat 1 :alt 0] 100)
+                [(get weights [:prop-background-position-x :cat 2 :star :cat 1 :alt 0] 100)
                   (gen/tuple
-                    (gen/return "center")
-                    (gen/return " "))]
-                [(get weights [:prop-background-position-x :cat 1 :star :cat 1 :alt 1] 100)
+                    (gen/return " ")
+                    (gen/return "center"))]
+                [(get weights [:prop-background-position-x :cat 2 :star :cat 1 :alt 1] 100)
                   (gen/tuple
-                    (gen/one-of [
-                      (gen/return "")
-                      (gen/frequency [
-                        [(get weights [:prop-background-position-x :cat 1 :star :cat 1 :alt 1 :cat 0 :opt :alt 0] 100)
-                          (gen/tuple
-                            (gen/return "left")
-                            (gen/return " "))]
-                        [(get weights [:prop-background-position-x :cat 1 :star :cat 1 :alt 1 :cat 0 :opt :alt 1] 100)
-                          (gen/tuple
-                            (gen/return "right")
-                            (gen/return " "))]
-                        [(get weights [:prop-background-position-x :cat 1 :star :cat 1 :alt 1 :cat 0 :opt :alt 2] 100)
-                          (gen/tuple
-                            (gen/return "x-start")
-                            (gen/return " "))]
-                        [(get weights [:prop-background-position-x :cat 1 :star :cat 1 :alt 1 :cat 0 :opt :alt 3] 100)
-                          (gen/tuple
-                            (gen/return "x-end")
-                            (gen/return " "))]])])
                     (gen/return " ")
                     (gen/one-of [
                       (gen/return "")
-                      (:nonprop-length-percentage gmap)])
-                    (gen/return " "))]])))
-          (gen/return " "))
+                      (gen/frequency [
+                        [(get weights [:prop-background-position-x :cat 2 :star :cat 1 :alt 1 :cat 1 :opt :alt 0] 100)
+                          (gen/tuple
+                            (gen/return " ")
+                            (gen/return "left"))]
+                        [(get weights [:prop-background-position-x :cat 2 :star :cat 1 :alt 1 :cat 1 :opt :alt 1] 100)
+                          (gen/tuple
+                            (gen/return " ")
+                            (gen/return "right"))]
+                        [(get weights [:prop-background-position-x :cat 2 :star :cat 1 :alt 1 :cat 1 :opt :alt 2] 100)
+                          (gen/tuple
+                            (gen/return " ")
+                            (gen/return "x-start"))]
+                        [(get weights [:prop-background-position-x :cat 2 :star :cat 1 :alt 1 :cat 1 :opt :alt 3] 100)
+                          (gen/tuple
+                            (gen/return " ")
+                            (gen/return "x-end"))]])])
+                    (gen/return " ")
+                    (gen/one-of [
+                      (gen/return "")
+                      (:nonprop-length-percentage gmap)]))]]))))
         gmap (assoc gmap :prop-background-position-x gen-prop-background-position-x)
 
         gen-prop-padding-right
         (gen/frequency [
           [(get weights [:prop-padding-right :alt 0] 100)
             (gen/tuple
-              (:nonprop-length gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-length gmap))]
           [(get weights [:prop-padding-right :alt 1] 100)
             (gen/tuple
-              (:nonprop-percentage gmap)
-              (gen/return " "))]])
+              (gen/return " ")
+              (:nonprop-percentage gmap))]])
         gmap (assoc gmap :prop-padding-right gen-prop-padding-right)
 
         gen-prop-break-after
         (gen/frequency [
           [(get weights [:prop-break-after :alt 0] 100)
             (gen/tuple
-              (gen/return "auto")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "auto"))]
           [(get weights [:prop-break-after :alt 1] 100)
             (gen/tuple
-              (gen/return "avoid")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "avoid"))]
           [(get weights [:prop-break-after :alt 2] 100)
             (gen/tuple
-              (gen/return "avoid-page")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "avoid-page"))]
           [(get weights [:prop-break-after :alt 3] 100)
             (gen/tuple
-              (gen/return "page")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "page"))]
           [(get weights [:prop-break-after :alt 4] 100)
             (gen/tuple
-              (gen/return "left")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "left"))]
           [(get weights [:prop-break-after :alt 5] 100)
             (gen/tuple
-              (gen/return "right")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "right"))]
           [(get weights [:prop-break-after :alt 6] 100)
             (gen/tuple
-              (gen/return "recto")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "recto"))]
           [(get weights [:prop-break-after :alt 7] 100)
             (gen/tuple
-              (gen/return "verso")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "verso"))]
           [(get weights [:prop-break-after :alt 8] 100)
             (gen/tuple
-              (gen/return "avoid-column")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "avoid-column"))]
           [(get weights [:prop-break-after :alt 9] 100)
             (gen/tuple
-              (gen/return "column")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "column"))]
           [(get weights [:prop-break-after :alt 10] 100)
             (gen/tuple
-              (gen/return "avoid-region")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "avoid-region"))]
           [(get weights [:prop-break-after :alt 11] 100)
             (gen/tuple
-              (gen/return "region")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "region"))]])
         gmap (assoc gmap :prop-break-after gen-prop-break-after)
 
         gen-prop-text-emphasis
@@ -12902,24 +12559,24 @@
           (gen/frequency [
             [(get weights [:prop-text-emphasis :plus :alt 0] 100)
               (gen/tuple
-                (:nonprop-text-emphasis-style gmap)
-                (gen/return " "))]
+                (gen/return " ")
+                (:nonprop-text-emphasis-style gmap))]
             [(get weights [:prop-text-emphasis :plus :alt 1] 100)
               (gen/tuple
-                (:nonprop-text-emphasis-color gmap)
-                (gen/return " "))]])))
+                (gen/return " ")
+                (:nonprop-text-emphasis-color gmap))]])))
         gmap (assoc gmap :prop-text-emphasis gen-prop-text-emphasis)
 
         gen-prop-box-sizing
         (gen/frequency [
           [(get weights [:prop-box-sizing :alt 0] 100)
             (gen/tuple
-              (gen/return "content-box")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "content-box"))]
           [(get weights [:prop-box-sizing :alt 1] 100)
             (gen/tuple
-              (gen/return "border-box")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "border-box"))]])
         gmap (assoc gmap :prop-box-sizing gen-prop-box-sizing)
 
         gen-prop-border-left
@@ -12927,1545 +12584,2398 @@
           (gen/frequency [
             [(get weights [:prop-border-left :plus :alt 0] 100)
               (gen/tuple
-                (:nonprop-br-width gmap)
-                (gen/return " "))]
+                (gen/return " ")
+                (:nonprop-br-width gmap))]
             [(get weights [:prop-border-left :plus :alt 1] 100)
               (gen/tuple
-                (:nonprop-br-style gmap)
-                (gen/return " "))]
+                (gen/return " ")
+                (:nonprop-br-style gmap))]
             [(get weights [:prop-border-left :plus :alt 2] 100)
               (gen/tuple
-                (:nonprop-color gmap)
-                (gen/return " "))]])))
+                (gen/return " ")
+                (:nonprop-color gmap))]])))
         gmap (assoc gmap :prop-border-left gen-prop-border-left)
 
         gen-prop-object-fit
         (gen/frequency [
           [(get weights [:prop-object-fit :alt 0] 100)
             (gen/tuple
-              (gen/return "fill")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "fill"))]
           [(get weights [:prop-object-fit :alt 1] 100)
             (gen/tuple
-              (gen/return "contain")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "contain"))]
           [(get weights [:prop-object-fit :alt 2] 100)
             (gen/tuple
-              (gen/return "cover")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "cover"))]
           [(get weights [:prop-object-fit :alt 3] 100)
             (gen/tuple
-              (gen/return "none")
-              (gen/return " "))]
+              (gen/return " ")
+              (gen/return "none"))]
           [(get weights [:prop-object-fit :alt 4] 100)
             (gen/tuple
-              (gen/return "scale-down")
-              (gen/return " "))]])
+              (gen/return " ")
+              (gen/return "scale-down"))]])
         gmap (assoc gmap :prop-object-fit gen-prop-object-fit)
 
         gen-css-assignment
         (gen/frequency [
           [(get weights [:css-assignment :alt 0] 100)
             (gen/tuple
-              (gen/return "margin-block-end: ")
+              (gen/return "margin-block-end")
+              (gen/return ":")
               (:prop-margin-block-end gmap))]
           [(get weights [:css-assignment :alt 1] 100)
             (gen/tuple
-              (gen/return "-webkit-text-stroke-width: ")
+              (gen/return "-webkit-text-stroke-width")
+              (gen/return ":")
               (:prop--webkit-text-stroke-width gmap))]
           [(get weights [:css-assignment :alt 2] 100)
             (gen/tuple
-              (gen/return "transition-property: ")
+              (gen/return "transition-property")
+              (gen/return ":")
               (:prop-transition-property gmap))]
           [(get weights [:css-assignment :alt 3] 100)
             (gen/tuple
-              (gen/return "word-break: ")
+              (gen/return "word-break")
+              (gen/return ":")
               (:prop-word-break gmap))]
           [(get weights [:css-assignment :alt 4] 100)
             (gen/tuple
-              (gen/return "background-origin: ")
+              (gen/return "background-origin")
+              (gen/return ":")
               (:prop-background-origin gmap))]
           [(get weights [:css-assignment :alt 5] 100)
             (gen/tuple
-              (gen/return "border-bottom-color: ")
+              (gen/return "border-bottom-color")
+              (gen/return ":")
               (:prop-border-bottom-color gmap))]
           [(get weights [:css-assignment :alt 6] 100)
             (gen/tuple
-              (gen/return "-webkit-mask-attachment: ")
+              (gen/return "-webkit-mask-attachment")
+              (gen/return ":")
               (:prop--webkit-mask-attachment gmap))]
           [(get weights [:css-assignment :alt 7] 100)
             (gen/tuple
-              (gen/return "-moz-user-focus: ")
+              (gen/return "-moz-user-focus")
+              (gen/return ":")
               (:prop--moz-user-focus gmap))]
           [(get weights [:css-assignment :alt 8] 100)
             (gen/tuple
-              (gen/return "margin-block-start: ")
+              (gen/return "margin-block-start")
+              (gen/return ":")
               (:prop-margin-block-start gmap))]
           [(get weights [:css-assignment :alt 9] 100)
             (gen/tuple
-              (gen/return "initial-letter: ")
+              (gen/return "initial-letter")
+              (gen/return ":")
               (:prop-initial-letter gmap))]
           [(get weights [:css-assignment :alt 10] 100)
             (gen/tuple
-              (gen/return "border-block-end: ")
+              (gen/return "border-block-end")
+              (gen/return ":")
               (:prop-border-block-end gmap))]
           [(get weights [:css-assignment :alt 11] 100)
             (gen/tuple
-              (gen/return "-webkit-mask: ")
+              (gen/return "-webkit-mask")
+              (gen/return ":")
               (:prop--webkit-mask gmap))]
           [(get weights [:css-assignment :alt 12] 100)
             (gen/tuple
-              (gen/return "outline-color: ")
+              (gen/return "outline-color")
+              (gen/return ":")
               (:prop-outline-color gmap))]
           [(get weights [:css-assignment :alt 13] 100)
             (gen/tuple
-              (gen/return "border-block-start: ")
+              (gen/return "border-block-start")
+              (gen/return ":")
               (:prop-border-block-start gmap))]
           [(get weights [:css-assignment :alt 14] 100)
             (gen/tuple
-              (gen/return "ruby-position: ")
+              (gen/return "ruby-position")
+              (gen/return ":")
               (:prop-ruby-position gmap))]
           [(get weights [:css-assignment :alt 15] 100)
             (gen/tuple
-              (gen/return "border-block-start-width: ")
+              (gen/return "border-block-start-width")
+              (gen/return ":")
               (:prop-border-block-start-width gmap))]
           [(get weights [:css-assignment :alt 16] 100)
             (gen/tuple
-              (gen/return "background: ")
+              (gen/return "background")
+              (gen/return ":")
               (:prop-background gmap))]
           [(get weights [:css-assignment :alt 17] 100)
             (gen/tuple
-              (gen/return "box-orient: ")
+              (gen/return "box-orient")
+              (gen/return ":")
               (:prop-box-orient gmap))]
           [(get weights [:css-assignment :alt 18] 100)
             (gen/tuple
-              (gen/return "padding-top: ")
+              (gen/return "padding-top")
+              (gen/return ":")
               (:prop-padding-top gmap))]
           [(get weights [:css-assignment :alt 19] 100)
             (gen/tuple
-              (gen/return "align-items: ")
+              (gen/return "align-items")
+              (gen/return ":")
               (:prop-align-items gmap))]
           [(get weights [:css-assignment :alt 20] 100)
             (gen/tuple
-              (gen/return "text-shadow: ")
+              (gen/return "text-shadow")
+              (gen/return ":")
               (:prop-text-shadow gmap))]
           [(get weights [:css-assignment :alt 21] 100)
             (gen/tuple
-              (gen/return "box-lines: ")
+              (gen/return "box-lines")
+              (gen/return ":")
               (:prop-box-lines gmap))]
           [(get weights [:css-assignment :alt 22] 100)
             (gen/tuple
-              (gen/return "list-style-image: ")
+              (gen/return "list-style-image")
+              (gen/return ":")
               (:prop-list-style-image gmap))]
           [(get weights [:css-assignment :alt 23] 100)
             (gen/tuple
-              (gen/return "page-break-inside: ")
+              (gen/return "page-break-inside")
+              (gen/return ":")
               (:prop-page-break-inside gmap))]
           [(get weights [:css-assignment :alt 24] 100)
             (gen/tuple
-              (gen/return "columns: ")
+              (gen/return "columns")
+              (gen/return ":")
               (:prop-columns gmap))]
           [(get weights [:css-assignment :alt 25] 100)
             (gen/tuple
-              (gen/return "text-emphasis-position: ")
+              (gen/return "text-emphasis-position")
+              (gen/return ":")
               (:prop-text-emphasis-position gmap))]
           [(get weights [:css-assignment :alt 26] 100)
             (gen/tuple
-              (gen/return "text-align-last: ")
+              (gen/return "text-align-last")
+              (gen/return ":")
               (:prop-text-align-last gmap))]
           [(get weights [:css-assignment :alt 27] 100)
             (gen/tuple
-              (gen/return "border-inline-end-style: ")
+              (gen/return "border-inline-end-style")
+              (gen/return ":")
               (:prop-border-inline-end-style gmap))]
           [(get weights [:css-assignment :alt 28] 100)
             (gen/tuple
-              (gen/return "box-pack: ")
+              (gen/return "box-pack")
+              (gen/return ":")
               (:prop-box-pack gmap))]
           [(get weights [:css-assignment :alt 29] 100)
             (gen/tuple
-              (gen/return "min-height: ")
+              (gen/return "min-height")
+              (gen/return ":")
               (:prop-min-height gmap))]
           [(get weights [:css-assignment :alt 30] 100)
             (gen/tuple
-              (gen/return "scroll-behavior: ")
+              (gen/return "scroll-behavior")
+              (gen/return ":")
               (:prop-scroll-behavior gmap))]
           [(get weights [:css-assignment :alt 31] 100)
             (gen/tuple
-              (gen/return "-moz-outline-radius-topright: ")
+              (gen/return "-moz-outline-radius-topright")
+              (gen/return ":")
               (:prop--moz-outline-radius-topright gmap))]
           [(get weights [:css-assignment :alt 32] 100)
             (gen/tuple
-              (gen/return "box-flex-group: ")
+              (gen/return "box-flex-group")
+              (gen/return ":")
               (:prop-box-flex-group gmap))]
           [(get weights [:css-assignment :alt 33] 100)
             (gen/tuple
-              (gen/return "grid-row-end: ")
+              (gen/return "grid-row-end")
+              (gen/return ":")
               (:prop-grid-row-end gmap))]
           [(get weights [:css-assignment :alt 34] 100)
             (gen/tuple
-              (gen/return "-moz-border-left-colors: ")
+              (gen/return "-moz-border-left-colors")
+              (gen/return ":")
               (:prop--moz-border-left-colors gmap))]
           [(get weights [:css-assignment :alt 35] 100)
             (gen/tuple
-              (gen/return "border-radius: ")
+              (gen/return "border-radius")
+              (gen/return ":")
               (:prop-border-radius gmap))]
           [(get weights [:css-assignment :alt 36] 100)
             (gen/tuple
-              (gen/return "background-position: ")
+              (gen/return "background-position")
+              (gen/return ":")
               (:prop-background-position gmap))]
           [(get weights [:css-assignment :alt 37] 100)
             (gen/tuple
-              (gen/return "-webkit-text-fill-color: ")
+              (gen/return "-webkit-text-fill-color")
+              (gen/return ":")
               (:prop--webkit-text-fill-color gmap))]
           [(get weights [:css-assignment :alt 38] 100)
             (gen/tuple
-              (gen/return "transition-timing-function: ")
+              (gen/return "transition-timing-function")
+              (gen/return ":")
               (:prop-transition-timing-function gmap))]
           [(get weights [:css-assignment :alt 39] 100)
             (gen/tuple
-              (gen/return "animation-iteration-count: ")
+              (gen/return "animation-iteration-count")
+              (gen/return ":")
               (:prop-animation-iteration-count gmap))]
           [(get weights [:css-assignment :alt 40] 100)
             (gen/tuple
-              (gen/return "box-direction: ")
+              (gen/return "box-direction")
+              (gen/return ":")
               (:prop-box-direction gmap))]
           [(get weights [:css-assignment :alt 41] 100)
             (gen/tuple
-              (gen/return "box-sizing: ")
+              (gen/return "box-sizing")
+              (gen/return ":")
               (:prop-box-sizing gmap))]
           [(get weights [:css-assignment :alt 42] 100)
             (gen/tuple
-              (gen/return "padding-bottom: ")
+              (gen/return "padding-bottom")
+              (gen/return ":")
               (:prop-padding-bottom gmap))]
           [(get weights [:css-assignment :alt 43] 100)
             (gen/tuple
-              (gen/return "border-inline-start-width: ")
+              (gen/return "border-inline-start-width")
+              (gen/return ":")
               (:prop-border-inline-start-width gmap))]
           [(get weights [:css-assignment :alt 44] 100)
             (gen/tuple
-              (gen/return "border-right-width: ")
+              (gen/return "border-right-width")
+              (gen/return ":")
               (:prop-border-right-width gmap))]
           [(get weights [:css-assignment :alt 45] 100)
             (gen/tuple
-              (gen/return "border-bottom-width: ")
+              (gen/return "border-bottom-width")
+              (gen/return ":")
               (:prop-border-bottom-width gmap))]
           [(get weights [:css-assignment :alt 46] 100)
             (gen/tuple
-              (gen/return "-webkit-tap-highlight-color: ")
+              (gen/return "-webkit-tap-highlight-color")
+              (gen/return ":")
               (:prop--webkit-tap-highlight-color gmap))]
           [(get weights [:css-assignment :alt 47] 100)
             (gen/tuple
-              (gen/return "padding-left: ")
+              (gen/return "padding-left")
+              (gen/return ":")
               (:prop-padding-left gmap))]
           [(get weights [:css-assignment :alt 48] 100)
             (gen/tuple
-              (gen/return "grid-row: ")
+              (gen/return "grid-row")
+              (gen/return ":")
               (:prop-grid-row gmap))]
           [(get weights [:css-assignment :alt 49] 100)
             (gen/tuple
-              (gen/return "text-decoration: ")
+              (gen/return "text-decoration")
+              (gen/return ":")
               (:prop-text-decoration gmap))]
           [(get weights [:css-assignment :alt 50] 100)
             (gen/tuple
-              (gen/return "word-spacing: ")
+              (gen/return "word-spacing")
+              (gen/return ":")
               (:prop-word-spacing gmap))]
           [(get weights [:css-assignment :alt 51] 100)
             (gen/tuple
-              (gen/return "border-inline-start-style: ")
+              (gen/return "border-inline-start-style")
+              (gen/return ":")
               (:prop-border-inline-start-style gmap))]
           [(get weights [:css-assignment :alt 52] 100)
             (gen/tuple
-              (gen/return "marker-offset: ")
+              (gen/return "marker-offset")
+              (gen/return ":")
               (:prop-marker-offset gmap))]
           [(get weights [:css-assignment :alt 53] 100)
             (gen/tuple
-              (gen/return "-moz-force-broken-image-icon: ")
+              (gen/return "-moz-force-broken-image-icon")
+              (gen/return ":")
               (:prop--moz-force-broken-image-icon gmap))]
           [(get weights [:css-assignment :alt 54] 100)
             (gen/tuple
-              (gen/return "display-list: ")
+              (gen/return "display-list")
+              (gen/return ":")
               (:prop-display-list gmap))]
           [(get weights [:css-assignment :alt 55] 100)
             (gen/tuple
-              (gen/return "backface-visibility: ")
+              (gen/return "backface-visibility")
+              (gen/return ":")
               (:prop-backface-visibility gmap))]
           [(get weights [:css-assignment :alt 56] 100)
             (gen/tuple
-              (gen/return "padding: ")
+              (gen/return "padding")
+              (gen/return ":")
               (:prop-padding gmap))]
           [(get weights [:css-assignment :alt 57] 100)
             (gen/tuple
-              (gen/return "-webkit-touch-callout: ")
+              (gen/return "-webkit-touch-callout")
+              (gen/return ":")
               (:prop--webkit-touch-callout gmap))]
           [(get weights [:css-assignment :alt 58] 100)
             (gen/tuple
-              (gen/return "offset-anchor: ")
+              (gen/return "offset-anchor")
+              (gen/return ":")
               (:prop-offset-anchor gmap))]
           [(get weights [:css-assignment :alt 59] 100)
             (gen/tuple
-              (gen/return "font-stretch: ")
+              (gen/return "font-stretch")
+              (gen/return ":")
               (:prop-font-stretch gmap))]
           [(get weights [:css-assignment :alt 60] 100)
             (gen/tuple
-              (gen/return "grid-auto-flow: ")
+              (gen/return "grid-auto-flow")
+              (gen/return ":")
               (:prop-grid-auto-flow gmap))]
           [(get weights [:css-assignment :alt 61] 100)
             (gen/tuple
-              (gen/return "border-left-style: ")
+              (gen/return "border-left-style")
+              (gen/return ":")
               (:prop-border-left-style gmap))]
           [(get weights [:css-assignment :alt 62] 100)
             (gen/tuple
-              (gen/return "-moz-stack-sizing: ")
+              (gen/return "-moz-stack-sizing")
+              (gen/return ":")
               (:prop--moz-stack-sizing gmap))]
           [(get weights [:css-assignment :alt 63] 100)
             (gen/tuple
-              (gen/return "margin-inline-start: ")
+              (gen/return "margin-inline-start")
+              (gen/return ":")
               (:prop-margin-inline-start gmap))]
           [(get weights [:css-assignment :alt 64] 100)
             (gen/tuple
-              (gen/return "-webkit-border-before-style: ")
+              (gen/return "-webkit-border-before-style")
+              (gen/return ":")
               (:prop--webkit-border-before-style gmap))]
           [(get weights [:css-assignment :alt 65] 100)
             (gen/tuple
-              (gen/return "list-style-type: ")
+              (gen/return "list-style-type")
+              (gen/return ":")
               (:prop-list-style-type gmap))]
           [(get weights [:css-assignment :alt 66] 100)
             (gen/tuple
-              (gen/return "break-after: ")
+              (gen/return "break-after")
+              (gen/return ":")
               (:prop-break-after gmap))]
           [(get weights [:css-assignment :alt 67] 100)
             (gen/tuple
-              (gen/return "backdrop-filter: ")
+              (gen/return "backdrop-filter")
+              (gen/return ":")
               (:prop-backdrop-filter gmap))]
           [(get weights [:css-assignment :alt 68] 100)
             (gen/tuple
-              (gen/return "order: ")
+              (gen/return "order")
+              (gen/return ":")
               (:prop-order gmap))]
           [(get weights [:css-assignment :alt 69] 100)
             (gen/tuple
-              (gen/return "border-bottom: ")
+              (gen/return "border-bottom")
+              (gen/return ":")
               (:prop-border-bottom gmap))]
           [(get weights [:css-assignment :alt 70] 100)
             (gen/tuple
-              (gen/return "border-inline-end-color: ")
+              (gen/return "border-inline-end-color")
+              (gen/return ":")
               (:prop-border-inline-end-color gmap))]
           [(get weights [:css-assignment :alt 71] 100)
             (gen/tuple
-              (gen/return "-webkit-mask-composite: ")
+              (gen/return "-webkit-mask-composite")
+              (gen/return ":")
               (:prop--webkit-mask-composite gmap))]
           [(get weights [:css-assignment :alt 72] 100)
             (gen/tuple
-              (gen/return "azimuth: ")
+              (gen/return "azimuth")
+              (gen/return ":")
               (:prop-azimuth gmap))]
           [(get weights [:css-assignment :alt 73] 100)
             (gen/tuple
-              (gen/return "scroll-snap-type-x: ")
+              (gen/return "scroll-snap-type-x")
+              (gen/return ":")
               (:prop-scroll-snap-type-x gmap))]
           [(get weights [:css-assignment :alt 74] 100)
             (gen/tuple
-              (gen/return "column-span: ")
+              (gen/return "column-span")
+              (gen/return ":")
               (:prop-column-span gmap))]
           [(get weights [:css-assignment :alt 75] 100)
             (gen/tuple
-              (gen/return "box-flex: ")
+              (gen/return "box-flex")
+              (gen/return ":")
               (:prop-box-flex gmap))]
           [(get weights [:css-assignment :alt 76] 100)
             (gen/tuple
-              (gen/return "transform-style: ")
+              (gen/return "transform-style")
+              (gen/return ":")
               (:prop-transform-style gmap))]
           [(get weights [:css-assignment :alt 77] 100)
             (gen/tuple
-              (gen/return "font-family: ")
+              (gen/return "font-family")
+              (gen/return ":")
               (:prop-font-family gmap))]
           [(get weights [:css-assignment :alt 78] 100)
             (gen/tuple
-              (gen/return "column-rule: ")
+              (gen/return "column-rule")
+              (gen/return ":")
               (:prop-column-rule gmap))]
           [(get weights [:css-assignment :alt 79] 100)
             (gen/tuple
-              (gen/return "animation-duration: ")
+              (gen/return "animation-duration")
+              (gen/return ":")
               (:prop-animation-duration gmap))]
           [(get weights [:css-assignment :alt 80] 100)
             (gen/tuple
-              (gen/return "border-block-end-color: ")
+              (gen/return "border-block-end-color")
+              (gen/return ":")
               (:prop-border-block-end-color gmap))]
           [(get weights [:css-assignment :alt 81] 100)
             (gen/tuple
-              (gen/return "justify-content: ")
+              (gen/return "justify-content")
+              (gen/return ":")
               (:prop-justify-content gmap))]
           [(get weights [:css-assignment :alt 82] 100)
             (gen/tuple
-              (gen/return "text-decoration-line: ")
+              (gen/return "text-decoration-line")
+              (gen/return ":")
               (:prop-text-decoration-line gmap))]
           [(get weights [:css-assignment :alt 83] 100)
             (gen/tuple
-              (gen/return "border-style: ")
+              (gen/return "border-style")
+              (gen/return ":")
               (:prop-border-style gmap))]
           [(get weights [:css-assignment :alt 84] 100)
             (gen/tuple
-              (gen/return "resize: ")
+              (gen/return "resize")
+              (gen/return ":")
               (:prop-resize gmap))]
           [(get weights [:css-assignment :alt 85] 100)
             (gen/tuple
-              (gen/return "block-size: ")
+              (gen/return "block-size")
+              (gen/return ":")
               (:prop-block-size gmap))]
           [(get weights [:css-assignment :alt 86] 100)
             (gen/tuple
-              (gen/return "text-transform: ")
+              (gen/return "text-transform")
+              (gen/return ":")
               (:prop-text-transform gmap))]
           [(get weights [:css-assignment :alt 87] 100)
             (gen/tuple
-              (gen/return "font-style: ")
+              (gen/return "font-style")
+              (gen/return ":")
               (:prop-font-style gmap))]
           [(get weights [:css-assignment :alt 88] 100)
             (gen/tuple
-              (gen/return "-moz-appearance: ")
+              (gen/return "-moz-appearance")
+              (gen/return ":")
               (:prop--moz-appearance gmap))]
           [(get weights [:css-assignment :alt 89] 100)
             (gen/tuple
-              (gen/return "mask-composite: ")
+              (gen/return "mask-composite")
+              (gen/return ":")
               (:prop-mask-composite gmap))]
           [(get weights [:css-assignment :alt 90] 100)
             (gen/tuple
-              (gen/return "-moz-binding: ")
+              (gen/return "-moz-binding")
+              (gen/return ":")
               (:prop--moz-binding gmap))]
           [(get weights [:css-assignment :alt 91] 100)
             (gen/tuple
-              (gen/return "grid-gap: ")
+              (gen/return "grid-gap")
+              (gen/return ":")
               (:prop-grid-gap gmap))]
           [(get weights [:css-assignment :alt 92] 100)
             (gen/tuple
-              (gen/return "perspective: ")
+              (gen/return "perspective")
+              (gen/return ":")
               (:prop-perspective gmap))]
           [(get weights [:css-assignment :alt 93] 100)
             (gen/tuple
-              (gen/return "-moz-text-blink: ")
+              (gen/return "-moz-text-blink")
+              (gen/return ":")
               (:prop--moz-text-blink gmap))]
           [(get weights [:css-assignment :alt 94] 100)
             (gen/tuple
-              (gen/return "border-image-source: ")
+              (gen/return "border-image-source")
+              (gen/return ":")
               (:prop-border-image-source gmap))]
           [(get weights [:css-assignment :alt 95] 100)
             (gen/tuple
-              (gen/return "-moz-float-edge: ")
+              (gen/return "-moz-float-edge")
+              (gen/return ":")
               (:prop--moz-float-edge gmap))]
           [(get weights [:css-assignment :alt 96] 100)
             (gen/tuple
-              (gen/return "line-height: ")
+              (gen/return "line-height")
+              (gen/return ":")
               (:prop-line-height gmap))]
           [(get weights [:css-assignment :alt 97] 100)
             (gen/tuple
-              (gen/return "-moz-window-shadow: ")
+              (gen/return "-moz-window-shadow")
+              (gen/return ":")
               (:prop--moz-window-shadow gmap))]
           [(get weights [:css-assignment :alt 98] 100)
             (gen/tuple
-              (gen/return "filter: ")
+              (gen/return "filter")
+              (gen/return ":")
               (:prop-filter gmap))]
           [(get weights [:css-assignment :alt 99] 100)
             (gen/tuple
-              (gen/return "box-shadow: ")
+              (gen/return "box-shadow")
+              (gen/return ":")
               (:prop-box-shadow gmap))]
           [(get weights [:css-assignment :alt 100] 100)
             (gen/tuple
-              (gen/return "grid-template-areas: ")
+              (gen/return "grid-template-areas")
+              (gen/return ":")
               (:prop-grid-template-areas gmap))]
           [(get weights [:css-assignment :alt 101] 100)
             (gen/tuple
-              (gen/return "border-left-width: ")
+              (gen/return "border-left-width")
+              (gen/return ":")
               (:prop-border-left-width gmap))]
           [(get weights [:css-assignment :alt 102] 100)
             (gen/tuple
-              (gen/return "column-rule-color: ")
+              (gen/return "column-rule-color")
+              (gen/return ":")
               (:prop-column-rule-color gmap))]
           [(get weights [:css-assignment :alt 103] 100)
             (gen/tuple
-              (gen/return "grid-auto-rows: ")
+              (gen/return "grid-auto-rows")
+              (gen/return ":")
               (:prop-grid-auto-rows gmap))]
           [(get weights [:css-assignment :alt 104] 100)
             (gen/tuple
-              (gen/return "opacity: ")
+              (gen/return "opacity")
+              (gen/return ":")
               (:prop-opacity gmap))]
           [(get weights [:css-assignment :alt 105] 100)
             (gen/tuple
-              (gen/return "counter-increment: ")
+              (gen/return "counter-increment")
+              (gen/return ":")
               (:prop-counter-increment gmap))]
           [(get weights [:css-assignment :alt 106] 100)
             (gen/tuple
-              (gen/return "-moz-user-modify: ")
+              (gen/return "-moz-user-modify")
+              (gen/return ":")
               (:prop--moz-user-modify gmap))]
           [(get weights [:css-assignment :alt 107] 100)
             (gen/tuple
-              (gen/return "initial-letter-align: ")
+              (gen/return "initial-letter-align")
+              (gen/return ":")
               (:prop-initial-letter-align gmap))]
           [(get weights [:css-assignment :alt 108] 100)
             (gen/tuple
-              (gen/return "min-block-size: ")
+              (gen/return "min-block-size")
+              (gen/return ":")
               (:prop-min-block-size gmap))]
           [(get weights [:css-assignment :alt 109] 100)
             (gen/tuple
-              (gen/return "border-top-width: ")
+              (gen/return "border-top-width")
+              (gen/return ":")
               (:prop-border-top-width gmap))]
           [(get weights [:css-assignment :alt 110] 100)
             (gen/tuple
-              (gen/return "image-orientation: ")
+              (gen/return "image-orientation")
+              (gen/return ":")
               (:prop-image-orientation gmap))]
           [(get weights [:css-assignment :alt 111] 100)
             (gen/tuple
-              (gen/return "mask-size: ")
+              (gen/return "mask-size")
+              (gen/return ":")
               (:prop-mask-size gmap))]
           [(get weights [:css-assignment :alt 112] 100)
             (gen/tuple
-              (gen/return "border-image-repeat: ")
+              (gen/return "border-image-repeat")
+              (gen/return ":")
               (:prop-border-image-repeat gmap))]
           [(get weights [:css-assignment :alt 113] 100)
             (gen/tuple
-              (gen/return "float: ")
+              (gen/return "float")
+              (gen/return ":")
               (:prop-float gmap))]
           [(get weights [:css-assignment :alt 114] 100)
             (gen/tuple
-              (gen/return "font-language-override: ")
+              (gen/return "font-language-override")
+              (gen/return ":")
               (:prop-font-language-override gmap))]
           [(get weights [:css-assignment :alt 115] 100)
             (gen/tuple
-              (gen/return "scroll-snap-destination: ")
+              (gen/return "scroll-snap-destination")
+              (gen/return ":")
               (:prop-scroll-snap-destination gmap))]
           [(get weights [:css-assignment :alt 116] 100)
             (gen/tuple
-              (gen/return "grid-row-gap: ")
+              (gen/return "grid-row-gap")
+              (gen/return ":")
               (:prop-grid-row-gap gmap))]
           [(get weights [:css-assignment :alt 117] 100)
             (gen/tuple
-              (gen/return "unicode-bidi: ")
+              (gen/return "unicode-bidi")
+              (gen/return ":")
               (:prop-unicode-bidi gmap))]
           [(get weights [:css-assignment :alt 118] 100)
             (gen/tuple
-              (gen/return "transition: ")
+              (gen/return "transition")
+              (gen/return ":")
               (:prop-transition gmap))]
           [(get weights [:css-assignment :alt 119] 100)
             (gen/tuple
-              (gen/return "column-rule-width: ")
+              (gen/return "column-rule-width")
+              (gen/return ":")
               (:prop-column-rule-width gmap))]
           [(get weights [:css-assignment :alt 120] 100)
             (gen/tuple
-              (gen/return "offset-block-start: ")
+              (gen/return "offset-block-start")
+              (gen/return ":")
               (:prop-offset-block-start gmap))]
           [(get weights [:css-assignment :alt 121] 100)
             (gen/tuple
-              (gen/return "offset-distance: ")
+              (gen/return "offset-distance")
+              (gen/return ":")
               (:prop-offset-distance gmap))]
           [(get weights [:css-assignment :alt 122] 100)
             (gen/tuple
-              (gen/return "mask-clip: ")
+              (gen/return "mask-clip")
+              (gen/return ":")
               (:prop-mask-clip gmap))]
           [(get weights [:css-assignment :alt 123] 100)
             (gen/tuple
-              (gen/return "animation-direction: ")
+              (gen/return "animation-direction")
+              (gen/return ":")
               (:prop-animation-direction gmap))]
           [(get weights [:css-assignment :alt 124] 100)
             (gen/tuple
-              (gen/return "offset-block-end: ")
+              (gen/return "offset-block-end")
+              (gen/return ":")
               (:prop-offset-block-end gmap))]
           [(get weights [:css-assignment :alt 125] 100)
             (gen/tuple
-              (gen/return "border-image-outset: ")
+              (gen/return "border-image-outset")
+              (gen/return ":")
               (:prop-border-image-outset gmap))]
           [(get weights [:css-assignment :alt 126] 100)
             (gen/tuple
-              (gen/return "font-variation-settings: ")
+              (gen/return "font-variation-settings")
+              (gen/return ":")
               (:prop-font-variation-settings gmap))]
           [(get weights [:css-assignment :alt 127] 100)
             (gen/tuple
-              (gen/return "min-inline-size: ")
+              (gen/return "min-inline-size")
+              (gen/return ":")
               (:prop-min-inline-size gmap))]
           [(get weights [:css-assignment :alt 128] 100)
             (gen/tuple
-              (gen/return "caption-side: ")
+              (gen/return "caption-side")
+              (gen/return ":")
               (:prop-caption-side gmap))]
           [(get weights [:css-assignment :alt 129] 100)
             (gen/tuple
-              (gen/return "orphans: ")
+              (gen/return "orphans")
+              (gen/return ":")
               (:prop-orphans gmap))]
           [(get weights [:css-assignment :alt 130] 100)
             (gen/tuple
-              (gen/return "margin-inline-end: ")
+              (gen/return "margin-inline-end")
+              (gen/return ":")
               (:prop-margin-inline-end gmap))]
           [(get weights [:css-assignment :alt 131] 100)
             (gen/tuple
-              (gen/return "border-bottom-style: ")
+              (gen/return "border-bottom-style")
+              (gen/return ":")
               (:prop-border-bottom-style gmap))]
           [(get weights [:css-assignment :alt 132] 100)
             (gen/tuple
-              (gen/return "grid-row-start: ")
+              (gen/return "grid-row-start")
+              (gen/return ":")
               (:prop-grid-row-start gmap))]
           [(get weights [:css-assignment :alt 133] 100)
             (gen/tuple
-              (gen/return "ime-mode: ")
+              (gen/return "ime-mode")
+              (gen/return ":")
               (:prop-ime-mode gmap))]
           [(get weights [:css-assignment :alt 134] 100)
             (gen/tuple
-              (gen/return "top: ")
+              (gen/return "top")
+              (gen/return ":")
               (:prop-top gmap))]
           [(get weights [:css-assignment :alt 135] 100)
             (gen/tuple
-              (gen/return "image-rendering: ")
+              (gen/return "image-rendering")
+              (gen/return ":")
               (:prop-image-rendering gmap))]
           [(get weights [:css-assignment :alt 136] 100)
             (gen/tuple
-              (gen/return "shape-image-threshold: ")
+              (gen/return "shape-image-threshold")
+              (gen/return ":")
               (:prop-shape-image-threshold gmap))]
           [(get weights [:css-assignment :alt 137] 100)
             (gen/tuple
-              (gen/return "animation-name: ")
+              (gen/return "animation-name")
+              (gen/return ":")
               (:prop-animation-name gmap))]
           [(get weights [:css-assignment :alt 138] 100)
             (gen/tuple
-              (gen/return "right: ")
+              (gen/return "right")
+              (gen/return ":")
               (:prop-right gmap))]
           [(get weights [:css-assignment :alt 139] 100)
             (gen/tuple
-              (gen/return "z-index: ")
+              (gen/return "z-index")
+              (gen/return ":")
               (:prop-z-index gmap))]
           [(get weights [:css-assignment :alt 140] 100)
             (gen/tuple
-              (gen/return "background-blend-mode: ")
+              (gen/return "background-blend-mode")
+              (gen/return ":")
               (:prop-background-blend-mode gmap))]
           [(get weights [:css-assignment :alt 141] 100)
             (gen/tuple
-              (gen/return "letter-spacing: ")
+              (gen/return "letter-spacing")
+              (gen/return ":")
               (:prop-letter-spacing gmap))]
           [(get weights [:css-assignment :alt 142] 100)
             (gen/tuple
-              (gen/return "list-style: ")
+              (gen/return "list-style")
+              (gen/return ":")
               (:prop-list-style gmap))]
           [(get weights [:css-assignment :alt 143] 100)
             (gen/tuple
-              (gen/return "left: ")
+              (gen/return "left")
+              (gen/return ":")
               (:prop-left gmap))]
           [(get weights [:css-assignment :alt 144] 100)
             (gen/tuple
-              (gen/return "width: ")
+              (gen/return "width")
+              (gen/return ":")
               (:prop-width gmap))]
           [(get weights [:css-assignment :alt 145] 100)
             (gen/tuple
-              (gen/return "will-change: ")
+              (gen/return "will-change")
+              (gen/return ":")
               (:prop-will-change gmap))]
           [(get weights [:css-assignment :alt 146] 100)
             (gen/tuple
-              (gen/return "font-synthesis: ")
+              (gen/return "font-synthesis")
+              (gen/return ":")
               (:prop-font-synthesis gmap))]
           [(get weights [:css-assignment :alt 147] 100)
             (gen/tuple
-              (gen/return "flex-flow: ")
+              (gen/return "flex-flow")
+              (gen/return ":")
               (:prop-flex-flow gmap))]
           [(get weights [:css-assignment :alt 148] 100)
             (gen/tuple
-              (gen/return "background-size: ")
+              (gen/return "background-size")
+              (gen/return ":")
               (:prop-background-size gmap))]
           [(get weights [:css-assignment :alt 149] 100)
             (gen/tuple
-              (gen/return "box-suppress: ")
+              (gen/return "box-suppress")
+              (gen/return ":")
               (:prop-box-suppress gmap))]
           [(get weights [:css-assignment :alt 150] 100)
             (gen/tuple
-              (gen/return "background-clip: ")
+              (gen/return "background-clip")
+              (gen/return ":")
               (:prop-background-clip gmap))]
           [(get weights [:css-assignment :alt 151] 100)
             (gen/tuple
-              (gen/return "scroll-snap-points-x: ")
+              (gen/return "scroll-snap-points-x")
+              (gen/return ":")
               (:prop-scroll-snap-points-x gmap))]
           [(get weights [:css-assignment :alt 152] 100)
             (gen/tuple
-              (gen/return "animation: ")
+              (gen/return "animation")
+              (gen/return ":")
               (:prop-animation gmap))]
           [(get weights [:css-assignment :alt 153] 100)
             (gen/tuple
-              (gen/return "overflow: ")
+              (gen/return "overflow")
+              (gen/return ":")
               (:prop-overflow gmap))]
           [(get weights [:css-assignment :alt 154] 100)
             (gen/tuple
-              (gen/return "-webkit-mask-clip: ")
+              (gen/return "-webkit-mask-clip")
+              (gen/return ":")
               (:prop--webkit-mask-clip gmap))]
           [(get weights [:css-assignment :alt 155] 100)
             (gen/tuple
-              (gen/return "font-size-adjust: ")
+              (gen/return "font-size-adjust")
+              (gen/return ":")
               (:prop-font-size-adjust gmap))]
           [(get weights [:css-assignment :alt 156] 100)
             (gen/tuple
-              (gen/return "-moz-image-region: ")
+              (gen/return "-moz-image-region")
+              (gen/return ":")
               (:prop--moz-image-region gmap))]
           [(get weights [:css-assignment :alt 157] 100)
             (gen/tuple
-              (gen/return "padding-inline-end: ")
+              (gen/return "padding-inline-end")
+              (gen/return ":")
               (:prop-padding-inline-end gmap))]
           [(get weights [:css-assignment :alt 158] 100)
             (gen/tuple
-              (gen/return "counter-reset: ")
+              (gen/return "counter-reset")
+              (gen/return ":")
               (:prop-counter-reset gmap))]
           [(get weights [:css-assignment :alt 159] 100)
             (gen/tuple
-              (gen/return "column-gap: ")
+              (gen/return "column-gap")
+              (gen/return ":")
               (:prop-column-gap gmap))]
           [(get weights [:css-assignment :alt 160] 100)
             (gen/tuple
-              (gen/return "border-color: ")
+              (gen/return "border-color")
+              (gen/return ":")
               (:prop-border-color gmap))]
           [(get weights [:css-assignment :alt 161] 100)
             (gen/tuple
-              (gen/return "-webkit-mask-position-x: ")
+              (gen/return "-webkit-mask-position-x")
+              (gen/return ":")
               (:prop--webkit-mask-position-x gmap))]
           [(get weights [:css-assignment :alt 162] 100)
             (gen/tuple
-              (gen/return "vertical-align: ")
+              (gen/return "vertical-align")
+              (gen/return ":")
               (:prop-vertical-align gmap))]
           [(get weights [:css-assignment :alt 163] 100)
             (gen/tuple
-              (gen/return "display-inside: ")
+              (gen/return "display-inside")
+              (gen/return ":")
               (:prop-display-inside gmap))]
           [(get weights [:css-assignment :alt 164] 100)
             (gen/tuple
-              (gen/return "border-width: ")
+              (gen/return "border-width")
+              (gen/return ":")
               (:prop-border-width gmap))]
           [(get weights [:css-assignment :alt 165] 100)
             (gen/tuple
-              (gen/return "quotes: ")
+              (gen/return "quotes")
+              (gen/return ":")
               (:prop-quotes gmap))]
           [(get weights [:css-assignment :alt 166] 100)
             (gen/tuple
-              (gen/return "scroll-snap-points-y: ")
+              (gen/return "scroll-snap-points-y")
+              (gen/return ":")
               (:prop-scroll-snap-points-y gmap))]
           [(get weights [:css-assignment :alt 167] 100)
             (gen/tuple
-              (gen/return "grid-area: ")
+              (gen/return "grid-area")
+              (gen/return ":")
               (:prop-grid-area gmap))]
           [(get weights [:css-assignment :alt 168] 100)
             (gen/tuple
-              (gen/return "border-spacing: ")
+              (gen/return "border-spacing")
+              (gen/return ":")
               (:prop-border-spacing gmap))]
           [(get weights [:css-assignment :alt 169] 100)
             (gen/tuple
-              (gen/return "border-top-style: ")
+              (gen/return "border-top-style")
+              (gen/return ":")
               (:prop-border-top-style gmap))]
           [(get weights [:css-assignment :alt 170] 100)
             (gen/tuple
-              (gen/return "text-underline-position: ")
+              (gen/return "text-underline-position")
+              (gen/return ":")
               (:prop-text-underline-position gmap))]
           [(get weights [:css-assignment :alt 171] 100)
             (gen/tuple
-              (gen/return "grid-template-rows: ")
+              (gen/return "grid-template-rows")
+              (gen/return ":")
               (:prop-grid-template-rows gmap))]
           [(get weights [:css-assignment :alt 172] 100)
             (gen/tuple
-              (gen/return "object-position: ")
+              (gen/return "object-position")
+              (gen/return ":")
               (:prop-object-position gmap))]
           [(get weights [:css-assignment :alt 173] 100)
             (gen/tuple
-              (gen/return "border-block-start-style: ")
+              (gen/return "border-block-start-style")
+              (gen/return ":")
               (:prop-border-block-start-style gmap))]
           [(get weights [:css-assignment :alt 174] 100)
             (gen/tuple
-              (gen/return "-moz-outline-radius: ")
+              (gen/return "-moz-outline-radius")
+              (gen/return ":")
               (:prop--moz-outline-radius gmap))]
           [(get weights [:css-assignment :alt 175] 100)
             (gen/tuple
-              (gen/return "border-block-end-style: ")
+              (gen/return "border-block-end-style")
+              (gen/return ":")
               (:prop-border-block-end-style gmap))]
           [(get weights [:css-assignment :alt 176] 100)
             (gen/tuple
-              (gen/return "padding-block-start: ")
+              (gen/return "padding-block-start")
+              (gen/return ":")
               (:prop-padding-block-start gmap))]
           [(get weights [:css-assignment :alt 177] 100)
             (gen/tuple
-              (gen/return "animation-delay: ")
+              (gen/return "animation-delay")
+              (gen/return ":")
               (:prop-animation-delay gmap))]
           [(get weights [:css-assignment :alt 178] 100)
             (gen/tuple
-              (gen/return "-webkit-box-reflect: ")
+              (gen/return "-webkit-box-reflect")
+              (gen/return ":")
               (:prop--webkit-box-reflect gmap))]
           [(get weights [:css-assignment :alt 179] 100)
             (gen/tuple
-              (gen/return "-moz-orient: ")
+              (gen/return "-moz-orient")
+              (gen/return ":")
               (:prop--moz-orient gmap))]
           [(get weights [:css-assignment :alt 180] 100)
             (gen/tuple
-              (gen/return "border-inline-start: ")
+              (gen/return "border-inline-start")
+              (gen/return ":")
               (:prop-border-inline-start gmap))]
           [(get weights [:css-assignment :alt 181] 100)
             (gen/tuple
-              (gen/return "border-collapse: ")
+              (gen/return "border-collapse")
+              (gen/return ":")
               (:prop-border-collapse gmap))]
           [(get weights [:css-assignment :alt 182] 100)
             (gen/tuple
-              (gen/return "border-image-slice: ")
+              (gen/return "border-image-slice")
+              (gen/return ":")
               (:prop-border-image-slice gmap))]
           [(get weights [:css-assignment :alt 183] 100)
             (gen/tuple
-              (gen/return "flex-direction: ")
+              (gen/return "flex-direction")
+              (gen/return ":")
               (:prop-flex-direction gmap))]
           [(get weights [:css-assignment :alt 184] 100)
             (gen/tuple
-              (gen/return "color: ")
+              (gen/return "color")
+              (gen/return ":")
               (:prop-color gmap))]
           [(get weights [:css-assignment :alt 185] 100)
             (gen/tuple
-              (gen/return "offset-position: ")
+              (gen/return "offset-position")
+              (gen/return ":")
               (:prop-offset-position gmap))]
           [(get weights [:css-assignment :alt 186] 100)
             (gen/tuple
-              (gen/return "background-image: ")
+              (gen/return "background-image")
+              (gen/return ":")
               (:prop-background-image gmap))]
           [(get weights [:css-assignment :alt 187] 100)
             (gen/tuple
-              (gen/return "font-variant-caps: ")
+              (gen/return "font-variant-caps")
+              (gen/return ":")
               (:prop-font-variant-caps gmap))]
           [(get weights [:css-assignment :alt 188] 100)
             (gen/tuple
-              (gen/return "-webkit-text-stroke: ")
+              (gen/return "-webkit-text-stroke")
+              (gen/return ":")
               (:prop--webkit-text-stroke gmap))]
           [(get weights [:css-assignment :alt 189] 100)
             (gen/tuple
-              (gen/return "border-top-right-radius: ")
+              (gen/return "border-top-right-radius")
+              (gen/return ":")
               (:prop-border-top-right-radius gmap))]
           [(get weights [:css-assignment :alt 190] 100)
             (gen/tuple
-              (gen/return "border-inline-end-width: ")
+              (gen/return "border-inline-end-width")
+              (gen/return ":")
               (:prop-border-inline-end-width gmap))]
           [(get weights [:css-assignment :alt 191] 100)
             (gen/tuple
-              (gen/return "text-emphasis-color: ")
+              (gen/return "text-emphasis-color")
+              (gen/return ":")
               (:prop-text-emphasis-color gmap))]
           [(get weights [:css-assignment :alt 192] 100)
             (gen/tuple
-              (gen/return "text-indent: ")
+              (gen/return "text-indent")
+              (gen/return ":")
               (:prop-text-indent gmap))]
           [(get weights [:css-assignment :alt 193] 100)
             (gen/tuple
-              (gen/return "mix-blend-mode: ")
+              (gen/return "mix-blend-mode")
+              (gen/return ":")
               (:prop-mix-blend-mode gmap))]
           [(get weights [:css-assignment :alt 194] 100)
             (gen/tuple
-              (gen/return "max-height: ")
+              (gen/return "max-height")
+              (gen/return ":")
               (:prop-max-height gmap))]
           [(get weights [:css-assignment :alt 195] 100)
             (gen/tuple
-              (gen/return "mask-repeat: ")
+              (gen/return "mask-repeat")
+              (gen/return ":")
               (:prop-mask-repeat gmap))]
           [(get weights [:css-assignment :alt 196] 100)
             (gen/tuple
-              (gen/return "offset: ")
+              (gen/return "offset")
+              (gen/return ":")
               (:prop-offset gmap))]
           [(get weights [:css-assignment :alt 197] 100)
             (gen/tuple
-              (gen/return "touch-action: ")
+              (gen/return "touch-action")
+              (gen/return ":")
               (:prop-touch-action gmap))]
           [(get weights [:css-assignment :alt 198] 100)
             (gen/tuple
-              (gen/return "word-wrap: ")
+              (gen/return "word-wrap")
+              (gen/return ":")
               (:prop-word-wrap gmap))]
           [(get weights [:css-assignment :alt 199] 100)
             (gen/tuple
-              (gen/return "isolation: ")
+              (gen/return "isolation")
+              (gen/return ":")
               (:prop-isolation gmap))]
           [(get weights [:css-assignment :alt 200] 100)
             (gen/tuple
-              (gen/return "transition-duration: ")
+              (gen/return "transition-duration")
+              (gen/return ":")
               (:prop-transition-duration gmap))]
           [(get weights [:css-assignment :alt 201] 100)
             (gen/tuple
-              (gen/return "-moz-user-input: ")
+              (gen/return "-moz-user-input")
+              (gen/return ":")
               (:prop--moz-user-input gmap))]
           [(get weights [:css-assignment :alt 202] 100)
             (gen/tuple
-              (gen/return "grid-auto-columns: ")
+              (gen/return "grid-auto-columns")
+              (gen/return ":")
               (:prop-grid-auto-columns gmap))]
           [(get weights [:css-assignment :alt 203] 100)
             (gen/tuple
-              (gen/return "grid-column-end: ")
+              (gen/return "grid-column-end")
+              (gen/return ":")
               (:prop-grid-column-end gmap))]
           [(get weights [:css-assignment :alt 204] 100)
             (gen/tuple
-              (gen/return "align-content: ")
+              (gen/return "align-content")
+              (gen/return ":")
               (:prop-align-content gmap))]
           [(get weights [:css-assignment :alt 205] 100)
             (gen/tuple
-              (gen/return "border-bottom-right-radius: ")
+              (gen/return "border-bottom-right-radius")
+              (gen/return ":")
               (:prop-border-bottom-right-radius gmap))]
           [(get weights [:css-assignment :alt 206] 100)
             (gen/tuple
-              (gen/return "grid-template: ")
+              (gen/return "grid-template")
+              (gen/return ":")
               (:prop-grid-template gmap))]
           [(get weights [:css-assignment :alt 207] 100)
             (gen/tuple
-              (gen/return "-webkit-mask-image: ")
+              (gen/return "-webkit-mask-image")
+              (gen/return ":")
               (:prop--webkit-mask-image gmap))]
           [(get weights [:css-assignment :alt 208] 100)
             (gen/tuple
-              (gen/return "widows: ")
+              (gen/return "widows")
+              (gen/return ":")
               (:prop-widows gmap))]
           [(get weights [:css-assignment :alt 209] 100)
             (gen/tuple
-              (gen/return "background-position-y: ")
+              (gen/return "background-position-y")
+              (gen/return ":")
               (:prop-background-position-y gmap))]
           [(get weights [:css-assignment :alt 210] 100)
             (gen/tuple
-              (gen/return "font-size: ")
+              (gen/return "font-size")
+              (gen/return ":")
               (:prop-font-size gmap))]
           [(get weights [:css-assignment :alt 211] 100)
             (gen/tuple
-              (gen/return "border-right-style: ")
+              (gen/return "border-right-style")
+              (gen/return ":")
               (:prop-border-right-style gmap))]
           [(get weights [:css-assignment :alt 212] 100)
             (gen/tuple
-              (gen/return "animation-timing-function: ")
+              (gen/return "animation-timing-function")
+              (gen/return ":")
               (:prop-animation-timing-function gmap))]
           [(get weights [:css-assignment :alt 213] 100)
             (gen/tuple
-              (gen/return "inline-size: ")
+              (gen/return "inline-size")
+              (gen/return ":")
               (:prop-inline-size gmap))]
           [(get weights [:css-assignment :alt 214] 100)
             (gen/tuple
-              (gen/return "offset-inline-end: ")
+              (gen/return "offset-inline-end")
+              (gen/return ":")
               (:prop-offset-inline-end gmap))]
           [(get weights [:css-assignment :alt 215] 100)
             (gen/tuple
-              (gen/return "font-variant-position: ")
+              (gen/return "font-variant-position")
+              (gen/return ":")
               (:prop-font-variant-position gmap))]
           [(get weights [:css-assignment :alt 216] 100)
             (gen/tuple
-              (gen/return "line-break: ")
+              (gen/return "line-break")
+              (gen/return ":")
               (:prop-line-break gmap))]
           [(get weights [:css-assignment :alt 217] 100)
             (gen/tuple
-              (gen/return "overflow-y: ")
+              (gen/return "overflow-y")
+              (gen/return ":")
               (:prop-overflow-y gmap))]
           [(get weights [:css-assignment :alt 218] 100)
             (gen/tuple
-              (gen/return "-webkit-border-before-color: ")
+              (gen/return "-webkit-border-before-color")
+              (gen/return ":")
               (:prop--webkit-border-before-color gmap))]
           [(get weights [:css-assignment :alt 219] 100)
             (gen/tuple
-              (gen/return "border-block-start-color: ")
+              (gen/return "border-block-start-color")
+              (gen/return ":")
               (:prop-border-block-start-color gmap))]
           [(get weights [:css-assignment :alt 220] 100)
             (gen/tuple
-              (gen/return "clip: ")
+              (gen/return "clip")
+              (gen/return ":")
               (:prop-clip gmap))]
           [(get weights [:css-assignment :alt 221] 100)
             (gen/tuple
-              (gen/return "align-self: ")
+              (gen/return "align-self")
+              (gen/return ":")
               (:prop-align-self gmap))]
           [(get weights [:css-assignment :alt 222] 100)
             (gen/tuple
-              (gen/return "border-top-color: ")
+              (gen/return "border-top-color")
+              (gen/return ":")
               (:prop-border-top-color gmap))]
           [(get weights [:css-assignment :alt 223] 100)
             (gen/tuple
-              (gen/return "overflow-wrap: ")
+              (gen/return "overflow-wrap")
+              (gen/return ":")
               (:prop-overflow-wrap gmap))]
           [(get weights [:css-assignment :alt 224] 100)
             (gen/tuple
-              (gen/return "flex: ")
+              (gen/return "flex")
+              (gen/return ":")
               (:prop-flex gmap))]
           [(get weights [:css-assignment :alt 225] 100)
             (gen/tuple
-              (gen/return "-webkit-mask-position-y: ")
+              (gen/return "-webkit-mask-position-y")
+              (gen/return ":")
               (:prop--webkit-mask-position-y gmap))]
           [(get weights [:css-assignment :alt 226] 100)
             (gen/tuple
-              (gen/return "flex-basis: ")
+              (gen/return "flex-basis")
+              (gen/return ":")
               (:prop-flex-basis gmap))]
           [(get weights [:css-assignment :alt 227] 100)
             (gen/tuple
-              (gen/return "font-variant-numeric: ")
+              (gen/return "font-variant-numeric")
+              (gen/return ":")
               (:prop-font-variant-numeric gmap))]
           [(get weights [:css-assignment :alt 228] 100)
             (gen/tuple
-              (gen/return "ruby-align: ")
+              (gen/return "ruby-align")
+              (gen/return ":")
               (:prop-ruby-align gmap))]
           [(get weights [:css-assignment :alt 229] 100)
             (gen/tuple
-              (gen/return "-webkit-mask-repeat-y: ")
+              (gen/return "-webkit-mask-repeat-y")
+              (gen/return ":")
               (:prop--webkit-mask-repeat-y gmap))]
           [(get weights [:css-assignment :alt 230] 100)
             (gen/tuple
-              (gen/return "position: ")
+              (gen/return "position")
+              (gen/return ":")
               (:prop-position gmap))]
           [(get weights [:css-assignment :alt 231] 100)
             (gen/tuple
-              (gen/return "border-left-color: ")
+              (gen/return "border-left-color")
+              (gen/return ":")
               (:prop-border-left-color gmap))]
           [(get weights [:css-assignment :alt 232] 100)
             (gen/tuple
-              (gen/return "-moz-border-bottom-colors: ")
+              (gen/return "-moz-border-bottom-colors")
+              (gen/return ":")
               (:prop--moz-border-bottom-colors gmap))]
           [(get weights [:css-assignment :alt 233] 100)
             (gen/tuple
-              (gen/return "margin-top: ")
+              (gen/return "margin-top")
+              (gen/return ":")
               (:prop-margin-top gmap))]
           [(get weights [:css-assignment :alt 234] 100)
             (gen/tuple
-              (gen/return "scroll-snap-type: ")
+              (gen/return "scroll-snap-type")
+              (gen/return ":")
               (:prop-scroll-snap-type gmap))]
           [(get weights [:css-assignment :alt 235] 100)
             (gen/tuple
-              (gen/return "-moz-border-right-colors: ")
+              (gen/return "-moz-border-right-colors")
+              (gen/return ":")
               (:prop--moz-border-right-colors gmap))]
           [(get weights [:css-assignment :alt 236] 100)
             (gen/tuple
-              (gen/return "display: ")
+              (gen/return "display")
+              (gen/return ":")
               (:prop-display gmap))]
           [(get weights [:css-assignment :alt 237] 100)
             (gen/tuple
-              (gen/return "shape-outside: ")
+              (gen/return "shape-outside")
+              (gen/return ":")
               (:prop-shape-outside gmap))]
           [(get weights [:css-assignment :alt 238] 100)
             (gen/tuple
-              (gen/return "padding-block-end: ")
+              (gen/return "padding-block-end")
+              (gen/return ":")
               (:prop-padding-block-end gmap))]
           [(get weights [:css-assignment :alt 239] 100)
             (gen/tuple
-              (gen/return "shape-margin: ")
+              (gen/return "shape-margin")
+              (gen/return ":")
               (:prop-shape-margin gmap))]
           [(get weights [:css-assignment :alt 240] 100)
             (gen/tuple
-              (gen/return "box-ordinal-group: ")
+              (gen/return "box-ordinal-group")
+              (gen/return ":")
               (:prop-box-ordinal-group gmap))]
           [(get weights [:css-assignment :alt 241] 100)
             (gen/tuple
-              (gen/return "border-image-width: ")
+              (gen/return "border-image-width")
+              (gen/return ":")
               (:prop-border-image-width gmap))]
           [(get weights [:css-assignment :alt 242] 100)
             (gen/tuple
-              (gen/return "padding-right: ")
+              (gen/return "padding-right")
+              (gen/return ":")
               (:prop-padding-right gmap))]
           [(get weights [:css-assignment :alt 243] 100)
             (gen/tuple
-              (gen/return "all: ")
+              (gen/return "all")
+              (gen/return ":")
               (:prop-all gmap))]
           [(get weights [:css-assignment :alt 244] 100)
             (gen/tuple
-              (gen/return "font-feature-settings: ")
+              (gen/return "font-feature-settings")
+              (gen/return ":")
               (:prop-font-feature-settings gmap))]
           [(get weights [:css-assignment :alt 245] 100)
             (gen/tuple
-              (gen/return "border-block-end-width: ")
+              (gen/return "border-block-end-width")
+              (gen/return ":")
               (:prop-border-block-end-width gmap))]
           [(get weights [:css-assignment :alt 246] 100)
             (gen/tuple
-              (gen/return "border-right-color: ")
+              (gen/return "border-right-color")
+              (gen/return ":")
               (:prop-border-right-color gmap))]
           [(get weights [:css-assignment :alt 247] 100)
             (gen/tuple
-              (gen/return "perspective-origin: ")
+              (gen/return "perspective-origin")
+              (gen/return ":")
               (:prop-perspective-origin gmap))]
           [(get weights [:css-assignment :alt 248] 100)
             (gen/tuple
-              (gen/return "font: ")
+              (gen/return "font")
+              (gen/return ":")
               (:prop-font gmap))]
           [(get weights [:css-assignment :alt 249] 100)
             (gen/tuple
-              (gen/return "table-layout: ")
+              (gen/return "table-layout")
+              (gen/return ":")
               (:prop-table-layout gmap))]
           [(get weights [:css-assignment :alt 250] 100)
             (gen/tuple
-              (gen/return "bottom: ")
+              (gen/return "bottom")
+              (gen/return ":")
               (:prop-bottom gmap))]
           [(get weights [:css-assignment :alt 251] 100)
             (gen/tuple
-              (gen/return "text-decoration-color: ")
+              (gen/return "text-decoration-color")
+              (gen/return ":")
               (:prop-text-decoration-color gmap))]
           [(get weights [:css-assignment :alt 252] 100)
             (gen/tuple
-              (gen/return "grid: ")
+              (gen/return "grid")
+              (gen/return ":")
               (:prop-grid gmap))]
           [(get weights [:css-assignment :alt 253] 100)
             (gen/tuple
-              (gen/return "text-size-adjust: ")
+              (gen/return "text-size-adjust")
+              (gen/return ":")
               (:prop-text-size-adjust gmap))]
           [(get weights [:css-assignment :alt 254] 100)
             (gen/tuple
-              (gen/return "overflow-x: ")
+              (gen/return "overflow-x")
+              (gen/return ":")
               (:prop-overflow-x gmap))]
           [(get weights [:css-assignment :alt 255] 100)
             (gen/tuple
-              (gen/return "mask-type: ")
+              (gen/return "mask-type")
+              (gen/return ":")
               (:prop-mask-type gmap))]
           [(get weights [:css-assignment :alt 256] 100)
             (gen/tuple
-              (gen/return "-webkit-mask-origin: ")
+              (gen/return "-webkit-mask-origin")
+              (gen/return ":")
               (:prop--webkit-mask-origin gmap))]
           [(get weights [:css-assignment :alt 257] 100)
             (gen/tuple
-              (gen/return "-ms-overflow-style: ")
+              (gen/return "-ms-overflow-style")
+              (gen/return ":")
               (:prop--ms-overflow-style gmap))]
           [(get weights [:css-assignment :alt 258] 100)
             (gen/tuple
-              (gen/return "empty-cells: ")
+              (gen/return "empty-cells")
+              (gen/return ":")
               (:prop-empty-cells gmap))]
           [(get weights [:css-assignment :alt 259] 100)
             (gen/tuple
-              (gen/return "outline-width: ")
+              (gen/return "outline-width")
+              (gen/return ":")
               (:prop-outline-width gmap))]
           [(get weights [:css-assignment :alt 260] 100)
             (gen/tuple
-              (gen/return "transition-delay: ")
+              (gen/return "transition-delay")
+              (gen/return ":")
               (:prop-transition-delay gmap))]
           [(get weights [:css-assignment :alt 261] 100)
             (gen/tuple
-              (gen/return "hyphens: ")
+              (gen/return "hyphens")
+              (gen/return ":")
               (:prop-hyphens gmap))]
           [(get weights [:css-assignment :alt 262] 100)
             (gen/tuple
-              (gen/return "offset-rotate: ")
+              (gen/return "offset-rotate")
+              (gen/return ":")
               (:prop-offset-rotate gmap))]
           [(get weights [:css-assignment :alt 263] 100)
             (gen/tuple
-              (gen/return "writing-mode: ")
+              (gen/return "writing-mode")
+              (gen/return ":")
               (:prop-writing-mode gmap))]
           [(get weights [:css-assignment :alt 264] 100)
             (gen/tuple
-              (gen/return "display-outside: ")
+              (gen/return "display-outside")
+              (gen/return ":")
               (:prop-display-outside gmap))]
           [(get weights [:css-assignment :alt 265] 100)
             (gen/tuple
-              (gen/return "font-variant-east-asian: ")
+              (gen/return "font-variant-east-asian")
+              (gen/return ":")
               (:prop-font-variant-east-asian gmap))]
           [(get weights [:css-assignment :alt 266] 100)
             (gen/tuple
-              (gen/return "text-decoration-style: ")
+              (gen/return "text-decoration-style")
+              (gen/return ":")
               (:prop-text-decoration-style gmap))]
           [(get weights [:css-assignment :alt 267] 100)
             (gen/tuple
-              (gen/return "mask: ")
+              (gen/return "mask")
+              (gen/return ":")
               (:prop-mask gmap))]
           [(get weights [:css-assignment :alt 268] 100)
             (gen/tuple
-              (gen/return "contain: ")
+              (gen/return "contain")
+              (gen/return ":")
               (:prop-contain gmap))]
           [(get weights [:css-assignment :alt 269] 100)
             (gen/tuple
-              (gen/return "clear: ")
+              (gen/return "clear")
+              (gen/return ":")
               (:prop-clear gmap))]
           [(get weights [:css-assignment :alt 270] 100)
             (gen/tuple
-              (gen/return "scroll-snap-type-y: ")
+              (gen/return "scroll-snap-type-y")
+              (gen/return ":")
               (:prop-scroll-snap-type-y gmap))]
           [(get weights [:css-assignment :alt 271] 100)
             (gen/tuple
-              (gen/return "cursor: ")
+              (gen/return "cursor")
+              (gen/return ":")
               (:prop-cursor gmap))]
           [(get weights [:css-assignment :alt 272] 100)
             (gen/tuple
-              (gen/return "break-inside: ")
+              (gen/return "break-inside")
+              (gen/return ":")
               (:prop-break-inside gmap))]
           [(get weights [:css-assignment :alt 273] 100)
             (gen/tuple
-              (gen/return "transform: ")
+              (gen/return "transform")
+              (gen/return ":")
               (:prop-transform gmap))]
           [(get weights [:css-assignment :alt 274] 100)
             (gen/tuple
-              (gen/return "-webkit-border-before-width: ")
+              (gen/return "-webkit-border-before-width")
+              (gen/return ":")
               (:prop--webkit-border-before-width gmap))]
           [(get weights [:css-assignment :alt 275] 100)
             (gen/tuple
-              (gen/return "font-variant: ")
+              (gen/return "font-variant")
+              (gen/return ":")
               (:prop-font-variant gmap))]
           [(get weights [:css-assignment :alt 276] 100)
             (gen/tuple
-              (gen/return "flex-shrink: ")
+              (gen/return "flex-shrink")
+              (gen/return ":")
               (:prop-flex-shrink gmap))]
           [(get weights [:css-assignment :alt 277] 100)
             (gen/tuple
-              (gen/return "background-color: ")
+              (gen/return "background-color")
+              (gen/return ":")
               (:prop-background-color gmap))]
           [(get weights [:css-assignment :alt 278] 100)
             (gen/tuple
-              (gen/return "margin-left: ")
+              (gen/return "margin-left")
+              (gen/return ":")
               (:prop-margin-left gmap))]
           [(get weights [:css-assignment :alt 279] 100)
             (gen/tuple
-              (gen/return "text-emphasis-style: ")
+              (gen/return "text-emphasis-style")
+              (gen/return ":")
               (:prop-text-emphasis-style gmap))]
           [(get weights [:css-assignment :alt 280] 100)
             (gen/tuple
-              (gen/return "box-align: ")
+              (gen/return "box-align")
+              (gen/return ":")
               (:prop-box-align gmap))]
           [(get weights [:css-assignment :alt 281] 100)
             (gen/tuple
-              (gen/return "outline-offset: ")
+              (gen/return "outline-offset")
+              (gen/return ":")
               (:prop-outline-offset gmap))]
           [(get weights [:css-assignment :alt 282] 100)
             (gen/tuple
-              (gen/return "font-kerning: ")
+              (gen/return "font-kerning")
+              (gen/return ":")
               (:prop-font-kerning gmap))]
           [(get weights [:css-assignment :alt 283] 100)
             (gen/tuple
-              (gen/return "flex-wrap: ")
+              (gen/return "flex-wrap")
+              (gen/return ":")
               (:prop-flex-wrap gmap))]
           [(get weights [:css-assignment :alt 284] 100)
             (gen/tuple
-              (gen/return "grid-column-gap: ")
+              (gen/return "grid-column-gap")
+              (gen/return ":")
               (:prop-grid-column-gap gmap))]
           [(get weights [:css-assignment :alt 285] 100)
             (gen/tuple
-              (gen/return "max-block-size: ")
+              (gen/return "max-block-size")
+              (gen/return ":")
               (:prop-max-block-size gmap))]
           [(get weights [:css-assignment :alt 286] 100)
             (gen/tuple
-              (gen/return "border-inline-start-color: ")
+              (gen/return "border-inline-start-color")
+              (gen/return ":")
               (:prop-border-inline-start-color gmap))]
           [(get weights [:css-assignment :alt 287] 100)
             (gen/tuple
-              (gen/return "-webkit-text-stroke-color: ")
+              (gen/return "-webkit-text-stroke-color")
+              (gen/return ":")
               (:prop--webkit-text-stroke-color gmap))]
           [(get weights [:css-assignment :alt 288] 100)
             (gen/tuple
-              (gen/return "height: ")
+              (gen/return "height")
+              (gen/return ":")
               (:prop-height gmap))]
           [(get weights [:css-assignment :alt 289] 100)
             (gen/tuple
-              (gen/return "-webkit-mask-repeat-x: ")
+              (gen/return "-webkit-mask-repeat-x")
+              (gen/return ":")
               (:prop--webkit-mask-repeat-x gmap))]
           [(get weights [:css-assignment :alt 290] 100)
             (gen/tuple
-              (gen/return "ruby-merge: ")
+              (gen/return "ruby-merge")
+              (gen/return ":")
               (:prop-ruby-merge gmap))]
           [(get weights [:css-assignment :alt 291] 100)
             (gen/tuple
-              (gen/return "grid-template-columns: ")
+              (gen/return "grid-template-columns")
+              (gen/return ":")
               (:prop-grid-template-columns gmap))]
           [(get weights [:css-assignment :alt 292] 100)
             (gen/tuple
-              (gen/return "grid-column-start: ")
+              (gen/return "grid-column-start")
+              (gen/return ":")
               (:prop-grid-column-start gmap))]
           [(get weights [:css-assignment :alt 293] 100)
             (gen/tuple
-              (gen/return "object-fit: ")
+              (gen/return "object-fit")
+              (gen/return ":")
               (:prop-object-fit gmap))]
           [(get weights [:css-assignment :alt 294] 100)
             (gen/tuple
-              (gen/return "border-bottom-left-radius: ")
+              (gen/return "border-bottom-left-radius")
+              (gen/return ":")
               (:prop-border-bottom-left-radius gmap))]
           [(get weights [:css-assignment :alt 295] 100)
             (gen/tuple
-              (gen/return "mask-image: ")
+              (gen/return "mask-image")
+              (gen/return ":")
               (:prop-mask-image gmap))]
           [(get weights [:css-assignment :alt 296] 100)
             (gen/tuple
-              (gen/return "list-style-position: ")
+              (gen/return "list-style-position")
+              (gen/return ":")
               (:prop-list-style-position gmap))]
           [(get weights [:css-assignment :alt 297] 100)
             (gen/tuple
-              (gen/return "break-before: ")
+              (gen/return "break-before")
+              (gen/return ":")
               (:prop-break-before gmap))]
           [(get weights [:css-assignment :alt 298] 100)
             (gen/tuple
-              (gen/return "page-break-after: ")
+              (gen/return "page-break-after")
+              (gen/return ":")
               (:prop-page-break-after gmap))]
           [(get weights [:css-assignment :alt 299] 100)
             (gen/tuple
-              (gen/return "margin: ")
+              (gen/return "margin")
+              (gen/return ":")
               (:prop-margin gmap))]
           [(get weights [:css-assignment :alt 300] 100)
             (gen/tuple
-              (gen/return "font-variant-alternates: ")
+              (gen/return "font-variant-alternates")
+              (gen/return ":")
               (:prop-font-variant-alternates gmap))]
           [(get weights [:css-assignment :alt 301] 100)
             (gen/tuple
-              (gen/return "margin-right: ")
+              (gen/return "margin-right")
+              (gen/return ":")
               (:prop-margin-right gmap))]
           [(get weights [:css-assignment :alt 302] 100)
             (gen/tuple
-              (gen/return "outline: ")
+              (gen/return "outline")
+              (gen/return ":")
               (:prop-outline gmap))]
           [(get weights [:css-assignment :alt 303] 100)
             (gen/tuple
-              (gen/return "border-inline-end: ")
+              (gen/return "border-inline-end")
+              (gen/return ":")
               (:prop-border-inline-end gmap))]
           [(get weights [:css-assignment :alt 304] 100)
             (gen/tuple
-              (gen/return "max-width: ")
+              (gen/return "max-width")
+              (gen/return ":")
               (:prop-max-width gmap))]
           [(get weights [:css-assignment :alt 305] 100)
             (gen/tuple
-              (gen/return "border: ")
+              (gen/return "border")
+              (gen/return ":")
               (:prop-border gmap))]
           [(get weights [:css-assignment :alt 306] 100)
             (gen/tuple
-              (gen/return "-webkit-border-before: ")
+              (gen/return "-webkit-border-before")
+              (gen/return ":")
               (:prop--webkit-border-before gmap))]
           [(get weights [:css-assignment :alt 307] 100)
             (gen/tuple
-              (gen/return "offset-inline-start: ")
+              (gen/return "offset-inline-start")
+              (gen/return ":")
               (:prop-offset-inline-start gmap))]
           [(get weights [:css-assignment :alt 308] 100)
             (gen/tuple
-              (gen/return "column-width: ")
+              (gen/return "column-width")
+              (gen/return ":")
               (:prop-column-width gmap))]
           [(get weights [:css-assignment :alt 309] 100)
             (gen/tuple
-              (gen/return "content: ")
+              (gen/return "content")
+              (gen/return ":")
               (:prop-content gmap))]
           [(get weights [:css-assignment :alt 310] 100)
             (gen/tuple
-              (gen/return "mask-origin: ")
+              (gen/return "mask-origin")
+              (gen/return ":")
               (:prop-mask-origin gmap))]
           [(get weights [:css-assignment :alt 311] 100)
             (gen/tuple
-              (gen/return "column-fill: ")
+              (gen/return "column-fill")
+              (gen/return ":")
               (:prop-column-fill gmap))]
           [(get weights [:css-assignment :alt 312] 100)
             (gen/tuple
-              (gen/return "pointer-events: ")
+              (gen/return "pointer-events")
+              (gen/return ":")
               (:prop-pointer-events gmap))]
           [(get weights [:css-assignment :alt 313] 100)
             (gen/tuple
-              (gen/return "grid-column: ")
+              (gen/return "grid-column")
+              (gen/return ":")
               (:prop-grid-column gmap))]
           [(get weights [:css-assignment :alt 314] 100)
             (gen/tuple
-              (gen/return "outline-style: ")
+              (gen/return "outline-style")
+              (gen/return ":")
               (:prop-outline-style gmap))]
           [(get weights [:css-assignment :alt 315] 100)
             (gen/tuple
-              (gen/return "text-combine-upright: ")
+              (gen/return "text-combine-upright")
+              (gen/return ":")
               (:prop-text-combine-upright gmap))]
           [(get weights [:css-assignment :alt 316] 100)
             (gen/tuple
-              (gen/return "scroll-snap-coordinate: ")
+              (gen/return "scroll-snap-coordinate")
+              (gen/return ":")
               (:prop-scroll-snap-coordinate gmap))]
           [(get weights [:css-assignment :alt 317] 100)
             (gen/tuple
-              (gen/return "column-rule-style: ")
+              (gen/return "column-rule-style")
+              (gen/return ":")
               (:prop-column-rule-style gmap))]
           [(get weights [:css-assignment :alt 318] 100)
             (gen/tuple
-              (gen/return "column-count: ")
+              (gen/return "column-count")
+              (gen/return ":")
               (:prop-column-count gmap))]
           [(get weights [:css-assignment :alt 319] 100)
             (gen/tuple
-              (gen/return "offset-path: ")
+              (gen/return "offset-path")
+              (gen/return ":")
               (:prop-offset-path gmap))]
           [(get weights [:css-assignment :alt 320] 100)
             (gen/tuple
-              (gen/return "animation-play-state: ")
+              (gen/return "animation-play-state")
+              (gen/return ":")
               (:prop-animation-play-state gmap))]
           [(get weights [:css-assignment :alt 321] 100)
             (gen/tuple
-              (gen/return "text-orientation: ")
+              (gen/return "text-orientation")
+              (gen/return ":")
               (:prop-text-orientation gmap))]
           [(get weights [:css-assignment :alt 322] 100)
             (gen/tuple
-              (gen/return "page-break-before: ")
+              (gen/return "page-break-before")
+              (gen/return ":")
               (:prop-page-break-before gmap))]
           [(get weights [:css-assignment :alt 323] 100)
             (gen/tuple
-              (gen/return "-moz-outline-radius-topleft: ")
+              (gen/return "-moz-outline-radius-topleft")
+              (gen/return ":")
               (:prop--moz-outline-radius-topleft gmap))]
           [(get weights [:css-assignment :alt 324] 100)
             (gen/tuple
-              (gen/return "margin-bottom: ")
+              (gen/return "margin-bottom")
+              (gen/return ":")
               (:prop-margin-bottom gmap))]
           [(get weights [:css-assignment :alt 325] 100)
             (gen/tuple
-              (gen/return "appearance: ")
+              (gen/return "appearance")
+              (gen/return ":")
               (:prop-appearance gmap))]
           [(get weights [:css-assignment :alt 326] 100)
             (gen/tuple
-              (gen/return "-webkit-mask-position: ")
+              (gen/return "-webkit-mask-position")
+              (gen/return ":")
               (:prop--webkit-mask-position gmap))]
           [(get weights [:css-assignment :alt 327] 100)
             (gen/tuple
-              (gen/return "white-space: ")
+              (gen/return "white-space")
+              (gen/return ":")
               (:prop-white-space gmap))]
           [(get weights [:css-assignment :alt 328] 100)
             (gen/tuple
-              (gen/return "text-emphasis: ")
+              (gen/return "text-emphasis")
+              (gen/return ":")
               (:prop-text-emphasis gmap))]
           [(get weights [:css-assignment :alt 329] 100)
             (gen/tuple
-              (gen/return "direction: ")
+              (gen/return "direction")
+              (gen/return ":")
               (:prop-direction gmap))]
           [(get weights [:css-assignment :alt 330] 100)
             (gen/tuple
-              (gen/return "text-align: ")
+              (gen/return "text-align")
+              (gen/return ":")
               (:prop-text-align gmap))]
           [(get weights [:css-assignment :alt 331] 100)
             (gen/tuple
-              (gen/return "overflow-clip-box: ")
+              (gen/return "overflow-clip-box")
+              (gen/return ":")
               (:prop-overflow-clip-box gmap))]
           [(get weights [:css-assignment :alt 332] 100)
             (gen/tuple
-              (gen/return "mask-position: ")
+              (gen/return "mask-position")
+              (gen/return ":")
               (:prop-mask-position gmap))]
           [(get weights [:css-assignment :alt 333] 100)
             (gen/tuple
-              (gen/return "text-decoration-skip: ")
+              (gen/return "text-decoration-skip")
+              (gen/return ":")
               (:prop-text-decoration-skip gmap))]
           [(get weights [:css-assignment :alt 334] 100)
             (gen/tuple
-              (gen/return "flex-grow: ")
+              (gen/return "flex-grow")
+              (gen/return ":")
               (:prop-flex-grow gmap))]
           [(get weights [:css-assignment :alt 335] 100)
             (gen/tuple
-              (gen/return "background-repeat: ")
+              (gen/return "background-repeat")
+              (gen/return ":")
               (:prop-background-repeat gmap))]
           [(get weights [:css-assignment :alt 336] 100)
             (gen/tuple
-              (gen/return "font-weight: ")
+              (gen/return "font-weight")
+              (gen/return ":")
               (:prop-font-weight gmap))]
           [(get weights [:css-assignment :alt 337] 100)
             (gen/tuple
-              (gen/return "animation-fill-mode: ")
+              (gen/return "animation-fill-mode")
+              (gen/return ":")
               (:prop-animation-fill-mode gmap))]
           [(get weights [:css-assignment :alt 338] 100)
             (gen/tuple
-              (gen/return "border-image: ")
+              (gen/return "border-image")
+              (gen/return ":")
               (:prop-border-image gmap))]
           [(get weights [:css-assignment :alt 339] 100)
             (gen/tuple
-              (gen/return "max-inline-size: ")
+              (gen/return "max-inline-size")
+              (gen/return ":")
               (:prop-max-inline-size gmap))]
           [(get weights [:css-assignment :alt 340] 100)
             (gen/tuple
-              (gen/return "background-position-x: ")
+              (gen/return "background-position-x")
+              (gen/return ":")
               (:prop-background-position-x gmap))]
           [(get weights [:css-assignment :alt 341] 100)
             (gen/tuple
-              (gen/return "border-right: ")
+              (gen/return "border-right")
+              (gen/return ":")
               (:prop-border-right gmap))]
           [(get weights [:css-assignment :alt 342] 100)
             (gen/tuple
-              (gen/return "-moz-border-top-colors: ")
+              (gen/return "-moz-border-top-colors")
+              (gen/return ":")
               (:prop--moz-border-top-colors gmap))]
           [(get weights [:css-assignment :alt 343] 100)
             (gen/tuple
-              (gen/return "transform-origin: ")
+              (gen/return "transform-origin")
+              (gen/return ":")
               (:prop-transform-origin gmap))]
           [(get weights [:css-assignment :alt 344] 100)
             (gen/tuple
-              (gen/return "background-attachment: ")
+              (gen/return "background-attachment")
+              (gen/return ":")
               (:prop-background-attachment gmap))]
           [(get weights [:css-assignment :alt 345] 100)
             (gen/tuple
-              (gen/return "tab-size: ")
+              (gen/return "tab-size")
+              (gen/return ":")
               (:prop-tab-size gmap))]
           [(get weights [:css-assignment :alt 346] 100)
             (gen/tuple
-              (gen/return "font-variant-ligatures: ")
+              (gen/return "font-variant-ligatures")
+              (gen/return ":")
               (:prop-font-variant-ligatures gmap))]
           [(get weights [:css-assignment :alt 347] 100)
             (gen/tuple
-              (gen/return "border-left: ")
+              (gen/return "border-left")
+              (gen/return ":")
               (:prop-border-left gmap))]
           [(get weights [:css-assignment :alt 348] 100)
             (gen/tuple
-              (gen/return "caret-color: ")
+              (gen/return "caret-color")
+              (gen/return ":")
               (:prop-caret-color gmap))]
           [(get weights [:css-assignment :alt 349] 100)
             (gen/tuple
-              (gen/return "padding-inline-start: ")
+              (gen/return "padding-inline-start")
+              (gen/return ":")
               (:prop-padding-inline-start gmap))]
           [(get weights [:css-assignment :alt 350] 100)
             (gen/tuple
-              (gen/return "box-decoration-break: ")
+              (gen/return "box-decoration-break")
+              (gen/return ":")
               (:prop-box-decoration-break gmap))]
           [(get weights [:css-assignment :alt 351] 100)
             (gen/tuple
-              (gen/return "-webkit-mask-repeat: ")
+              (gen/return "-webkit-mask-repeat")
+              (gen/return ":")
               (:prop--webkit-mask-repeat gmap))]
           [(get weights [:css-assignment :alt 352] 100)
             (gen/tuple
-              (gen/return "border-top: ")
+              (gen/return "border-top")
+              (gen/return ":")
               (:prop-border-top gmap))]
           [(get weights [:css-assignment :alt 353] 100)
             (gen/tuple
-              (gen/return "-moz-outline-radius-bottomleft: ")
+              (gen/return "-moz-outline-radius-bottomleft")
+              (gen/return ":")
               (:prop--moz-outline-radius-bottomleft gmap))]
           [(get weights [:css-assignment :alt 354] 100)
             (gen/tuple
-              (gen/return "mask-mode: ")
+              (gen/return "mask-mode")
+              (gen/return ":")
               (:prop-mask-mode gmap))]
           [(get weights [:css-assignment :alt 355] 100)
             (gen/tuple
-              (gen/return "min-width: ")
+              (gen/return "min-width")
+              (gen/return ":")
               (:prop-min-width gmap))]
           [(get weights [:css-assignment :alt 356] 100)
             (gen/tuple
-              (gen/return "user-select: ")
+              (gen/return "user-select")
+              (gen/return ":")
               (:prop-user-select gmap))]
           [(get weights [:css-assignment :alt 357] 100)
             (gen/tuple
-              (gen/return "visibility: ")
+              (gen/return "visibility")
+              (gen/return ":")
               (:prop-visibility gmap))]
           [(get weights [:css-assignment :alt 358] 100)
             (gen/tuple
-              (gen/return "border-top-left-radius: ")
+              (gen/return "border-top-left-radius")
+              (gen/return ":")
               (:prop-border-top-left-radius gmap))]
           [(get weights [:css-assignment :alt 359] 100)
             (gen/tuple
-              (gen/return "-moz-outline-radius-bottomright: ")
+              (gen/return "-moz-outline-radius-bottomright")
+              (gen/return ":")
               (:prop--moz-outline-radius-bottomright gmap))]
           [(get weights [:css-assignment :alt 360] 100)
             (gen/tuple
-              (gen/return "text-overflow: ")
+              (gen/return "text-overflow")
+              (gen/return ":")
               (:prop-text-overflow gmap))]
           [(get weights [:css-assignment :alt 361] 100)
             (gen/tuple
-              (gen/return "image-resolution: ")
+              (gen/return "image-resolution")
+              (gen/return ":")
               (:prop-image-resolution gmap))]
           [(get weights [:css-assignment :alt 362] 100)
             (gen/tuple
-              (gen/return "clip-path: ")
+              (gen/return "clip-path")
+              (gen/return ":")
               (:prop-clip-path gmap))]
           [(get weights [:css-assignment :alt 363] 100)
             (gen/tuple
-              (gen/return "transform-box: ")
+              (gen/return "transform-box")
+              (gen/return ":")
               (:prop-transform-box gmap))]
           [(get weights [:css-assignment :alt 364] 100)
             (gen/tuple
-              (gen/return "text-rendering: ")
+              (gen/return "text-rendering")
+              (gen/return ":")
               (:prop-text-rendering gmap))]])
         gmap (assoc gmap :css-assignment gen-css-assignment)
-
-        gen-nonprop-nth
-        (gen/frequency [
-          [(get weights [:nonprop-nth :alt 0] 100)
-            (gen/tuple
-              (:nonprop-an-plus-b gmap)
-              (gen/return " "))]
-          [(get weights [:nonprop-nth :alt 1] 100)
-            (gen/tuple
-              (gen/return "even")
-              (gen/return " "))]
-          [(get weights [:nonprop-nth :alt 2] 100)
-            (gen/tuple
-              (gen/return "odd")
-              (gen/return " "))]])
-        gmap (assoc gmap :nonprop-nth gen-nonprop-nth)
 
         gen-css-assignments
         (gen/tuple
           (:css-assignment gmap)
           (gen/vector
             (gen/tuple
-              (gen/return "; ")
+              (gen/return ";")
               (:css-assignment gmap))))
         gmap (assoc gmap :css-assignments gen-css-assignments)
+
+        gen-css-ruleset
+        (gen/tuple
+          (:css-selector gmap)
+          (gen/vector
+            (gen/one-of [
+              (gen/return "")
+              (gen/tuple
+                (gen/return ",")
+                (:css-selector gmap))]))
+          (gen/return "{")
+          (:css-assignments gmap)
+          (gen/return "}"))
+        gmap (assoc gmap :css-ruleset gen-css-ruleset)
+
+        gen-stylesheet
+        (gen/vector
+          (:css-ruleset gmap))
+        gmap (assoc gmap :stylesheet gen-stylesheet)
+
+        gen-nonprop-feature-type
+        (gen/frequency [
+          [(get weights [:nonprop-feature-type :alt 0] 100)
+            (gen/tuple
+              (gen/return " ")
+              (gen/return "@stylistic"))]
+          [(get weights [:nonprop-feature-type :alt 1] 100)
+            (gen/tuple
+              (gen/return " ")
+              (gen/return "@historical-forms"))]
+          [(get weights [:nonprop-feature-type :alt 2] 100)
+            (gen/tuple
+              (gen/return " ")
+              (gen/return "@styleset"))]
+          [(get weights [:nonprop-feature-type :alt 3] 100)
+            (gen/tuple
+              (gen/return " ")
+              (gen/return "@character-variant"))]
+          [(get weights [:nonprop-feature-type :alt 4] 100)
+            (gen/tuple
+              (gen/return " ")
+              (gen/return "@swash"))]
+          [(get weights [:nonprop-feature-type :alt 5] 100)
+            (gen/tuple
+              (gen/return " ")
+              (gen/return "@ornaments"))]
+          [(get weights [:nonprop-feature-type :alt 6] 100)
+            (gen/tuple
+              (gen/return " ")
+              (gen/return "@annotation"))]])
+        gmap (assoc gmap :nonprop-feature-type gen-nonprop-feature-type)
+
+        gen-nonprop-feature-value-declaration
+        (gen/tuple
+          (gen/return " ")
+          (:nonprop-custom-ident gmap)
+          (gen/return " ")
+          (gen/return ":")
+          (gen/return " ")
+          (gen/such-that not-empty (gen/vector
+            (:nonprop-integer gmap)))
+          (gen/return " ")
+          (gen/return ";"))
+        gmap (assoc gmap :nonprop-feature-value-declaration gen-nonprop-feature-value-declaration)
+
+        gen-nonprop-feature-value-declaration-list
+        (gen/tuple
+          (gen/return " ")
+          (:nonprop-feature-value-declaration gmap))
+        gmap (assoc gmap :nonprop-feature-value-declaration-list gen-nonprop-feature-value-declaration-list)
+
+        gen-nonprop-keyframe-block
+        (gen/tuple
+          (gen/return " ")
+          (:nonprop-keyframe-selector gmap)
+          (gen/vector
+            (gen/tuple
+              (gen/return ",")
+              (:nonprop-keyframe-selector gmap)))
+          (gen/return " ")
+          (gen/return "{")
+          (gen/return " ")
+          (:nonprop-declaration-list gmap)
+          (gen/return "}"))
+        gmap (assoc gmap :nonprop-keyframe-block gen-nonprop-keyframe-block)
+
+        gen-nonprop-keyframe-block-list
+        (gen/tuple
+          (gen/return " ")
+          (gen/such-that not-empty (gen/vector
+            (:nonprop-keyframe-block gmap))))
+        gmap (assoc gmap :nonprop-keyframe-block-list gen-nonprop-keyframe-block-list)
+
+        gen-nonprop-feature-value-block
+        (gen/tuple
+          (gen/return " ")
+          (:nonprop-feature-type gmap)
+          (gen/return " ")
+          (gen/return "{")
+          (gen/return " ")
+          (:nonprop-feature-value-declaration-list gmap)
+          (gen/return "}"))
+        gmap (assoc gmap :nonprop-feature-value-block gen-nonprop-feature-value-block)
+
+        gen-nonprop-feature-value-block-list
+        (gen/tuple
+          (gen/return " ")
+          (gen/such-that not-empty (gen/vector
+            (:nonprop-feature-value-block gmap))))
+        gmap (assoc gmap :nonprop-feature-value-block-list gen-nonprop-feature-value-block-list)
+
+        gen-nonprop-pseudo-page
+        (gen/tuple
+          (gen/return " ")
+          (gen/return ":")
+          (gen/return " ")
+          (gen/frequency [
+            [(get weights [:nonprop-pseudo-page :cat 3 :alt 0] 100)
+              (gen/tuple
+                (gen/return " ")
+                (gen/return "left"))]
+            [(get weights [:nonprop-pseudo-page :cat 3 :alt 1] 100)
+              (gen/tuple
+                (gen/return " ")
+                (gen/return "right"))]
+            [(get weights [:nonprop-pseudo-page :cat 3 :alt 2] 100)
+              (gen/tuple
+                (gen/return " ")
+                (gen/return "first"))]
+            [(get weights [:nonprop-pseudo-page :cat 3 :alt 3] 100)
+              (gen/tuple
+                (gen/return " ")
+                (gen/return "blank"))]]))
+        gmap (assoc gmap :nonprop-pseudo-page gen-nonprop-pseudo-page)
+
+        gen-nonprop-page-selector
+        (gen/frequency [
+          [(get weights [:nonprop-page-selector :alt 0] 100)
+            (gen/tuple
+              (gen/return " ")
+              (gen/such-that not-empty (gen/vector
+                (:nonprop-pseudo-page gmap))))]
+          [(get weights [:nonprop-page-selector :alt 1] 100)
+            (gen/tuple
+              (gen/return " ")
+              (:nonprop-ident gmap)
+              (gen/return " ")
+              (gen/vector
+                (:nonprop-pseudo-page gmap)))]])
+        gmap (assoc gmap :nonprop-page-selector gen-nonprop-page-selector)
+
+        gen-nonprop-page-selector-list
+        (gen/tuple
+          (gen/return " ")
+          (gen/return " ")
+          (:nonprop-page-selector gmap)
+          (gen/one-of [
+            (gen/return "")
+            (gen/vector
+              (gen/tuple
+                (gen/return ",")
+                (:nonprop-page-selector gmap)))]))
+        gmap (assoc gmap :nonprop-page-selector-list gen-nonprop-page-selector-list)
+
+        gen-nonprop-dimension
+        (gen/return "STUB_dimension")
+        gmap (assoc gmap :nonprop-dimension gen-nonprop-dimension)
+
+        gen-nonprop-mf-value
+        (gen/frequency [
+          [(get weights [:nonprop-mf-value :alt 0] 100)
+            (gen/tuple
+              (gen/return " ")
+              (:nonprop-number gmap))]
+          [(get weights [:nonprop-mf-value :alt 1] 100)
+            (gen/tuple
+              (gen/return " ")
+              (:nonprop-dimension gmap))]
+          [(get weights [:nonprop-mf-value :alt 2] 100)
+            (gen/tuple
+              (gen/return " ")
+              (:nonprop-ident gmap))]
+          [(get weights [:nonprop-mf-value :alt 3] 100)
+            (gen/tuple
+              (gen/return " ")
+              (:nonprop-ratio gmap))]])
+        gmap (assoc gmap :nonprop-mf-value gen-nonprop-mf-value)
+
+        gen-nonprop-mf-name
+        (gen/tuple
+          (gen/return " ")
+          (:nonprop-ident gmap))
+        gmap (assoc gmap :nonprop-mf-name gen-nonprop-mf-name)
+
+        gen-nonprop-mf-range
+        (gen/frequency [
+          [(get weights [:nonprop-mf-range :alt 0] 100)
+            (gen/tuple
+              (gen/return " ")
+              (:nonprop-mf-name gmap)
+              (gen/return " ")
+              (gen/one-of [
+                (gen/return "")
+                (gen/frequency [
+                  [(get weights [:nonprop-mf-range :alt 0 :cat 3 :opt :alt 0] 100)
+                    (gen/tuple
+                      (gen/return " ")
+                      (gen/return "<"))]
+                  [(get weights [:nonprop-mf-range :alt 0 :cat 3 :opt :alt 1] 100)
+                    (gen/tuple
+                      (gen/return " ")
+                      (gen/return ">"))]])])
+              (gen/return " ")
+              (gen/one-of [
+                (gen/return "")
+                (gen/return "=")])
+              (gen/return " ")
+              (:nonprop-mf-value gmap))]
+          [(get weights [:nonprop-mf-range :alt 1] 100)
+            (gen/tuple
+              (gen/return " ")
+              (:nonprop-mf-value gmap)
+              (gen/return " ")
+              (gen/one-of [
+                (gen/return "")
+                (gen/frequency [
+                  [(get weights [:nonprop-mf-range :alt 1 :cat 3 :opt :alt 0] 100)
+                    (gen/tuple
+                      (gen/return " ")
+                      (gen/return "<"))]
+                  [(get weights [:nonprop-mf-range :alt 1 :cat 3 :opt :alt 1] 100)
+                    (gen/tuple
+                      (gen/return " ")
+                      (gen/return ">"))]])])
+              (gen/return " ")
+              (gen/one-of [
+                (gen/return "")
+                (gen/return "=")])
+              (gen/return " ")
+              (:nonprop-mf-name gmap))]
+          [(get weights [:nonprop-mf-range :alt 2] 100)
+            (gen/tuple
+              (gen/return " ")
+              (:nonprop-mf-value gmap)
+              (gen/return " ")
+              (gen/return "<")
+              (gen/return " ")
+              (gen/one-of [
+                (gen/return "")
+                (gen/return "=")])
+              (gen/return " ")
+              (:nonprop-mf-name gmap)
+              (gen/return " ")
+              (gen/return "<")
+              (gen/return " ")
+              (gen/one-of [
+                (gen/return "")
+                (gen/return "=")])
+              (gen/return " ")
+              (:nonprop-mf-value gmap))]
+          [(get weights [:nonprop-mf-range :alt 3] 100)
+            (gen/tuple
+              (gen/return " ")
+              (:nonprop-mf-value gmap)
+              (gen/return " ")
+              (gen/return ">")
+              (gen/return " ")
+              (gen/one-of [
+                (gen/return "")
+                (gen/return "=")])
+              (gen/return " ")
+              (:nonprop-mf-name gmap)
+              (gen/return " ")
+              (gen/return ">")
+              (gen/return " ")
+              (gen/one-of [
+                (gen/return "")
+                (gen/return "=")])
+              (gen/return " ")
+              (:nonprop-mf-value gmap))]])
+        gmap (assoc gmap :nonprop-mf-range gen-nonprop-mf-range)
+
+        gen-nonprop-mf-plain
+        (gen/tuple
+          (gen/return " ")
+          (:nonprop-mf-name gmap)
+          (gen/return " ")
+          (gen/return ":")
+          (gen/return " ")
+          (:nonprop-mf-value gmap))
+        gmap (assoc gmap :nonprop-mf-plain gen-nonprop-mf-plain)
+
+        gen-func-fit-content
+        (gen/tuple
+          (gen/return " ")
+          (gen/return "fit-content(")
+          (gen/return " ")
+          (gen/frequency [
+            [(get weights [:func-fit-content :cat 3 :alt 0] 100)
+              (gen/tuple
+                (gen/return " ")
+                (:nonprop-length gmap))]
+            [(get weights [:func-fit-content :cat 3 :alt 1] 100)
+              (gen/tuple
+                (gen/return " ")
+                (:nonprop-percentage gmap))]])
+          (gen/return ")"))
+        gmap (assoc gmap :func-fit-content gen-func-fit-content)
+
+        gen-nonprop-namespace-prefix
+        (gen/tuple
+          (gen/return " ")
+          (:nonprop-ident gmap))
+        gmap (assoc gmap :nonprop-namespace-prefix gen-nonprop-namespace-prefix)
+
+        gen-nonprop-cf-mixing-image
+        (gen/tuple
+          (gen/return " ")
+          (gen/one-of [
+            (gen/return "")
+            (:nonprop-percentage gmap)])
+          (gen/return " ")
+          (:nonprop-image gmap))
+        gmap (assoc gmap :nonprop-cf-mixing-image gen-nonprop-cf-mixing-image)
+
+        gen-nonprop-cf-final-image
+        (gen/frequency [
+          [(get weights [:nonprop-cf-final-image :alt 0] 100)
+            (gen/tuple
+              (gen/return " ")
+              (:nonprop-image gmap))]
+          [(get weights [:nonprop-cf-final-image :alt 1] 100)
+            (gen/tuple
+              (gen/return " ")
+              (:nonprop-color gmap))]])
+        gmap (assoc gmap :nonprop-cf-final-image gen-nonprop-cf-final-image)
+
+        gen-func-cross-fade
+        (gen/tuple
+          (gen/return " ")
+          (gen/return "cross-fade(")
+          (gen/tuple
+            (gen/return " ")
+            (:nonprop-cf-mixing-image gmap)
+            (gen/return " ")
+            (gen/return ",")
+            (gen/return " ")
+            (gen/one-of [
+              (gen/return "")
+              (:nonprop-cf-final-image gmap)]))
+          (gen/return ")"))
+        gmap (assoc gmap :func-cross-fade gen-func-cross-fade)
+
+        gen-nonprop-function-token
+        (gen/return "STUB_flex_function_token")
+        gmap (assoc gmap :nonprop-function-token gen-nonprop-function-token)]
+    gmap))
+
+(defn- css3-generators-part-13 [gmap weights]
+  (let [
+        gen-func-image-set
+        (gen/tuple
+          (gen/return " ")
+          (gen/return "image-set(")
+          (gen/return " ")
+          (:nonprop-image-set-option gmap)
+          (gen/vector
+            (gen/tuple
+              (gen/return ",")
+              (:nonprop-image-set-option gmap)))
+          (gen/return ")"))
+        gmap (assoc gmap :func-image-set gen-func-image-set)
+
+        gen-rS
+        (gen/return "")
+        gmap (assoc gmap :rS gen-rS)
+
+        gen-nonprop-mf-boolean
+        (gen/tuple
+          (gen/return " ")
+          (:nonprop-mf-name gmap))
+        gmap (assoc gmap :nonprop-mf-boolean gen-nonprop-mf-boolean)
+
+        gen-nonprop-time-percentage
+        (gen/frequency [
+          [(get weights [:nonprop-time-percentage :alt 0] 100)
+            (gen/tuple
+              (gen/return " ")
+              (:nonprop-time gmap))]
+          [(get weights [:nonprop-time-percentage :alt 1] 100)
+            (gen/tuple
+              (gen/return " ")
+              (:nonprop-percentage gmap))]])
+        gmap (assoc gmap :nonprop-time-percentage gen-nonprop-time-percentage)
+
+        gen-nonprop-name-repeat
+        (gen/return "STUB_name_repeat")
+        gmap (assoc gmap :nonprop-name-repeat gen-nonprop-name-repeat)
+
+        gen-func-image
+        (gen/tuple
+          (gen/return " ")
+          (gen/return "image(")
+          (gen/return " ")
+          (gen/tuple
+            (gen/return " ")
+            (gen/one-of [
+              (gen/return "")
+              (gen/frequency [
+                [(get weights [:func-image :cat 3 :cat 1 :opt :alt 0] 100)
+                  (gen/tuple
+                    (gen/return " ")
+                    (:nonprop-image gmap))]
+                [(get weights [:func-image :cat 3 :cat 1 :opt :alt 1] 100)
+                  (gen/tuple
+                    (gen/return " ")
+                    (:nonprop-string gmap))]])])
+            (gen/return " ")
+            (gen/return ",")
+            (gen/return " ")
+            (gen/one-of [
+              (gen/return "")
+              (:nonprop-color gmap)]))
+          (gen/return ")"))
+        gmap (assoc gmap :func-image gen-func-image)
+
+        gen-nonprop-general-enclosed
+        (gen/frequency [
+          [(get weights [:nonprop-general-enclosed :alt 0] 100)
+            (gen/tuple
+              (gen/return " ")
+              (gen/tuple
+                (gen/return " ")
+                (:nonprop-function-token gmap)
+                (gen/return " ")
+                (:nonprop-any-value gmap)
+                (gen/return " ")
+                (gen/return ")")))]
+          [(get weights [:nonprop-general-enclosed :alt 1] 100)
+            (gen/tuple
+              (gen/return " ")
+              (gen/return "(")
+              (gen/return " ")
+              (:nonprop-ident gmap)
+              (gen/return " ")
+              (:nonprop-any-value gmap)
+              (gen/return " ")
+              (gen/return ")"))]])
+        gmap (assoc gmap :nonprop-general-enclosed gen-nonprop-general-enclosed)
+
+        gen-nonprop-line-name-list
+        (gen/tuple
+          (gen/return " ")
+          (gen/such-that not-empty (gen/vector
+            (gen/frequency [
+              [(get weights [:nonprop-line-name-list :cat 1 :plus :alt 0] 100)
+                (gen/tuple
+                  (gen/return " ")
+                  (:nonprop-line-names gmap))]
+              [(get weights [:nonprop-line-name-list :cat 1 :plus :alt 1] 100)
+                (gen/tuple
+                  (gen/return " ")
+                  (:nonprop-name-repeat gmap))]]))))
+        gmap (assoc gmap :nonprop-line-name-list gen-nonprop-line-name-list)
+
+        gen-nonprop-generic-name
+        (gen/frequency [
+          [(get weights [:nonprop-generic-name :alt 0] 100)
+            (gen/tuple
+              (gen/return " ")
+              (gen/return "serif"))]
+          [(get weights [:nonprop-generic-name :alt 1] 100)
+            (gen/tuple
+              (gen/return " ")
+              (gen/return "sans-serif"))]
+          [(get weights [:nonprop-generic-name :alt 2] 100)
+            (gen/tuple
+              (gen/return " ")
+              (gen/return "cursive"))]
+          [(get weights [:nonprop-generic-name :alt 3] 100)
+            (gen/tuple
+              (gen/return " ")
+              (gen/return "fantasy"))]
+          [(get weights [:nonprop-generic-name :alt 4] 100)
+            (gen/tuple
+              (gen/return " ")
+              (gen/return "monospace"))]])
+        gmap (assoc gmap :nonprop-generic-name gen-nonprop-generic-name)
+
+        gen-nonprop-nth
+        (gen/frequency [
+          [(get weights [:nonprop-nth :alt 0] 100)
+            (gen/tuple
+              (gen/return " ")
+              (:nonprop-an-plus-b gmap))]
+          [(get weights [:nonprop-nth :alt 1] 100)
+            (gen/tuple
+              (gen/return " ")
+              (gen/return "even"))]
+          [(get weights [:nonprop-nth :alt 2] 100)
+            (gen/tuple
+              (gen/return " ")
+              (gen/return "odd"))]])
+        gmap (assoc gmap :nonprop-nth gen-nonprop-nth)
 
         gen-nonprop-symbol
         (gen/frequency [
           [(get weights [:nonprop-symbol :alt 0] 100)
             (gen/tuple
-              (:nonprop-string gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-string gmap))]
           [(get weights [:nonprop-symbol :alt 1] 100)
             (gen/tuple
-              (:nonprop-image gmap)
-              (gen/return " "))]
+              (gen/return " ")
+              (:nonprop-image gmap))]
           [(get weights [:nonprop-symbol :alt 2] 100)
             (gen/tuple
-              (:nonprop-ident gmap)
-              (gen/return " "))]])
+              (gen/return " ")
+              (:nonprop-ident gmap))]])
         gmap (assoc gmap :nonprop-symbol gen-nonprop-symbol)]
     gmap))
 
@@ -14483,5 +14993,6 @@
         gmap (css3-generators-part-9 gmap weights)
         gmap (css3-generators-part-10 gmap weights)
         gmap (css3-generators-part-11 gmap weights)
-        gmap (css3-generators-part-12 gmap weights)]
+        gmap (css3-generators-part-12 gmap weights)
+        gmap (css3-generators-part-13 gmap weights)]
     gmap))
