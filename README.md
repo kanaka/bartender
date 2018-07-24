@@ -143,7 +143,7 @@ The following images are included in gen/static/:
 
 ## License
 
-Copyright © 2016 Joel Martin
+Copyright © Joel Martin
 
 Distributed under the Mozilla Public License either version 2.0 or (at
 your option) any later version.
