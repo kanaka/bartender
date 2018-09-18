@@ -19,7 +19,7 @@ make deps
 * Download/build the webdriver drivers/browsers:
   * Firefox (https://developer.mozilla.org/en-US/Firefox/Headless_mode):
   ```
-  curl -L https://github.com/mozilla/geckodriver/releases/download/v0.19.1/geckodriver-v0.19.1-linux64.tar.gz | tar xvzf -
+  curl -L https://github.com/mozilla/geckodriver/releases/download/v0.22.0/geckodriver-v0.22.0-linux64.tar.gz | tar xvzf -
   ```
   * Chrome (https://sites.google.com/a/chromium.org/chromedriver/getting-started):
   ```
@@ -131,6 +131,12 @@ lein with-profile ebnf run check test/bc.ebnf --weights tmp/bc-weights.edn --sam
 lein with-profile ebnf run check test/bc.ebnf --weights tmp/bc-weights.edn --sample-dir tmp/ -- test/testbc.sh -q %
 ```
 
+## Browser support
+
+Browser testing is supported locally for PhantomJS (Chrome) and
+SlimerJS (Firefox). Browserstack support is being worked on.
+
+![BrowserStack](imgs/browserstack-logo.png)
 
 ## Images
 
