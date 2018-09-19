@@ -131,12 +131,71 @@ lein with-profile ebnf run check test/bc.ebnf --weights tmp/bc-weights.edn --sam
 lein with-profile ebnf run check test/bc.ebnf --weights tmp/bc-weights.edn --sample-dir tmp/ -- test/testbc.sh -q %
 ```
 
-## Browser support
+## Browser Configuration
 
-Browser testing is supported locally for PhantomJS (Chrome) and
-SlimerJS (Firefox). Browserstack support is being worked on.
+Here is example yaml configuration file that connects to geckodriver
+and chromedriver running locally:
+
+```yaml
+quick-check:
+    iterations: 20
+    seed: 2
+    max-size: 100
+weights: "weights.edn"
+compare:
+    method: SQDIFF_NORMED
+    threshold: 0.00003
+web:
+    host: 192.168.88.2
+    port: 3000
+    dir: "gen"
+browsers:
+    - id: firefox
+      url: "http://localhost:7000"
+      capabilities: {"moz:firefoxOptions":
+                     {"args": ["--headless"]}}
+    - id: chrome
+      url: "http://localhost:7001"
+      capabilities: {"chromeOptions":
+                     {"args": ["--headless"]}}
+
+```
 
 ![BrowserStack](imgs/browserstack-logo.png)
+
+Browserstack is also supported. Here is the browser section of a yaml
+configuration file that connects to three browsers running in
+BrowserStack:
+
+```yaml
+...
+browsers:
+    - id: bs-chrome-win-62
+      url: "https://USER:KEY@hub-cloud.browserstack.com/wd/hub"
+      capabilities: {"browserstack.local": true,
+                     "browser": "Chrome",
+                     "browser_version": "69.0",
+                     "os": "Windows",
+                     "os_version": "10",
+                     "resolution": "1024x768"}
+    - id: bs-firefox-win-62
+      url: "https://USER:KEY@hub-cloud.browserstack.com/wd/hub"
+      capabilities: {"browserstack.local": true,
+                     "browser": "Firefox",
+                     "browser_version": "62.0",
+                     "os": "Windows",
+                     "os_version": "10",
+                     "resolution": "1024x768"}
+    - id: bs-edge-win-17
+      url: "https://USER:KEY@hub-cloud.browserstack.com/wd/hub"
+      capabilities: {"browserstack.local": true,
+                     "browser": "Edge",
+                     "browser_version": "17.0",
+                     "os": "Windows",
+                     "os_version": "10",
+                     "resolution": "1024x768"}
+```
+
 
 ## Images
 

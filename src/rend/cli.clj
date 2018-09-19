@@ -17,22 +17,6 @@
             [clojure.java.io :as io]
             [clojure.java.shell :refer [sh]]))
 
-(defn screenshot-page [browser path]
-  (try
-    (let [ss (webdriver/GET browser "screenshot")
-          png (base64/decode (.getBytes (:value ss)))
-          ifile (io/file path)]
-      ;    (println "Writing" (count png) "bytes to:" path)
-      (io/copy png ifile)
-      ;; TODO: can we convert PNG more directly to image?
-      (image/imread path))
-    (catch Exception e
-      (let [eimg (image/error-image
-                   400 300 "render failure for" (:type browser))]
-        (image/imwrite path eimg)
-        eimg))))
-
-
 (def check-page-state (atom {}))
 
 (defn check-page* [cfg test-dir test-index html]
@@ -53,7 +37,7 @@
       ;; Load the page in each browser
       (println "Loading" url "in each browser")
       (doseq [browser (:browsers cfg)]
-        (webdriver/POST browser "url" {"url" url}))
+        (webdriver/load-page browser url))
 
       (Thread/sleep 1000)
 
@@ -74,8 +58,8 @@
             d-path (str test-prefix "_diffs.edn")
             images (into {}
                          (for [browser (:browsers cfg)]
-                           (let [ss-path (str test-prefix "_" (:type browser)  ".png")
-                                 img (screenshot-page browser ss-path)]
+                           (let [ss-path (str test-prefix "_" (:id browser)  ".png")
+                                 img (webdriver/screenshot-page browser ss-path)]
                              [browser img])))
             imgs (apply assoc {}
                         (interleave (keys images)
@@ -95,11 +79,11 @@
             violations (into {} (filter #(every? comp-fn (vals (val %)))
                                         diffs))]
 
-        ; (println "Saving thumbnail for each screenshot
+        ; (println "Saving thumbnail for each screenshot")
         (doseq [[browser img] imgs]
           (let [thumb (image/thumbnail img)]
             (image/imwrite (str test-prefix "_"
-                                  (:type browser) "_thumb.png") thumb)))
+                                  (:id browser) "_thumb.png") thumb)))
 
         ; (println "Saving difference values to" d-path)
         (spit d-path (pr-str diffs))
@@ -114,9 +98,9 @@
         (doseq [[browser img] imgs]
           (doseq [[obrowser oimg] (dissoc imgs browser)]
             (let [pre (str test-index
-                           "_diff_" (:type browser) "_" (:type obrowser))
+                           "_diff_" (:id browser) "_" (:id obrowser))
                   pre2 (str test-index
-                            "_diff_" (:type obrowser) "_" (:type browser))]
+                            "_diff_" (:id obrowser) "_" (:id browser))]
               (if (.exists (io/as-file
                              (str test-dir "/" pre2 ".png")))
                 (do
@@ -132,7 +116,7 @@
                   (image/imwrite (str test-dir "/" pre "_thumb.png") thumb))))))
 
         ;; Do the actual check
-        (println "Threshold violations:" (map (comp :type first) violations))
+        (println "Threshold violations:" (map (comp :id first) violations))
 
         [(not violation) diffs violations])
       (catch Throwable t
@@ -159,12 +143,12 @@
           (rend.html/render-report cfg state))
     res))
 
-(defn load-sessions [file]
-  (when (and file (.exists (io/as-file file)))
-    (println "Sessions keys:")
-    (pprint (keys
-              (reset! webdriver/browser-state
-                      (edn/read-string (slurp file)))))))
+;; (defn load-sessions [file]
+;;   (when (and file (.exists (io/as-file file)))
+;;     (println "Sessions keys:")
+;;     (pprint (keys
+;;               (reset! webdriver/browser-state
+;;                       (edn/read-string (slurp file)))))))
 
 
 ;----
@@ -203,7 +187,6 @@
   (let [{:keys [options arguments]} (opt-errors (parse-opts argv cli-options
                                                             :summary-fn usage))
         cfg-file (first arguments)
-        sessions-file (:sessions options)
         cfg (deep-merge (yaml/parse-string (slurp cfg-file))
                         {:verbose (:verbose options)}
                         (if (:seed options)
@@ -213,14 +196,14 @@
         test-dir (str (-> cfg :web :dir) "/" id "-" (-> cfg :quick-check :seed))
         _ (println "Test dir: " test-dir)
         weights (when (:weights cfg)
-                  (edn/read-string (slurp (:weights cfg))))]
-    (when (.exists (io/as-file sessions-file))
-      (println "Loading sessions state from" sessions-file)
-      (load-sessions sessions-file))
-    (rend.server/start-server cfg)
-    (doseq [browser (:browsers cfg)]
-      (println "Initializing browser session to:" browser)
-      (spit sessions-file (prn-str (webdriver/init-session browser {}))))
+                  (edn/read-string (slurp (:weights cfg))))
+        server (rend.server/start-server cfg)
+        browsers (for [browser (:browsers cfg)]
+                   (do
+                     (println "Initializing browser session for:" (:id browser))
+                     (webdriver/init-session browser)))
+        ;; Update config with session driver enriched browsers
+        cfg (assoc cfg :browsers browsers)]
 
     (reset! check-page-state {:index 0
                               :id id
@@ -249,5 +232,8 @@
       (println (str "Full results in: " test-dir "/full-results.edn"))
       (spit (str test-dir "/results.edn") (with-out-str (pprint qc-res)))
       (spit (str test-dir "/full-results.edn") full-result)
+      (doseq [browser (:browsers cfg)]
+        (println "Stopping browser session for:" (:id browser))
+        (prn-str (webdriver/stop-session browser)))
       (System/exit return-code))))
 

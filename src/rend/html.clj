@@ -38,10 +38,10 @@
                           "background-color: " RED)}
              {:style "vertical-align: top; text-align: center"})
            [:a {:style "padding-left: 2px; padding-right: 2px"
-                :href (str idx "_" (:type browser) ".png")}
+                :href (str idx "_" (:id browser) ".png")}
             [:span.tlink "png"]
             [:img.thumb {:style "display: none"
-                         :src (str idx "_" (:type browser)
+                         :src (str idx "_" (:id browser)
                                    "_thumb.png")}]]])
         [[:td "&nbsp;"]
          [:td {:style "vertical-align: top"}
@@ -57,11 +57,11 @@
                    (get violations bb))
              {:style (str "vertical-align: top; text-align: center; background-color: " RED)}
              {:style (str "vertical-align: top; text-align: center")})
-           [:a {:href (str idx "_diff_" (:type ba)
-                           "_" (:type bb) ".png")}
+           [:a {:href (str idx "_diff_" (:id ba)
+                           "_" (:id bb) ".png")}
             [:img.thumb {:style "display: none"
-                         :src (str idx "_diff_" (:type ba)
-                                   "_" (:type bb) "_thumb.png")}]
+                         :src (str idx "_diff_" (:id ba)
+                                   "_" (:id bb) "_thumb.png")}]
             [:br.thumb {:style "display: none"}]
             (format "%.6f" odiff)]])))))
 
@@ -114,10 +114,10 @@
                  [:tr [:th "Test"] [:th "Result"] [:th "Html"]
                   [:th "&nbsp;"]]
                  (for [browser browsers]
-                   [:th (str (:type browser))])
+                   [:th (str (:id browser))])
                  [[:th "&nbsp;"] [:th "Average"] [:th "&nbsp;"]]
                  (for [[ba bb] (combinations browsers 2)]
-                   [:th (str (:type ba) "&Delta;" (:type bb))])))]
+                   [:th (str (:id ba) "&Delta;" (:id bb))])))]
             (for [i (range (count logs))]
               (render-report-row browsers logs i))))
         [:script toggle-thumbs-js]]])))
