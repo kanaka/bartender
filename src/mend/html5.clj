@@ -172,7 +172,7 @@ rend-css = <'<'> 'link rel=\"stylesheet\" href=\"../static/rend.css\"' <opt-spac
 
 title = <'<'> 'title' (<space> title-attribute)* <opt-space> <'>'> content* <'</'> 'title' <opt-space> <'>'> <opt-space>
 
-body = <'<'> 'body' (<space> body-attribute)* <opt-space> <'>'> (element | content)* <'</'> 'body' <opt-space> <'>'> <opt-space>
+body = <'<'> 'body' (<space> body-attribute)* <opt-space> <'>'> 'x' (element | content)* <'</'> 'body' <opt-space> <'>'> <opt-space>
 
 
 ")

@@ -6032,11 +6032,12 @@
               (:body-attribute gmap)))
           (:opt-space gmap)
           (gen/return ">")
+          (gen/return "x")
           (gen/vector
             (gen/frequency [
-              [(get weights [:body :cat 5 :star :alt 0] 100)
+              [(get weights [:body :cat 6 :star :alt 0] 100)
                 (:element gmap)]
-              [(get weights [:body :cat 5 :star :alt 1] 100)
+              [(get weights [:body :cat 6 :star :alt 1] 100)
                 (:content gmap)]]))
           (gen/return "</")
           (gen/return "body")
