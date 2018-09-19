@@ -1,7 +1,8 @@
 quick-check:
-    iterations: 5
-    seed: 1
+    iterations: 20
+    seed: 2
     max-size: 50
+weights: "weights.edn"
 compare:
 #    method: SQDIFF
     method: SQDIFF_NORMED
@@ -12,12 +13,38 @@ web:
     port: 3000
     dir: "gen"
 browsers:
-    - type: firefox
-      host: 192.168.2.3
-      port: 7000
-    - type: chrome
-      host: 192.168.2.3
-      port: 7001
-    - type: servo
-      host: 192.168.2.3
-      port: 7002
+    - id: firefox
+      url: "http://localhost:7000"
+      capabilities: {"moz:firefoxOptions":
+                     {"args": ["--headless"]}}
+    - id: chrome
+      url: "http://localhost:7001"
+      capabilities: {"chromeOptions":
+                     {"args": ["--headless"]}}
+    - id: servo
+      url: "http://192.168.88.2:7002"
+
+#    - id: bs-chrome-win-62
+#      url: "https://USER:KEY@hub-cloud.browserstack.com/wd/hub"
+#      capabilities: {"browserstack.local": true,
+#                     "browser": "Chrome",
+#                     "browser_version": "69.0",
+#                     "os": "Windows",
+#                     "os_version": "10",
+#                     "resolution": "1024x768"}
+#    - id: bs-firefox-win-62
+#      url: "https://USER:KEY@hub-cloud.browserstack.com/wd/hub"
+#      capabilities: {"browserstack.local": true,
+#                     "browser": "Firefox",
+#                     "browser_version": "62.0",
+#                     "os": "Windows",
+#                     "os_version": "10",
+#                     "resolution": "1024x768"}
+#    - id: bs-edge-win-17
+#      url: "https://USER:KEY@hub-cloud.browserstack.com/wd/hub"
+#      capabilities: {"browserstack.local": true,
+#                     "browser": "Edge",
+#                     "browser_version": "17.0",
+#                     "os": "Windows",
+#                     "os_version": "10",
+#                     "resolution": "1024x768"}

@@ -3,20 +3,19 @@
 A suite of Clojure tools for generative (property-based) testing using
 formal grammars (EBNF) with a focus on web browser rendering.
 
-## Rend
+## Prerequisites
 
-* Prerequisites:
-  * Install libopencv-dev:
+* Install libopencv-dev:
 ```
 sudo apt-get install libopencv-dev
 ```
 
-  * Generate the opencv maven artifactrs:
+* Generate the opencv maven artifactrs:
 ```
 make deps
 ```
 
-* Download/build the webdriver drivers/browsers:
+* Download/build the drivers/browsers/servers:
   * Firefox (https://developer.mozilla.org/en-US/Firefox/Headless_mode):
   ```
   curl -L https://github.com/mozilla/geckodriver/releases/download/v0.22.0/geckodriver-v0.22.0-linux64.tar.gz | tar xvzf -
@@ -32,8 +31,17 @@ make deps
   cd servo
   ./mach build --release
   ```
+  * If using BrowserStack you will need to download the local testing
+    proxy that allows BrowserStack to load test pages from the local
+    system:
+  ```
+  wget https://www.browserstack.com/browserstaclocal/BrowserStackLocal-linux-x64.zip
+  unzip BrowserStackLocal-linux-x64.zip
+  ```
 
-* Start the webdriver drivers/browsers:
+## Rend: Running Tests
+
+* Start the drivers/browsers/servers:
   * Firefox:
   ```
   ./geckodriver --port 7000
@@ -44,17 +52,19 @@ make deps
   ```
   * Servo (https://github.com/mozilla/servo):
   ```
-  ./mach run --release -z --webdriver 7002 --resolution 400x300
+  ./mach run --release -z --webdriver=7002 --resolution=400x300
+  ```
+  * If using BrowserStack, start the BrowserStack local server:
+  ```
+  ./BrowserStackLocal --key KEY
+  ```
+  * Start a separate minimal web server to monitor results at
+    `http://localhost:9080/gen/...`:
+  ```
+  python3 -m http.server 9080
   ```
 
 * Update `config.yaml` with browser webdriver connection information
-
-* Start a separate minimal web server to monitor results
-  at `http://localhost:9080/gen/...`:
-
-```
-python3 -m http.server 9080
-```
 
 * Start a test run:
 ```
@@ -116,9 +126,8 @@ browsers:
 
 ![BrowserStack](imgs/browserstack-logo.png)
 
-Browserstack is also supported. Here is the browser section of a yaml
-configuration file that connects to three browsers running in
-BrowserStack:
+Here is the browser section of a yaml configuration file that connects
+to three browsers running in BrowserStack:
 
 ```yaml
 ...
