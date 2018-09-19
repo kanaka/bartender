@@ -11,7 +11,6 @@
   :source-paths ["src"]
 
   :dependencies [[org.clojure/clojure "1.9.0-alpha14"]
-                 [org.clojure/test.check "0.9.1-SNAPSHOT"]
                  [com.gfredericks/test.chuck "0.2.7"]
                  [org.clojure/data.json "0.2.6"]
                  [org.clojure/data.codec "0.1.0"]
@@ -35,13 +34,17 @@
                  [org.seleniumhq.selenium/selenium-remote-driver "3.9.1"]
                  [org.seleniumhq.selenium/selenium-server "3.9.1"]
 
+                 ;; Patched versions
+                 [org.clojure/test.check "0.9.1-SNAPSHOT"]
+                 [instaparse "1.4.9.1-SNAPSHOT"]
+
                  ;; mend specific
                  [hickory "0.7.0"]
-                 [instaparse "1.4.9.1-SNAPSHOT"]
-                 [com.rpl/specter "1.0.0"]]
+                 [com.rpl/specter "1.0.0"]
+
+                 [instacheck "0.1.0-SNAPSHOT"]]
 
   :profiles {:rend  {:main rend.cli}
-             :ebnf  {:main mend.ebnf}
              :css3  {:main mend.css3}
              :html5 {:main mend.html5}}
 

@@ -1,7 +1,7 @@
 (ns rend.generator
   (:require [rend.css3-generators :as css3-gen]
             [rend.html5-generators :as html5-gen]
-            [mend.util :as util]
+            [instacheck.util :as util]
             
             [clojure.test.check.generators :as gen]))
 

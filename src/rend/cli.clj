@@ -1,7 +1,8 @@
 (ns rend.cli
   (:require [clojure.tools.cli :refer [parse-opts summarize]]
 
-            [mend.check]
+            [instacheck.core :as instacheck]
+
             [rend.generator]
             [rend.image :as image]
             [rend.html]
@@ -157,6 +158,15 @@
   (apply merge-with (fn [x y] (if (map? y) (deep-merge x y) y))
          maps))
 
+(defn pruned-reporter
+  "Prune clojure objects from the report data and print it"
+  [r]
+  (let [r (dissoc r :property)
+	r (update-in r [:current-smallest]
+		     dissoc :function)]
+    (prn :report (dissoc r :property))))
+
+
 (def cli-options
   [["-?" "--help" "Show usage"
     :default false]
@@ -211,11 +221,11 @@
                               :log []})
     (let [gen-html (rend.generator/get-html-generator weights)
           start-time (t/now)
-          qc-res (mend.check/run-check
+          qc-res (instacheck/run-check
                    (:quick-check cfg {})
                    gen-html
                    (fn [html] (check-page cfg test-dir html))
-                   mend.check/reporter)
+                   pruned-reporter)
           end-time (t/now)
           full-result (swap! check-page-state
                              assoc
