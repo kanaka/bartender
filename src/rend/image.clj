@@ -21,6 +21,8 @@
 
 (def THUMB-HEIGHT 75)
 (def THUMB-WIDTH 100)
+;; This needs to match the value (#1289af) in rend.css
+(def FILL-COLOR (Scalar. 0xaf 0x89 0x12))
 
 ;; Wrap a couple of opencv routines
 (defn imread [path]
@@ -38,7 +40,8 @@
         (Imgproc/copyMakeBorder i i
                                 0 (- max-height (.height img))
                                 0 (- max-width (.width img))
-                                Imgproc/BORDER_REPLICATE)
+                                Imgproc/BORDER_CONSTANT
+                                FILL-COLOR)
         i))))
 
 ;; Based on: http://stackoverflow.com/questions/23342055/how-to-find-mean-averaging-of-pixels-of-15-consecutive-color-images-live-we
