@@ -1,17 +1,37 @@
 (ns rend.server
   (:require [compojure.core :refer [GET]]
             [compojure.route :as route]
-            [org.httpkit.server :refer [run-server]]
+            [org.httpkit.server :refer [run-server with-channel send!
+                                        on-close on-receive]]
 ;            [ring.middleware.defaults :refer [wrap-defaults site-defaults]]
             [ring.middleware.content-type :refer [wrap-content-type]]
             [ring.middleware.not-modified :refer [wrap-not-modified]]
-            [ring.middleware.file :refer [wrap-file]]))
+            [ring.middleware.file :refer [wrap-file]]
+            [ring.util.response :refer [redirect]]))
 
-(defn start-server [cfg]
+(def ws-clients
+  (atom #{}))
+
+(defn ws-handler [request]
+  (with-channel request ch
+    (swap! ws-clients conj ch)
+    (on-close ch (fn [status]
+                   (swap! ws-clients disj ch)
+                   (println "channel closed: " status)))
+    (on-receive ch (fn [data] ;; echo it back
+                     (println "channel" ch "received data:" data)))))
+
+(defn ws-broadcast [data]
+  (doseq [ch @ws-clients]
+    (send! ch data)))
+
+(defn start-server [cfg default-path]
   (let [port (-> cfg :web :port)
         dir (-> cfg :web :dir)
         routes (compojure.core/routes
-                 (GET "/" [] "Hello World")
+                 ;;(GET "/" [] (file-response default-index {}))
+                 (GET "/" [] (redirect default-path))
+                 (GET "/ws" [] ws-handler)
                  (route/files "/gen" {:root dir})
                  (route/not-found "Not Found"))
         app (-> routes

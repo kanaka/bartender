@@ -6,13 +6,12 @@
 (def GREEN "#80ff80")
 
 
-(defn render-report-row [browsers logs sth]
-  (let [l (nth logs sth)
-        idx (+ 1 sth)
-        pass (:result l)
-        diffs (:diffs l)
-        violations (:violations l)
-        html (:html l)]
+(defn render-report-row [browsers log sth]
+  (let [idx (+ 1 sth)
+        pass (:result log)
+        diffs (:diffs log)
+        violations (:violations log)
+        html (:html log)]
     (vec
       (concat
         [:tr
@@ -65,35 +64,10 @@
             [:br.thumb {:style "display: none"}]
             (format "%.6f" odiff)]])))))
 
-(def toggle-thumbs-js "
-  function toggle_thumbs() {
-    var toggleb = document.getElementById('toggle');
-    var thumb_display = 'none',
-        tlink_display = 'none';
-    if (toggleb.value === 'Show Thumbnails') {
-      history.pushState(null, null, '#thumbs')
-      toggleb.value = 'Hide Thumbnails'
-      thumb_display = 'inline';
-    } else {
-      history.pushState(null, null, '#')
-      toggleb.value = 'Show Thumbnails'
-      tlink_display = 'inline';
-    }
-    for (var x of document.getElementsByClassName('thumb')) {
-      x.style.display = thumb_display;
-    }
-    for (var x of document.getElementsByClassName('tlink')) {
-      x.style.display = tlink_display;
-    }
-  }
-  if (location.hash.indexOf('thumbs') > -1) {
-    toggle_thumbs()
-  }
-")
-
 ;; Generate an HTML index page for the current test results
 (defn render-report [cfg state]
-  (let [logs (:log state)
+  (let [port (-> cfg :web :port)
+        logs (:log state)
         threshold (-> cfg :compare :threshold)
         browsers (:browsers cfg)]
     (hiccup/html
@@ -108,7 +82,7 @@
         [:br][:br]
         (vec
           (concat
-            [:table {:style "border-spacing: 4px 0px"}
+            [:table {:id "results" :style "border-spacing: 4px 0px"}
              (vec
                (concat
                  [:tr [:th "Test"] [:th "Result"] [:th "Html"]
@@ -119,5 +93,6 @@
                  (for [[ba bb] (combinations browsers 2)]
                    [:th (str (:id ba) "&Delta;" (:id bb))])))]
             (for [i (range (count logs))]
-              (render-report-row browsers logs i))))
-        [:script toggle-thumbs-js]]])))
+              (render-report-row browsers (nth logs i) i))))
+        [:script {:src "../static/report.js"}]
+        [:script (str "connect('ws://localhost:" port "/ws')")]]])))

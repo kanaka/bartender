@@ -18,7 +18,7 @@
             [clojure.java.io :as io]
             [clojure.java.shell :refer [sh]]))
 
-(def check-page-state (atom {}))
+(def check-state (atom {}))
 
 (defn check-page* [cfg test-dir test-index html]
   (let [text (hiccup.core/html html)
@@ -29,7 +29,6 @@
       (println "------")
       ;; (println "Test case:" text)
       ;; (println "Writing to " path)
-      (io/make-parents (java.io.File. path))
       (spit path text)
       ;; (println "Writing to " (str path ".txt"))
       ;;(spit (str path ".txt") (rend.html/pprint-html text))
@@ -124,24 +123,32 @@
         (prn :check-page-exception t)
         [false "Exception" nil]))))
 
-;; SIDE-EFFECTS: updates :index in check-page-state atom
+;; SIDE-EFFECTS: updates :index in check-state atom
 (defn new-test-index []
-  (let [s (swap! check-page-state update-in [:index] #(+ 1 %))]
+  (let [s (swap! check-state update-in [:index] #(+ 1 %))]
     (:index s)))
 
-;; SIDE-EFFECTS: updates :log in check-page-state atom
+;; SIDE-EFFECTS: updates :log in check-state atom
 (defn check-page [cfg test-dir html]
   (let [test-index (new-test-index)
         [res diffs violations] (check-page* cfg test-dir test-index html)
-        state (swap! check-page-state update-in [:log]
-                     conj {:prefix (str test-dir "/" test-index)
-                           :html html
-                           :result res
-                           :diffs diffs
-                           :violations violations})]
+        log-entry {:prefix (str test-dir "/" test-index)
+                   :html html
+                   :result res
+                   :diffs diffs
+                   :violations violations}
+        state (swap! check-state update-in [:log] conj log-entry)]
     ;; Generate index page after every check
     (spit (str test-dir "/index.html")
           (rend.html/render-report cfg state))
+    ;; Send the new row to all websocket clients
+    (rend.server/ws-broadcast
+      (str
+        "row:"
+        (hiccup.core/html
+          (rend.html/render-report-row (:browsers cfg)
+                                       log-entry
+                                       (- test-index 1)))))
     res))
 
 ;----
@@ -194,12 +201,24 @@
                         (if (:seed options)
                           {:quick-check {:seed (:seed options)}}))
         _ (do (println "Configuration:") (pprint cfg))
-        id (rand-int 100000)
-        test-dir (str (-> cfg :web :dir) "/" id "-" (-> cfg :quick-check :seed))
-        _ (println "Test dir: " test-dir)
         weights (when (:weights cfg)
                   (edn/read-string (slurp (:weights cfg))))
-        server (rend.server/start-server cfg)
+        id (rand-int 100000)
+
+        test-dir (str (-> cfg :web :dir) "/" id "-" (-> cfg :quick-check :seed))
+        _ (println "Test case/web service dir: " test-dir)
+        _ (io/make-parents (java.io.File. (str test-dir "/index.html")))
+        ;; Start a web server for the test cases and reporting
+        server (rend.server/start-server cfg (str test-dir "/"))
+        ;; Set the initial page tracking state
+        _ (reset! check-state {:index 0
+                               :id id
+                               :test-dir test-dir
+                               :log []})
+        ;; Create the initial empty page
+        _ (spit (str test-dir "/index.html")
+                (rend.html/render-report cfg @check-state))
+        ;; Create webdriver/selenium sessions to the testing browsers
         browsers (for [browser (:browsers cfg)]
                    (do
                      (println "Initializing browser session for:" (:id browser))
@@ -207,10 +226,6 @@
         ;; Update config with session driver enriched browsers
         cfg (assoc cfg :browsers browsers)]
 
-    (reset! check-page-state {:index 0
-                              :id id
-                              :test-dir test-dir
-                              :log []})
     (let [gen-html (rend.generator/get-html-generator weights)
           start-time (t/now)
           qc-res (instacheck/run-check
@@ -219,7 +234,7 @@
                    (fn [html] (check-page cfg test-dir html))
                    pruned-reporter)
           end-time (t/now)
-          full-result (swap! check-page-state
+          full-result (swap! check-state
                              assoc
                              :start-time (.toDate start-time)
                              :end-time (.toDate end-time)
