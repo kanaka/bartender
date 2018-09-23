@@ -177,9 +177,8 @@
                       {:first-fail-number (:trial-number r)
                        :failing-args (:failing-args r)})
                     (when (:current-smallest r)
-                      {:smallest (:current-smallest r)})
-                    )))
-    ))
+                      {:smallest-number (:index s)
+                       :smallest (:current-smallest r)}))))))
 
 ;----
 

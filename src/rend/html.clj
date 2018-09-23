@@ -68,16 +68,23 @@
 (defn render-summary [state]
   (let [report (:latest-report state)
         rtype (:type report)]
-    [:span
-     (str "Step " (:index state)
-          ", Mode: " (name (or rtype :init))
-          (when (:first-fail-number state)
-            (str ", First Failure: " (:first-fail-number state)))
-          (when (:smallest state)
-            (str ", Shrink: "
-                 (count (get-in state [:failing-args 0]))
-                 " &rarr; "
-                 (count (get-in state [:smallest :args 0])) " bytes")))]))
+    (vec
+      (concat
+        [:span
+         (str "Step " (:index state)
+              ", Mode: " (name (or rtype :init))
+              (when (:first-fail-number state)
+                (str ", First Failure: " (:first-fail-number state))))]
+        (when (:smallest state)
+          [", Shrink: "
+           [:a {:href (str (:first-fail-number state) ".html.txt")
+                :title (str (hiccup/html (get-in state [:failing-args 0])))}
+            (count (get-in state [:failing-args 0]))]
+           " &rarr; "
+           [:a {:href (str (:smallest-number state) ".html.txt")
+                :title (str (hiccup/html (get-in state [:smallest :args 0])))}
+            (count (get-in state [:smallest :args 0]))]
+            " bytes"])))))
 
 ;; Generate an HTML index page for the current test results
 (defn render-report [cfg state]
@@ -110,7 +117,7 @@
              [:table {:id "results" :style "border-spacing: 4px 0px"}
               (vec
                 (concat
-                  [:tr [:th "Test"] [:th "Result"] [:th "Html"]
+                  [:tr [:th "Step"] [:th "Result"] [:th "Html"]
                    [:th "&nbsp;"]]
                   (for [browser browsers]
                     [:th (str (:id browser))])
