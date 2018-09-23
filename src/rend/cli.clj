@@ -144,14 +144,6 @@
           (rend.html/render-report cfg state))
     res))
 
-;; (defn load-sessions [file]
-;;   (when (and file (.exists (io/as-file file)))
-;;     (println "Sessions keys:")
-;;     (pprint (keys
-;;               (reset! webdriver/browser-state
-;;                       (edn/read-string (slurp file)))))))
-
-
 ;----
 
 (defn deep-merge [& maps]
@@ -172,8 +164,6 @@
     :default false]
    ["-v" "--verbose" "Verbose output"
     :default false]
-   ["-S" "--sessions SESSIONS" "Browser sessions file (edn)"
-    :default "sessions.edn"]
    ["-s" "--seed SEED" "Test random seed (overrides config file)"
     :parse-fn #(Integer. %)]])
 
