@@ -165,7 +165,9 @@
    ["-v" "--verbose" "Verbose output"
     :default false]
    ["-s" "--seed SEED" "Test random seed (overrides config file)"
-    :parse-fn #(Integer. %)]])
+    :parse-fn #(Integer. %)]
+   [nil "--exit-after-run" "Exit after a test run rather than pausing for enter."
+    :default false]])
 
 (defn usage [data]
   (str "Usage: rend [OPTIONS] YAML_CONFIG_FILE\n"
@@ -235,5 +237,9 @@
       (doseq [browser (:browsers cfg)]
         (println "Stopping browser session for:" (:id browser))
         (prn-str (webdriver/stop-session browser)))
+      (when (not (:exit-after-run options))
+        (println "Continuing to serve on port" (-> cfg :web :port))
+        (println "Press <Enter> to exit.")
+        (read-line))
       (System/exit return-code))))
 
