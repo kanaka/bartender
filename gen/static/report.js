@@ -28,6 +28,8 @@ function toggle_thumbs() {
 }
 
 function connect(uri) {
+  let results = document.getElementById('results')
+  let summary = document.getElementById('summary')
   ws = new WebSocket(uri)
   ws.onmessage = function (msg) {
     const match = msg.data.match(/^([^:]*):(.*)/)
@@ -36,13 +38,16 @@ function connect(uri) {
       return
     }
     const [_,msgType,data] = match
+    console.log(`msg '${msgType}': ${data.slice(0,40)}...`)
     switch (msgType) {
     case 'row':
-      console.log('msg row:', data)
       let tr = document.createElement('tr')
       tr.innerHTML = data.replace(/^<tr>(.*)<\/tr>$/, '$1')
-      document.getElementById('results').appendChild(tr)
+      results.appendChild(tr)
       update_thumbs()
+      break
+    case 'summary':
+      summary.innerHTML = data
       break
     default:
       console.log('unknown msg type:', msgType)

@@ -129,7 +129,10 @@
     (:index s)))
 
 ;; SIDE-EFFECTS: updates :log in check-state atom
-(defn check-page [cfg test-dir html]
+(defn check-page
+  "Render and check a test case page. Then output a report file and
+  send an update to any browsers currently viewing the page."
+  [cfg test-dir html]
   (let [test-index (new-test-index)
         [res diffs violations] (check-page* cfg test-dir test-index html)
         log-entry {:prefix (str test-dir "/" test-index)
@@ -138,10 +141,10 @@
                    :diffs diffs
                    :violations violations}
         state (swap! check-state update-in [:log] conj log-entry)]
-    ;; Generate index page after every check
+    ;; Generate report page after every check and notify browsers
+    ;; viewing it of the change.
     (spit (str test-dir "/index.html")
           (rend.html/render-report cfg state))
-    ;; Send the new row to all websocket clients
     (rend.server/ws-broadcast
       (str
         "row:"
@@ -149,22 +152,40 @@
           (rend.html/render-report-row (:browsers cfg)
                                        log-entry
                                        (- test-index 1)))))
+    (rend.server/ws-broadcast
+      (str
+        "summary:"
+        (hiccup.core/html
+          (rend.html/render-summary state))))
     res))
+
+(defn reporter
+  "Prune clojure objects from the report data and print it. If the
+  current report type has changed output a report file and send an
+  update to any browsers currently viewing the page."
+  [cfg test-dir report]
+  (let [r (dissoc report :property)
+	r (update-in r [:current-smallest]
+		     dissoc :function)]
+    (when (:verbose cfg)
+      (prn :report (merge r {:failing-args :elided :args :elided})))
+    ;; Save the latest report
+    (swap! check-state
+           (fn [s]
+             (merge s {:latest-report r}
+                    (when (:trial-number r)
+                      {:first-fail-number (:trial-number r)
+                       :failing-args (:failing-args r)})
+                    (when (:current-smallest r)
+                      {:smallest (:current-smallest r)})
+                    )))
+    ))
 
 ;----
 
 (defn deep-merge [& maps]
   (apply merge-with (fn [x y] (if (map? y) (deep-merge x y) y))
          maps))
-
-(defn pruned-reporter
-  "Prune clojure objects from the report data and print it"
-  [r]
-  (let [r (dissoc r :property)
-	r (update-in r [:current-smallest]
-		     dissoc :function)]
-    (prn :report (dissoc r :property))))
-
 
 (def cli-options
   [["-?" "--help" "Show usage"
@@ -223,16 +244,22 @@
                    (do
                      (println "Initializing browser session for:" (:id browser))
                      (webdriver/init-session browser)))
+        cleanup-fn (fn [] (doseq [browser browsers]
+                            (println "Stopping browser session for:" (:id browser))
+                            (prn-str (webdriver/stop-session browser))))
         ;; Update config with session driver enriched browsers
         cfg (assoc cfg :browsers browsers)]
 
+    ;; Run the tests and report
     (let [gen-html (rend.generator/get-html-generator weights)
           start-time (t/now)
+          check-fn (partial check-page cfg test-dir)
+          reporter-fn (partial reporter cfg test-dir)
           qc-res (instacheck/run-check
                    (:quick-check cfg {})
                    gen-html
-                   (fn [html] (check-page cfg test-dir html))
-                   pruned-reporter)
+                   check-fn
+                   reporter-fn)
           end-time (t/now)
           full-result (swap! check-state
                              assoc
@@ -249,9 +276,7 @@
       (println (str "Full results in: " test-dir "/full-results.edn"))
       (spit (str test-dir "/results.edn") (with-out-str (pprint qc-res)))
       (spit (str test-dir "/full-results.edn") full-result)
-      (doseq [browser (:browsers cfg)]
-        (println "Stopping browser session for:" (:id browser))
-        (prn-str (webdriver/stop-session browser)))
+      (cleanup-fn)
       (when (not (:exit-after-run options))
         (println "Continuing to serve on port" (-> cfg :web :port))
         (println "Press <Enter> to exit.")

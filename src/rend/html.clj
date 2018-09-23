@@ -26,7 +26,8 @@
                :title (str (hiccup/html html))}
            "html"]
           " / "
-          [:a {:href (str idx ".html.txt")}
+          [:a {:href (str idx ".html.txt")
+               :title (str (hiccup/html html))}
            "txt"]]
          [:td "&nbsp;"]]
         (for [browser browsers]
@@ -64,6 +65,20 @@
             [:br.thumb {:style "display: none"}]
             (format "%.6f" odiff)]])))))
 
+(defn render-summary [state]
+  (let [report (:latest-report state)
+        rtype (:type report)]
+    [:span
+     (str "Step " (:index state)
+          ", Mode: " (name (or rtype :init))
+          (when (:first-fail-number state)
+            (str ", First Failure: " (:first-fail-number state)))
+          (when (:smallest state)
+            (str ", Shrink: "
+                 (count (get-in state [:failing-args 0]))
+                 " &rarr; "
+                 (count (get-in state [:smallest :args 0])) " bytes")))]))
+
 ;; Generate an HTML index page for the current test results
 (defn render-report [cfg state]
   (let [port (-> cfg :web :port)
@@ -73,26 +88,36 @@
     (hiccup/html
       [:html
        [:style "a {text-decoration: none}"]
-       [:body
-        [:div "Threshold value: " (format "%.6f" threshold)]
-        [:br]
-        [:input#toggle {:type "button"
-                        :value "Show Thumbnails"
-                        :onclick "toggle_thumbs()"}]
-        [:br][:br]
-        (vec
-          (concat
-            [:table {:id "results" :style "border-spacing: 4px 0px"}
-             (vec
-               (concat
-                 [:tr [:th "Test"] [:th "Result"] [:th "Html"]
-                  [:th "&nbsp;"]]
-                 (for [browser browsers]
-                   [:th (str (:id browser))])
-                 [[:th "&nbsp;"] [:th "Average"] [:th "&nbsp;"]]
-                 (for [[ba bb] (combinations browsers 2)]
-                   [:th (str (:id ba) "&Delta;" (:id bb))])))]
-            (for [i (range (count logs))]
-              (render-report-row browsers (nth logs i) i))))
+       [:body {:style "margin: 0px;"}
+        [:div {:class "header"
+               :style "position: fixed;
+                       height: 45px;
+                       width: 100%;
+                       padding: 5px;
+                       background-color: #efefef"}
+         [:input#toggle {:type "button"
+                         :value "Show Thumbnails"
+                         :onclick "toggle_thumbs()"}]
+         [:span {:style "padding: 4px;"}
+          "Threshold value: " (format "%.6f" threshold)]
+         [:div {:id "summary"
+                :style "padding: 4px;"}
+          (render-summary state)]]
+        [:div {:class "content"
+               :style "padding-top: 55px"}
+         (vec
+           (concat
+             [:table {:id "results" :style "border-spacing: 4px 0px"}
+              (vec
+                (concat
+                  [:tr [:th "Test"] [:th "Result"] [:th "Html"]
+                   [:th "&nbsp;"]]
+                  (for [browser browsers]
+                    [:th (str (:id browser))])
+                  [[:th "&nbsp;"] [:th "Average"] [:th "&nbsp;"]]
+                  (for [[ba bb] (combinations browsers 2)]
+                    [:th (str (:id ba) "&Delta;" (:id bb))])))]
+             (for [i (range (count logs))]
+               (render-report-row browsers (nth logs i) i))))]
         [:script {:src "../static/report.js"}]
         [:script (str "connect('ws://localhost:" port "/ws')")]]])))
