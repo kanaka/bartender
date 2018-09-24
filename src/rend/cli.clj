@@ -24,7 +24,9 @@
         text (hiccup.core/html html)
         test-prefix (str test-dir "/" test-index)
         path (str test-prefix ".html")
-        url (str (webdriver/addr (:web cfg)) "/" path)]
+        host-port (str (get-in cfg [:web :host] "localhost")
+                       ":" (get-in cfg [:web :port]))
+        url (str "http://" host-port "/" path)]
     (try
       (println "------")
       ;; (println "Test case:" text)
@@ -264,8 +266,8 @@
     ;; Create webdriver/selenium sessions to the testing browsers
     (doseq [browser (:browsers cfg)]
       (println "Initializing browser session for:" (:id browser))
-      (swap! check-state update-in [:sessions]
-             assoc browser (webdriver/init-session browser)))
+      (swap! check-state update-in [:sessions] assoc browser
+             (webdriver/init-session (:url browser) (or (:capabilities browser) {}))))
 
 
     ;; Run the tests and report

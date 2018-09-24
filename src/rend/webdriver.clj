@@ -10,53 +10,49 @@
 (def DEFAULT-WIDTH 400)
 (def DEFAULT-HEIGHT 300)
 
-(defn init-webdriver [browser]
-  (let [url (io/as-url (:url browser))
-        capabilities (walk/stringify-keys (or (:capabilities browser) {}))
-        caps (DesiredCapabilities. capabilities)
-        drv (RemoteWebDriver. url caps)]
-    (assoc browser :driver drv)))
+(defn init-webdriver [url capabilities]
+  (prn :url url :capabilities capabilities)
+  (let [url (io/as-url url)
+        desired-caps (walk/stringify-keys capabilities)
+        caps (DesiredCapabilities. desired-caps)
+        session (RemoteWebDriver. url caps)]
+    session))
 
 (def viewport-margin-script "return [window.outerWidth - document.body.clientWidth, window.outerHeight - document.body.clientHeight];")
 
-(defn set-viewport-size [browser w h]
-  (let [drv (:driver browser)
-        [mw mh] (.executeScript drv viewport-margin-script
+(defn set-viewport-size [session w h]
+  (let [[mw mh] (.executeScript session viewport-margin-script
                                 (into-array Object []))]
-    (-> drv
+    (-> session
         (.manage)
         (.window)
         (.setSize (Dimension. (+ w mw) (+ h mh))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defn addr [cfg]
-  (let [host (get cfg :host "localhost")
-        port (:port cfg)]
-    (str "http://" host ":" port)))
+(defn init-session [url capabilities]
+  (let [session (init-webdriver url capabilities)]
+    (set-viewport-size session DEFAULT-WIDTH DEFAULT-HEIGHT)
+    session))
 
-(defn init-session [browser]
-  (let [enriched-browser (init-webdriver browser)]
-    (set-viewport-size enriched-browser DEFAULT-WIDTH DEFAULT-HEIGHT)
-    enriched-browser))
+(defn stop-session [session]
+  (.quit session))
 
-(defn stop-session [browser]
-  (.quit (:driver browser)))
+(defn load-page [session url]
+  (.get session url))
 
-(defn load-page [browser url]
-  (.get (:driver browser) url))
-
-(defn screenshot-page [browser path]
+(defn screenshot-page [session path]
   (try
-    (set-viewport-size browser DEFAULT-WIDTH DEFAULT-HEIGHT)
-    (let [sfile (.getScreenshotAs (:driver browser) OutputType/FILE)]
+    (set-viewport-size session DEFAULT-WIDTH DEFAULT-HEIGHT)
+    (let [sfile (.getScreenshotAs session OutputType/FILE)]
       (io/copy sfile (io/file path))
       (image/imread path))
     (catch Exception e
       (println "Exception:" e)
       (let [eimg (image/error-image
-		   DEFAULT-WIDTH DEFAULT-HEIGHT
-                   "render failure for" (:id browser))]
+		   DEFAULT-WIDTH
+                   DEFAULT-HEIGHT
+                   "render failure")]
 	(image/imwrite path eimg)
 	eimg))))
 
