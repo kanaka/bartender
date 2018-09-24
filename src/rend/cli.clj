@@ -252,14 +252,15 @@
         gen-html-fn (rend.generator/get-html-generator weights)
         ;; Cleanup browser sessions on exit
         cleanup-fn (fn []
-                     (println "Cleaning up browser sessions")
-                     (doseq [[browser session] (:sessions @check-state)]
-                       (println "Stopping browser session for:" (:id browser))
-                       (try
-                         (webdriver/stop-session session)
-                         (swap! check-state update-in [:sessions] dissoc browser)
-                         (catch Throwable e
-                           (println "Failed to stop browser session:" e)))))
+                     (when (not (empty? (:sessions @check-state)))
+                       (println "Cleaning up browser sessions")
+                       (doseq [[browser session] (:sessions @check-state)]
+                         (println "Stopping browser session for:" (:id browser))
+                         (try
+                           (webdriver/stop-session session)
+                           (swap! check-state update-in [:sessions] dissoc browser)
+                           (catch Throwable e
+                             (println "Failed to stop browser session:" e))))))
         ;; Start a web server for the test cases and reporting
         server (rend.server/start-server cfg (str test-dir "/"))]
 
