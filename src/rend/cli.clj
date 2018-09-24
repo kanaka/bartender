@@ -88,7 +88,11 @@
                                   (:id browser) "_thumb.png") thumb)))
 
         ; (println "Saving difference values to" d-path)
-        (spit d-path (pr-str diffs))
+        (spit d-path
+              (pr-str
+                (into {} (for [[b v] diffs]
+                           [(:id b) (into {} (for [[bx t] v]
+                                               [(:id bx) t]))]))))
 
         ; (println "Saving average picture")
         (let [avg (image/average (vals imgs))
