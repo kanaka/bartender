@@ -68,7 +68,7 @@ make deps
 
 * Start a test run:
 ```
-lein with-profile rend run config.yaml
+lein with-profile rend trampoline run config.yaml
 ```
 
 ## Mend: Update HTML5 and CSS3 Generators

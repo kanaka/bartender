@@ -263,6 +263,8 @@
     (spit (str test-dir "/index.html")
           (rend.html/render-report cfg @check-state))
 
+    ;; On Ctrl-C cleanup browser sessions we are about to create
+    (.addShutdownHook (Runtime/getRuntime) (Thread. cleanup-fn))
     ;; Create webdriver/selenium sessions to the testing browsers
     (doseq [browser (:browsers cfg)]
       (println "Initializing browser session for:" (:id browser))
