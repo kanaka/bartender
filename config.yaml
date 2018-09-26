@@ -1,29 +1,29 @@
 quick-check:
     iterations: 20
-    seed: 2
-    max-size: 50
+    seed: 5
+    max-size: 100
 weights: "weights.edn"
 compare:
-#    method: SQDIFF
-    method: SQDIFF_NORMED
-    threshold: 0.00003
-#    threshold: 10.0
+    #method: "SQDIFF"
+    method: "SQDIFF_NORMED"
+    threshold: 0.0001
 web:
-    host: 192.168.2.3
+    host: "127.0.0.1"
     port: 3000
     dir: "gen"
 browsers:
-    - id: firefox
+    - id: "firefox"
       url: "http://localhost:7000"
       capabilities: {"moz:firefoxOptions":
                      {"args": ["--headless"]}}
-    - id: chrome
+    - id: "chrome"
       url: "http://localhost:7001"
       capabilities: {"chromeOptions":
                      {"args": ["--headless"]}}
-    - id: servo
-      url: "http://192.168.88.2:7002"
 
+#    - id: servo
+#      url: "http://192.168.88.2:7002"
+#
 #    - id: bs-chrome-win-62
 #      url: "https://USER:KEY@hub-cloud.browserstack.com/wd/hub"
 #      capabilities: {"browserstack.local": true,
