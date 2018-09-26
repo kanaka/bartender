@@ -18,7 +18,7 @@
                  [hiccup "1.0.5"]
                  [http-kit "2.2.0"]
 
-                 [org.clojure/tools.cli "0.3.5"]
+                 [org.clojure/tools.cli "0.4.1"]
 
                  ;; rend specific
                  [clj-yaml "0.4.0"]
