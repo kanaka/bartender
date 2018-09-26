@@ -189,7 +189,15 @@
                        :failing-args (:failing-args r)})
                     (when (:current-smallest r)
                       {:smallest-number (:index s)
-                       :smallest (:current-smallest r)}))))))
+                       :smallest (:current-smallest r)}))))
+    ;; Broadcast to listening browsers. We need this here in addition
+    ;; to check-page because we may receive multiple reports for the
+    ;; same page
+    (rend.server/ws-broadcast
+      (str
+        "summary:"
+        (hiccup.core/html
+          (rend.html/render-summary @state))))))
 
 ;----
 
