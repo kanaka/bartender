@@ -122,7 +122,8 @@
                   (image/imwrite (str test-dir "/" pre "_thumb.png") thumb))))))
 
         ;; Do the actual check
-        (println "Threshold violations:" (map (comp :id first) violations))
+        (when (not (empty? violations))
+          (println "Threshold violations:" (map (comp :id first) violations)))
 
         [(not violation) diffs violations])
       (catch Throwable t
@@ -176,8 +177,9 @@
   (let [r (dissoc report :property)
 	r (update-in r [:current-smallest]
 		     dissoc :function)]
-    (when (:verbose cfg)
-      (prn :report (merge r {:failing-args :elided :args :elided})))
+    (if (:verbose cfg)
+      (prn :report (merge r {:failing-args :elided :args :elided}))
+      (println "Report type:" (name (:type r))))
     ;; Save the latest report
     (swap! state
            (fn [s]
