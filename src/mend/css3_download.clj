@@ -67,14 +67,14 @@
   (let [all-props (filter-css-properties (get-css-keywords))]
     (make-parents (str outdir "/file"))
     (doseq [[prop path] (sort all-props)]
-      (let [full-path (str outdir "/" prop ".pvs")]
+      (let [full-path (str outdir "/" prop ".vds")]
         (if (.exists (as-file full-path))
           (println "Already exists:" prop)
           (do
             (println "Retrieving:" prop)
             (let [pdata (get-formal-syntax-hickory path)
                   text (formal-syntax prop pdata)]
-              (spit (str outdir "/" prop ".pvs") text))))))))
+              (spit (str outdir "/" prop ".vds") text))))))))
 
 (comment
 

@@ -10,3 +10,7 @@ pom.xml.asc
 .hgignore
 .hg/
 gen/[0-9]*
+/opt
+/tmp
+/old
+/resources

@@ -26,7 +26,7 @@
 (def CSS3-PROPERTIES "mdn_data/css/properties.json")
 (def CSS3-SYNTAXES "mdn_data/css/syntaxes.json")
 
-(def css3-syntax-parser (insta/parser (slurp "data/css-pvs.ebnf")))
+(def css3-syntax-parser (insta/parser (slurp "data/css-vds.ebnf")))
 
 ;; Find each :path in a grammar and replace it with :value
 ;; This allows us to replace stub generators in the grammar with
@@ -98,7 +98,7 @@
                :else
                [k v]))))
 
-(defn pvs-all [properties syntaxes]
+(defn vds-all [properties syntaxes]
   (let [props (filter-css-properties properties)
         syns (mangle-css-syntaxes syntaxes)
         ps (for [[prop {:strs [syntax]}] (sort props)]
@@ -108,7 +108,7 @@
     (apply str (concat ps ss))))
 
 (comment
-  (spit "data/css3.pvs" (pvs-all (json/read-str (slurp CSS3-PROPERTIES))
+  (spit "data/css3.vds" (vds-all (json/read-str (slurp CSS3-PROPERTIES))
                                  (json/read-str (slurp CSS3-SYNTAXES))))
 )
 
@@ -137,7 +137,7 @@
 
 (comment
   ;; Takes 4 seconds
-  (def parse-tree (css3-syntax-parser (slurp "data/css3.pvs")))
+  (def parse-tree (css3-syntax-parser (slurp "data/css3.vds")))
   (def parse-map (parsed-tree->map parse-tree))
 )
 
@@ -541,7 +541,7 @@ nonprop-y = \"11\" ;
 
 (comment
   ;; Takes 4 seconds
-  (def css-tree (css3-syntax-parser (slurp "data/css3.pvs")))
+  (def css-tree (css3-syntax-parser (slurp "data/css3.vds")))
   (def css-map (parsed-tree->map css-tree))
 
   ;; The following takes 25 seconds
@@ -574,9 +574,9 @@ nonprop-y = \"11\" ;
       ebnf-cli/general-cli-options
       [[nil "--namespace NAMESPACE"
 	"Name of namespace to generate"]
-       [nil "--pvs-output PVS-OUTPUT"
-        "Path for storing copy of full PVS syntax file"
-        :default "./data/css3.pvs"]
+       [nil "--vds-output VDS-OUTPUT"
+        "Path for storing copy of full VDS syntax file"
+        :default "./data/css3.vds"]
        [nil "--ebnf-output EBNF-OUTPUT"
         "Write intermediate EBNF to file"]
        [nil "--function FUNCTION"
@@ -594,18 +594,18 @@ nonprop-y = \"11\" ;
                    (select-keys opts [:namespace
                                       :weights :function]))
 
-        _ (pr-err "Generating full CSS PVS grammar from files:"
+        _ (pr-err "Generating full CSS VDS grammar from files:"
                   CSS3-PROPERTIES CSS3-SYNTAXES)
         css3-properties (json/read-str (slurp CSS3-PROPERTIES))
         css3-syntaxes (json/read-str (slurp CSS3-SYNTAXES))
         ;; TODO: add option to filter by status (i.e. "standard")
-        pvs-text (pvs-all css3-properties css3-syntaxes)
+        vds-text (vds-all css3-properties css3-syntaxes)
 
-        _ (pr-err "Loading CSS PVS grammar")
-        css-tree (css3-syntax-parser pvs-text)
+        _ (pr-err "Loading CSS VDS grammar")
+        css-tree (css3-syntax-parser vds-text)
         css-map (parsed-tree->map css-tree)
 
-        _ (pr-err "Converting CSS PVS grammar to EBNF")
+        _ (pr-err "Converting CSS VDS grammar to EBNF")
         css3-ebnf-str (map->ebnf css-map)
 
         _ (pr-err "Loading CSS grammar from EBNF")
@@ -616,9 +616,9 @@ nonprop-y = \"11\" ;
         ;; The following takes 14+ seconds
         ns-str (grammar->ns ctx css3-grammar)]
 
-    (when-let [pfile (:pvs-output opts)]
-      (pr-err "Saving full CSS PVS grammar file to:" pfile)
-      (spit pfile pvs-text))
+    (when-let [pfile (:vds-output opts)]
+      (pr-err "Saving full CSS VDS grammar file to:" pfile)
+      (spit pfile vds-text))
 
     (when-let [efile (:ebnf-output opts)]
       (pr-err "Saving EBNF to" efile)

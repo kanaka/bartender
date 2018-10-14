@@ -82,7 +82,7 @@ time lein with-profile html5 run --namespace rend.html5-generators --weights dat
 Generate CSS3 EBNF grammar and Clojure generate source:
 
 ```
-time lein with-profile css3 run --namespace rend.css3-generators --weights data/css3-weights.edn --weights-output data/css3-weights-output.edn --pvs-output data/css3.pvs --ebnf-output data/css3.ebnf --function css3-generators > src/rend/css3_generators.clj
+time lein with-profile css3 run --namespace rend.css3-generators --weights data/css3-weights.edn --weights-output data/css3-weights-output.edn --vds-output data/css3.vds --ebnf-output data/css3.ebnf --function css3-generators > src/rend/css3_generators.clj
 ```
 
 Use the generators from a Clojure REPL:
