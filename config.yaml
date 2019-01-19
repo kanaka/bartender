@@ -20,10 +20,14 @@ browsers:
       url: "http://localhost:7001"
       capabilities: {"chromeOptions":
                      {"args": ["--headless"]}}
+    - id: servo
+      url: "http://192.168.88.2:7002"
 
-#    - id: servo
-#      url: "http://192.168.88.2:7002"
-#
+#    - id: "brave"
+#      url: "http://localhost:7003"
+#      capabilities: {"chromeOptions":
+#                     { "args": ["--headless", "--disable-gpu"],
+#                       "binary": "/usr/bin/brave-browser"}}
 #    - id: bs-chrome-win-62
 #      url: "https://USER:KEY@hub-cloud.browserstack.com/wd/hub"
 #      capabilities: {"browserstack.local": true,

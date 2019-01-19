@@ -25,6 +25,10 @@ make deps
   curl -LO https://chromedriver.storage.googleapis.com/2.35/chromedriver_linux64.zip
   unzip chromedriver_linux64.zip; rm chromedriver_linux64.zip
   ```
+  * Brave (https://github.com/brave/brave-browser/releases/):
+  ```
+  wget https://github.com/brave/brave-browser/releases/download/v0.56.15/chromedriver-v2.33-linux-x64.zip
+  ```
   * Servo (https://github.com/mozilla/servo):
   ```
   git clone https://github.com/servo/servo
@@ -53,6 +57,10 @@ make deps
   * Servo (https://github.com/mozilla/servo):
   ```
   ./mach run --release -z --webdriver=7002 --resolution=400x300
+  ```
+  * Brave:
+  ```
+  ./chromedriver --port=7003
   ```
   * If using BrowserStack, start the BrowserStack local server:
   ```
@@ -121,6 +129,8 @@ browsers:
       url: "http://localhost:7001"
       capabilities: {"chromeOptions":
                      {"args": ["--headless"]}}
+    - id: servo
+      url: "http://localhost:7002"
 
 ```
 
