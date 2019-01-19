@@ -30,9 +30,9 @@
                  [opencv/opencv "2.4.9"]
                  [opencv/opencv-native "2.4.9"]
 
-                 [org.seleniumhq.selenium/selenium-api "3.9.1"]
-                 [org.seleniumhq.selenium/selenium-remote-driver "3.9.1"]
-                 [org.seleniumhq.selenium/selenium-server "3.9.1"]
+                 [org.seleniumhq.selenium/selenium-api "3.141.59"]
+                 [org.seleniumhq.selenium/selenium-remote-driver "3.141.59"]
+                 [org.seleniumhq.selenium/selenium-server "3.141.59"]
 
                  ;; Patched versions
                  [org.clojure/test.check "0.9.1-SNAPSHOT"]
