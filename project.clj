@@ -16,7 +16,7 @@
                  [org.clojure/data.codec "0.1.0"]
                  [org.clojure/math.combinatorics "0.1.4"]
                  [hiccup "1.0.5"]
-                 [http-kit "2.2.0"]
+                 [http-kit "2.3.0"]
 
                  [org.clojure/tools.cli "0.4.1"]
 
@@ -46,7 +46,8 @@
 
   :profiles {:rend  {:main rend.cli}
              :css3  {:main mend.css3}
-             :html5 {:main mend.html5}}
+             :html5 {:main mend.html5}
+             :html5-download {:main mend.html5-download}}
 
   :main rend.cli
   )

@@ -63,10 +63,13 @@
     (apply println args)))
 
 (defn filter-css-properties
-  "Filter properties we want (mostly just removes '--*')"
-  [props]
-  (into {} (filter (fn [[name val]]
-                     (re-find #"^[a-z-]+$" name))
+  "Filter properties we want (also removes '--*')"
+  [props & [status]]
+  (into {} (filter (fn [[name attrs]]
+                     (and
+                       (re-find #"^[a-z-]+$" name)
+                       (or (not status)
+                           (= (get attrs "status") status))))
                    props)))
 
 (defn mangle-css-syntaxes
@@ -99,16 +102,16 @@
                [k v]))))
 
 (defn vds-all [properties syntaxes]
-  (let [props (filter-css-properties properties)
-        syns (mangle-css-syntaxes syntaxes)
-        ps (for [[prop {:strs [syntax]}] (sort props)]
+  (let [syns (mangle-css-syntaxes syntaxes)
+        ps (for [[prop {:strs [syntax]}] (sort properties)]
              (str "<'" prop "'> = " syntax "\n"))
         ss (for [[syn syntax] (sort syns)]
              (str "<" syn "> = " syntax "\n"))]
     (apply str (concat ps ss))))
 
 (comment
-  (spit "data/css3.vds" (vds-all (json/read-str (slurp CSS3-PROPERTIES))
+  (spit "data/css3.vds" (vds-all (filter-css-properties
+                                   (json/read-str (slurp CSS3-PROPERTIES)))
                                  (json/read-str (slurp CSS3-SYNTAXES))))
 )
 
@@ -272,12 +275,6 @@ nonprop-mask-image = prop-mask-image ;
 nonprop-mask-repeat = prop-mask-repeat ;
 nonprop-mask-origin = prop-mask-origin ;
 nonprop-mask-clip = prop-mask-clip ;
-
-nonprop-offset-position = prop-offset-position ;
-nonprop-offset-path = prop-offset-path ;
-nonprop-offset-distance = prop-offset-distance ;
-nonprop-offset-rotate = prop-offset-rotate ;
-nonprop-offset-anchor = prop-offset-anchor ;
 
 nonprop-outline-color = prop-outline-color ;
 nonprop-outline-style = prop-outline-style ;
@@ -579,6 +576,8 @@ nonprop-y = \"11\" ;
         :default "./data/css3.vds"]
        [nil "--ebnf-output EBNF-OUTPUT"
         "Write intermediate EBNF to file"]
+       [nil "--filter-status FILTER-STATUS"
+	"Name of namespace to generate"]
        [nil "--function FUNCTION"
         "Emit a function named FUNCTION which returns a generator rather than a defn for every generator"]])))
 
@@ -598,8 +597,13 @@ nonprop-y = \"11\" ;
                   CSS3-PROPERTIES CSS3-SYNTAXES)
         css3-properties (json/read-str (slurp CSS3-PROPERTIES))
         css3-syntaxes (json/read-str (slurp CSS3-SYNTAXES))
-        ;; TODO: add option to filter by status (i.e. "standard")
-        vds-text (vds-all css3-properties css3-syntaxes)
+
+        vds-text (vds-all (filter-css-properties css3-properties
+                                                 (:filter-status opts))
+                          css3-syntaxes)
+        _ (when-let [pfile (:vds-output opts)]
+            (pr-err "Saving full CSS VDS grammar file to:" pfile)
+            (spit pfile vds-text))
 
         _ (pr-err "Loading CSS VDS grammar")
         css-tree (css3-syntax-parser vds-text)
@@ -607,6 +611,9 @@ nonprop-y = \"11\" ;
 
         _ (pr-err "Converting CSS VDS grammar to EBNF")
         css3-ebnf-str (map->ebnf css-map)
+        _ (when-let [efile (:ebnf-output opts)]
+            (pr-err "Saving EBNF to" efile)
+            (spit efile css3-ebnf-str))
 
         _ (pr-err "Loading CSS grammar from EBNF")
         ;; The following takes 5 seconds
@@ -615,14 +622,6 @@ nonprop-y = \"11\" ;
         _ (pr-err "Converting CSS grammar to source")
         ;; The following takes 14+ seconds
         ns-str (grammar->ns ctx css3-grammar)]
-
-    (when-let [pfile (:vds-output opts)]
-      (pr-err "Saving full CSS VDS grammar file to:" pfile)
-      (spit pfile vds-text))
-
-    (when-let [efile (:ebnf-output opts)]
-      (pr-err "Saving EBNF to" efile)
-      (spit efile css3-ebnf-str))
 
     (when-let [wfile (:weights-output opts)]
       (pr-err "Saving weights to" wfile)

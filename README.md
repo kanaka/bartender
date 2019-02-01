@@ -81,16 +81,31 @@ lein with-profile rend trampoline run config.yaml
 
 ## Mend: Update HTML5 and CSS3 Generators
 
+Download/update HTML5 element/attribute data:
+
+```
+time lein with-profile html5-download run
+```
+
 Generate HTML5 EBNF grammar and Clojure generator source:
 
 ```
 time lein with-profile html5 run --namespace rend.html5-generators --weights data/html5-weights.edn --weights-output data/html5-weights-output.edn --ebnf-output data/html5.ebnf --function html5-generators > src/rend/html5_generators.clj
 ```
 
+Get latest CSS3 property/VDS data by updating the MDN data submodule:
+
+```
+cd mdn_data
+git checkout master
+git pull
+cd ..
+```
+
 Generate CSS3 EBNF grammar and Clojure generate source:
 
 ```
-time lein with-profile css3 run --namespace rend.css3-generators --weights data/css3-weights.edn --weights-output data/css3-weights-output.edn --vds-output data/css3.vds --ebnf-output data/css3.ebnf --function css3-generators > src/rend/css3_generators.clj
+time lein with-profile css3 run --namespace rend.css3-generators --weights data/css3-weights.edn --weights-output data/css3-weights-output.edn --vds-output data/css3.vds --ebnf-output data/css3.ebnf --function css3-generators --filter-status standard > src/rend/css3_generators.clj
 ```
 
 Use the generators from a Clojure REPL:

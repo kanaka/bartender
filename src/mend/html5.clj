@@ -54,7 +54,8 @@
 
 (defn global-attributes
   [attr-map]
-  (keep #(when (= ["Global attribute"] (val %)) (key %)) attr-map))
+  (keep #(when (= ["Global attribute"] (get (val %) "elems")) (key %))
+        attr-map))
 
 ;; (defn non-global-attributes
 ;;   [attr-map]
@@ -67,13 +68,14 @@
   that element). Does not include global attributes."
   [elem-map attr-map]
   (let [e-elems (set (keys elem-map))
-        a-elems (disj (set (flatten (vals attr-map))) "Global attribute")
+        a-elems (disj (set (flatten (map #(get % "elems") (vals attr-map))))
+                      "Global attribute")
         all-elems (union e-elems a-elems)
         base (into {} (for [e all-elems] [e []]))
         full (apply merge-with #(vec (concat %1 %2))
                     base
                     (for [[k vs] attr-map
-                          v vs
+                          v (get vs "elems")
                           :when (not= "Global attribute" v)]
                       {v [k]}))]
     full))
@@ -240,16 +242,15 @@ body = <'<'> 'body' (<space> body-attribute)* <opt-space> <'>'> 'x' (element | c
         html5-elements (json/read-str (slurp HTML5-ELEMENT-DATA))
         html5-attributes (json/read-str (slurp HTML5-ATTRIBUTE-DATA))
         html5-ebnf-str (ebnf-all html5-elements html5-attributes)
+        _ (when-let [efile (:ebnf-output opts)]
+            (pr-err "Saving EBNF to" efile)
+            (spit efile html5-ebnf-str))
 
         ;; The following each take 4-6 seconds
         _ (pr-err "Loading HTML5 grammar from EBNF")
         html5-grammar (ebnf/load-grammar html5-ebnf-str)
         _ (pr-err "Converting HTML5 grammar to generators")
         ns-str (grammar->ns ctx html5-grammar)]
-
-    (when-let [efile (:ebnf-output opts)]
-      (pr-err "Saving EBNF to" efile)
-      (spit efile html5-ebnf-str))
 
     (when-let [wfile (:weights-output opts)]
       (pr-err "Saving weights to" wfile)

@@ -1,10 +1,11 @@
-(ns mend.html-download
+(ns mend.html5-download
   (:require [clojure.data.json :as json]
             [clojure.string :as string]
             [org.httpkit.client :as http]
             [hickory.core :as hick]
-            [hickory.select :as s]
-            ))
+            [hickory.select :as s])
+  (:import [java.net URI]
+           [javax.net.ssl SSLEngine SSLParameters SNIHostName]))
 
 ;; https://developer.mozilla.org/en-US/docs/Web/HTML/Reference
 ;; https://developer.mozilla.org/en-US/docs/Web/HTML/Element
@@ -17,11 +18,18 @@
 (def HTML-ELEM-PATH "/en-US/docs/Web/HTML/Element")
 (def HTML-ATTR-PATH "/en-US/docs/Web/HTML/Attributes")
 
+(defn sni-configure
+  [^SSLEngine ssl-engine ^URI uri]
+  (let [^SSLParameters ssl-params (.getSSLParameters ssl-engine)]
+    (.setServerNames ssl-params [(SNIHostName. (.getHost uri))])
+    (.setSSLParameters ssl-engine ssl-params)))
+
 ;; Downloads the HTML element reference and returns a map of
 ;; element/tag name to relative URL
 (defn get-html-elements []
-  (let [;; Get the MDN HTML element reference page
-        resp @(http/get (str HTML-BASE-URI HTML-ELEM-PATH))
+  (let [client (http/make-client {:ssl-configurer sni-configure})
+        ;; Get the MDN HTML element reference page
+        resp @(http/get (str HTML-BASE-URI HTML-ELEM-PATH) {:client client})
         ;; Parse it
         all-data (hick/as-hickory (hick/parse (:body resp)))
         ;; Pull out the keyword index
@@ -40,13 +48,25 @@
           (for [a as]
             [(string/replace (-> a :content first :content first)
                              #"^<|>$" "")
-             (-> a :attrs :href)]))))
+             (-> a :attrs)]))))
+
+(defn deref-content [h]
+  (if (map? h) (recur (-> h :content first)) h))
+
+(defn extract-name [h]
+  (string/replace (deref-content h) #"^<|>$" ""))
+
+(defn extract-text [h]
+  (if (string? h)
+    h
+    (apply str (map extract-text (:content h)))))
 
 ;; Downloads the HTML attribute reference and returns a map of
 ;; attribute name to relative URL
 (defn get-html-attributes []
-  (let [;; Get the MDN HTML element reference page
-        resp @(http/get (str HTML-BASE-URI HTML-ATTR-PATH))
+  (let [client (http/make-client {:ssl-configurer sni-configure})
+        ;; Get the MDN HTML element reference page
+        resp @(http/get (str HTML-BASE-URI HTML-ATTR-PATH) {:client client})
         ;; Parse it
         all-data (hick/as-hickory (hick/parse (:body resp)))
         ;; Pull out the keyword index
@@ -57,37 +77,46 @@
                (s/id "wikiArticle")
                (s/class "standard-table")
                (s/tag :tr)
+               ;; Extracted fields should match drop count below
                (s/and (s/tag :td)
                       (s/or (s/nth-child 1)
-                            (s/nth-child 2))))
-             all-data)
-        ename (fn [h]
-                (string/replace
-                  (let [h1 (-> h :content first)]
-                    (if (string? h1)
-                      h1
-                      (-> h1 :content first)))
-                  #"^<|>$" ""))]
+                            (s/nth-child 2)
+                            (s/nth-child 3))))
+             all-data)]
     (loop [kw-map {}
            data as]
-      (let [[a elems] data]
+      (let [[a elems desc] data]
         (assert (or (nil? a)
                     (= :code (-> a :content first :tag))
                     (str "Invalid attr td: " a)))
         (if (nil? a)
           kw-map
-          (let [aname (-> a :content first :content first)
+          (let [aname (deref-content a)
                 tags (s/select
                        (s/descendant (s/tag :a))
-                       elems)]
+                       elems)
+                title (-> a :content last :attrs :title)
+                desc (extract-text desc)
+                desc (if title (str title "\n" desc) desc)]
+            ;;(prn :aname aname :desc (extract-text desc))
             (recur
-              (assoc kw-map aname (vec (map ename tags)))
-              (drop 2 data))))))))
+              (assoc kw-map aname {:elems (vec (map extract-name tags))
+                                   :desc desc})
+              ;; This should match the number of extracted fields above
+              (drop 3 data))))))))
 
-(comment
-
-(spit "data/html5-elements.json" (json/write-str (get-html-elements)))
-(spit "data/html5-attributes.json" (json/write-str (get-html-attributes)))
-
-)
+(defn -main [& args]
+  (let [elements-file "data/html5-elements.json"
+        attributes-file "data/html5-attributes.json"
+        _ (println "Downloading HTML5 elements")
+        elements (get-html-elements)
+        _ (println (str "  Writing " (count elements)
+                        " elements to " elements-file))
+        _ (spit elements-file (json/write-str elements))
+        _ (println "Downloading HTML5 attributes")
+        attributes (get-html-attributes)
+        _ (println (str "  Writing " (count attributes)
+                        " attributes to " attributes-file))
+        _ (spit attributes-file (json/write-str attributes))]
+    ))
 
