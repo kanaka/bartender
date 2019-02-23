@@ -1,3 +1,7 @@
 [submodule "mdn_data"]
 	path = mdn_data
 	url = https://github.com/mdn/data
+[submodule "w3c_html"]
+	path = w3c_html
+	url = https://github.com/w3c/html
+	branch = html5.1

@@ -46,8 +46,7 @@
 
   :profiles {:rend  {:main rend.cli}
              :css3  {:main mend.css3}
-             :html5 {:main mend.html5}
-             :html5-download {:main mend.html5-download}}
+             :html5 {:main mend.html5}}
 
   :main rend.cli
   )

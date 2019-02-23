@@ -81,10 +81,15 @@ lein with-profile rend trampoline run config.yaml
 
 ## Mend: Update HTML5 and CSS3 Generators
 
-Download/update HTML5 element/attribute data:
+Update the W3C HTML5 element/attribute data to the desired version:
 
 ```
-time lein with-profile html5-download run
+cd w3c_html
+git fetch
+git checkout master   # latest proposed HTML5
+git checkout html5.1  # HTML 5.1 2nd edition, Recommendation 3 October 2017
+git checkout html5.2  # HTML 5.2, Recommendation, 14 October 2017
+cd ..
 ```
 
 Generate HTML5 EBNF grammar and Clojure generator source:

@@ -1,0 +1,11 @@
+html = <'<'> 'html' <opt-space> <'>'> head body <'</'> 'html' <opt-space> <'>'> <opt-space>
+
+head = <'<'> 'head' <opt-space> <'>'> normalize-css rend-css title? <'</'> 'head' <opt-space> <'>'> <opt-space>
+
+normalize-css = <'<'> 'link rel="stylesheet" href="../static/normalize.css"' <opt-space> <'>'> <opt-space>
+
+rend-css = <'<'> 'link rel="stylesheet" href="../static/rend.css"' <opt-space> <'>'> <opt-space>
+
+title = <'<'> 'title' (<space> title-attribute)* <opt-space> <'>'> content* <'</'> 'title' <opt-space> <'>'> <opt-space>
+
+body = <'<'> 'body' (<space> body-attribute)* <opt-space> <'>'> 'x' (element | content)* <'</'> 'body' <opt-space> <'>'> <opt-space>
