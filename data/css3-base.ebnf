@@ -1,0 +1,142 @@
+
+(* Base Types: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Types *)
+
+nonprop-angle = nonprop-number ( 'deg' | 'grad' | 'rad' | 'turn' ) ;
+(* nonprop-basic-shape = ; *)
+(* nonprop-blend-mode = ; *)
+(* nonprop-color = ; *)
+(* TODO: excluded values: https://developer.mozilla.org/en-US/docs/Web/CSS/custom-ident *)
+nonprop-custom-ident = ( #'[A-Za-z0-9_-]' | #'\\[0-9A-F][0-9A-F]?[0-9A-F]?[0-9A-F]?[0-9A-F]?[0-9A-F]?' )+ ;
+nonprop-flex = nonprop-number 'fr' ;
+nonprop-frequency = nonprop-number ( 'Hz' | 'kHz' ) ;
+(* nonprop-gradient = ; *)
+(* nonprop-image = ; *)
+nonprop-integer = '-'? #'[0-9]+' ;
+nonprop-length = nonprop-number nonprop-length-unit
+               | '0' ;
+nonprop-number = nonprop-integer | number-float ;
+nonprop-percentage = nonprop-number '%' ;
+(* nonprop-position = ; *)
+nonprop-ratio = nonprop-positive-integer '/' nonprop-positive-integer ;
+nonprop-resolution = nonprop-number ( 'dpi' | 'dpcm' | 'dppx' ) ;
+(* nonprop-shape = ; *)
+(* TODO: improve strings: https://developer.mozilla.org/en-US/docs/Web/CSS/string *)
+nonprop-string = "'" #"[A-Za-z0-9 _\"-]*" "'"
+               | '"' #"[A-Za-z0-9 _'-]*" '"' ;
+nonprop-time = nonprop-number ( 's' | 'ms' ) ;
+(* nonprop-transform-function = ; *)
+(* TODO: improve urls: https://developer.mozilla.org/en-US/docs/Web/CSS/url *)
+nonprop-url = 'url(http://STUB_DOMAIN.com/STUB_PATH/STUB_IMAGE=.png)' ;
+
+(* Convenenience rules for types above *)
+
+nonprop-positive-integer = #'[0-9]+' ;
+number-float = '-'? #'[0-9]+' '.' #'[0-9]+' ;
+nonprop-length-unit = 'em' | 'ex' | 'ch' | 'ic' | 'rem' | 'lh' | 'rlh'
+                    | 'vh' | 'vw' | 'vi' | 'vb' | 'vmin' | 'vmax'
+                    | 'px' | 'mm' | 'q' | 'cm' | 'in' |  'pt' | 'pc' | 'mozmm' ;
+
+
+(* TODO: fix. These have similarly name prop-* rules *)
+
+nonprop-border-radius = prop-border-radius ;
+nonprop-padding-left = prop-padding-left ;
+
+nonprop-top = prop-top ;
+nonprop-bottom = prop-bottom ;
+nonprop-left = prop-left ;
+nonprop-right = prop-right ;
+
+nonprop-background-color = prop-background-color ;
+
+nonprop-border-width = prop-border-width ;
+nonprop-border-style = prop-border-style ;
+nonprop-border-radius = prop-border-radius ;
+nonprop-border-image-source = prop-border-image-source ;
+nonprop-border-image-slice = prop-border-image-slice ;
+nonprop-border-image-width = prop-border-image-width ;
+nonprop-border-image-outset = prop-border-image-outset ;
+nonprop-border-image-repeat = prop-border-image-repeat ;
+
+nonprop-column-width = prop-column-width ;
+nonprop-column-count = prop-column-count ;
+nonprop-column-rule-width = prop-column-rule-width ;
+nonprop-column-rule-style = prop-column-rule-style ;
+nonprop-column-rule-color = prop-column-rule-color ;
+
+nonprop-flex = prop-flex ;
+nonprop-flex-direction = prop-flex-direction ;
+nonprop-flex-wrap = prop-flex-wrap ;
+nonprop-flex-grow = prop-flex-grow ;
+nonprop-flex-shrink = prop-flex-shrink ;
+nonprop-flex-basis = prop-flex-basis ;
+
+nonprop-font-style = prop-font-style ;
+nonprop-font-weight = prop-font-weight ;
+nonprop-font-stretch = prop-font-stretch ;
+nonprop-font-size = prop-font-size ;
+nonprop-font-family = prop-font-family ;
+
+nonprop-grid-template = prop-grid-template ;
+nonprop-grid-template-rows = prop-grid-template-rows ;
+nonprop-grid-template-columns = prop-grid-template-columns ;
+nonprop-grid-auto-rows = prop-grid-auto-rows ;
+nonprop-grid-auto-columns = prop-grid-auto-columns ;
+nonprop-grid-row-gap = prop-grid-row-gap ;
+nonprop-grid-column-gap = prop-grid-column-gap ;
+
+nonprop-line-height = prop-line-height ;
+
+nonprop-list-style-type = prop-list-style-type ;
+nonprop-list-style-position = prop-list-style-position ;
+nonprop-list-style-image = prop-list-style-image ;
+
+nonprop-margin-left = prop-margin-left ;
+
+nonprop-mask-image = prop-mask-image ;
+nonprop-mask-repeat = prop-mask-repeat ;
+nonprop-mask-origin = prop-mask-origin ;
+nonprop-mask-clip = prop-mask-clip ;
+
+nonprop-outline-color = prop-outline-color ;
+nonprop-outline-style = prop-outline-style ;
+nonprop-outline-width = prop-outline-width ;
+
+nonprop-text-emphasis-style = prop-text-emphasis-style ;
+nonprop-text-emphasis-color = prop-text-emphasis-color ;
+nonprop-text-decoration-line = prop-text-decoration-line ;
+nonprop-text-decoration-style = prop-text-decoration-style ;
+nonprop-text-decoration-color = prop-text-decoration-color ;
+
+nonprop-width = prop-width ;
+nonprop-max-width = prop-max-width ;
+nonprop-min-width = prop-min-width ;
+
+
+(* Other Misc Missing
+   TODO: figure out why? *)
+
+nonprop-hex-color3 = '#' #'[0-9A-Fa-f]' #'[0-9A-Fa-f]' #'[0-9A-Fa-f]' ;
+nonprop-hex-color6 = '#' #'[0-9A-Fa-f]' #'[0-9A-Fa-f]' #'[0-9A-Fa-f]' #'[0-9A-Fa-f]' #'[0-9A-Fa-f]' #'[0-9A-Fa-f]' ;
+nonprop-hex-color = nonprop-hex-color3
+                  | nonprop-hex-color6 ;
+
+nonprop-id-selector = nonprop-custom-ident ;
+
+func-path = "STUB_func_path" ;
+nonprop-an-plus-b = "STUB_an_plus_b" ;
+nonprop-any-value = "STUB_any_value" ;
+nonprop-attr-name = "STUB_attr_name" ;
+nonprop-attr-fallback = "STUB_attr_fallback" ;
+nonprop-clip-style = "STUB_clip_style" ;
+nonprop-custom-property-name = "STUB_custom_property" ;
+nonprop-declaration-list = "STUB_declaration_list" ;
+nonprop-declaration-value = "STUB_declaration_value" ;
+nonprop-dimension = "STUB_dimension" ;
+nonprop-function-token = "STUB_flex_function_token" ;
+nonprop-ident = nonprop-custom-ident ;
+nonprop-mask-attachment = "STUB_mask_attachment" ;
+nonprop-name-repeat = "STUB_name_repeat" ;
+nonprop-outline-radius = "STUB_outline_radius" ;
+nonprop-x = "11" ;
+nonprop-y = "11" ;

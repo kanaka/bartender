@@ -1,0 +1,25 @@
+
+(* Based on: https://www.w3.org/TR/CSS21/grammar.html *)
+stylesheet = S css-ruleset* ;
+
+css-ruleset = css-selector [ ',' S css-selector ]* S '{' S css-assignments S '}' S ;
+
+css-selector = css-simple-selector [ css-combinator css-selector | S+ [ css-combinator? css-selector ]? ]? ;
+
+css-simple-selector = css-element-name [ css-hash | css-class | css-pseudo ]*
+                    | [ css-hash | css-class | css-pseudo ]+ ;
+
+css-combinator = '+' S
+               | '>' S ;
+
+css-element-name = IDENT
+                 | '*' ;
+
+css-hash   = '#' NAME ;
+css-class  = '.' IDENT ;
+css-pseudo = ':' [ IDENT | IDENT '(' S [IDENT S]? ')' ] ;
+NAME       = #'[_a-z0-9-]+' ;
+IDENT      = #'-?[_a-z][_a-z0-9-]*' ;
+S          = #'\s*' ;
+rS         = #'\s*' ;
+

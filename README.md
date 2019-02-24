@@ -95,7 +95,9 @@ cd ..
 Generate HTML5 EBNF grammar and Clojure generator source:
 
 ```
-time lein with-profile html5 run --namespace rend.html5-generators --weights data/html5-weights.edn --weights-output data/html5-weights-output.edn --ebnf-output data/html5.ebnf --function html5-generators > src/rend/html5_generators.clj
+time lein with-profile w3c-html5 run
+
+time lein with-profile mend run --mode html5 --ebnf-input data/html5.ebnf --weights data/html5-weights.edn --weights-output data/html5-weights-output.edn --namespace rend.html5-generators --function html5-generators --clj-output src/rend/html5_generators.clj
 ```
 
 Get latest CSS3 property/VDS data by updating the MDN data submodule:
@@ -107,10 +109,12 @@ git pull
 cd ..
 ```
 
-Generate CSS3 EBNF grammar and Clojure generate source:
+Generate CSS3 EBNF grammar and Clojure generator source:
 
 ```
-time lein with-profile css3 run --namespace rend.css3-generators --weights data/css3-weights.edn --weights-output data/css3-weights-output.edn --vds-output data/css3.vds --ebnf-output data/css3.ebnf --function css3-generators --filter-status standard > src/rend/css3_generators.clj
+time lein with-profile w3c-css3 run --filter-status standard
+
+time lein with-profile mend run --mode css3 --ebnf-input data/css3.ebnf --weights data/css3-weights.edn --weights-output data/css3-weights-output.edn --namespace rend.css3-generators --function css3-generators --clj-output src/rend/css3_generators.clj
 ```
 
 Use the generators from a Clojure REPL:

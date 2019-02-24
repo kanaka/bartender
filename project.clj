@@ -44,9 +44,11 @@
 
                  [instacheck "0.1.0-SNAPSHOT"]]
 
-  :profiles {:rend  {:main rend.cli}
-             :css3  {:main mend.css3}
-             :html5 {:main mend.html5}}
+  :profiles {:rend      {:main rend.cli}
+             :mend      {:main mend.cli}
+             :w3c-html5 {:main mend.w3c.html5}
+             :w3c-css3  {:main mend.w3c.css3}
+             }
 
   :main rend.cli
   )
