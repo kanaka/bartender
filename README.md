@@ -60,16 +60,11 @@ make deps
   ```
   * Brave:
   ```
-  ./chromedriver --port=7003
+  ./brave/chromedriver --port=7003
   ```
   * If using BrowserStack, start the BrowserStack local server:
   ```
   ./BrowserStackLocal --key KEY
-  ```
-  * Start a separate minimal web server to monitor results at
-    `http://localhost:9080/gen/...`:
-  ```
-  python3 -m http.server 9080
   ```
 
 * Update `config.yaml` with browser webdriver connection information
@@ -78,6 +73,10 @@ make deps
 ```
 lein with-profile rend trampoline run config.yaml
 ```
+
+Monitor results at `http://localhost:3000` (3000 is the :web :port
+specified in config.yaml.
+
 
 ## Mend: Update HTML5 and CSS3 Generators
 
