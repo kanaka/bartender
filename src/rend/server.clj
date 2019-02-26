@@ -30,7 +30,11 @@
         dir (-> cfg :web :dir)
         routes (compojure.core/routes
                  ;;(GET "/" [] (file-response default-index {}))
-                 (GET "/" [] (redirect default-path))
+                 ;;(GET "/" [] (redirect default-path))
+                 (GET "/" [] (str "<html><body>"
+                                  "<a href=\"" default-path "\">"
+                                  default-path "</a>"
+                                  "</body></html>"))
                  (GET "/ws" [] ws-handler)
                  (route/files "/gen" {:root dir})
                  (route/not-found "Not Found"))
