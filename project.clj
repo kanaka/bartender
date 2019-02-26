@@ -34,15 +34,15 @@
                  [org.seleniumhq.selenium/selenium-remote-driver "3.141.59"]
                  [org.seleniumhq.selenium/selenium-server "3.141.59"]
 
-                 ;; Patched versions
                  [org.clojure/test.check "0.10.0-alpha3"]
+                 [instacheck "0.2.0"]
+
+                 ;; Patched version
                  [instaparse "1.4.9.1-SNAPSHOT"]
 
                  ;; mend specific
                  [hickory "0.7.0"]
-                 [com.rpl/specter "1.0.0"]
-
-                 [instacheck "0.1.0-SNAPSHOT"]]
+                 [com.rpl/specter "1.0.0"]]
 
   :profiles {:rend      {:main rend.cli}
              :mend      {:main mend.cli}
