@@ -10,7 +10,7 @@
 
   :source-paths ["src"]
 
-  :dependencies [[org.clojure/clojure "1.9.0-alpha14"]
+  :dependencies [[org.clojure/clojure "1.10.0"]
                  [com.gfredericks/test.chuck "0.2.7"]
                  [org.clojure/data.json "0.2.6"]
                  [org.clojure/data.codec "0.1.0"]
@@ -35,7 +35,7 @@
                  [org.seleniumhq.selenium/selenium-server "3.141.59"]
 
                  ;; Patched versions
-                 [org.clojure/test.check "0.9.1-SNAPSHOT"]
+                 [org.clojure/test.check "0.10.0-alpha3"]
                  [instaparse "1.4.9.1-SNAPSHOT"]
 
                  ;; mend specific
