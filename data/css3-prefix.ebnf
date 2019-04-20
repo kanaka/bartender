@@ -20,6 +20,6 @@ css-class  = '.' IDENT ;
 css-pseudo = ':' [ IDENT | IDENT '(' S [IDENT S]? ')' ] ;
 NAME       = #'[_a-z0-9-]+' ;
 IDENT      = #'-?[_a-z][_a-z0-9-]*' ;
-S          = #'\s*' ;
-rS         = #'\s*' ;
+S          = #'\s'* ;
+rS         = #'\s'* ;
 
