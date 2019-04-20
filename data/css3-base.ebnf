@@ -26,7 +26,7 @@ nonprop-string = "'" #"[A-Za-z0-9 _\"-]*" "'"
 nonprop-time = nonprop-number ( 's' | 'ms' ) ;
 (* nonprop-transform-function = ; *)
 (* TODO: improve urls: https://developer.mozilla.org/en-US/docs/Web/CSS/url *)
-nonprop-url = 'url(http://STUB_DOMAIN.com/STUB_PATH/STUB_IMAGE=.png)' ;
+nonprop-url = 'url(http://STUB_DOMAIN.com/STUB_PATH/STUB_IMAGE.png)' ;
 
 (* Convenenience rules for types above *)
 
