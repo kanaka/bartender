@@ -52,18 +52,23 @@
 (defn load-page [session url]
   (.get session url))
 
+(defn error-image [path msg]
+  (let [eimg (image/error-image DEFAULT-WIDTH DEFAULT-HEIGHT msg)]
+    (image/imwrite path eimg)
+    eimg))
+
 (defn screenshot-page [session path]
   (try
     (set-viewport-size session DEFAULT-WIDTH DEFAULT-HEIGHT)
-    (let [sfile (.getScreenshotAs session OutputType/FILE)]
-      (io/copy sfile (io/file path))
-      (image/imread path))
+    (let [sfile (.getScreenshotAs session OutputType/FILE)
+          _ (io/copy sfile (io/file path))
+          img (image/imread path)]
+      (if (= (.width img) 0)
+        (do
+          (println "Screenshot of" session "returned empty image")
+          (error-image path "screenshot error"))
+        img))
     (catch Exception e
       (println "Exception:" e)
-      (let [eimg (image/error-image
-		   DEFAULT-WIDTH
-                   DEFAULT-HEIGHT
-                   "render failure")]
-	(image/imwrite path eimg)
-	eimg))))
+      (error-image path "render failure"))))
 
