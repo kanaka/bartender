@@ -25,16 +25,17 @@
   (doseq [ch @ws-clients]
     (send! ch data)))
 
-(defn start-server [cfg default-path]
-  (let [port (-> cfg :web :port)
-        dir (-> cfg :web :dir)
+(defn start-server [port dir current-dirs-atom]
+  (let [root-handler (fn [req]
+                       (str "<html><body>"
+                            (apply str (doall (for [dir @current-dirs-atom]
+                                                (str "<a href=\"" dir "\">"
+                                                     dir "</a><br>"))))
+                            "</body></html>"))
         routes (compojure.core/routes
                  ;;(GET "/" [] (file-response default-index {}))
                  ;;(GET "/" [] (redirect default-path))
-                 (GET "/" [] (str "<html><body>"
-                                  "<a href=\"" default-path "\">"
-                                  default-path "</a>"
-                                  "</body></html>"))
+                 (GET "/" [] root-handler)
                  (GET "/ws" [] ws-handler)
                  (route/files "/gen" {:root dir})
                  (route/not-found "Not Found"))

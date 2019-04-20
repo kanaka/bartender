@@ -1,6 +1,5 @@
 (ns mend.util)
 
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
@@ -21,4 +20,3 @@
                     (recur (conj res "\n") (:content tree))
                     (recur res (:content tree)))
       :else nil)))
-

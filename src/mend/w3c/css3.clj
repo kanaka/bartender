@@ -209,10 +209,10 @@
 (defn component-ebnf [tree indent]
   ;;(prn :** :component-ebnf (count tree) tree :indent indent)
   (str
-    "' ' "
     (condp = (first tree)
       :component-single     (component-single-ebnf (second tree) indent)
-      :component-multiplied (component-multiplied-ebnf (drop 1 tree) indent))))
+      :component-multiplied (component-multiplied-ebnf (drop 1 tree) indent))
+    " S"))
 
 (defn component-single-ebnf [tree indent]
   ;;(prn :** :component-single-ebnf (count tree) tree :indent indent)

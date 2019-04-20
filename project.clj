@@ -35,7 +35,7 @@
                  [org.seleniumhq.selenium/selenium-server "3.141.59"]
 
                  [org.clojure/test.check "0.10.0-alpha3"]
-                 [instacheck "0.2.0"]
+                 [instacheck "0.3.0"]
 
                  ;; Patched version
                  [instaparse "1.4.9.1-SNAPSHOT"]

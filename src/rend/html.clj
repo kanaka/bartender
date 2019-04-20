@@ -71,7 +71,7 @@
     (vec
       (concat
         [:span
-         (str "Step " (:index state)
+         (str "Iteration " (:iteration state)
               ", Mode: " (name (or rtype :init))
               (when (:first-fail-number state)
                 (str ", First Failure: " (:first-fail-number state))))]
@@ -117,7 +117,7 @@
              [:table {:id "results" :style "border-spacing: 4px 0px"}
               (vec
                 (concat
-                  [:tr [:th "Step"] [:th "Result"] [:th "Html"]
+                  [:tr [:th "Iteration"] [:th "Result"] [:th "Html"]
                    [:th "&nbsp;"]]
                   (for [browser browsers]
                     [:th (str (:id browser))])

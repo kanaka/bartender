@@ -1,8 +1,15 @@
+test:
+    runs: 10
+    mode: "reduce-weights"
 quick-check:
     iterations: 20
     seed: 5
     max-size: 100
-weights: "weights.edn"
+weights:
+    base:
+        - "data/html5-weights-output.edn"
+        - "data/css3-weights-output.edn"
+    fixed: "weights.edn"
 compare:
     #method: "SQDIFF"
     method: "SQDIFF_NORMED"

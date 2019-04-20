@@ -96,7 +96,7 @@ Generate HTML5 EBNF grammar and Clojure generator source:
 ```
 time lein with-profile w3c-html5 run
 
-time lein with-profile mend run --mode html5 --ebnf-input data/html5.ebnf --weights data/html5-weights.edn --weights-output data/html5-weights-output.edn --namespace rend.html5-generators --function html5-generators --clj-output src/rend/html5_generators.clj
+time lein with-profile mend run --mode html5 --ebnf-input data/html5.ebnf --weights-output data/html5-weights-output.edn --namespace rend.html5-generators --function html5-generators --clj-output src/rend/html5_generators.clj
 ```
 
 Get latest CSS3 property/VDS data by updating the MDN data submodule:
@@ -113,7 +113,7 @@ Generate CSS3 EBNF grammar and Clojure generator source:
 ```
 time lein with-profile w3c-css3 run --filter-status standard
 
-time lein with-profile mend run --mode css3 --ebnf-input data/css3.ebnf --weights data/css3-weights.edn --weights-output data/css3-weights-output.edn --namespace rend.css3-generators --function css3-generators --clj-output src/rend/css3_generators.clj
+time lein with-profile mend run --mode css3 --ebnf-input data/css3.ebnf --weights-output data/css3-weights-output.edn --namespace rend.css3-generators --function css3-generators --clj-output src/rend/css3_generators.clj
 ```
 
 Use the generators from a Clojure REPL:

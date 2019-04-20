@@ -30,15 +30,23 @@ function toggle_thumbs() {
 function connect(uri) {
   let results = document.getElementById('results')
   let summary = document.getElementById('summary')
+  let curTestId = null
   ws = new WebSocket(uri)
   ws.onmessage = function (msg) {
-    const match = msg.data.match(/^([^:]*):(.*)/)
+    const match = msg.data.match(/^([^:]*):([^:]*):(.*)/)
     if (!match) {
       console.log('msg without type, ignoring')
       return
     }
-    const [_,msgType,data] = match
-    console.log(`msg '${msgType}': ${data.slice(0,40)}...`)
+    const [_,msgType,testId,data] = match
+    console.log(`msg '${msgType}': id ${testId}: ${data.slice(0,40)}...`)
+    if (curTestId === null) {
+        curTestId = testId
+    } else if (curTestId !== testId) {
+        console.error(`msg test id ${testId} does not match current id ${curTestId}, closing`)
+        ws.close()
+        return
+    }
     switch (msgType) {
     case 'row':
       let tr = document.createElement('tr')
@@ -50,7 +58,7 @@ function connect(uri) {
       summary.innerHTML = data
       break
     default:
-      console.log('unknown msg type:', msgType)
+      console.error('unknown msg type:', msgType)
     }
   }
 }
