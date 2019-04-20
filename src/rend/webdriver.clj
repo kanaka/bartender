@@ -18,11 +18,22 @@
         session (RemoteWebDriver. url caps)]
     session))
 
-(def viewport-margin-script "return [window.outerWidth - document.body.clientWidth, window.outerHeight - document.body.clientHeight];")
+;; With an array of two numbers returned, Servo complains about:
+;;   {:type org.openqa.selenium.UnsupportedCommandException
+;;    :message Unsupported return type}
+;;(def viewport-margin-script "return [window.outerWidth - document.body.clientWidth, window.outerHeight - document.body.clientHeight];")
+
+(def viewport-margin-width-script
+  "return window.outerWidth - document.body.clientWidth;")
+(def viewport-margin-height-script
+  "return window.outerHeight - document.body.clientHeight;")
 
 (defn set-viewport-size [session w h]
-  (let [[mw mh] (.executeScript session viewport-margin-script
-                                (into-array Object []))]
+  (let [mw (.executeScript session viewport-margin-width-script
+                           (into-array Object []))
+        mh (.executeScript session viewport-margin-height-script
+                           (into-array Object []))]
+    ;;(prn :mw mw :mh mh)
     (-> session
         (.manage)
         (.window)
@@ -32,7 +43,7 @@
 
 (defn init-session [url capabilities]
   (let [session (init-webdriver url capabilities)]
-    (set-viewport-size session DEFAULT-WIDTH DEFAULT-HEIGHT)
+    ;;(set-viewport-size session DEFAULT-WIDTH DEFAULT-HEIGHT)
     session))
 
 (defn stop-session [session]
