@@ -46,6 +46,7 @@
 
   :profiles {:rend      {:main rend.cli}
              :mend      {:main mend.cli}
+             :wend      {:main wend.cli}
              :w3c-html5 {:main mend.w3c.html5}
              :w3c-css3  {:main mend.w3c.css3}
              }

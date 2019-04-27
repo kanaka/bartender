@@ -1,4 +1,7 @@
 
+S          = #'\s'* ;
+rS         = #'\s'* ;
+
 (* Base Types: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Types *)
 
 nonprop-angle = nonprop-number ( 'deg' | 'grad' | 'rad' | 'turn' ) ;

@@ -62,15 +62,12 @@
     :attributes (item-names (deref-content v))
 
     ;; Attributes (section/attributes.include)
-    ;; Unlike :element there aren't currently any :attribute fields
-    ;; with multiples but make it a sequence to make processing
-    ;; symetric (and it could change in the future)
-    :attribute  [(string/replace (deref-content v) #"[<{}>]*" "")]
+    :attribute  (string/replace (deref-content v) #"[<{}>]*" "")
     :elements   (string/split
                   (string/replace (deref-content v) #"[<{}>]*" "")
                   #"\s*[\n;]\s*")
     ;; Extract literals (surrounded by <code>) and
-    ;; metadata/descriptive values.
+    ;; metadata/descriptive values (surrounded by <a>).
     :value      (let [literals (s/select (s/descendant
                                            (s/tag :code)) v)
                       metas (s/select (s/descendant
@@ -78,13 +75,21 @@
                                           (s/tag :a)
                                           (s/not (s/has-descendant
                                                    (s/tag :code))))) v)]
-                  {:literals (set (map deref-content literals))
+                  {:raw (deref-content v)
+                   :literals (set (map deref-content literals))
                    :metas (set (map deref-content metas))})
+
+    ;; Form Semantics (section/semantics-forms.include)
+    :keyword     (string/replace (string/trim (deref-content v)) #"[<{}>]*" "")
+    :state       (string/replace (string/trim (deref-content v)) #"[<{}>]*" "")
+    :datatype    (string/replace (string/trim (deref-content v)) #"[<{}>]*" "")
+    :controltype (string/replace (string/trim (deref-content v)) #"[<{}>]*" "")
+
     (deref-content v)))
 
 (defn parse-w3c-include
-  "Given the raw W3C section HTML for elements on attributes, return
-  a list of maps with the parsed data.
+  "Given the raw W3C section HTML for elements, attributes or
+  semantics, return a list of maps with the parsed data.
 
   Parsing elements.include returns a list of maps each of this form:
   {:element \"a\",
@@ -99,18 +104,28 @@
   {:attribute \"abbr\",
    :elements [\"th\"],
    :description \"Alternative label to use for the header cell ...\",
-   :value {:literals #{},
+   :value {:raw \"<a>Text</a>\"
+           :literals #{},
            :metas #{\"Text\"}}}
+
+  Parsing semantics-forms.include returns a list of maps each of this form:
+  {:keyword \"text\",
+   :state \"Text\",
+   :datatype \"Text with no line breaks\",
+   :controltype \"A text field or combo box\"}
   "
-  [include-data]
-  (let [hickory-data (hick/as-hickory (hick/parse include-data))
+  [include-data & [table-idx]]
+  (let [table-idx (or table-idx 0)
+        hickory-data (hick/as-hickory (hick/parse include-data))
         ;; Pull the tables out of the hickory data
         tables (s/select (s/descendant (s/tag :table)) hickory-data)
-        ;; Pull out the rows from the first table
+        ;; Select the table-idx'th table
+        table (nth tables table-idx)
+        ;; Pull out the rows from the table
         chunks (s/select
                  (s/descendant
                    (s/tag :tr))
-                 (first tables))
+                 table)
         ;; Pull out the header and cell data
         rows (for [c chunks] (s/select
                                (s/descendant
@@ -127,12 +142,32 @@
                     (into {} (map (fn [[k v]]
                                     [k (field-mangle k v)]) row))
                     row))
-        ;; Split multiple items in element/attribute field (currently
-        ;; just elements h1-h6)
         kind (first headers)
-        full (for [item mangled
-                   iname (get item kind)]
-               (assoc item kind iname))]
+        full (condp = kind
+               ;; Split multiple items in :element field (currently
+               ;; just elements h1-h6)
+               :element (for [item mangled
+                              iname (get item :element)]
+                          (assoc item :element iname))
+               ;; Split multiple elements in :elements field and
+               ;; prefix :attribute with elements (if not already
+               ;; prefixed)
+               :attribute (for [item mangled
+                                raw-ename (get item :elements)]
+                            (let [ename (if (= "HTML elements" raw-ename)
+                                          "global"
+                                          raw-ename)
+                                  ;; Rewrite with single element
+                                  item (assoc (dissoc item :elements)
+                                              :element ename)
+                                  raw-aname (name (:attribute item))
+                                  ;; Ignore prefix as it may be
+                                  ;; a category (i.e. "formelements")
+                                  ;; rather than an single element
+                                  [aname _] (reverse
+                                              (string/split raw-aname #"/"))]
+                              (assoc item :attribute (str ename "/" aname))))
+               mangled)]
     full))
 
 ;; Void tags do not have a closing tag.
@@ -140,7 +175,7 @@
 (defn void-element [elem] (= "empty" (:children elem)))
 
 ;; Global attributes apply to "HTML elements"
-(defn global-attribute [attr] (some #(= "HTML elements" %) (:elements attr)))
+;;(defn global-attribute [attr] (some #(= "HTML elements" %) (:elements attr)))
 
 ;; Boolean only tags can appear without an assignment value
 (defn boolean-attribute [attr] (contains? (-> attr :value :metas) "Boolean attribute"))
@@ -201,56 +236,88 @@
                  "=\"' attr-val-" (id->terminal a-id) " '\"'"))
           append)))))
 
+(defn ebnf-attr-val-expand
+  [attr-val pre]
+  (let [{:keys [literals metas raw]} attr-val]
+    (concat
+      (for [value (sort literals)]
+        (str "'" value "'"))
+
+      (for [value (sort metas)]
+        (condp = value
+          "Valid integer"                (str "integer")
+          "Valid non-negative integer"   (str "non-negative-integer")
+          "Valid floating-point number"  (str "floating-point-number")
+          "Boolean attribute"            (str "'true'\n" pre "| 'false'")
+          "Text"                         (str "char-data")
+          "ID"                           (str "name")
+          "Encoding label"               (str "encoding-label")
+          "Valid MIME type"                                 (str "mime-type")
+          "valid MIME types with no parameters"             (str "mime-type")
+          "Valid media query list"                          (str "css-media-list-placeholder")
+          "Set of space-separated tokens"                   (str "name ( <space> name )*")
+          "Unordered set of unique space-separated tokens"  (str "name ( <space> name )*")
+          "Ordered set of unique space-separated tokens"    (str "name ( <space> name )*")
+
+          "Valid non-empty URL potentially surrounded by spaces" (str "url")
+          "Valid URL potentially surrounded by spaces"           (str "url")
+          (str "'STUB " value "'")))
+
+      (condp = raw 
+        "Valid BCP 47 language tag"                     [(str "lang")]
+        "Valid BCP 47 language tag or the empty string" [(str "lang")]
+        []))))
+
 (defn ebnf-attr-vals
   [attr]
   (let [lhs (str "attr-val-" (id->terminal (:attribute attr)) " ")
         pre (apply str (repeat (count lhs) " "))
-        outputs (filter
-                  #(not (nil? %))
-                  (concat
-                    (for [value (sort (-> attr :value :literals))]
-                      (str "'" value "'"))
-                    (for [value (sort (-> attr :value :metas))]
-                      (condp = value
-                        "Valid integer" (str "integer")
-                        "Valid non-negative integer" (str "non-negative-integer")
-                        "Valid floating-point number" (str "floating-point-number")
-                        (str "'STUB " value "'")))))]
+        rhs-seq (ebnf-attr-val-expand (-> attr :value) pre)]
     (str
       ;; Always have an empty value
       lhs "= ''"
       ;;lhs "= '' | '\"\"'"
       ;; If there are other values then output separator
-      (when (> (count outputs) 0)
+      (when (> (count rhs-seq) 0)
         (str "\n" pre "| "))
       ;; Output values
       (string/join
         (str "\n" pre "| ")
-        outputs))))
+        rhs-seq))))
 
 (defn ebnf-elements-attributes
-  "Takes an element map and an attribute map and returns an EBNF
-  grammar for HTML5 elements and attributes (global and non-global)."
-  [elements attributes]
+  "Takes an element list, an attribute list, and a form semantics list
+  and returns an EBNF grammar for HTML5 elements, attributes (global
+  and non-global), and input form types."
+  [elements attributes form-semantics]
   (let [elems (filter (complement special-element) elements)
+        input-types (set (map :keyword form-semantics))
         unique-attrs (map (comp first val)
-                          (group-by :attribute attributes))]
+                          (group-by :attribute attributes))
+        enriched-attrs (map #(if (= "input/type" (:attribute %))
+                               (assoc-in % [:value :literals]
+                                         input-types)
+                               %)
+                            unique-attrs)]
     (str
       (ebnf-element (sort-by :element elems))
       "\n\n"
-      (ebnf-tag-attrs "global" (filter global-attribute attributes))
+      (ebnf-tag-attrs "global" (filter #(= "global" (:element %)) attributes)
+                      "custom-data-attribute"
+                      "aria-attribute"
+                      "role-attribute")
       "\n\n"
       (string/join
         "\n"
         (for [e (sort-by :element elems)
               :let [elem (:element e)
-                    attrs (filter #((set (:elements %)) elem)
-                                  attributes)]]
-          (ebnf-tag-attrs elem attrs "global-attribute")))
+                    attrs (filter #(= elem (:element %)) attributes)]]
+          (ebnf-tag-attrs elem attrs
+                          "global-attribute")))
       "\n\n"
       (string/join
         "\n"
-        (for [a (sort-by :attribute unique-attrs)]
+        (for [a (sort-by :attribute enriched-attrs)]
           (ebnf-attr-vals a))))))
 
 
@@ -279,6 +346,9 @@
    [nil "--attributes-include ATTRIBUTES-INCLUDE"
     "Path to W3C include section for HTML5 attributes"
     :default "w3c_html/sections/attributes.include"]
+   [nil "--form-semantics-include FORM-SEMANTICS-INCLUDE"
+    "Path to W3C include section for HTML5 form semantics"
+    :default "w3c_html/sections/semantics-forms.include"]
    [nil "--ebnf-prefix EBNF-PREFIX"
     "Path to prefix file to include in EBNF output"
     :default "./data/html5-prefix.ebnf"]
@@ -297,7 +367,8 @@
      (slurp (:ebnf-prefix opts))
      (ebnf-elements-attributes
        (parse-w3c-include (slurp (:elements-include opts)))
-       (parse-w3c-include (slurp (:attributes-include opts))))
+       (parse-w3c-include (slurp (:attributes-include opts)))
+       (parse-w3c-include (slurp (:form-semantics-include opts)) 1))
      (slurp (:ebnf-base opts))]))
 
 

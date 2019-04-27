@@ -24,9 +24,7 @@ attribute-value = <'"'> (#'[^<&"]*' | reference)* <'"'>
 attribute-value = <'"'> (#'[A-Za-z0-9_<>/\\ .]*' | reference)* <'"'>
                 | <"'"> (#"[A-Za-z0-9_<>/\\ .]*" | reference)* <"'">
 
-(*
-char-data = #'[^<&]'* !(#'[^<&]'* ']]>' #'[^<&]'* )
-*)
+char-data-generic = #'[^<&]'* !(#'[^<&]'* ']]>' #'[^<&]'* )
 (*
 char-data = #'[A-Za-z0-9_<>/\\ .]*'
 *)
@@ -54,9 +52,7 @@ char-ref-hex  = <'&#x'> #'[0-9A-F]' <';'>
 
 name      = #'[A-Za-z_:][A-Za-z_:\-.0-9]*'
 
-(*
-comment = <'<!--'> #'(?:[^-]|-[^-])*' <'-->'>
-*)
+comment-generic = <'<!--'> #'(?:[^-]|-[^-])*' <'-->'>
 comment = <'<!--'> #'(?:[A-Za-z0-9_<>/\\ .]|-[A-Za-z0-9_<>/\\ .])*' <'-->'>
 
 
@@ -70,8 +66,17 @@ This is lovingly hand-crafted (i.e. hard-coded) based on data
 from MDN: https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes
 *)
 
+html-attribute = 'xmlns="' url-generic '"'
+               | 'xml:lang="' lang '"'
+               | 'prefix="' #'[^"]*' '"'
+               | global-attribute
+head-attribute = global-attribute
 title-attribute = global-attribute
 body-attribute = global-attribute
+
+custom-data-attribute = 'data-' name '="' char-data-generic '"'
+aria-attribute = 'aria-' name '="' char-data-generic '"'
+role-attribute = 'role="' char-data-generic '"'
 
 integer = '0'
         | #"-?[1-9][0-9]*"
@@ -81,3 +86,27 @@ non-negative-integer = '0'
 
 floating-point-number = '0.[0-9]+'
                       | #"-?[1-9][0-9]*.[0-9]+"
+
+(*
+Other hand-crafted (i.e. hard-coded) defintions
+*)
+
+lang = #'[a-z][a-z]-[A-Z][A-Z]'
+
+url-generic = #'[A-Za-z0-9$-_@.&+%=;/#?:]+'
+
+url = 'http://STUB.com/'
+
+mime-type = 'text/plain'
+          | 'text/css'
+          | 'text/html'
+          | 'text/javascript'
+          | 'application/json'
+
+encoding-label = 'utf-8'
+
+(*
+CSS placeholder rules
+*)
+stylesheet-placeholder = content*
+css-media-list-placeholder = ''

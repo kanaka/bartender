@@ -1,13 +1,22 @@
 
 (* Based on: https://www.w3.org/TR/CSS21/grammar.html *)
-stylesheet = S css-ruleset* ;
+
+stylesheet = S ( css-ruleset | css-media )* ;
 
 css-ruleset = css-selector [ ',' S css-selector ]* S '{' S css-assignments S '}' S ;
+
+css-media = '@media' S css-media-list S '{' S css-ruleset* S '}' S ;
 
 css-selector = css-simple-selector [ css-combinator css-selector | S+ [ css-combinator? css-selector ]? ]? ;
 
 css-simple-selector = css-element-name [ css-hash | css-class | css-pseudo ]*
                     | [ css-hash | css-class | css-pseudo ]+ ;
+
+css-media-list = css-media-query [ ',' S css-media-query ]* ;
+
+css-media-query = [ 'only' | 'not' ]? S IDENT [ S 'and' S css-media-expression ]* 
+                | S css-media-expression [ S 'and' S css-media-expression ]* ;
+css-media-expression = '(' S IDENT [ S ':' S nonprop-length ]? S ')' ;
 
 css-combinator = '+' S
                | '>' S ;
@@ -20,6 +29,4 @@ css-class  = '.' IDENT ;
 css-pseudo = ':' [ IDENT | IDENT '(' S [IDENT S]? ')' ] ;
 NAME       = #'[_a-z0-9-]+' ;
 IDENT      = #'-?[_a-z][_a-z0-9-]*' ;
-S          = #'\s'* ;
-rS         = #'\s'* ;
 
