@@ -2,20 +2,18 @@ html-generic = doctype-generic? comment-or-space* '<html' (<space> html-attribut
 
 doctype-generic = '<!DOCTYPE html>' <opt-space>
 
-comment-or-space = comment | <opt-space>
 
 head-generic = '<head>' <opt-space> head-elements* '</head>' <opt-space>
 
-head-elements = title
+head-elements = title-generic
               | meta-generic
               | link-generic
-              | style-generic
-              | script-generic
+              | comment-or-space
 
+title-generic = '<title' (<space> title-attribute)* '>' content* '</title>' <opt-space>
 meta-generic = '<meta' (<space> meta-attribute)* '>' <opt-space>
 link-generic = '<link' (<space> link-attribute)* '>' <opt-space>
-style-generic = '<style' (<space> style-attribute)* '>' stylesheet-placeholder '</style>' <opt-space>
-script-generic = '<script' (<space> script-attribute)* '>' content* '</script>' <opt-space>
-
 
 body-generic = '<body' (<space> body-attribute)* '>' (element | content)* '</body>' <opt-space>
+
+comment-or-space = comment | <opt-space>

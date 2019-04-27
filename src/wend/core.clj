@@ -1,29 +1,30 @@
 (ns wend.core
-  (:require [clojure.string :as string]
+  (:require [clojure.java.io :as io]
+            [clojure.string :as string]
             [clojure.pprint :refer [pprint]]
+            [clojure.set :as set]
             [hickory.core]
             [hickory.render]
+            [hickory.select :as s]
             [instaparse.core]
             [instaparse.print]))
 
-(def EBNF-PATHS ["data/html5.ebnf"
-                 "data/css3.ebnf"])
+(def EBNF-PATHS
+  {:html5          ["data/html5.ebnf"]
+   :html5-generic  ["data/html5-generic.ebnf"
+                    "data/html5.ebnf"]
+   :css3           ["data/css3.ebnf"]
+   :css3-generic   ["data/css3-generic.ebnf"
+                    "data/css3.ebnf"]})
 
-(def GENERIC-EBNF-PATHS ["data/html5-generic.ebnf"
-                         "data/html5.ebnf"
-                         "data/css3-generic.ebnf"
-                         "data/css3.ebnf"])
-
-(def BASE-MANGLES
-  {:attr-val-style :css-assignments
-   :attr-val-media :css-media-list})
-
-(def GENERIC-MANGLES
-  {:char-data :char-data-generic
-   :comment :comment-generic
-   :url :url-generic
-   :stylesheet-placeholder :stylesheet
-   :css-media-list-placeholder :css-media-list})
+(def GRAMMAR-MANGLES
+  {:html5          {}
+   :html5-generic  {:char-data :char-data-generic
+                    :content-char-data :content-char-data-generic
+                    :comment :comment-generic
+                    :url :url-generic}
+   :css3           {}
+   :css3-generic   {}})
 
 (defn mangle-parser
   [parser mangles]
@@ -32,37 +33,81 @@
                                    :red {:reduction-type :hiccup, :key k}}))
           parser mangles))
 
-(defn load-parser* [ebnf-paths]
-  (let [ebnf (string/join "\n" (map slurp ebnf-paths))
+(defn load-parser* [paths mangles]
+  (let [ebnf (string/join "\n" (map slurp paths))
         base-parser (instaparse.core/parser ebnf)
-        parser (mangle-parser base-parser BASE-MANGLES)]
+        parser (mangle-parser base-parser mangles)]
     parser))
 
-(defn load-parser []
-  (load-parser* EBNF-PATHS))
+(defn load-parser [kind]
+  (load-parser* (get EBNF-PATHS kind) (get GRAMMAR-MANGLES kind)))
 
-(defn load-generic-parser []
-  (let [parser (load-parser* GENERIC-EBNF-PATHS)]
-    (mangle-parser parser GENERIC-MANGLES)))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(def PRUNE-TAGS
+  #{:style
+    :script})
+
+(def PRUNE-TAGS-BY-ATTRIBUTE
+  ;; [tag attribute]
+  #{[:meta :property]})
+
+(def PRUNE-TAGS-BY-ATTRIBUTE-VALUE
+  ;; [tag attribute value]
+  #{[:link :rel "stylesheet"]})
+
+(def PRUNE-ATTRIBUTES
+  #{:style
+    :x-ms-format-detection
+    :data-viewport-emitter-state
+    :windowdimensionstracker})
+
+(def PRUNE-TAG-ATTRIBUTES
+  ;; tag -> [attribute ...]
+  {:input [:autocapitalize :autocorrect]
+   :link [:as]})
 
 
-(defn prune-meta-with-property
-  "Takes hickory and prunes meta tags with property attributes"
+(defn prune-tags
+  "Takes hickory and prunes tags"
   [h]
   (clojure.walk/prewalk
     (fn [n] (if (vector? n)
-              (vec (remove #(and (= :meta (-> % :tag))
-                                 (-> % :attrs :property)) n))
+              (vec (remove #(or (contains? PRUNE-TAGS (:tag %))
+                                (seq (set/intersection
+                                       PRUNE-TAGS-BY-ATTRIBUTE
+                                       (set (map vector
+                                                 (repeat (:tag %))
+                                                 (keys (:attrs %))))))
+                                (seq (set/intersection
+                                       PRUNE-TAGS-BY-ATTRIBUTE-VALUE
+                                       (set (map vector
+                                                 (repeat (:tag %))
+                                                 (keys (:attrs %))
+                                                 (vals (:attrs %)))))))
+                           n))
               n))
     h))
 
-#_(defn prune-nav-role-attribute
-  "Takes hickory and prunes role attributes from nav tags."
+(defn prune-attributes
+  "Takes hickory and prunes attributes from all tags"
   [h]
   (clojure.walk/prewalk
-    (fn [n] (if (= :nav (-> n :tag))
-              ;; i.e. (dissoc-in n [:attrs :role])
-              (assoc n :attrs (dissoc (:attrs n) :role))
+    (fn [n] (if (-> n :attrs)
+                 ;; i.e. (dissoc-in n [:attrs :style])
+                 (assoc n :attrs (apply dissoc (:attrs n)
+                                        PRUNE-ATTRIBUTES))
+                 n))
+    h))
+
+(defn prune-tag-attributes
+  "Takes hickory and prunes matching tag+attributes combinations"
+  [h]
+  (clojure.walk/prewalk
+    (fn [n] (if (contains? PRUNE-TAG-ATTRIBUTES (:tag n))
+              (assoc n :attrs
+                     (apply dissoc (:attrs n)
+                            (get PRUNE-TAG-ATTRIBUTES (:tag n))))
               n))
     h))
 
@@ -79,19 +124,50 @@
               n))
     h))
 
-(defn normalize-html
-  "Pass HTML through hickory and back to get normalize the HTML into
-  a more standard a consistent form." 
+(defn extract-html
+  "Convert HTML to hickory, remove style tags and attributes, apply
+  some other manual cleanups, then convert back to HTML in order to
+  normalize the HTML into a more standard and consistent form." 
   [html]
   (-> html
       hickory.core/parse
       hickory.core/as-hickory
-      prune-meta-with-property
-      ;;prune-nav-role-attribute
+      prune-tags
+      prune-attributes
+      prune-tag-attributes
       cleanup-ws-in-attrs
       hickory.render/hickory-to-html))
 
-;; hickory-data (hick/as-hickory (hick/parse include-data))
+(defn extract-css
+  [html & [base-path]]
+  (let [h (-> html
+              hickory.core/parse
+              hickory.core/as-hickory)
+        ;; Extract inline tag specific styles
+        styles (map #(->> % :attrs :style)
+                    (s/select (s/child (s/attr :style)) h))
+        ;; Extract inline stylesheets
+        inline-sheets (map #(->> % :content (apply str))
+                           (s/select (s/child (s/tag :style)) h))
+        ;; Load linked stylesheets from files
+        link-tags (s/select (s/child (s/and
+                                       (s/tag :link)
+                                       (s/attr :rel
+                                               #(= "stylesheet" %)))) h)
+        sheet-hrefs (map #(->> % :attrs :href (io/file base-path))
+                         link-tags)
+        loaded-sheets (map #(str "/* from: " % " */\n"
+                                 (slurp %))
+                           sheet-hrefs)
+        ]
+    (str
+      (string/join "\n" loaded-sheets)
+      "\n"
+      (string/join "\n" inline-sheets)
+      "\n"
+      "* {\n    "
+      (string/join "\n    " styles)
+      "\n}")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

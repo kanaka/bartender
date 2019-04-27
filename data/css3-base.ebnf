@@ -1,6 +1,6 @@
 
-S          = #'\s'* ;
-rS         = #'\s'* ;
+S          = #'\s*' ;
+rS         = #'\s+' ;
 
 (* Base Types: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Types *)
 
@@ -14,7 +14,7 @@ nonprop-flex = nonprop-number 'fr' ;
 nonprop-frequency = nonprop-number ( 'Hz' | 'kHz' ) ;
 (* nonprop-gradient = ; *)
 (* nonprop-image = ; *)
-nonprop-integer = '-'? #'[0-9]+' ;
+nonprop-integer = #'-?[0-9]+' ;
 nonprop-length = nonprop-number nonprop-length-unit
                | '0' ;
 nonprop-number = nonprop-integer | number-float ;
@@ -24,8 +24,8 @@ nonprop-ratio = nonprop-positive-integer '/' nonprop-positive-integer ;
 nonprop-resolution = nonprop-number ( 'dpi' | 'dpcm' | 'dppx' ) ;
 (* nonprop-shape = ; *)
 (* TODO: improve strings: https://developer.mozilla.org/en-US/docs/Web/CSS/string *)
-nonprop-string = "'" #"[A-Za-z0-9 _\"-]*" "'"
-               | '"' #"[A-Za-z0-9 _'-]*" '"' ;
+nonprop-string = #"'[A-Za-z0-9 _\"-]*'"
+               | #"\"[A-Za-z0-9 _'-]*\"" ;
 nonprop-time = nonprop-number ( 's' | 'ms' ) ;
 (* nonprop-transform-function = ; *)
 (* TODO: improve urls: https://developer.mozilla.org/en-US/docs/Web/CSS/url *)
@@ -34,7 +34,7 @@ nonprop-url = 'url(http://STUB_DOMAIN.com/STUB_PATH/STUB_IMAGE.png)' ;
 (* Convenenience rules for types above *)
 
 nonprop-positive-integer = #'[0-9]+' ;
-number-float = '-'? #'[0-9]+' '.' #'[0-9]+' ;
+number-float = #'-?[0-9]+.[0-9]+' ;
 nonprop-length-unit = 'em' | 'ex' | 'ch' | 'ic' | 'rem' | 'lh' | 'rlh'
                     | 'vh' | 'vw' | 'vi' | 'vb' | 'vmin' | 'vmax'
                     | 'px' | 'mm' | 'q' | 'cm' | 'in' |  'pt' | 'pc' | 'mozmm' ;
@@ -119,10 +119,8 @@ nonprop-min-width = prop-min-width ;
 (* Other Misc Missing
    TODO: figure out why? *)
 
-nonprop-hex-color3 = '#' #'[0-9A-Fa-f]' #'[0-9A-Fa-f]' #'[0-9A-Fa-f]' ;
-nonprop-hex-color6 = '#' #'[0-9A-Fa-f]' #'[0-9A-Fa-f]' #'[0-9A-Fa-f]' #'[0-9A-Fa-f]' #'[0-9A-Fa-f]' #'[0-9A-Fa-f]' ;
-nonprop-hex-color = nonprop-hex-color3
-                  | nonprop-hex-color6 ;
+nonprop-hex-color = #'#[0-9A-Fa-f]{3}'
+                  | #'#[0-9A-Fa-f]{6}' ;
 
 nonprop-id-selector = nonprop-custom-ident ;
 

@@ -12,11 +12,11 @@ end-tag   = <'</'> name <opt-space> <'>'>
 *)
 
 
-content = char-data
+content = content-char-data
         | reference
         | comment
 
-attribute       = name <eq> attribute-value
+attribute       = name <opt-space> '=' <opt-space> attribute-value
 (*
 attribute-value = <'"'> (#'[^<&"]*' | reference)* <'"'>
                 | <"'"> (#"[^<&']*" | reference)* <"'">
@@ -24,39 +24,30 @@ attribute-value = <'"'> (#'[^<&"]*' | reference)* <'"'>
 attribute-value = <'"'> (#'[A-Za-z0-9_<>/\\ .]*' | reference)* <'"'>
                 | <"'"> (#"[A-Za-z0-9_<>/\\ .]*" | reference)* <"'">
 
-char-data-generic = #'[^<&]'* !(#'[^<&]'* ']]>' #'[^<&]'* )
+(* char-data-generic = #'[^<&]*' !(#'[^<&]'* ']]>' #'[^<&]*' ) *)
+char-data-generic = #'[^<&"]*'
+content-char-data-generic = #'[^<&]*'
 (*
 char-data = #'[A-Za-z0-9_<>/\\ .]*'
 *)
 (* Just include the Ahem glyphs that render differently *)
 char-data = ' ' | 'p' | '&#x00c9;' | 'X'
+content-char-data = ' ' | 'p' | '&#x00c9;' | 'X'
 
 reference     = entity-ref
               | char-ref-dec
               | char-ref-hex
 entity-ref    = <'&'> name <';'>
-char-ref-dec  = <'&#'> #'[0-9]' <';'>
-              | <'&#'> #'[1-9][0-9]' <';'>
-              | <'&#'> #'[1-9][0-9][0-9]' <';'>
-              | <'&#'> #'[1-9][0-9][0-9][0-9]' <';'>
-              | <'&#'> #'[1-9][0-9][0-9][0-9][0-9]' <';'>
-              | <'&#'> #'[1-9][0-9][0-9][0-9][0-9][0-9]' <';'>
-              | <'&#'> #'[1][0-9][0-9][0-9][0-9][0-9][0-9]' <';'>
-char-ref-hex  = <'&#x'> #'[0-9A-F]' <';'>
-              | <'&#x'> #'[1-9A-F][0-9A-F]' <';'>
-              | <'&#x'> #'[1-9A-F][0-9A-F][0-9A-F]' <';'>
-              | <'&#x'> #'[1-9A-F][0-9A-F][0-9A-F][0-9A-F]' <';'>
-              | <'&#x'> #'[1-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F]' <';'>
-              | <'&#x'> #'[1][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F]' <';'>
+char-ref-dec  = #'&#[0-9]{1,7};'
+char-ref-hex  = #'&#x[0-9A-F]{1,6};'
 
 
 name      = #'[A-Za-z_:][A-Za-z_:\-.0-9]*'
 
-comment-generic = <'<!--'> #'(?:[^-]|-[^-])*' <'-->'>
-comment = <'<!--'> #'(?:[A-Za-z0-9_<>/\\ .]|-[A-Za-z0-9_<>/\\ .])*' <'-->'>
+comment-generic = #'<!--(?:[^-]|-[^-])*-->'
+comment = #'<!--(?:[A-Za-z0-9_<>/\\ .]|-[A-Za-z0-9_<>/\\ .])*-->'
 
 
-eq = <opt-space> '=' <opt-space>
 opt-space = #'\s*'
 space = #'\s+'
 
@@ -78,35 +69,27 @@ custom-data-attribute = 'data-' name '="' char-data-generic '"'
 aria-attribute = 'aria-' name '="' char-data-generic '"'
 role-attribute = 'role="' char-data-generic '"'
 
-integer = '0'
-        | #"-?[1-9][0-9]*"
+integer = #"-?[0-9]+"
 
-non-negative-integer = '0'
-                     | #"[1-9][0-9]*"
+non-negative-integer = #"[0-9]+"
 
-floating-point-number = '0.[0-9]+'
-                      | #"-?[1-9][0-9]*.[0-9]+"
+floating-point-number = #"-?[0-9]+.[0-9]+"
 
 (*
 Other hand-crafted (i.e. hard-coded) defintions
 *)
 
-lang = #'[a-z][a-z]-[A-Z][A-Z]'
+lang = #'[a-z][a-z](?:-[A-Za-z][A-Za-z])?'
 
 url-generic = #'[A-Za-z0-9$-_@.&+%=;/#?:]+'
 
 url = 'http://STUB.com/'
 
-mime-type = 'text/plain'
-          | 'text/css'
-          | 'text/html'
-          | 'text/javascript'
-          | 'application/json'
+mime-type = #'[a-z]+/[a-z0-9-]+'
 
 encoding-label = 'utf-8'
 
-(*
-CSS placeholder rules
-*)
-stylesheet-placeholder = content*
-css-media-list-placeholder = ''
+opt-boolean = ''
+            | '=""'
+            | '="true"'
+            | '="false"'
