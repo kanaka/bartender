@@ -115,7 +115,7 @@
    :datatype \"Text with no line breaks\",
    :controltype \"A text field or combo box\"}
   "
-  [include-data & [table-idx]]
+  [include-data table-idx]
   (let [table-idx (or table-idx 0)
         hickory-data (hick/as-hickory (hick/parse include-data))
         ;; Pull the tables out of the hickory data
@@ -171,6 +171,9 @@
                mangled)]
     full))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; EBNF generation
+
 ;; Void tags do not have a closing tag.
 ;; http://w3c.github.io/html/syntax.html#void-elements
 (defn void-element [elem] (= "empty" (:children elem)))
@@ -181,26 +184,23 @@
 ;; Special elements appear once and in specific order
 (defn special-element [elem] (#{"html" "head" "title" "body"} (:element elem)))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; EBNF generation
-
 (defn ebnf-tag-rhs
   [element]
   (let [tag-name (:element element)]
     (if (void-element element)
       [;; void tag (no end tag)
        (str "'<" tag-name "' "
-            "(<space> " tag-name "-attribute)* "
+            "(<rS> " tag-name "-attribute)* "
             "'>'")
 ;; For now don't emit self-closing void elements
 ;;     ;; void tag (self-closing mark is allowed)
 ;;     (str "'<" tag-name "' "
-;;          "(<space> " tag-name "-attribute)* "
+;;          "(<rS> " tag-name "-attribute)* "
 ;;          "'/>'")
        ]
       [;; normal tag (i.e. <tag ...> ... </tag>)
        (str "'<" tag-name "' "
-            "(<space> " tag-name "-attribute)* "
+            "(<rS> " tag-name "-attribute)* "
             "'>' (element | content)* "
             "'</" tag-name ">'")])))
 
@@ -235,8 +235,8 @@
           append)))))
 
 (defn ebnf-attr-val-expand
-  [attr-val pre]
-  (let [{:keys [literals metas raw]} attr-val]
+  [attr pre]
+  (let [{:keys [literals metas raw]} (:value attr)]
     (concat
       (for [value (sort literals)]
         (str "'" value "'"))
@@ -247,32 +247,36 @@
           "Valid non-negative integer"   (str "non-negative-integer")
           "Valid floating-point number"  (str "floating-point-number")
           "Boolean attribute"            (str "'true'\n" pre "| 'false'")
-          "Text"                         (str "char-data")
+          "Text"                         (str "attribute-data")
           "ID"                           (str "name")
           "Encoding label"               (str "encoding-label")
           "Valid MIME type"                                 (str "mime-type")
           "valid MIME types with no parameters"             (str "mime-type")
-          ;;"Valid media query list"                          (str "css-media-list-placeholder")
-          "Set of space-separated tokens"                   (str "name ( <space> name )*")
-          "Unordered set of unique space-separated tokens"  (str "name ( <space> name )*")
-          "Ordered set of unique space-separated tokens"    (str "name ( <space> name )*")
+          "Set of space-separated tokens"                   (str "name ( <rS> name )*")
+          "Unordered set of unique space-separated tokens"  (str "name ( <rS> name )*")
+          "Ordered set of unique space-separated tokens"    (str "name ( <rS> name )*")
           "Valid browsing context name or keyword"          (str "name")
 
           "Valid non-empty URL potentially surrounded by spaces" (str "url")
           "Valid URL potentially surrounded by spaces"           (str "url")
           (str "'STUB " value "'")))
 
-      (condp = raw 
-        "Varies*"                                       [(str "char-data")]
+      (condp = raw
+        "Varies*"                                       [(str "attribute-data")]
         "Valid BCP 47 language tag"                     [(str "lang")]
         "Valid BCP 47 language tag or the empty string" [(str "lang")]
+        [])
+
+      (condp = (:description attr)
+        "Horizontal dimension"  [(str "non-negative-integer ( length-unit | '%')")]
+        "Vertical dimension"    [(str "non-negative-integer ( length-unit | '%')")]
         []))))
 
 (defn ebnf-attr-vals
   [attr]
   (let [lhs (str "attr-val-" (id->terminal (:attribute attr)) " ")
         pre (apply str (repeat (count lhs) " "))
-        rhs-seq (ebnf-attr-val-expand (-> attr :value) pre)]
+        rhs-seq (ebnf-attr-val-expand attr pre)]
     (str
       ;; Always have an empty value
       lhs "= ''"
@@ -289,10 +293,10 @@
   "Takes an element list, an attribute list, and a form semantics list
   and returns an EBNF grammar for HTML5 elements, attributes (global
   and non-global), and input form types."
-  [elements attributes input-semantics autofill-semantics]
+  [elements attributes input-attrs autofill-attrs]
   (let [elems (filter (complement special-element) elements)
-        input-types (set (map :keyword input-semantics))
-        autofill-values (set (map :token autofill-semantics))
+        input-types (set (map :keyword input-attrs))
+        autofill-values (set (map :token autofill-attrs))
 
         non-bool-attrs (filter #(not (boolean-attribute %)) attributes)
         unique-attrs (map (comp first val)
@@ -315,7 +319,8 @@
       (ebnf-tag-attrs "global" (filter #(= "global" (:element %)) attributes)
                       "custom-data-attribute"
                       "aria-attribute"
-                      "role-attribute")
+                      "role-attribute"
+                      "event-attribute")
       "\n\n"
       (string/join
         "\n"
@@ -364,7 +369,10 @@
     :default "./data/html5-prefix.ebnf"]
    [nil "--ebnf-base EBNF-BASE"
     "Path to base grammar file to include in EBNF output"
-    :default "./data/html5-base.ebnf"]])
+    :default "./data/html5-base.ebnf"]
+   [nil "--ebnf-common EBNF-COMMON"
+    "Path to common rules to include in EBNF output"
+    :default "./data/common.ebnf"]])
 
 (defn ebnf-combined-str
   "Take opts with prefix, base, elements and attributes data paths
@@ -379,11 +387,12 @@
       ["(* This was generated by mend.w3c.html5 *)"
        (slurp (:ebnf-prefix opts))
        (ebnf-elements-attributes
-         (parse-w3c-include elements)
-         (parse-w3c-include attributes)
+         (parse-w3c-include elements 0)
+         (parse-w3c-include attributes 0)
          (parse-w3c-include form-semantics 1)
          (parse-w3c-include form-semantics 7))
-       (slurp (:ebnf-base opts))])))
+       (slurp (:ebnf-base opts))
+       (slurp (:ebnf-common opts))])))
 
 
 (defn -main

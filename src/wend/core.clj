@@ -7,7 +7,8 @@
             [hickory.render]
             [hickory.select :as s]
             [instaparse.core]
-            [instaparse.print]))
+            [instaparse.print]
+            [instaparse.failure]))
 
 (def EBNF-PATHS
   {:html5          ["data/html5.ebnf"]
@@ -20,7 +21,6 @@
 (def GRAMMAR-MANGLES
   {:html5          {}
    :html5-generic  {:char-data :char-data-generic
-                    :content-char-data :content-char-data-generic
                     :comment :comment-generic
                     :url :url-generic}
    :css3           {}
@@ -65,7 +65,15 @@
 (def PRUNE-TAG-ATTRIBUTES
   ;; tag -> [attribute ...]
   {:input [:autocapitalize :autocorrect]
-   :link [:as]})
+   :link [:as]
+   :iframe [:frameborder :scrolling]
+   :div [:type]
+   :span [:for :fahrenheit]
+
+   ;; TODO: these are HTML 5+ and shouldn't be removed when parsing
+   ;; that.
+   :video [:playsinline :webkit-playsinline]
+   })
 
 
 (defn prune-tags
@@ -127,7 +135,7 @@
 (defn extract-html
   "Convert HTML to hickory, remove style tags and attributes, apply
   some other manual cleanups, then convert back to HTML in order to
-  normalize the HTML into a more standard and consistent form." 
+  normalize the HTML into a more standard and consistent form."
   [html]
   (-> html
       hickory.core/parse
@@ -217,11 +225,33 @@
   [weights]
   (into {} (filter #(-> % key reverse second (= :alt)) weights)))
 
+(defn concise-fail-str
+  [failure text]
+  (let [err-str (with-out-str (instaparse.failure/pprint-failure failure))
+        column (:column failure)
+        [pos text-line mark-line & reasons] (string/split err-str #"\n")
+        _ (prn :column column
+               :count-text-line (count text-line)
+               :count-mark-line (count mark-line))
+        text-line (string/replace text-line #"\t" " ")
+        [text-line mark-line] (if (> column 200)
+                                [(str "..."
+                                      (subs text-line (- column 100)
+                                            (min (+ column 100)
+                                                 (count text-line)))
+                                      "...")
+                                 (str "..."
+                                      (subs mark-line (- column 100)))]
+                                [text-line mark-line])
+        reasons (string/join "\n" reasons)]
+    (string/join "\n" [pos text-line mark-line reasons])))
+
 (defn parse-weights [parser text]
   (let [hparsed (parser text)]
     (if (instance? instaparse.gll.Failure hparsed)
       ;;(throw (ex-info "Parser failure" {:failure hparsed})))
-      (throw (Exception. (pr-str hparsed))))
+      ;;(throw (Exception. (pr-str hparsed))))
+      (throw (Exception. (concise-fail-str hparsed text))))
     (frequencies (-> hparsed meta :path-log))))
 
 (defn save-weights [path weights]
@@ -269,7 +299,7 @@
     ;;     :parser? (contains? g :parser))
     (cond
       (empty? p)
-      g 
+      g
 
       (= t1 :alt)
       (grammar-path* (nth (:parsers g) t2) ts)

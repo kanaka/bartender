@@ -1,19 +1,19 @@
-html-generic = doctype-generic? comment-or-space* '<html' (<space> html-attribute)* '>' <opt-space> head-generic? body-generic '</html>' <opt-space>
+html-generic = doctype-generic? comment-or-space* '<html' (<rS> html-attribute)* '>' <S> head-generic? body-generic '</html>' <S>
 
-doctype-generic = '<!DOCTYPE html>' <opt-space>
+doctype-generic = '<!DOCTYPE html>' <S>
 
 
-head-generic = '<head>' <opt-space> head-elements* '</head>' <opt-space>
+head-generic = '<head>' <S> head-elements* '</head>' <S>
 
 head-elements = title-generic
               | meta-generic
               | link-generic
               | comment-or-space
 
-title-generic = '<title' (<space> title-attribute)* '>' content* '</title>' <opt-space>
-meta-generic = '<meta' (<space> meta-attribute)* '>' <opt-space>
-link-generic = '<link' (<space> link-attribute)* '>' <opt-space>
+title-generic = '<title' (<rS> title-attribute)* '>' content* '</title>' <S>
+meta-generic = '<meta' (<rS> meta-attribute)* '>' <S>
+link-generic = '<link' (<rS> link-attribute)* '>' <S>
 
-body-generic = '<body' (<space> body-attribute)* '>' (element | content)* '</body>' <opt-space>
+body-generic = '<body' (<rS> body-attribute)* '>' (element | content)* '</body>' <S>
 
-comment-or-space = comment | <opt-space>
+comment-or-space = comment | <S>

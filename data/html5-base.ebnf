@@ -1,22 +1,22 @@
 (*
-element = simple-tag <opt-space>
-        | start-tag (element | content)* end-tag <opt-space>
+element = simple-tag <S>
+        | start-tag (element | content)* end-tag <S>
 
 simple-tag = void-tag
            | empty-tag
-void-tag  = <'<'> void-tags (<space> attribute)* <opt-space> <'>'>
-empty-tag = <'<'> name (<space> attribute)* <opt-space> <'/>'>
+void-tag  = <'<'> void-tags (<rS> attribute)* <S> <'>'>
+empty-tag = <'<'> name (<rS> attribute)* <S> <'/>'>
 
-start-tag = <'<'> name (<space> attribute)* <opt-space> <'>'>
-end-tag   = <'</'> name <opt-space> <'>'>
+start-tag = <'<'> name (<rS> attribute)* <S> <'>'>
+end-tag   = <'</'> name <S> <'>'>
 *)
 
 
-content = content-char-data
+content = char-data
         | reference
         | comment
 
-attribute       = name <opt-space> '=' <opt-space> attribute-value
+attribute       = name <S> '=' <S> attribute-value
 (*
 attribute-value = <'"'> (#'[^<&"]*' | reference)* <'"'>
                 | <"'"> (#"[^<&']*" | reference)* <"'">
@@ -25,14 +25,12 @@ attribute-value = <'"'> (#'[A-Za-z0-9_<>/\\ .]*' | reference)* <'"'>
                 | <"'"> (#"[A-Za-z0-9_<>/\\ .]*" | reference)* <"'">
 
 (* char-data-generic = #'[^<&]*' !(#'[^<&]'* ']]>' #'[^<&]*' ) *)
-char-data-generic = #'[^<&"]*'
-content-char-data-generic = #'[^<&]*'
+char-data-generic = #'[^<&]*'
 (*
 char-data = #'[A-Za-z0-9_<>/\\ .]*'
 *)
 (* Just include the Ahem glyphs that render differently *)
 char-data = ' ' | 'p' | '&#x00c9;' | 'X'
-content-char-data = ' ' | 'p' | '&#x00c9;' | 'X'
 
 reference     = entity-ref
               | char-ref-dec
@@ -48,9 +46,6 @@ comment-generic = #'<!--(?:[^-]|-[^-])*-->'
 comment = #'<!--(?:[A-Za-z0-9_<>/\\ .]|-[A-Za-z0-9_<>/\\ .])*-->'
 
 
-opt-space = #'\s*'
-space = #'\s+'
-
 (*
 Definitions for HTML tag attribute values
 This is lovingly hand-crafted (i.e. hard-coded) based on data
@@ -65,27 +60,20 @@ head-attribute = global-attribute
 title-attribute = global-attribute
 body-attribute = global-attribute
 
-custom-data-attribute = 'data-' name '="' char-data-generic '"'
-aria-attribute = 'aria-' name '="' char-data-generic '"'
-role-attribute = 'role="' char-data-generic '"'
+attribute-data = #'[^"]*'
 
-integer = #"-?[0-9]+"
-
-non-negative-integer = #"[0-9]+"
-
-floating-point-number = #"-?[0-9]+.[0-9]+"
+custom-data-attribute = 'data-' name '="' attribute-data '"'
+aria-attribute = 'aria-' name '="' attribute-data '"'
+role-attribute = 'role="' attribute-data '"'
+event-attribute = #'on[a-z]+="' attribute-data '"'
 
 (*
 Other hand-crafted (i.e. hard-coded) defintions
 *)
 
-lang = #'[a-z][a-z](?:-[A-Za-z][A-Za-z])?'
-
 url-generic = #'[A-Za-z0-9$-_@.&+%=;/#?:]+'
 
 url = 'http://STUB.com/'
-
-mime-type = #'[a-z]+/[a-z0-9-]+'
 
 encoding-label = 'utf-8'
 

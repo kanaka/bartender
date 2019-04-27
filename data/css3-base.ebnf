@@ -1,7 +1,3 @@
-
-S          = #'\s*' ;
-rS         = #'\s+' ;
-
 (* Base Types: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Types *)
 
 nonprop-angle = nonprop-number ( 'deg' | 'grad' | 'rad' | 'turn' ) ;
@@ -15,7 +11,7 @@ nonprop-frequency = nonprop-number ( 'Hz' | 'kHz' ) ;
 (* nonprop-gradient = ; *)
 (* nonprop-image = ; *)
 nonprop-integer = #'-?[0-9]+' ;
-nonprop-length = nonprop-number nonprop-length-unit
+nonprop-length = nonprop-number length-unit
                | '0' ;
 nonprop-number = nonprop-integer | number-float ;
 nonprop-percentage = nonprop-number '%' ;
@@ -31,14 +27,7 @@ nonprop-time = nonprop-number ( 's' | 'ms' ) ;
 (* TODO: improve urls: https://developer.mozilla.org/en-US/docs/Web/CSS/url *)
 nonprop-url = 'url(http://STUB_DOMAIN.com/STUB_PATH/STUB_IMAGE.png)' ;
 
-(* Convenenience rules for types above *)
-
 nonprop-positive-integer = #'[0-9]+' ;
-number-float = #'-?[0-9]+.[0-9]+' ;
-nonprop-length-unit = 'em' | 'ex' | 'ch' | 'ic' | 'rem' | 'lh' | 'rlh'
-                    | 'vh' | 'vw' | 'vi' | 'vb' | 'vmin' | 'vmax'
-                    | 'px' | 'mm' | 'q' | 'cm' | 'in' |  'pt' | 'pc' | 'mozmm' ;
-
 
 (* TODO: fix. These have similarly name prop-* rules *)
 
