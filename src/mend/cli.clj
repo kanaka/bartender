@@ -32,7 +32,12 @@
    {:path [:nonprop-positive-integer]
     :value {:tag :nt :keyword :gen/pos-int}}
    {:path [:number-float]
-    :value {:tag :nt :keyword :gen/double}}])
+    :value {:tag :nt :keyword :gen/double}}
+   ;; Stub out mutually recursive media rules
+   {:path [:nonprop-media-in-parens]
+    :value {:tag :string :string "STOP_RECURSE_media_in_parens"}}
+   {:path [:nonprop-supports-in-parens]
+    :value {:tag :string :string "STOP_RECURSE_supports_in_parens"}}])
 
 (defn prune-S [x]
   (if (and (:parsers x)

@@ -1,4 +1,4 @@
-(* Base Types: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Types *)
+(* Base CSS Types: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Types *)
 
 nonprop-angle = nonprop-number ( 'deg' | 'grad' | 'rad' | 'turn' ) ;
 (* nonprop-basic-shape = ; *)
@@ -20,8 +20,8 @@ nonprop-ratio = nonprop-positive-integer '/' nonprop-positive-integer ;
 nonprop-resolution = nonprop-number ( 'dpi' | 'dpcm' | 'dppx' ) ;
 (* nonprop-shape = ; *)
 (* TODO: improve strings: https://developer.mozilla.org/en-US/docs/Web/CSS/string *)
-nonprop-string = #"'[A-Za-z0-9 _\"-]*'"
-               | #"\"[A-Za-z0-9 _'-]*\"" ;
+nonprop-string = #"'[A-Za-z0-9 _\"-^]*'"
+               | #"\"[A-Za-z0-9 _'-^]*\"" ;
 nonprop-time = nonprop-number ( 's' | 'ms' ) ;
 (* nonprop-transform-function = ; *)
 (* TODO: improve urls: https://developer.mozilla.org/en-US/docs/Web/CSS/url *)
@@ -29,10 +29,22 @@ nonprop-url = 'url(http://STUB_DOMAIN.com/STUB_PATH/STUB_IMAGE.png)' ;
 
 nonprop-positive-integer = #'[0-9]+' ;
 
-(* TODO: fix. These have similarly name prop-* rules *)
+nonprop-ident-token = "STUB_ident_token" ;
+nonprop-declaration = "STUB_declaration" ;
+nonprop-calc-sum = "STUB_calc_sum" ;
 
-nonprop-border-radius = prop-border-radius ;
+(* nonprop -> prop aliases *)
+(* TODO: fix so we don't have to do this *)
+
+nonprop-align-content = prop-align-content ;
+nonprop-align-items = prop-align-items ;
+nonprop-justify-content = prop-justify-content ;
+nonprop-justify-items = prop-justify-items ;
+nonprop-align-self = prop-align-self ;
+nonprop-justify-self = prop-justify-self ;
 nonprop-padding-left = prop-padding-left ;
+nonprop-row-gap = prop-row-gap ;
+nonprop-column-gap = prop-column-gap ;
 
 nonprop-top = prop-top ;
 nonprop-bottom = prop-bottom ;
@@ -41,6 +53,9 @@ nonprop-right = prop-right ;
 
 nonprop-background-color = prop-background-color ;
 
+nonprop-border-top-color = prop-border-top-color ;
+nonprop-border-top-width = prop-border-top-width ;
+nonprop-border-top-style = prop-border-top-style ;
 nonprop-border-width = prop-border-width ;
 nonprop-border-style = prop-border-style ;
 nonprop-border-radius = prop-border-radius ;
@@ -63,19 +78,20 @@ nonprop-flex-grow = prop-flex-grow ;
 nonprop-flex-shrink = prop-flex-shrink ;
 nonprop-flex-basis = prop-flex-basis ;
 
+nonprop-font-feature-settings = prop-font-feature-settings ;
 nonprop-font-style = prop-font-style ;
 nonprop-font-weight = prop-font-weight ;
 nonprop-font-stretch = prop-font-stretch ;
 nonprop-font-size = prop-font-size ;
 nonprop-font-family = prop-font-family ;
+nonprop-font-variant = prop-font-variant ;
+nonprop-font-variation-settings = prop-font-variation-settings
 
 nonprop-grid-template = prop-grid-template ;
 nonprop-grid-template-rows = prop-grid-template-rows ;
 nonprop-grid-template-columns = prop-grid-template-columns ;
 nonprop-grid-auto-rows = prop-grid-auto-rows ;
 nonprop-grid-auto-columns = prop-grid-auto-columns ;
-nonprop-grid-row-gap = prop-grid-row-gap ;
-nonprop-grid-column-gap = prop-grid-column-gap ;
 
 nonprop-line-height = prop-line-height ;
 
@@ -105,8 +121,8 @@ nonprop-max-width = prop-max-width ;
 nonprop-min-width = prop-min-width ;
 
 
-(* Other Misc Missing
-   TODO: figure out why? *)
+(* Other Misc Missing *)
+(* TODO: figure out why these are missing. *)
 
 nonprop-hex-color = #'#[0-9A-Fa-f]{3}'
                   | #'#[0-9A-Fa-f]{6}' ;
@@ -120,7 +136,6 @@ nonprop-attr-name = "STUB_attr_name" ;
 nonprop-attr-fallback = "STUB_attr_fallback" ;
 nonprop-clip-style = "STUB_clip_style" ;
 nonprop-custom-property-name = "STUB_custom_property" ;
-nonprop-declaration-list = "STUB_declaration_list" ;
 nonprop-declaration-value = "STUB_declaration_value" ;
 nonprop-dimension = "STUB_dimension" ;
 nonprop-function-token = "STUB_flex_function_token" ;
@@ -128,5 +143,28 @@ nonprop-ident = nonprop-custom-ident ;
 nonprop-mask-attachment = "STUB_mask_attachment" ;
 nonprop-name-repeat = "STUB_name_repeat" ;
 nonprop-outline-radius = "STUB_outline_radius" ;
+nonprop-string-token = "STUB_string_token" ;
 nonprop-x = "11" ;
 nonprop-y = "11" ;
+
+
+(* TODO: from at-rule descriptors *)
+
+nonprop-src = "STUB_src" ;
+nonprop-string-token = "STUB_string_token" ;
+nonprop-unicode-range = "STUB_unicode_range" ;
+prop-font-variation-settings = "STUB_font_variation_settings" ;
+nonprop-counter-system = "STUB_counter_system" ;
+nonprop-counter-symbols = "STUB_counter_symbols" ;
+nonprop-additive-symbols = "STUB_additive_symbols" ;
+nonprop-negative-symbol = "STUB_negative_symbol" ;
+nonprop-prefix = "STUB_prefix" ;
+nonprop-suffix = "STUB_suffix" ;
+nonprop-range = "STUB_range" ;
+nonprop-padding = "STUB_padding" ;
+nonprop-speak-as = "STUB_speak_as" ;
+nonprop-page-body = "STUB_page_body" ;
+
+nonprop-group-rule-body = "STUB_nonprop_group_rule_body" ;
+prop-group-rule-body = "STUB_prop_group_rule_body" ;
+nonprop-declaration-list = "STUB_declaration_list" ;

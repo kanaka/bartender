@@ -3,6 +3,9 @@
             [clojure.string :as string]
             [clojure.tools.cli :refer [parse-opts]]
 
+            ;; TODO: move to instacheck and use from there
+            [wend.core :refer [checked-parse]]
+
             [instaparse.core :as insta]))
 
 ;; TODO: global properties (inherit, initial, unset, revert)
@@ -16,56 +19,74 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defn filter-css-properties
+(defn filter-css-definitions
   "Filter properties we want (also removes '--*')"
-  [props & [status]]
+  [defs & [status]]
   (into {} (filter (fn [[name attrs]]
                      (and
-                       (re-find #"^[a-z-]+$" name)
+                       (re-find #"^[@a-z-]+$" name)
                        (or (not status)
                            (= (get attrs "status") status))))
-                   props)))
+                   defs)))
 
 (defn mangle-css-syntaxes
   "Fix some bugs in the syntax definitions."
   [syntaxes]
-  (into {} (for [[k v] syntaxes]
+  (into {} (for [[k {:strs [syntax]}] syntaxes]
              (cond
                ;; TODO: file bug against github.com/mdn/data
-               (= v "<custom-ident>: <integer>+;")
-               [k "<custom-ident> : <integer>+ ;"]
+               (= syntax "<custom-ident>: <integer>+;")
+               [k {"syntax" "<custom-ident> : <integer>+ ;"}]
 
                ;; TODO: file bug against github.com/mdn/data
-               (= v "rect(<top>, <right>, <bottom>, <left>)")
-               [k "rect( <top>, <right>, <bottom>, <left> )"]
+               (= syntax "rect(<top>, <right>, <bottom>, <left>)")
+               [k {"syntax" "rect( <top>, <right>, <bottom>, <left> )"}]
 
                ;; Remove recursive part
                ;; TODO: is this really intended (find W3C standard)
                (= k "image")
-               [k "<url> | <element()>"]
+               [k {"syntax" "<url> | <element()>"}]
 
                ;; Drop unused syntaxes that also have recursion
                (= k "page-body")
                nil
-               (.startsWith k "media-")
-               nil
+               ;;(.startsWith k "media-")
+               ;;nil
                (.startsWith k "calc")
                nil
 
                :else
-               [k v]))))
+               [k {"syntax" syntax}]))))
 
-(defn css-vds-combined [properties syntaxes]
+;; TODO: these from descriptors syntaxes are the only unique ones
+;; actually referenced by at-rules: 'src', 'unicode-range',
+;; 'font-variation-settings', 'suffix', 'speak-as', 'range', 'prefix',
+;; 'additive-symbols'
+
+(defn css-vds-combined [properties syntaxes at-rules]
   (let [syns (mangle-css-syntaxes syntaxes)
         ps (for [[prop {:strs [syntax]}] (sort properties)]
              (str "<'" prop "'> = " syntax "\n"))
-        ss (for [[syn syntax] (sort syns)]
-             (str "<" syn "> = " syntax "\n"))]
-    (apply str (concat ps ss))))
+        ss (for [[syn {:strs [syntax]}] (sort syns)]
+             (str "<" syn "> = " syntax "\n"))
+        as (for [[rule-name {:strs [syntax]}] (sort at-rules)]
+             (str "<'" rule-name "'> = " syntax "\n"))
+        ;;ads (for [[_ {:strs [descriptors]}] (sort at-rules)
+        ;;          [rule-name {:strs [syntax]}] (sort descriptors)]
+        ;;      (str "<'" rule-name "'> = " syntax "\n"))
+        ]
+    (apply str (concat ps
+                       ["\n\n"]
+                       ss
+                       ["\n\n"]
+                       as
+                       ;;["\n\n"]
+                       ;;ads
+                       ))))
 
 (comment
   (spit "data/css3.vds" (css-vds-combined
-                          (filter-css-properties
+                          (filter-css-defs
                             (json/read-str (slurp "./mdn_data/css/properties.json")))
                           (json/read-str (slurp "mdn_data/css/syntaxes.json"))))
 )
@@ -88,9 +109,11 @@
         :non-property [name data]))))
 
 (defn parsed-tree->map [tree]
-  (let [items (parsed-tree->items tree)]
-    (assert (= (count items) (count (set (map first items))))
-            "Repeated properties")
+  (let [items (parsed-tree->items tree)
+        repeats (filter #(> (val %) 1) (frequencies (map first items)))]
+    (assert ;;(= (count items) (count (set (map first items))))
+            (empty? repeats)
+            (str "Repeated properties:" (vector repeats)))
   (into {} items)))
 
 (comment
@@ -184,7 +207,7 @@
              "\n"
              (for [t tree]
                (if (= :comma (first t))
-                 (str pre "  ', '")
+                 (str pre "  ',' S")
                  (juxtapose-ebnf (drop 1 t) (+ 1 indent)))))
            "\n"
            pre ")"))))
@@ -201,7 +224,7 @@
              "\n"
              (for [t tree]
                (if (= :comma (first t))
-                 (str pre "  ', '")
+                 (str pre "  ',' S")
                  (component-ebnf (second t) (+ 1 indent)))))
            "\n"
            pre ")"))))
@@ -260,9 +283,11 @@
 (defn block-ebnf [tree indent]
   ;;(prn :** :block-ebnf tree indent)
   (let [pre (apply str (repeat indent "  "))]
-    (str pre "'{'\n"
-         (juxtapose-ebnf (drop 1 (second tree)) (+ 1 indent)) "\n"
-         pre "'}'")))
+    (condp = (first (first tree))
+      \{         (str pre "'{'\n"
+                      (single-bar-ebnf (drop 1 (second tree)) (+ 1 indent)) "\n"
+                      pre "'}'")
+      :single-bar (single-bar-ebnf (drop 1 (first tree)) indent))))
 
 (defn braces-ebnf [kind hash? single indent]
   ;;(prn :** :braces-ebnf kind hash? single indent)
@@ -281,7 +306,7 @@
            " |\n"
            (for [i (range bmin (+ 1 bmax))]
              (string/join
-               (if hash? " ', '\n" "\n")
+               (if hash? " ',' S\n" "\n")
                (if (= i 0)
                  (str pre "''")
                  (repeat i single)))))
@@ -303,7 +328,7 @@
                :when (= \' (first k))]
            (str "    \"" (string/replace k #"'" "")
                 "\" S \":\" S " (name-ebnf k))))
-       "\n  )"))
+       "\n  ) ( S '!important' S )? "))
 
 (defn map->ebnf [m]
   (string/join
@@ -353,6 +378,9 @@
    [nil "--css-syntaxes CSS-SYNTAXES"
     "Path to CSS syntaxes JSON file."
     :default "mdn_data/css/syntaxes.json"]
+   [nil "--css-at-rules CSS-AT-RULES"
+    "Path to CSS at-rules JSON file."
+    :default "mdn_data/css/at-rules.json"]
    [nil "--ebnf-base EBNF-BASE"
     "Path to base grammar file to include in EBNF output"
     :default "./data/css3-base.ebnf"]
@@ -383,20 +411,24 @@
 
         properties-file (:css-properties opts)
         syntaxes-file (:css-syntaxes opts)
+        at-rules-file (:css-at-rules opts)
         _ (pr-err "Generating full CSS VDS grammar based on:"
-                  properties-file syntaxes-file)
-        properties (filter-css-properties
+                  properties-file syntaxes-file at-rules-file)
+        properties (filter-css-definitions
                      (json/read-str (slurp properties-file))
                      (:filter-status opts))
         syntaxes (json/read-str (slurp syntaxes-file))
-        vds-text (css-vds-combined properties syntaxes)
+        at-rules (filter-css-definitions
+                     (json/read-str (slurp at-rules-file))
+                     (:filter-status opts))
+        vds-text (css-vds-combined properties syntaxes at-rules)
 
         _ (when-let [pfile (:css-vds-output opts)]
             (pr-err "Saving full CSS VDS grammar file to:" pfile)
             (spit pfile vds-text))
 
         _ (pr-err "Parsing CSS VDS grammar")
-        css-tree (css3-syntax-parser vds-text)
+        css-tree (checked-parse css3-syntax-parser vds-text)
         css-map (parsed-tree->map css-tree)
 
         _ (pr-err "Converting CSS VDS grammar to EBNF")

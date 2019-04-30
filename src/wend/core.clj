@@ -15,8 +15,8 @@
    :html5-generic  ["data/html5-generic.ebnf"
                     "data/html5.ebnf"]
    :css3           ["data/css3.ebnf"]
-   :css3-generic   ["data/css3-generic.ebnf"
-                    "data/css3.ebnf"]})
+   :css3-generic   ["data/css3.ebnf"
+                    "data/css3-generic.ebnf"]})
 
 (def GRAMMAR-MANGLES
   {:html5          {}
@@ -24,7 +24,15 @@
                     :comment :comment-generic
                     :url :url-generic}
    :css3           {}
-   :css3-generic   {}})
+   :css3-generic   {:nonprop-group-rule-body :stylesheet
+                    :prop-group-rule-body :css-ruleset
+                    :nonprop-declaration-list :css-assignments}})
+
+(def START-RULES
+  {:html5          :html
+   :html5-generic  :html-generic
+   :css3           :css-assignments
+   :css3-generic   :stylesheet})
 
 (defn mangle-parser
   [parser mangles]
@@ -40,7 +48,8 @@
     parser))
 
 (defn load-parser [kind]
-  (load-parser* (get EBNF-PATHS kind) (get GRAMMAR-MANGLES kind)))
+  (let [parser (load-parser* (get EBNF-PATHS kind) (get GRAMMAR-MANGLES kind))]
+    (assoc parser :start-production (get START-RULES kind))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -167,15 +176,20 @@
         loaded-sheets (map #(str "/* from: " % " */\n"
                                  (slurp %))
                            sheet-hrefs)
-        ]
-    (str
-      (string/join "\n" loaded-sheets)
-      "\n"
-      (string/join "\n" inline-sheets)
-      "\n"
-      "* {\n    "
-      (string/join "\n    " styles)
-      "\n}")))
+        all-css (str (string/join "\n" loaded-sheets)
+                     "\n"
+                     (string/join "\n" inline-sheets)
+                     "\n"
+                     (when (seq styles)
+                       (str
+                         "* {\n    "
+                         (string/join "\n    " styles)
+                         "\n}")))]
+    (string/replace
+      (string/replace
+        all-css
+        #"[\r]" "\n")
+      #"-webkit-" "")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -225,37 +239,45 @@
   [weights]
   (into {} (filter #(-> % key reverse second (= :alt)) weights)))
 
+(declare checked-parse) ;; TODO: use from instacheck
+
+(defn parse-weights [parser text]
+  (let [hparsed (checked-parse parser text)]
+    (frequencies (-> hparsed meta :path-log))))
+
+(defn save-weights [path weights]
+  (spit path (with-out-str (pprint (into (sorted-map) weights)))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Better instaparse errors
+
+(defn elide-line
+  [text cursor max-length cont-text]
+  (let [span (/ max-length 2)
+        start (max 0            (- cursor span))
+        end   (min (count text) (+ cursor span))]
+    (str
+      (when (> cursor span) cont-text)
+      (subs text start end)
+      (when (> (count text) max-length) cont-text))))
+
 (defn concise-fail-str
   [failure text]
   (let [err-str (with-out-str (instaparse.failure/pprint-failure failure))
         column (:column failure)
         [pos text-line mark-line & reasons] (string/split err-str #"\n")
-        _ (prn :column column
-               :count-text-line (count text-line)
-               :count-mark-line (count mark-line))
         text-line (string/replace text-line #"\t" " ")
-        [text-line mark-line] (if (> column 200)
-                                [(str "..."
-                                      (subs text-line (- column 100)
-                                            (min (+ column 100)
-                                                 (count text-line)))
-                                      "...")
-                                 (str "..."
-                                      (subs mark-line (- column 100)))]
-                                [text-line mark-line])
+        text-line (elide-line text-line column 200 "...")
+        mark-line (elide-line mark-line column 200 "   ")
+        
         reasons (string/join "\n" reasons)]
     (string/join "\n" [pos text-line mark-line reasons])))
 
-(defn parse-weights [parser text]
-  (let [hparsed (parser text)]
-    (if (instance? instaparse.gll.Failure hparsed)
-      ;;(throw (ex-info "Parser failure" {:failure hparsed})))
-      ;;(throw (Exception. (pr-str hparsed))))
-      (throw (Exception. (concise-fail-str hparsed text))))
-    (frequencies (-> hparsed meta :path-log))))
-
-(defn save-weights [path weights]
-  (spit path (with-out-str (pprint (into (sorted-map) weights)))))
+(defn checked-parse [parser text]
+  (let [res (parser text)]
+    (if (instance? instaparse.gll.Failure res)
+      (throw (Exception. (concise-fail-str res text)))
+      res)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Grammar/weight path functions

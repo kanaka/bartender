@@ -1,22 +1,27 @@
+(* Basic CSS rules based on: https://www.w3.org/TR/CSS21/grammar.html *)
 
-(* Based on: https://www.w3.org/TR/CSS21/grammar.html *)
-
-stylesheet = S ( css-ruleset | css-media )* ;
+stylesheet = S ( css-ruleset | css-at-rule | css-comment )* S ;
 
 css-ruleset = css-selector [ ',' S css-selector ]* S '{' S css-assignments S '}' S ;
 
-css-media = '@media' S css-media-list S '{' S css-ruleset* S '}' S ;
+css-at-rule = prop-@charset
+	    | prop-@counter-style
+	    | prop-@font-face
+	    | prop-@font-feature-values
+	    | prop-@import
+	    | prop-@keyframes
+	    | prop-@media
+	    | prop-@namespace
+	    | prop-@page
+	    | prop-@supports
+	    | prop-@viewport
 
 css-selector = css-simple-selector [ css-combinator css-selector | S+ [ css-combinator? css-selector ]? ]? ;
 
 css-simple-selector = css-element-name [ css-hash | css-class | css-pseudo ]*
                     | [ css-hash | css-class | css-pseudo ]+ ;
 
-css-media-list = css-media-query [ ',' S css-media-query ]* ;
-
-css-media-query = [ 'only' | 'not' ]? S IDENT [ S 'and' S css-media-expression ]* 
-                | S css-media-expression [ S 'and' S css-media-expression ]* ;
-css-media-expression = '(' S IDENT [ S ':' S nonprop-length ]? S ')' ;
+css-comment = '/*' ( #"[^*]*" | #'[*][^/]' )* '*/' S ;
 
 css-combinator = '+' S
                | '>' S ;
@@ -27,6 +32,7 @@ css-element-name = IDENT
 css-hash   = '#' NAME ;
 css-class  = '.' IDENT ;
 css-pseudo = ':' [ IDENT | IDENT '(' S [IDENT S]? ')' ] ;
-NAME       = #'[_a-z0-9-]+' ;
-IDENT      = #'-?[_a-z][_a-z0-9-]*' ;
+NAME       = #'[_A-Za-z0-9-]+' ;
+IDENT      = #'-?[_A-Za-z][_A-Za-z0-9-]*' ;
+
 

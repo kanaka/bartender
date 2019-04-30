@@ -9,13 +9,13 @@ assignment = non-terminal <'='> <S> single-bar
 
 (* Operator precendence: mult, juxt, &&, ||, | *)
 
-single-bar = double-bar (<rS> <'|'> <rS> <S> double-bar)*
+single-bar = double-bar (<rS> <'|'> <rS> double-bar)*
 
-double-bar = double-amp (<rS> <'||'> <rS> <S> double-amp)*
+double-bar = double-amp (<rS> <'||'> <rS> double-amp)*
 
-double-amp = juxtapose (<rS> <'&&'> <rS> <S> juxtapose)*
+double-amp = juxtapose (<rS> <'&&'> <rS> juxtapose)*
 
-juxtapose  = (<S> component comma? <rS>)* component
+juxtapose  = (<S> component ( comma? | <rS> ) )* component
 
 component = component-single
           | component-multiplied
@@ -34,7 +34,8 @@ keyword-value = identifier
 non-property  = <'<'> identifier <'>'>
 property      = <"<'"> identifier <"'>">
 brackets      = <'['> <S> single-bar <S> <']'> bang?
-block         = '{' <rS> juxtapose <rS> '}'
+block         = '{' <S> single-bar <S> '}'
+              | single-bar ';'
 func          = identifier <'('> <S> single-bar <S> <')'>
 
 multiplier = question
@@ -62,7 +63,8 @@ digit = #'[0-9]'
 comma = ','
 delimeter = <S> ';' <S>
 literal = #'[-a-zA-Z0-9,/:;%]+'
-        | <"'"> #'[-a-zA-Z0-9\u0028\u0029,/\u005B\u005D\u002A\u002B\u003C\u003E\u003D]' <"'">
+        | <"'"> #'[-a-zA-Z0-9,~|^$.<>={}:\u0028\u0029/\u005B\u005D\u002A\u002B]*' <"'">
+        | <'"'> #'[-a-zA-Z0-9,~|^$.<>={}:\u0028\u0029/\u005B\u005D\u002A\u002B]*' <'"'>
         | #'[\u0028\u0029]'
 <identifier> = #'@?[-a-zA-Z][-a-zA-Z0-9]*(?:\u0028\u0029)?(?x) #identifier'
 S = #'\s*'

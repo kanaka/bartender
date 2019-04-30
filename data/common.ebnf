@@ -8,10 +8,10 @@ mime-type = #'[a-z]+/[a-z0-9-]+'
 lang = #'[a-z][a-z](?:-[A-Za-z][A-Za-z])?'
 integer = #"-?[0-9]+"
 non-negative-integer = #"[0-9]+"
-floating-point-number = #"-?[0-9]+.[0-9]+"
+floating-point-number = #"-?[0-9]*.[0-9]+"
 
 (* CSS *)
-number-float = #'-?[0-9]+.[0-9]+' ;
+number-float = #'-?[0-9]*.[0-9]+' ;
 length-unit = 'em' | 'ex' | 'ch' | 'ic' | 'rem' | 'lh' | 'rlh'
             | 'vh' | 'vw' | 'vi' | 'vb' | 'vmin' | 'vmax'
             | 'px' | 'mm' | 'q' | 'cm' | 'in' |  'pt' | 'pc' | 'mozmm' ;
