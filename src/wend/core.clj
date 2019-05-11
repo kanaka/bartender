@@ -187,9 +187,18 @@
                          "\n}")))]
     (string/replace
       (string/replace
-        all-css
-        #"[\r]" "\n")
-      #"-webkit-" "")))
+;;        (string/replace
+          (string/replace
+            all-css
+            ;; Remove non-unix newlines
+            #"[\r]" "\n")
+          ;; Remove vendor prefixes (-webkit-, -moz-, -ms-) from some properties
+;;          #"(-webkit-|-moz-|-ms-)(transform|text-size-adjust|box-sizing|font-feature-settings)\b" "$2")
+        ;; remove vendor prefixes (from at-rules)
+        #"@(-webkit-|-moz-|-ms-)" "@")
+;;        #"([^A-Za-z0-9])(?:-webkit-|-moz-|-ms-)" "$1")
+      ;; Remove apple specific CSS property
+      #"x-content: *\"[^\"]*\"" "")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -251,6 +260,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Better instaparse errors
 
+;; TODO: these generic functions should move to instacheck
+
 (defn elide-line
   [text cursor max-length cont-text]
   (let [span (/ max-length 2)
@@ -269,7 +280,7 @@
         text-line (string/replace text-line #"\t" " ")
         text-line (elide-line text-line column 200 "...")
         mark-line (elide-line mark-line column 200 "   ")
-        
+
         reasons (string/join "\n" reasons)]
     (string/join "\n" [pos text-line mark-line reasons])))
 

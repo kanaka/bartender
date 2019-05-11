@@ -1,8 +1,8 @@
 (* Basic CSS rules based on: https://www.w3.org/TR/CSS21/grammar.html *)
 
-stylesheet = S ( css-ruleset | css-at-rule | css-comment )* S ;
+stylesheet = S ( css-ruleset | css-at-rule | css-comment )* ;
 
-css-ruleset = css-selector [ ',' S css-selector ]* S '{' S css-assignments S '}' S ;
+css-ruleset = css-selector [ ',' S css-selector ]* '{' S css-assignments '}' S ;
 
 css-at-rule = prop-@charset
 	    | prop-@counter-style
@@ -16,23 +16,70 @@ css-at-rule = prop-@charset
 	    | prop-@supports
 	    | prop-@viewport
 
+css-comment = '/*' ( #"[^*]*" | #'[*][^/]' )* '*/' S ;
+
+(*
 css-selector = css-simple-selector [ css-combinator css-selector | S+ [ css-combinator? css-selector ]? ]? ;
 
-css-simple-selector = css-element-name [ css-hash | css-class | css-pseudo ]*
-                    | [ css-hash | css-class | css-pseudo ]+ ;
+css-simple-selector = css-sel-type
+                    | css-sel-class
+                    | css-sel-id
+                    | css-sel-all
+                    | css-sel-attr
 
-css-comment = '/*' ( #"[^*]*" | #'[*][^/]' )* '*/' S ;
+css-simple-selector = css-element [ css-id | css-class | css-pseudo ]*
+                    | [ css-id | css-class | css-pseudo ]+ ;
 
 css-combinator = '+' S
                | '>' S ;
 
-css-element-name = IDENT
-                 | '*' ;
+css-element = IDENT
+            | '*' ;
+css-id      = '#' NAME ;
+css-class   = '.' IDENT ;
+css-pseudo  = ':' [ IDENT | IDENT '(' S [IDENT S]? ')' ] ;
 
-css-hash   = '#' NAME ;
+*)
+
+
+css-selector = css-simple-selector-sequence [ css-combinator css-simple-selector-sequence ]* ;
+
+css-combinator = '+' S
+               | '>' S
+               | '~' S
+               | rS ;
+
+css-simple-selector-sequence = [ css-type | css-univ ]
+                               [ css-hash | css-class | css-attr | css-psuedo | css-negate ]*
+                             | [ css-hash | css-class | css-attr | css-psuedo | css-negate ]+ ;
+
+css-ns-pre = [ IDENT | '*' ]? '|' ;
+css-type   = [ css-ns-pre ]? IDENT ;
+css-univ   = [ css-ns-pre ]? '*' ;
+css-hash   = '#' IDENT ;
 css-class  = '.' IDENT ;
-css-pseudo = ':' [ IDENT | IDENT '(' S [IDENT S]? ')' ] ;
-NAME       = #'[_A-Za-z0-9-]+' ;
-IDENT      = #'-?[_A-Za-z][_A-Za-z0-9-]*' ;
+css-attr   = '[' S [ css-ns-pre ]? IDENT S
+             [
+               [
+                 '^=' |
+                 '$=' |
+                 '*=' |
+                 '='  |
+                 '~=' |
+                 '|='
+               ]
+               S [ IDENT | STRING ] S
+             ]?
+             ']' S ;
+css-psuedo = ':' ':'? [ IDENT | css-func ] ;
+css-func   = IDENT '(' S css-expr ')' S ;
+css-expr   = [ [ '+' | '-' | NUMBER '%' | NUMBER | STRING | IDENT ] S ]+ ;
+css-negate = ':not(' S [ css-type | css-univ | css-hash | css-class | css-attr | css-psuedo ] S ')' ;
 
 
+NAME        = #'[_A-Za-z0-9-]+' ;
+IDENT       = #'-?[_A-Za-z][_A-Za-z0-9-]*' ;
+STRING      = #'"[^"]*"'
+            | #"'[^']*'" ;
+NUMBER      = #"[0-9]+"
+            | #"[0-9]*\.[0-9]+" ;

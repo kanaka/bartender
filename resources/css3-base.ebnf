@@ -4,8 +4,8 @@ nonprop-angle = nonprop-number ( 'deg' | 'grad' | 'rad' | 'turn' ) ;
 (* nonprop-basic-shape = ; *)
 (* nonprop-blend-mode = ; *)
 (* nonprop-color = ; *)
-(* TODO: excluded values: https://developer.mozilla.org/en-US/docs/Web/CSS/custom-ident *)
-nonprop-custom-ident = ( #'[A-Za-z0-9_-]' | #'\\[0-9A-F][0-9A-F]?[0-9A-F]?[0-9A-F]?[0-9A-F]?[0-9A-F]?' )+ ;
+(* https://developer.mozilla.org/en-US/docs/Web/CSS/custom-ident *)
+nonprop-custom-ident = #'(?:[A-Za-z_]|-[A-Za-z_]|\\[0-9A-F]{1,6})(?:[A-Za-z0-9_-]|\\[0-9A-F]{1,6})+' ;
 nonprop-flex = nonprop-number 'fr' ;
 nonprop-frequency = nonprop-number ( 'Hz' | 'kHz' ) ;
 (* nonprop-gradient = ; *)
@@ -17,23 +17,29 @@ nonprop-number = nonprop-integer | number-float ;
 nonprop-percentage = nonprop-number '%' ;
 (* nonprop-position = ; *)
 nonprop-ratio = nonprop-positive-integer '/' nonprop-positive-integer ;
-nonprop-resolution = nonprop-number ( 'dpi' | 'dpcm' | 'dppx' ) ;
+nonprop-resolution = nonprop-number ( 'dpi' | 'dpcm' | 'dppx' | 'px' ) ;
 (* nonprop-shape = ; *)
 (* TODO: improve strings: https://developer.mozilla.org/en-US/docs/Web/CSS/string *)
-nonprop-string = #"'[A-Za-z0-9 _\"-^]*'"
-               | #"\"[A-Za-z0-9 _'-^]*\"" ;
+nonprop-string = #"'[A-Za-z0-9 _\"\-^]*'"
+               | #"\"[A-Za-z0-9 _'\-^]*\"" ;
 nonprop-time = nonprop-number ( 's' | 'ms' ) ;
 (* nonprop-transform-function = ; *)
 (* TODO: improve urls: https://developer.mozilla.org/en-US/docs/Web/CSS/url *)
-nonprop-url = 'url(http://STUB_DOMAIN.com/STUB_PATH/STUB_IMAGE.png)' ;
+nonprop-url = 'url(' url ')'
+            | 'url("' url '")' ;
 
 nonprop-positive-integer = #'[0-9]+' ;
+
+nonprop-unicode-range = #'U[+](?:[0-9A-Fa-f]{1,4}-[0-9A-Fa-f]{1,4}|[0-9A-Fa-f?]{1,4})' ( ',' S nonprop-unicode-range )* ;
 
 nonprop-ident-token = "STUB_ident_token" ;
 nonprop-declaration = "STUB_declaration" ;
 nonprop-calc-sum = "STUB_calc_sum" ;
 
-(* nonprop -> prop aliases *)
+nonprop-charset = charset ;
+
+
+(* standard nonprop -> prop mappings *)
 (* TODO: fix so we don't have to do this *)
 
 nonprop-align-content = prop-align-content ;
@@ -71,7 +77,6 @@ nonprop-column-rule-width = prop-column-rule-width ;
 nonprop-column-rule-style = prop-column-rule-style ;
 nonprop-column-rule-color = prop-column-rule-color ;
 
-nonprop-flex = prop-flex ;
 nonprop-flex-direction = prop-flex-direction ;
 nonprop-flex-wrap = prop-flex-wrap ;
 nonprop-flex-grow = prop-flex-grow ;
@@ -121,6 +126,33 @@ nonprop-max-width = prop-max-width ;
 nonprop-min-width = prop-min-width ;
 
 
+(* non-standard nonprop -> prop mappings *)
+
+nonprop--ms-content-zoom-limit-max = prop--ms-content-zoom-limit-max
+nonprop--ms-content-zoom-limit-min = prop--ms-content-zoom-limit-min
+nonprop--ms-content-zoom-snap-points = prop--ms-content-zoom-snap-points
+nonprop--ms-content-zoom-snap-type = prop--ms-content-zoom-snap-type
+nonprop--ms-scroll-limit-x-max = prop--ms-scroll-limit-x-max
+nonprop--ms-scroll-limit-y-max = prop--ms-scroll-limit-y-max
+nonprop--ms-scroll-limit-x-min = prop--ms-scroll-limit-x-min
+nonprop--ms-scroll-limit-y-min = prop--ms-scroll-limit-y-min
+nonprop--ms-scroll-snap-points-x = prop--ms-scroll-snap-points-x
+nonprop--ms-scroll-snap-points-y = prop--ms-scroll-snap-points-y
+nonprop--ms-scroll-snap-type = prop--ms-scroll-snap-type
+nonprop-grid-row-gap = prop-grid-row-gap
+nonprop-grid-column-gap = prop-grid-column-gap
+nonprop-mask-border-mode = prop-mask-border-mode
+nonprop-mask-border-outset = prop-mask-border-outset
+nonprop-mask-border-slice = prop-mask-border-slice
+nonprop-mask-border-repeat = prop-mask-border-repeat
+nonprop-mask-border-source = prop-mask-border-source
+nonprop-mask-border-width = prop-mask-border-width
+nonprop-offset-anchor = prop-offset-anchor
+nonprop-offset-distance = prop-offset-distance
+nonprop-offset-position = prop-offset-position
+nonprop-offset-path = prop-offset-path
+nonprop-offset-rotate = prop-offset-rotate
+
 (* Other Misc Missing *)
 (* TODO: figure out why these are missing. *)
 
@@ -128,6 +160,8 @@ nonprop-hex-color = #'#[0-9A-Fa-f]{3}'
                   | #'#[0-9A-Fa-f]{6}' ;
 
 nonprop-id-selector = nonprop-custom-ident ;
+nonprop-ident = nonprop-custom-ident ;
+nonprop-dimension = nonprop-resolution ;
 
 func-path = "STUB_func_path" ;
 nonprop-an-plus-b = "STUB_an_plus_b" ;
@@ -137,12 +171,9 @@ nonprop-attr-fallback = "STUB_attr_fallback" ;
 nonprop-clip-style = "STUB_clip_style" ;
 nonprop-custom-property-name = "STUB_custom_property" ;
 nonprop-declaration-value = "STUB_declaration_value" ;
-nonprop-dimension = "STUB_dimension" ;
 nonprop-function-token = "STUB_flex_function_token" ;
-nonprop-ident = nonprop-custom-ident ;
 nonprop-mask-attachment = "STUB_mask_attachment" ;
 nonprop-name-repeat = "STUB_name_repeat" ;
-nonprop-outline-radius = "STUB_outline_radius" ;
 nonprop-string-token = "STUB_string_token" ;
 nonprop-x = "11" ;
 nonprop-y = "11" ;
@@ -150,10 +181,6 @@ nonprop-y = "11" ;
 
 (* TODO: from at-rule descriptors *)
 
-nonprop-src = "STUB_src" ;
-nonprop-string-token = "STUB_string_token" ;
-nonprop-unicode-range = "STUB_unicode_range" ;
-prop-font-variation-settings = "STUB_font_variation_settings" ;
 nonprop-counter-system = "STUB_counter_system" ;
 nonprop-counter-symbols = "STUB_counter_symbols" ;
 nonprop-additive-symbols = "STUB_additive_symbols" ;

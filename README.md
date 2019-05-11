@@ -111,7 +111,7 @@ cd ..
 Generate CSS3 EBNF grammar and Clojure generator source:
 
 ```
-time lein with-profile w3c-css3 run --filter-status standard
+time lein with-profile w3c-css3 run
 
 time lein with-profile mend run --mode css3 --ebnf-input data/css3.ebnf --weights-output data/css3-weights-output.edn --namespace rend.css3-generators --function css3-generators --clj-output src/rend/css3_generators.clj
 ```

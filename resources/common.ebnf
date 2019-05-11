@@ -4,7 +4,7 @@ rS         = #'\s+' ;
 (* TODO: merge number rules *)
 
 (* HTML *)
-mime-type = #'[a-z]+/[a-z0-9-]+'
+mime-type = #'[a-z]+/[a-z0-9+-]+'
 lang = #'[a-z][a-z](?:-[A-Za-z][A-Za-z])?'
 integer = #"-?[0-9]+"
 non-negative-integer = #"[0-9]+"
@@ -16,4 +16,10 @@ length-unit = 'em' | 'ex' | 'ch' | 'ic' | 'rem' | 'lh' | 'rlh'
             | 'vh' | 'vw' | 'vi' | 'vb' | 'vmin' | 'vmax'
             | 'px' | 'mm' | 'q' | 'cm' | 'in' |  'pt' | 'pc' | 'mozmm' ;
 
+url = #'(?:https:|http:)?//[A-Za-z0-9._\-/&#=,?]+'
+    | #'[A-Za-z0-9._\-/#=]+'
+    | 'data:' mime-type ';base64,' #'[A-Za-z0-9+=/]*'
 
+charset = 'UTF-8'
+        | 'utf-8'
+        | 'iso-8859-15'
