@@ -88,7 +88,7 @@
   (spit "data/css3.vds" (css-vds-combined
                           (filter-css-defs
                             (json/read-str (slurp "./mdn_data/css/properties.json")))
-                          (json/read-str (slurp "mdn_data/css/syntaxes.json"))))
+                          (json/read-str (slurp "./mdn_data/css/syntaxes.json"))))
 )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -365,7 +365,7 @@
 (def cli-options
   [[nil "--vds-grammar EBNF-OUTPUT"
     "Path to generic VDS grammar definition."
-    :default "./data/css-vds.ebnf"]
+    :default "./resources/css-vds.ebnf"]
    [nil "--css-vds-output CSS-VDS-OUTPUT"
     "Write full CSS VDS syntax to file"
     :default "./data/css3.vds"]
@@ -383,10 +383,10 @@
     :default "mdn_data/css/at-rules.json"]
    [nil "--ebnf-base EBNF-BASE"
     "Path to base grammar file to include in EBNF output"
-    :default "./data/css3-base.ebnf"]
+    :default "./resources/css3-base.ebnf"]
    [nil "--ebnf-common EBNF-COMMON"
     "Path to common rules to include in EBNF output"
-    :default "./data/common.ebnf"]
+    :default "./resources/common.ebnf"]
    [nil "--filter-status FILTER-STATUS"
     "Name of namespace to generate"]])
 

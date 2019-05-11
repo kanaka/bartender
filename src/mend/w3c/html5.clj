@@ -366,13 +366,13 @@
     :default "w3c_html/sections/semantics-forms.include"]
    [nil "--ebnf-prefix EBNF-PREFIX"
     "Path to prefix file to include in EBNF output"
-    :default "./data/html5-prefix.ebnf"]
+    :default "./resources/html5-prefix.ebnf"]
    [nil "--ebnf-base EBNF-BASE"
     "Path to base grammar file to include in EBNF output"
-    :default "./data/html5-base.ebnf"]
+    :default "./resources/html5-base.ebnf"]
    [nil "--ebnf-common EBNF-COMMON"
     "Path to common rules to include in EBNF output"
-    :default "./data/common.ebnf"]])
+    :default "./resources/common.ebnf"]])
 
 (defn ebnf-combined-str
   "Take opts with prefix, base, elements and attributes data paths

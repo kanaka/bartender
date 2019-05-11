@@ -13,4 +13,4 @@ gen/[0-9]*
 /opt
 /tmp
 /old
-/resources
+/data/*.bak*

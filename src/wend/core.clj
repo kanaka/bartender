@@ -11,28 +11,28 @@
             [instaparse.failure]))
 
 (def EBNF-PATHS
-  {:html5          ["data/html5.ebnf"]
-   :html5-generic  ["data/html5-generic.ebnf"
+  {:html5-gen      ["data/html5.ebnf"]
+   :html5-parse    ["resources/html5-generic.ebnf"
                     "data/html5.ebnf"]
-   :css3           ["data/css3.ebnf"]
-   :css3-generic   ["data/css3.ebnf"
-                    "data/css3-generic.ebnf"]})
+   :css3-gen       ["data/css3.ebnf"]
+   :css3-parse     ["data/css3.ebnf"
+                    "resources/css3-generic.ebnf"]})
 
 (def GRAMMAR-MANGLES
-  {:html5          {}
-   :html5-generic  {:char-data :char-data-generic
+  {:html5-gen      {}
+   :html5-parse    {:char-data :char-data-generic
                     :comment :comment-generic
                     :url :url-generic}
-   :css3           {}
-   :css3-generic   {:nonprop-group-rule-body :stylesheet
+   :css3-gen       {}
+   :css3-parse     {:nonprop-group-rule-body :stylesheet
                     :prop-group-rule-body :css-ruleset
                     :nonprop-declaration-list :css-assignments}})
 
 (def START-RULES
-  {:html5          :html
-   :html5-generic  :html-generic
-   :css3           :css-assignments
-   :css3-generic   :stylesheet})
+  {:html5-gen      :html
+   :html5-parse    :html-generic
+   :css3-gen       :css-assignments
+   :css3-parse     :stylesheet})
 
 (defn mangle-parser
   [parser mangles]
