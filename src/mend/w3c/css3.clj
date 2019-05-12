@@ -303,7 +303,7 @@
            " |\n"
            (for [i (range bmin (+ 1 bmax))]
              (string/join
-               (if hash? " ',' S\n" "\n")
+               (if hash? " ',' S\n" " rS\n")
                (if (= i 0)
                  (str pre "''")
                  (repeat i single)))))
