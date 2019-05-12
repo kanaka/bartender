@@ -142,9 +142,11 @@
     h))
 
 (defn extract-html
-  "Convert HTML to hickory, remove style tags and attributes, apply
-  some other manual cleanups, then convert back to HTML in order to
-  normalize the HTML into a more standard and consistent form."
+  "Returns cleaned up and normalized HTML text strings. Specifically
+  it converts HTML to hickory, removes style tags and attributes,
+  applies some other manual cleanups, then converts back to HTML in
+  order to normalize the HTML into a more standard and consistent
+  form."
   [html]
   (-> html
       hickory.core/parse
@@ -155,7 +157,33 @@
       cleanup-ws-in-attrs
       hickory.render/hickory-to-html))
 
-(defn extract-css
+(defn cleanup-css
+  [css]
+  (string/replace
+    (string/replace
+      (string/replace
+        css
+        ;; Remove non-unix newlines
+        #"[\r]" "\n")
+      ;; remove vendor prefixes
+      #"([^A-Za-z0-9])(?:-webkit-|-moz-|-ms-)" "$1")
+    ;; Remove apple specific CSS property
+    #"x-content: *\"[^\"]*\"" ""))
+
+;;        ;; remove vendor prefixes (from at-rules)
+;;        #"@(-webkit-|-moz-|-ms-)" "@")
+;;      ;; Remove vendor prefixes (-webkit-, -moz-, -ms-) from some properties
+;;      #"(-webkit-|-moz-|-ms-)(transform|text-size-adjust|box-sizing|font-feature-settings)\b" "$2"
+
+(defn extract-css-map
+  "Return a map of CSS texts with the following keys:
+  - :loaded-sheets -> list of stylesheets loaded by path/URL
+  - :inline-sheets -> list of stylesheets inline in the HTML
+  - :inline-styles -> list with single text with all inline styles in
+                      a wildcard selector (i.e. '* { STYLES }')
+
+  The returned styles can be combined into a single stylesheet like this:
+      (clojure.string/join \"\n\" (apply concat CSS-MAP))"
   [html & [base-path]]
   (let [h (-> html
               hickory.core/parse
@@ -176,29 +204,15 @@
         loaded-sheets (map #(str "/* from: " % " */\n"
                                  (slurp %))
                            sheet-hrefs)
-        all-css (str (string/join "\n" loaded-sheets)
-                     "\n"
-                     (string/join "\n" inline-sheets)
-                     "\n"
-                     (when (seq styles)
-                       (str
-                         "* {\n    "
-                         (string/join "\n    " styles)
-                         "\n}")))]
-    (string/replace
-      (string/replace
-;;        (string/replace
-          (string/replace
-            all-css
-            ;; Remove non-unix newlines
-            #"[\r]" "\n")
-          ;; Remove vendor prefixes (-webkit-, -moz-, -ms-) from some properties
-;;          #"(-webkit-|-moz-|-ms-)(transform|text-size-adjust|box-sizing|font-feature-settings)\b" "$2")
-        ;; remove vendor prefixes (from at-rules)
-        #"@(-webkit-|-moz-|-ms-)" "@")
-;;        #"([^A-Za-z0-9])(?:-webkit-|-moz-|-ms-)" "$1")
-      ;; Remove apple specific CSS property
-      #"x-content: *\"[^\"]*\"" "")))
+        inline-styles (when (seq styles)
+                        (str
+                          "* {\n    "
+                          (string/join "\n    " styles)
+                          "\n}"))
+        css-map {:loaded-sheets (map cleanup-css loaded-sheets)
+                 :inline-sheets (map cleanup-css inline-sheets)
+                 :inline-styles (list (cleanup-css inline-styles))}]
+    css-map))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -250,9 +264,11 @@
 
 (declare checked-parse) ;; TODO: use from instacheck
 
-(defn parse-weights [parser text]
-  (let [hparsed (checked-parse parser text)]
-    (frequencies (-> hparsed meta :path-log))))
+(defn parse-weights [parser texts]
+  (let [texts (if (string? texts) [texts] texts)
+        parsed (map #(checked-parse parser %) texts)]
+    (apply merge-with +
+           (map #(frequencies (-> % meta :path-log)) parsed))))
 
 (defn save-weights [path weights]
   (spit path (with-out-str (pprint (into (sorted-map) weights)))))
@@ -376,13 +392,22 @@
 
 (comment
 
-(def p (load-parser))
+(def p (load-parser :html))
 
 (def html "<html><head><link rel=\"stylesheet\" href=\"../static/normalize.css\"><link rel=\"stylesheet\" href=\"../static/rend.css\"></head><body>x<div style=\"background: red\"></div></body></html>")
 
 (def w (filter-alts (parse-weights p html)))
 
-(doseq [k (keys w)] (println (grammar-path-string (:grammar p) k)))
+;; List used rules sorted by rule name
+(doseq [[k v] (sort-by (comp str key) w)]
+  (println (str (grammar-path-string (:grammar p) k)
+                "  (* {:weight " v "} *)")))
+
+;; List used rules sorted by rule weight (usage frequency)
+(doseq [[k v] (sort-by val w)]
+  (println (str (grammar-path-string (:grammar p) k)
+                "  (* {:weight " v "} *)")))
+
 
 )
 

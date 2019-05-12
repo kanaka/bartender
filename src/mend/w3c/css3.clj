@@ -22,7 +22,11 @@
 (defn filter-css-definitions
   "Filter properties we want (also removes '--*')"
   [defs]
-  (into {} (filter (fn [[name attrs]] (re-find #"^[@a-z-]+$" name)) defs)))
+  (into {} (filter (fn [[name attrs]]
+		     (and
+		      (re-find #"^[@a-z-]+$" name)
+		      (= (get attrs "status") "standard")))
+		   defs)))
 
 (defn mangle-css-syntaxes
   "Fix some bugs in the syntax definitions."
@@ -377,6 +381,11 @@ css-assignments = S | css-assignment S (';' S css-assignment S)* (';' S)* ;
 css-assignment =
   ( css-assignment-known / css-assignment-unknown )
   ( '!important' S )? ;
+
+css-assignment-unknown = #'[A-Za-z-]+' S ':' S ( prop-all | prop-unknown ) ;
+
+prop-unknown = #'[^\";}]+' ;
+
 ")
 
 (defn assignment-known-ebnf [props]
@@ -389,9 +398,6 @@ css-assignment =
        "\n"
        "  ) ;"))
 
-(defn assignment-unknown-ebnf []
-  (str "css-assignment-unknown = #'[A-Za-z-]+\\s*:[^\";}]+' ;"))
-
 (defn ebnf-combined-str [css-map properties opts]
   (let [cfilt (fn [pred xs] (filter #(pred (get (val %) "status")) xs))
         known (map first (cfilt #(= "standard" %) properties))]
@@ -399,7 +405,6 @@ css-assignment =
       "\n\n"
       [css-prefix
        (assignment-known-ebnf (sort known))
-       (assignment-unknown-ebnf)
        (map->ebnf (sort-by key css-map))
        (slurp (:ebnf-base opts))
        (slurp (:ebnf-common opts))])))
@@ -422,8 +427,8 @@ css-assignment =
                   properties-file syntaxes-file at-rules-file)
         properties (filter-css-definitions
                      (json/read-str (slurp properties-file)))
-        syntaxes   (json/read-str (slurp syntaxes-file))
-        at-rules   (filter-css-definitions
+        syntaxes (json/read-str (slurp syntaxes-file))
+        at-rules (filter-css-definitions
                      (json/read-str (slurp at-rules-file)))
         vds-text (css-vds-combined properties syntaxes at-rules)
 

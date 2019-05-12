@@ -38,6 +38,10 @@ nonprop-calc-sum = "STUB_calc_sum" ;
 
 nonprop-charset = charset ;
 
+(* non-standard needed by at-rules *)
+
+nonprop-font-variation-settings = prop-unknown ;
+
 
 (* standard nonprop -> prop mappings *)
 (* TODO: fix so we don't have to do this *)
@@ -90,7 +94,6 @@ nonprop-font-stretch = prop-font-stretch ;
 nonprop-font-size = prop-font-size ;
 nonprop-font-family = prop-font-family ;
 nonprop-font-variant = prop-font-variant ;
-nonprop-font-variation-settings = prop-font-variation-settings
 
 nonprop-grid-template = prop-grid-template ;
 nonprop-grid-template-rows = prop-grid-template-rows ;
@@ -128,6 +131,7 @@ nonprop-min-width = prop-min-width ;
 
 (* non-standard nonprop -> prop mappings *)
 
+(*
 nonprop--ms-content-zoom-limit-max = prop--ms-content-zoom-limit-max
 nonprop--ms-content-zoom-limit-min = prop--ms-content-zoom-limit-min
 nonprop--ms-content-zoom-snap-points = prop--ms-content-zoom-snap-points
@@ -139,6 +143,7 @@ nonprop--ms-scroll-limit-y-min = prop--ms-scroll-limit-y-min
 nonprop--ms-scroll-snap-points-x = prop--ms-scroll-snap-points-x
 nonprop--ms-scroll-snap-points-y = prop--ms-scroll-snap-points-y
 nonprop--ms-scroll-snap-type = prop--ms-scroll-snap-type
+nonprop-font-variation-settings = prop-font-variation-settings
 nonprop-grid-row-gap = prop-grid-row-gap
 nonprop-grid-column-gap = prop-grid-column-gap
 nonprop-mask-border-mode = prop-mask-border-mode
@@ -152,6 +157,7 @@ nonprop-offset-distance = prop-offset-distance
 nonprop-offset-position = prop-offset-position
 nonprop-offset-path = prop-offset-path
 nonprop-offset-rotate = prop-offset-rotate
+*)
 
 (* Other Misc Missing *)
 (* TODO: figure out why these are missing. *)
