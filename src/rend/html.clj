@@ -6,9 +6,8 @@
 (def GREEN "#80ff80")
 
 
-(defn render-report-row [browsers log sth]
-  (let [idx (+ 1 sth)
-        pass (:result log)
+(defn render-report-row [browsers log idx]
+  (let [pass (:result log)
         diffs (:diffs log)
         violations (:violations log)
         html (:html log)]
@@ -87,11 +86,13 @@
             " bytes"])))))
 
 ;; Generate an HTML index page for the current test results
-(defn render-report [cfg state]
-  (let [port (-> cfg :web :port)
-        logs (:log state)
+(defn render-report [state]
+  (let [cfg       (-> state :cfg)
+        port      (-> cfg :web :port)
         threshold (-> cfg :compare :threshold)
-        browsers (:browsers cfg)]
+        browsers  (-> cfg :browsers)
+        run       (-> state :run)
+        logs      (-> state :run-log (get run) :iter-log vals)]
     (hiccup/html
       [:html
        [:style "a {text-decoration: none}"]

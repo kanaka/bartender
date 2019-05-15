@@ -62,10 +62,10 @@ bang      = <'!'>
 digit = #'[0-9]'
 comma = ','
 delimeter = <S> ';' <S>
-literal = #'[-a-zA-Z0-9,/:;%]+'
+literal = #'[-_a-zA-Z0-9,/:;%]+'
         | '"'
-        | <"'"> #"[-a-zA-Z0-9,~|^$.<>={}:\u0028\u0029/\u005B\u005D\u002A\u002B]*" <"'">
+        | <"'"> #"[-_a-zA-Z0-9,~|^$.<>={}:\u0028\u0029/\u005B\u005D\u002A\u002B]*" <"'">
         | #'[\u0028\u0029]'
-<identifier> = #'@?[-a-zA-Z][-a-zA-Z0-9]*(?:\u0028\u0029)?(?x) #identifier'
+<identifier> = #'@?[-_a-zA-Z][-a-zA-Z0-9]*(?:\u0028\u0029)?(?x) #identifier'
 S = #'\s*'
 rS = #'\s+'

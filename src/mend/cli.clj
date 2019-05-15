@@ -5,8 +5,11 @@
 
             [com.rpl.specter :refer [nthpath]]
 
-            [instacheck.core :as ebnf]
-            [instacheck.cli :as ebnf-cli]
+            [instacheck.core :as instacheck]
+            [instacheck.cli :as instacheck-cli]
+            [instacheck.grammar :as instacheck-grammar]
+            [instacheck.codegen :as instacheck-codegen]
+            [wend.core :as wend]
 
             ;; Not actually used here, but convenient for testing
             [clojure.pprint :refer [pprint]]
@@ -32,12 +35,7 @@
    {:path [:nonprop-positive-integer]
     :value {:tag :nt :keyword :gen/pos-int}}
    {:path [:number-float]
-    :value {:tag :nt :keyword :gen/double}}
-   ;; Stub out mutually recursive media rules
-   {:path [:nonprop-media-in-parens]
-    :value {:tag :string :string "STOP_RECURSE_media_in_parens"}}
-   {:path [:nonprop-supports-in-parens]
-    :value {:tag :string :string "STOP_RECURSE_supports_in_parens"}}])
+    :value {:tag :nt :keyword :gen/double}}])
 
 (defn prune-S [x]
   (if (and (:parsers x)
@@ -47,7 +45,7 @@
     x))
 
 (defn css3-grammar-update-fn [ctx grammar]
-  (let [g1 (ebnf/apply-grammar-updates grammar css3-grammar-updates)
+  (let [g1 (instacheck/apply-grammar-updates grammar css3-grammar-updates)
         ;; Remove empty strings
         g2 (postwalk prune-S g1)]
     g2))
@@ -72,8 +70,8 @@
   [ctx grammar]
   (str (ns-prefix ctx)
        (if (:function ctx)
-         (ebnf/grammar->generator-func-source ctx grammar)
-         (ebnf/grammar->generator-defs-source ctx grammar))))
+         (instacheck-codegen/grammar->generator-func-source ctx grammar)
+         (instacheck-codegen/grammar->generator-defs-source ctx grammar))))
 
 (defn pr-err
   [& args]
@@ -90,7 +88,7 @@
 (def cli-options
   (vec
     (concat
-      ebnf-cli/general-cli-options
+      instacheck-cli/general-cli-options
       [[nil "--mode MODE"
         "Mode (html5 or css3) for grammar transforms."
         :validate [#(get #{"html5" "css3"} %) "Must be 'html5' or 'css3'"]]
@@ -114,13 +112,13 @@
 
         ;; The following each take 4-6 seconds
         _ (println "Loading grammar from" (:ebnf-input opts))
-        grammar (ebnf/load-grammar (slurp (:ebnf-input opts)))
+        grammar (instacheck-grammar/load-grammar (slurp (:ebnf-input opts)))
         _ (println "Converting grammar to clojure generators")
         ns-str (grammar->ns ctx grammar)]
 
     (when-let [wfile (:weights-output opts)]
       (println "Saving weights to" wfile)
-      (ebnf-cli/save-weights ctx (:weights-output opts)))
+      (wend/save-weights wfile @(:weights-res ctx)))
 
     ns-str))
 

@@ -3,10 +3,8 @@
             [clojure.string :as string]
             [clojure.tools.cli :refer [parse-opts]]
 
-            ;; TODO: move to instacheck and use from there
-            [wend.core :refer [checked-parse]]
-
-            [instaparse.core :as insta]))
+            [instacheck.core :as instacheck]
+            [instaparse.core :as instaparse]))
 
 ;; TODO: global properties (inherit, initial, unset, revert)
 
@@ -41,10 +39,16 @@
                (= syntax "rect(<top>, <right>, <bottom>, <left>)")
                [k {"syntax" "rect( <top>, <right>, <bottom>, <left> )"}]
 
-               ;; Remove recursive part
-               ;; TODO: is this really intended (find W3C standard)
+               ;; Remove recursive image definition
+               ;; TODO: is recursion really intended here (find W3C standard)
                (= k "image")
                [k {"syntax" "<url> | <element()>"}]
+
+               ;; Remove recursive media type definition
+               (= k "media-in-parens")
+               [k {"syntax" "'STOP_RECURSE_media_in_parens'"}]
+               (= k "supports-in-parens")
+               [k {"syntax" "'STOP_RECURSE_supports_in_parens'"}]
 
                ;; Drop unused syntaxes that also have recursion
                (= k "page-body")
@@ -67,7 +71,9 @@
 (defn css-vds-combined [properties syntaxes at-rules]
   (let [syns (mangle-css-syntaxes syntaxes)
         ps (for [[prop {:strs [syntax]}] (sort properties)]
-             (str "<'" prop "'> = " syntax "\n"))
+             (if (= prop "all")
+               (str "<'" prop "'> = " syntax "\n")
+               (str "<'" prop "'> = <'all'> | " syntax "\n")))
         ss (for [[syn {:strs [syntax]}] (sort syns)]
              (str "<" syn "> = " syntax "\n"))
         as (for [[rule-name {:strs [syntax]}] (sort at-rules)]
@@ -117,7 +123,7 @@
   (into {} items)))
 
 (comment
-  (def css3-syntax-parser (insta/parser "resources/css-vds.ebnf"))
+  (def css3-syntax-parser (instaparse/parser "resources/css-vds.ebnf"))
   ;; Takes 4 seconds
   (def parse-tree (css3-syntax-parser (slurp "data/css3.vds")))
   (def parse-map (parsed-tree->map parse-tree))
@@ -151,15 +157,16 @@
 ;;
 
 (defn name-ebnf [k]
-  (cond
-    (= \' (first k))
-    (str "prop-" (string/replace k #"'" ""))
+  (-> (cond
+        (= \' (first k))
+        (str "prop-" (string/replace k #"'" ""))
 
-    (re-find #"\(\)$" k)
-    (str "func-" (string/replace k #"\(\)$" ""))
+        (re-find #"\(\)$" k)
+        (str "func-" (string/replace k #"\(\)$" ""))
 
-    :else
-    (str "nonprop-" k)))
+        :else
+        (str "nonprop-" k))
+      (string/replace #"@" "AT-")))
 
 (defn single-bar-ebnf
   "One of the values must occur."
@@ -318,7 +325,7 @@
 
 (defn value-ebnf [k v]
   ;;(prn :value-ebnf :k k :v v)
-  (str (name-ebnf k) " = \n"
+  (str (name-ebnf k) " =\n"
        (single-bar-ebnf (drop 1 v) 1)))
 
 (defn map->ebnf [m]
@@ -379,22 +386,23 @@
 css-assignments = S | css-assignment S (';' S css-assignment S)* (';' S)* ;
 
 css-assignment =
-  ( css-assignment-known / css-assignment-unknown )
+  ( css-known / css-unknown )
   ( '!important' S )? ;
 
-css-assignment-unknown = #'[A-Za-z-]+' S ':' S ( prop-all | prop-unknown ) ;
+css-unknown = #'[A-Za-z-]+' S ':' S ( prop-all | prop-unknown ) ;
 
 prop-unknown = #'[^\";}]+' ;
+nonprop-all = prop-all ;
 
 ")
 
-(defn assignment-known-ebnf [props]
-  (str "css-assignment-known =\n"
+(defn css-known-ebnf [props]
+  (str "css-known =\n"
        "  (\n"
        (string/join
          " |\n"
          (for [p props]
-           (str "    \"" p "\" S \":\" S ( prop-all | prop-" p " )")))
+           (str "    \"" p "\" S \":\" S prop-" p "")))
        "\n"
        "  ) ;"))
 
@@ -404,7 +412,7 @@ prop-unknown = #'[^\";}]+' ;
     (string/join
       "\n\n"
       [css-prefix
-       (assignment-known-ebnf (sort known))
+       (css-known-ebnf (sort known))
        (map->ebnf (sort-by key css-map))
        (slurp (:ebnf-base opts))
        (slurp (:ebnf-common opts))])))
@@ -418,7 +426,7 @@ prop-unknown = #'[^\";}]+' ;
   (let [opts (:options (opt-errors (parse-opts args cli-options)))
 
         _ (pr-err "Creating VDS grammar parser from:" (:vds-grammar opts))
-        css3-syntax-parser (insta/parser (:vds-grammar opts))
+        css3-syntax-parser (instaparse/parser (:vds-grammar opts))
 
         properties-file (:css-properties opts)
         syntaxes-file (:css-syntaxes opts)
@@ -437,7 +445,7 @@ prop-unknown = #'[^\";}]+' ;
             (spit pfile vds-text))
 
         _ (pr-err "Parsing CSS VDS grammar")
-        css-tree (checked-parse css3-syntax-parser vds-text)
+        css-tree (instacheck/parse css3-syntax-parser vds-text)
         css-map (parsed-tree->map css-tree)
 
         _ (pr-err "Converting CSS VDS grammar to EBNF")
@@ -448,5 +456,5 @@ prop-unknown = #'[^\";}]+' ;
 
     (println "Checking CSS3 EBNF grammar")
     ;; The following takes 5 seconds
-    (insta/parser css3-ebnf-str)))
+    (instaparse/parser css3-ebnf-str)))
 

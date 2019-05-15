@@ -11,21 +11,23 @@
   :source-paths ["src"]
 
   :dependencies [[org.clojure/clojure "1.10.0"]
+                 [org.clojure/tools.cli "0.4.1"]
+
                  [com.gfredericks/test.chuck "0.2.7"]
+                 [com.rpl/specter "1.1.0"]
                  [org.clojure/data.json "0.2.6"]
                  [org.clojure/data.codec "0.1.0"]
                  [org.clojure/math.combinatorics "0.1.4"]
                  [hiccup "1.0.5"]
-                 [http-kit "2.3.0"]
-
-                 [org.clojure/tools.cli "0.4.1"]
+                 [hickory "0.7.0"]
 
                  ;; rend specific
                  [clj-yaml "0.4.0"]
                  [clj-time "0.14.2"]
-                 [pandect "0.6.0"]
-                 [compojure "1.6.0"]
-                 [ring/ring-core "1.6.3"]
+                 [compojure "1.6.1"]
+                 [http-kit "2.3.0"]
+                 [ring/ring-core "1.7.1"]
+                 [ring/ring-devel "1.7.1"] ;; wrap-reload
                  ;; Installed with localrepo by running `make deps`
                  [opencv/opencv "2.4.9"]
                  [opencv/opencv-native "2.4.9"]
@@ -35,14 +37,10 @@
                  [org.seleniumhq.selenium/selenium-server "3.141.59"]
 
                  [org.clojure/test.check "0.10.0-alpha3"]
-                 [kanaka/instacheck "0.4.2"]
+                 [kanaka/instacheck "0.6.2"]
 
                  ;; Patched version (retain comments, parsed path log)
-                 [kanaka/instaparse "1.4.9.1"]
-
-                 ;; mend specific
-                 [hickory "0.7.0"]
-                 [com.rpl/specter "1.0.0"]]
+                 [kanaka/instaparse "1.4.9.1"]]
 
   :profiles {:rend      {:main rend.cli}
              :mend      {:main mend.cli}
@@ -51,5 +49,4 @@
              :w3c-css3  {:main mend.w3c.css3}
              }
 
-  :main rend.cli
-  )
+  :main rend.core)

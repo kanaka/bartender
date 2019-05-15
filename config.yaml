@@ -1,9 +1,9 @@
 test:
     runs: 10
     mode: "reduce-weights"
+start-seed: 5
 quick-check:
     iterations: 20
-    seed: 5
     max-size: 100
 weights:
     base:

@@ -9,7 +9,10 @@
             [ring.middleware.file :refer [wrap-file]]
             [ring.util.response :refer [redirect]]))
 
-(def ws-clients
+;; TODO: make reloadable:
+;; https://github.com/ring-clojure/ring/wiki/Reloading
+
+(defonce ws-clients
   (atom #{}))
 
 (defn ws-handler [request]
@@ -25,14 +28,8 @@
   (doseq [ch @ws-clients]
     (send! ch data)))
 
-(defn start-server [port dir current-dirs-atom]
-  (let [root-handler (fn [req]
-                       (str "<html><body>"
-                            (apply str (doall (for [dir @current-dirs-atom]
-                                                (str "<a href=\"" dir "\">"
-                                                     dir "</a><br>"))))
-                            "</body></html>"))
-        routes (compojure.core/routes
+(defn start-server [port dir root-handler]
+  (let [routes (compojure.core/routes
                  ;;(GET "/" [] (file-response default-index {}))
                  ;;(GET "/" [] (redirect default-path))
                  (GET "/" [] root-handler)
