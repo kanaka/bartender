@@ -1,5 +1,6 @@
 (ns mend.cli
-  (:require [clojure.string :as string]
+  (:require [clojure.java.io :as io]
+            [clojure.string :as string]
             [clojure.tools.cli :refer [parse-opts]]
             [clojure.walk :refer [postwalk]]
 
@@ -90,29 +91,33 @@
     (concat
       instacheck-cli/general-cli-options
       [[nil "--mode MODE"
-        "Mode (html5 or css3) for grammar transforms."
+        "Mode: html5 or css3."
         :validate [#(get #{"html5" "css3"} %) "Must be 'html5' or 'css3'"]]
        [nil "--clj-output CLJ-OUTPUT"
         "Write Clojure code to path."]
        [nil "--namespace NAMESPACE"
         "Name of namespace to generate"]
-       [nil "--ebnf-input EBNF-INPUT"
-        "EBNF file to load/parse"]
        [nil "--function FUNCTION"
         "Emit a function named FUNCTION which returns a generator rather than a defn for every generator"]])))
 
 (defn ebnf->clj [opts]
   (let [grammar-update (condp = (:mode opts)
                          "html5" html5-grammar-updates
-                         "css3" css3-grammar-update-fn)
+                         "css3"  css3-grammar-update-fn)
+        ebnf-file (condp = (:mode opts)
+                    "html5" "html5.ebnf"
+                    "css3"  "css3.ebnf")
+
         ctx (merge {:weights-res (atom {})
                     :grammar-updates grammar-update}
                    (select-keys opts [:namespace
                                       :weights :function]))
 
+
         ;; The following each take 4-6 seconds
-        _ (println "Loading grammar from" (:ebnf-input opts))
-        grammar (instacheck-grammar/load-grammar (slurp (:ebnf-input opts)))
+        _ (println "Loading grammar from" ebnf-file)
+        ebnf (slurp (io/resource ebnf-file))
+        grammar (instacheck-grammar/load-grammar ebnf)
         _ (println "Converting grammar to clojure generators")
         ns-str (grammar->ns ctx grammar)]
 
@@ -129,9 +134,6 @@
     (when (not (:mode opts))
       (println "--mode MODE (html5 or css3) is required")
       (System/exit 2))
-    (when (not (:ebnf-input opts))
-      (println "--ebnf-input EBNF-INPUT is required")
-      (System/exit 2))
     (when (not (:clj-output opts))
       (println "--clj-output CLJ-OUTPUT is required")
       (System/exit 2))
@@ -140,5 +142,6 @@
       (System/exit 2))
 
     (println "Saving Clojure code to" (:clj-output opts))
+    (io/make-parents (:clj-output opts))
     (spit (:clj-output opts) (ebnf->clj opts))))
 

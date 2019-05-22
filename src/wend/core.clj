@@ -218,6 +218,7 @@
 ;; Grammar weight functions
 
 (defn save-weights [path weights]
+  (io/make-parents path)
   (spit path (with-out-str (pprint (into (sorted-map) weights)))))
 
 (defn parse-weights [parser texts]

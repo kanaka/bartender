@@ -80,40 +80,16 @@ specified in config.yaml.
 
 ## Mend: Update HTML5 and CSS3 Generators
 
-Update the W3C HTML5 element/attribute data to the desired version:
+Generate Clojure generator source based on the HTML5 EBNF grammar:
 
 ```
-cd w3c_html
-git fetch
-git checkout master   # latest proposed HTML5
-git checkout html5.1  # HTML 5.1 2nd edition, Recommendation 3 October 2017
-git checkout html5.2  # HTML 5.2, Recommendation, 14 October 2017
-cd ..
+time lein with-profile mend run --mode html5 --weights-output data/html5-weights-output.edn --namespace rend.html5-generators --function html5-generators --clj-output src/rend/html5_generators.clj
 ```
 
-Generate HTML5 EBNF grammar and Clojure generator source:
+Generate Clojure generator source based on the CSS3 EBNF grammar:
 
 ```
-time lein with-profile w3c-html5 run
-
-time lein with-profile mend run --mode html5 --ebnf-input data/html5.ebnf --weights-output data/html5-weights-output.edn --namespace rend.html5-generators --function html5-generators --clj-output src/rend/html5_generators.clj
-```
-
-Get latest CSS3 property/VDS data by updating the MDN data submodule:
-
-```
-cd mdn_data
-git checkout master
-git pull
-cd ..
-```
-
-Generate CSS3 EBNF grammar and Clojure generator source:
-
-```
-time lein with-profile w3c-css3 run
-
-time lein with-profile mend run --mode css3 --ebnf-input data/css3.ebnf --weights-output data/css3-weights-output.edn --namespace rend.css3-generators --function css3-generators --clj-output src/rend/css3_generators.clj
+time lein with-profile mend run --mode css3 --weights-output data/css3-weights-output.edn --namespace rend.css3-generators --function css3-generators --clj-output src/rend/css3_generators.clj
 ```
 
 Use the generators from a Clojure REPL:
