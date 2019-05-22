@@ -355,6 +355,7 @@
   [[nil "--ebnf-output EBNF-OUTPUT"
     "Write intermediate EBNF to file"
     :default "./data/html5.ebnf"]
+
    [nil "--elements-include ELEMENTS-INCLUDE"
     "Path to W3C include section for HTML5 elements"
     :default "w3c_html/sections/elements.include"]
@@ -364,6 +365,7 @@
    [nil "--form-semantics-include FORM-SEMANTICS-INCLUDE"
     "Path to W3C include section for HTML5 form semantics"
     :default "w3c_html/sections/semantics-forms.include"]
+
    [nil "--ebnf-prefix EBNF-PREFIX"
     "Path to prefix file to include in EBNF output"
     :default "./resources/html5-prefix.ebnf"]
@@ -396,8 +398,8 @@
 
 
 (defn -main
-  "Generate a HTML 5 EBNF grammar based on specification data from the
-  W3C.
+  "Generate an HTML 5 EBNF grammar based on specification data from
+  the W3C.
 
   This takes about 7 seconds to run"
   [& args]

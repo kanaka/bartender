@@ -1,0 +1,10 @@
+css-assignments = S | css-assignment S (';' S css-assignment S)* (';' S)* ;
+
+css-assignment =
+  ( css-known / css-unknown )
+  ( '!important' S )? ;
+
+css-unknown = #'[A-Za-z-]+' S ':' S ( prop-all | prop-unknown ) ;
+
+prop-unknown = #'[^";}]+' ;
+nonprop-all = prop-all ;
