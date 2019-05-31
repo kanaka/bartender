@@ -212,33 +212,45 @@
   "Render and check a test case page. Then output a report file and
   send an update to any browsers currently viewing the page."
   [state test-dir html]
-  (let [cfg (:cfg @state)
-        test-id (:test-id cfg)
-        test-iteration (new-test-iteration! state)
-        [res diffs violations] (check-page* state test-dir test-iteration html)
-        log-entry {:prefix (str test-dir "/" test-iteration)
-                   :html html
-                   :result res
-                   :diffs diffs
-                   :violations violations}
-        state-val (log! state :iter log-entry)]
-    ;; Generate report page after every check and notify browsers
-    ;; viewing it of the change.
+  (let [test-dir (string/replace test-dir #"/*$" "")
+        cfg (:cfg @state)
+        test-id (:test-id cfg)]
+
+    ;; Communicate the test directories to the web server
+    (swap! state update-in [:test-dirs] conj (str test-dir "/"))
+
+    ;; Create the initial report page
+    (io/make-parents (java.io.File. (str test-dir "/index.html")))
     (spit (str test-dir "/index.html")
-          (rend.html/render-report state-val))
-    (rend.server/ws-broadcast
-      (str
-        "row:" test-id ":"
-        (hiccup.core/html
-          (rend.html/render-report-row (:browsers cfg)
-                                       log-entry
-                                       test-iteration))))
-    (rend.server/ws-broadcast
-      (str
-        "summary:" test-id ":"
-        (hiccup.core/html
-          (rend.html/render-summary state-val))))
-    res))
+          (rend.html/render-report @state))
+
+    (let [test-iteration (new-test-iteration! state)
+          [res diffs violations] (check-page* state test-dir test-iteration html)
+          log-entry {:prefix (str test-dir "/" test-iteration)
+                     :html html
+                     :result res
+                     :diffs diffs
+                     :violations violations}
+          state-val (log! state :iter log-entry)]
+
+      ;; Generate report page after every check and notify browsers
+      ;; viewing it of the change.
+      (spit (str test-dir "/index.html")
+            (rend.html/render-report state-val))
+
+      (rend.server/ws-broadcast
+        (str
+          "row:" test-id ":"
+          (hiccup.core/html
+            (rend.html/render-report-row (:browsers cfg)
+                                         log-entry
+                                         test-iteration))))
+      (rend.server/ws-broadcast
+        (str
+          "summary:" test-id ":"
+          (hiccup.core/html
+            (rend.html/render-summary state-val))))
+      res)))
 
 ;; SIDE-EFFECTS: updates state atom with report summary
 (defn reporter
@@ -302,16 +314,9 @@
         test-dir (str (-> cfg :web :dir)
                       "/" (:test-id cfg) "-" run "-" current-seed)]
     (swap! test-state assoc :iteration -1)
-    (swap! test-state update-in [:test-dirs] conj (str test-dir "/"))
 
     (println "Test State:")
     (pprint (printable-state @test-state))
-
-    ;; Create the initial empty page
-    (io/make-parents (java.io.File. (str test-dir "/index.html")))
-    (spit (str test-dir "/index.html")
-          (rend.html/render-report @test-state))
-    ;; Communicate the test directories to the web server
 
     (wend/save-weights (str test-dir "/weights-start.edn") weights)
 
@@ -478,6 +483,8 @@
 
 (time (def test-state (init-tester user-cfg)))
 
+(def res (check-page test-state "gen/test1" (slurp "test1.html")))
+  ;; OR
 (def res (run-tests test-state))
 
 ;; Do not use :reload-all or it will break ring/rend.server
