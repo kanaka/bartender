@@ -9,6 +9,7 @@
   :injections [(clojure.lang.RT/loadLibrary org.opencv.core.Core/NATIVE_LIBRARY_NAME)]
 
   :source-paths ["src"]
+  :resource-paths ["resources"]
 
   :dependencies [[org.clojure/clojure "1.10.0"]
                  [org.clojure/tools.cli "0.4.1"]
@@ -42,11 +43,12 @@
                  [kanaka/instaparse "1.4.9.1"]
 
                  [kanaka/instacheck "0.6.2"]
-                 [kanaka/html5-css3-ebnf "0.4.0"]]
+                 [kanaka/html5-css3-ebnf "0.5.0-SNAPSHOT"]]
 
   :profiles {:rend      {:main rend.cli}
              :mend      {:main mend.cli}
              :wend      {:main wend.cli}
+             :wend.core {:main wend.core}
              :w3c-html5 {:main mend.w3c.html5}
              :w3c-css3  {:main mend.w3c.css3}
              }

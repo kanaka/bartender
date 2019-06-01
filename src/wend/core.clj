@@ -11,22 +11,21 @@
             [instaparse.print]))
 
 (def EBNF-PATHS
-  {:html-gen    ["data/html5.ebnf"]
-   :html-parse  ["resources/html5-generic.ebnf"
-                 "data/html5.ebnf"]
-   :css-gen     ["data/css3.ebnf"]
-   :css-parse   ["data/css3.ebnf"
-                 "resources/css3-generic.ebnf"]})
+  {:html-gen    ["html5.ebnf"]
+   :html-parse  ["html5.ebnf"
+                 "html5-generic.ebnf"]
+   :css-gen     ["css3.ebnf"]
+   :css-parse   ["css3.ebnf"]})
 
 (def GRAMMAR-MANGLES
   {:html-gen    {}
    :html-parse  {:char-data :char-data-generic
-                  :comment :comment-generic
-                  :url :url-generic}
+                 :comment :comment-generic
+                 :url :url-generic}
    :css-gen     {}
    :css-parse   {:nonprop-group-rule-body :stylesheet
-                  :prop-group-rule-body :css-ruleset
-                  :nonprop-declaration-list :css-assignments}})
+                 :prop-group-rule-body :css-ruleset
+                 :nonprop-declaration-list :css-assignments}})
 
 (def START-RULES
   {:html-gen    :html
@@ -42,7 +41,7 @@
           parser mangles))
 
 (defn load-parser* [paths mangles]
-  (let [ebnf (string/join "\n" (map slurp paths))
+  (let [ebnf (string/join "\n" (map slurp (map io/resource paths)))
         base-parser (instaparse.core/parser ebnf)
         parser (mangle-parser base-parser mangles)]
     parser))
@@ -55,7 +54,8 @@
 
 (def PRUNE-TAGS
   #{:style
-    :script})
+    :script
+    :svg})
 
 (def PRUNE-TAGS-BY-ATTRIBUTE
   ;; [tag attribute]
@@ -83,6 +83,10 @@
    ;; that.
    :video [:playsinline :webkit-playsinline]
    })
+
+(def REWRITE-TAG-ATTRIBUTE-VALUES
+  ;; [tag attribute value new-value]
+  {[:select :required "required"] "true"})
 
 
 (defn prune-tags
@@ -128,6 +132,23 @@
               n))
     h))
 
+(defn rewrite-tag-attribute-values
+  "Takes hickory and rewrites matcing tag+attribute+values to a new value"
+  [h]
+  (let [rtav  REWRITE-TAG-ATTRIBUTE-VALUES]
+    (clojure.walk/prewalk
+      (fn [n] (reduce
+                (fn [node x]
+                  (assoc-in node [:attrs (second x)] (get rtav x)))
+                n
+                (set/intersection
+                  (set (keys rtav))
+                  (set (map vector
+                            (repeat (:tag n))
+                            (keys (:attrs n))
+                            (vals (:attrs n)))))))
+      h)))
+
 (defn cleanup-ws-in-attrs
   "Takes hickory and removes leading and traling extraneous whitespace
   in tag attributes."
@@ -149,26 +170,31 @@
   form."
   [html]
   (-> html
+      ;; Remove unicode characters
+      (string/replace #"[^\x00-\x7f]" "")
       hickory.core/parse
       hickory.core/as-hickory
       prune-tags
       prune-attributes
       prune-tag-attributes
+      rewrite-tag-attribute-values
       cleanup-ws-in-attrs
       hickory.render/hickory-to-html))
 
 (defn cleanup-css
   [css]
-  (string/replace
-    (string/replace
-      (string/replace
-        css
-        ;; Remove non-unix newlines
-        #"[\r]" "\n")
+  (-> css
+      ;; Remove unicode characters
+      (string/replace #"[^\x00-\x7f]" "")
+      ;; Remove non-unix newlines
+      (string/replace #"[\r]" "\n")
       ;; remove vendor prefixes
-      #"([^A-Za-z0-9])(?:-webkit-|-moz-|-ms-)" "$1")
-    ;; Remove apple specific CSS property
-    #"x-content: *\"[^\"]*\"" ""))
+      (string/replace #"([^A-Za-z0-9])(?:-webkit-|-moz-|-ms-)" "$1")
+      ;; Remove apple specific CSS property
+      (string/replace #"x-content: *\"[^\"]*\"" "")
+      ;; Some at-rule syntax require semicolons before closing curly
+      (string/replace #"(@font-face *[{][^}]*[^;])[}]" "$1;}")
+      ))
 
 ;;        ;; remove vendor prefixes (from at-rules)
 ;;        #"@(-webkit-|-moz-|-ms-)" "@")
@@ -177,10 +203,10 @@
 
 (defn extract-css-map
   "Return a map of CSS texts with the following keys:
-  - :loaded-sheets -> list of stylesheets loaded by path/URL
-  - :inline-sheets -> list of stylesheets inline in the HTML
-  - :inline-styles -> list with single text with all inline styles in
+  - :inline-style  -> all inline styles in
                       a wildcard selector (i.e. '* { STYLES }')
+  - :inline-sheet-X -> inline stylesheets by indexed keyword
+  - \"sheet-href\"  -> loaded stylesheets by path/URL
 
   The returned styles can be combined into a single stylesheet like this:
       (clojure.string/join \"\n\" (apply concat CSS-MAP))"
@@ -191,6 +217,10 @@
         ;; Extract inline tag specific styles
         styles (map #(->> % :attrs :style)
                     (s/select (s/child (s/attr :style)) h))
+        inline-style (str
+                       "* {\n    "
+                       (string/join "\n    " styles)
+                       "\n}")
         ;; Extract inline stylesheets
         inline-sheets (map #(->> % :content (apply str))
                            (s/select (s/child (s/tag :style)) h))
@@ -204,15 +234,21 @@
         loaded-sheets (map #(str "/* from: " % " */\n"
                                  (slurp %))
                            sheet-hrefs)
-        inline-styles (when (seq styles)
-                        (str
-                          "* {\n    "
-                          (string/join "\n    " styles)
-                          "\n}"))
-        css-map {:loaded-sheets (map cleanup-css loaded-sheets)
-                 :inline-sheets (map cleanup-css inline-sheets)
-                 :inline-styles (list (cleanup-css inline-styles))}]
+        css-map (merge {:inline-style (cleanup-css inline-style)}
+                       (zipmap (map (comp keyword str)
+                                    (repeat "inline-sheet-")
+                                    (range))
+                               (map cleanup-css inline-sheets))
+                       (zipmap (map str sheet-hrefs)
+                               (map cleanup-css loaded-sheets)))]
     css-map))
+
+(comment
+
+(def css-map (extract-css-map (slurp "test/html/example.com-20190422.html") "test/html"))
+(print (string/join "\n\n" (vals css-map)))
+
+)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Grammar weight functions
@@ -348,10 +384,17 @@
 
 (comment
 
-(time (def p (load-generic-parser)))
+(time (def hp (load-parser :html-parse)))
+(time (def cp (load-parser :css-parse)))
 
-(def w (instacheck/filter-alts (parse-weights p (slurp "test/html/example.com-20190422.html"))))
+(def text (slurp "test/html/example.com-20190422.html"))
+(def text (slurp "test/html/apple.com-20190422.html"))
+(def text (slurp "test/html/mozilla.com-20190506.html"))
 
-(def w (instacheck/filter-alts (parse-weights p (normalize-html (slurp "test/html/apple.com-20190422.html")))))
+(def html    (extract-html text))
+(def css-map (extract-css-map text "test/html"))
+
+(time (def hw (instacheck/filter-alts (parse-weights hp html))))
+(time (def cw (instacheck/filter-alts (parse-weights cp (vals css-map)))))
 
 )
