@@ -11,9 +11,9 @@
             [instaparse.print]))
 
 (def EBNF-PATHS
-  {:html-gen    ["html5.ebnf"]
-   :html-parse  ["html5.ebnf"
-                 "html5-test.ebnf"]
+  {:html-gen    ["html5-test.ebnf"
+                 "html5.ebnf"]
+   :html-parse  ["html5.ebnf"]
    :css-gen     ["css3.ebnf"]
    :css-parse   ["css3.ebnf"]})
 
@@ -28,8 +28,8 @@
                  :nonprop-declaration-list :css-assignments}})
 
 (def START-RULES
-  {:html-gen    :html
-   :html-parse  :html-test
+  {:html-gen    :html-test
+   :html-parse  :html
    :css-gen     :css-assignments
    :css-parse   :stylesheet})
 

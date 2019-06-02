@@ -1,19 +1,13 @@
-html-test = doctype-test? comment-or-space* '<html' (<rS> html-attribute)* '>' <S> head-test? body-test '</html>' <S>
+html-test = '<html>' head-test body-test '</html>'
 
-doctype-test = '<!DOCTYPE html>' <S>
+head-test = '<head>' normalize-css rend-css title-test? '</head>'
+
+normalize-css = '<link rel="stylesheet" href="../static/normalize.css">'
+
+rend-css = '<link rel="stylesheet" href="../static/rend.css">'
+
+title-test = '<title' (<rS> title-attribute)* '>' content* '</title>'
+
+body-test = '<body' (<rS> body-attribute)* '>' 'x' (element | content)* '</body>'
 
 
-head-test = '<head>' <S> head-elements* '</head>' <S>
-
-head-elements = title-test
-              | meta-test
-              | link-test
-              | comment-or-space
-
-title-test = '<title' (<rS> title-attribute)* '>' content* '</title>' <S>
-meta-test = '<meta' (<rS> meta-attribute)* '>' <S>
-link-test = '<link' (<rS> link-attribute)* '>' <S>
-
-body-test = '<body' (<rS> body-attribute)* '>' (element | content)* '</body>' <S>
-
-comment-or-space = comment | <S>

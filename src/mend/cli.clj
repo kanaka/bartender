@@ -104,9 +104,9 @@
   (let [grammar-update (condp = (:mode opts)
                          "html5" html5-grammar-updates
                          "css3"  css3-grammar-update-fn)
-        ebnf-file (condp = (:mode opts)
-                    "html5" "html5.ebnf"
-                    "css3"  "css3.ebnf")
+        grammar-type (condp = (:mode opts)
+                       "html5" :html-gen
+                       "css3"  :css-gen)
 
         ctx (merge {:weights-res (atom {})
                     :grammar-updates grammar-update}
@@ -115,9 +115,9 @@
 
 
         ;; The following each take 4-6 seconds
-        _ (println "Loading grammar from" ebnf-file)
-        ebnf (slurp (io/resource ebnf-file))
-        grammar (instacheck-grammar/load-grammar ebnf)
+        _ (println "Loading" grammar-type "grammar")
+        grammar (instacheck-grammar/parser->grammar
+                  (wend/load-parser grammar-type))
         _ (println "Converting grammar to clojure generators")
         ns-str (grammar->ns ctx grammar)]
 

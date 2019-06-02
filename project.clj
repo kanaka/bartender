@@ -49,8 +49,6 @@
              :mend      {:main mend.cli}
              :wend      {:main wend.cli}
              :wend.core {:main wend.core}
-             :w3c-html5 {:main mend.w3c.html5}
-             :w3c-css3  {:main mend.w3c.css3}
              }
 
   :main rend.core)
