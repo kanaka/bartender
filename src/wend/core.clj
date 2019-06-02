@@ -13,7 +13,7 @@
 (def EBNF-PATHS
   {:html-gen    ["html5.ebnf"]
    :html-parse  ["html5.ebnf"
-                 "html5-generic.ebnf"]
+                 "html5-test.ebnf"]
    :css-gen     ["css3.ebnf"]
    :css-parse   ["css3.ebnf"]})
 
@@ -29,7 +29,7 @@
 
 (def START-RULES
   {:html-gen    :html
-   :html-parse  :html-generic
+   :html-parse  :html-test
    :css-gen     :css-assignments
    :css-parse   :stylesheet})
 

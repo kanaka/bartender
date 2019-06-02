@@ -43,7 +43,7 @@
                  [kanaka/instaparse "1.4.9.1"]
 
                  [kanaka/instacheck "0.6.2"]
-                 [kanaka/html5-css3-ebnf "0.5.0-SNAPSHOT"]]
+                 [kanaka/html5-css3-ebnf "0.5.0"]]
 
   :profiles {:rend      {:main rend.cli}
              :mend      {:main mend.cli}

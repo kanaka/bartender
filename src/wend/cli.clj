@@ -1,13 +1,9 @@
 (ns wend.cli
-  (:require [clojure.string :as string]
+  (:require [clojure.tools.cli :refer [parse-opts]]
+            [clojure.java.io :as io]
 
-            [clojure.tools.cli :refer [parse-opts]]
-
-            [instaparse.core :as insta]
-            [mend.util :as util]
-
-            ;; Not actually used here, but convenient for testing
-            [clojure.pprint :refer [pprint]]))
+            [instacheck.core :as instacheck]
+            [wend.core :as wend]))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -16,13 +12,6 @@
   (binding [*out* *err*]
     (apply println args)
     (flush)))
-
-;;(defn load-grammar
-;;  [ebnf]
-;;  (let [parser (insta/parser ebnf)]
-;;    (with-meta
-;;      (util/remove-key (:grammar parser) :red)
-;;      {:start (:start-production parser)})))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Command line usage of wend
@@ -39,24 +28,40 @@
   opts)
 
 (defn usage []
-  (pr-err "[OPTS] <EBNF-FILE> <FILE>...")
+  (pr-err "[OPTS] <FILE>...")
   (System/exit 2))
 
 (defn -main
   [& args]
   (let [opts (opt-errors (parse-opts args
                                      cli-options :in-order true))
-        [ebnf & files] (:arguments opts)
-        parser (insta/parser ebnf)]
-    (prn :ebnf ebnf :files files)
-    (println "Parser:")
-    (prn parser)
-    (doseq [file files]
-      (let [parsed (insta/parse parser (slurp file) :unhide :all)]
-      ;(let [parsed (insta/parse parser (slurp file) :trace true)]
-        (println "Parsed:")
-        (prn parsed)
-        (println "Parsed grammar:")
-        (prn parsed)
-        (prn :meta-parsed (meta parsed))
-        ))))
+        {:keys [weights-output]} (:options opts)
+        [& files] (:arguments opts)
+        _ (pr-err "Loading HTML parser")
+        html-parser (wend/load-parser :html-parse)
+        _ (pr-err "Loading CSS parser")
+        css-parser (wend/load-parser :css-parse)]
+    (loop [weights {}
+           files files]
+      (let [[file & rest-files] files
+            _ (pr-err (str "Processing: '" file "'"))
+            fdir (.getParent (io/file file))
+            text (slurp file)
+            html (wend/extract-html text)
+            css-map (wend/extract-css-map text fdir)
+            _ (pr-err "  - parsing HTML")
+            html-weights (wend/parse-weights html-parser html)
+            ahtml-weights (instacheck/filter-alts html-weights)
+            _ (pr-err (str "  - HTML weights all: " (count html-weights)
+                            ", alts: " (count ahtml-weights)))
+            _ (pr-err "  - parsing CSS")
+            css-weights (wend/parse-weights css-parser (vals css-map))
+            acss-weights (instacheck/filter-alts css-weights)
+            _ (pr-err (str "  - CSS weights all: " (count css-weights)
+                            ", alts: " (count acss-weights)))
+            new-weights (merge-with + weights ahtml-weights acss-weights)]
+        (if (seq rest-files)
+          (recur new-weights rest-files)
+          (when weights-output
+            (pr-err (str "Saving merged alt weights to: '" weights-output "'"))
+            (wend/save-weights weights-output new-weights)))))))
