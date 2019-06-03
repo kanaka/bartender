@@ -71,7 +71,7 @@ make deps
 
 * Start a test run:
 ```
-lein with-profile rend trampoline run config.yaml
+lein run config.yaml
 ```
 
 Monitor results at `http://localhost:3000` (3000 is the :web :port

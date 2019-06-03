@@ -48,6 +48,7 @@
   :profiles {:rend      {:main rend.cli}
              :mend      {:main mend.cli}
              :wend      {:main wend.cli}
+             :rend.core {:main rend.core}
              :wend.core {:main wend.core}}
 
-  :main rend.core)
+  :main rend.cli)
