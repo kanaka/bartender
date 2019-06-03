@@ -43,7 +43,7 @@
                                   (when start-seed
                                     {:quick-check {:start-seed start-seed}}))
         test-state (core/init-tester user-cfg)]
-    (core/run-tests test-state)
+    (core/run-tests test-state {})
     (println "\n-----------------------------------------------")
     (:cleanup-fn test-state)
     (when (not (:exit-after-run options))

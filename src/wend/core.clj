@@ -11,27 +11,31 @@
             [instaparse.print]))
 
 (def EBNF-PATHS
-  {:html-gen    ["html5-test.ebnf"
-                 "html5.ebnf"]
-   :html-parse  ["html5.ebnf"]
-   :css-gen     ["css3.ebnf"]
-   :css-parse   ["css3.ebnf"]})
+  {:html-gen     ["html5-test.ebnf"
+                  "html5.ebnf"]
+   :html-gen-min ["html5-test.ebnf"
+                  "html5.ebnf"]
+   :html-parse   ["html5.ebnf"]
+   :css-gen      ["css3.ebnf"]
+   :css-parse    ["css3.ebnf"]})
 
 (def GRAMMAR-MANGLES
-  {:html-gen    {}
-   :html-parse  {:char-data :char-data-generic
-                 :comment :comment-generic
-                 :url :url-generic}
-   :css-gen     {}
-   :css-parse   {:nonprop-group-rule-body :stylesheet
-                 :prop-group-rule-body :css-ruleset
-                 :nonprop-declaration-list :css-assignments}})
+  {:html-gen     {}
+   :html-gen-min {}
+   :html-parse   {:char-data :char-data-generic
+                  :comment :comment-generic
+                  :url :url-generic}
+   :css-gen      {}
+   :css-parse    {:nonprop-group-rule-body :stylesheet
+                  :prop-group-rule-body :css-ruleset
+                  :nonprop-declaration-list :css-assignments}})
 
 (def START-RULES
-  {:html-gen    :html-test
-   :html-parse  :html
-   :css-gen     :css-assignments
-   :css-parse   :stylesheet})
+  {:html-gen     :html-test
+   :html-gen-min :html-test-min
+   :html-parse   :html
+   :css-gen      :css-assignments
+   :css-parse    :stylesheet})
 
 (defn mangle-parser
   [parser mangles]
@@ -179,7 +183,10 @@
       prune-tag-attributes
       rewrite-tag-attribute-values
       cleanup-ws-in-attrs
-      hickory.render/hickory-to-html))
+      hickory.render/hickory-to-html
+      ;; Translate \xc9 unicode character back to char reference so it
+      ;; can be parsed by our parser.
+      (string/replace #"[\xc9]" "&#x00c9;")))
 
 (defn cleanup-css
   [css]
@@ -200,6 +207,16 @@
 ;;        #"@(-webkit-|-moz-|-ms-)" "@")
 ;;      ;; Remove vendor prefixes (-webkit-, -moz-, -ms-) from some properties
 ;;      #"(-webkit-|-moz-|-ms-)(transform|text-size-adjust|box-sizing|font-feature-settings)\b" "$2"
+
+(defn extract-inline-css
+  [html]
+  (let [h (-> html
+              hickory.core/parse
+              hickory.core/as-hickory)
+        ;; Extract inline tag specific styles
+        styles (map #(->> % :attrs :style)
+                    (s/select (s/child (s/attr :style)) h))]
+    (string/join "\n" styles)))
 
 (defn extract-css-map
   "Return a map of CSS texts with the following keys:
@@ -263,17 +280,24 @@
     (apply merge-with +
            (map #(frequencies (-> % meta :path-log)) parsed))))
 
-;;(def reducible-regex #"^element$|^[\S-]*-attribute$|^css-assignment$")
-(def reducible-regex #"^\[:element :alt [0-9]+\]$|^\[[\S-]*-attribute :alt [0-9]+\]$|^\[css-assignment :alt [0-9]+\]$")
-(defn reducer-half [w] (int (/ w 2)))
-
-(defn reduce-weights [weights parser text reducer]
-  (let [wparsed (parse-weights parser text)
-        wreduced (for [[p w] (instacheck/filter-alts wparsed)
-                       :when (and (get weights p)
-                                  (re-seq reducible-regex (str p)))]
-                   [p (reducer (get weights p))])]
-    (into {} wreduced)))
+(defn adjust-weights
+  "Returns a subset of base-weights with weight values adjusted by the
+  adjuster function. For a weight to be adjusted, it must satisfy the
+  following criteria:
+  - the path must present in both adjust-weights and base-weights
+  - the path must also be present in base-weights
+  - the path must specify an alternation (e.g. [... :alt X])
+  - the path must satisfy the adjustable? function
+  If the criteria are satisfied then the path is added to the returned
+  map with the weight value from base-weights adjusted by the adjuster
+  function.
+  "
+  [adjustable? adjuster base-weights adjust-weights]
+  (let [alt-weights (instacheck/filter-alts adjust-weights)
+        adjusted (for [[p w] alt-weights
+                       :when (adjustable? base-weights p w)]
+                   [p (adjuster (get base-weights p))])]
+    (into {} adjusted)))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

@@ -2,10 +2,11 @@
  ;; Increase style attribute frequency
  [:global-attribute :alt 11] 10000,
 
- ;; Remove entity references and character references
+ ;; Skip entity/character references and comments
  [:content :alt 1] 0,
+ [:content :alt 2] 0,
 
- ;; Increase div and span elements
+ ;; Increase div and span element frequency
  [:element :alt 26] 10000, ;; div
  [:element :alt 87] 10000, ;; span
 }

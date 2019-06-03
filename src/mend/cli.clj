@@ -36,7 +36,12 @@
    {:path [:nonprop-positive-integer]
     :value {:tag :nt :keyword :gen/pos-int}}
    {:path [:number-float]
-    :value {:tag :nt :keyword :gen/double}}])
+    :value {:tag :nt :keyword :gen/double}}
+   ;; Remove recursive definitions
+   {:path [:nonprop-image]
+    :value {:tag :nt :keyword :nonprop-url}}
+   {:path [:nonprop-calc-value]
+    :value {:tag :nt :keyword :nonprop-number}}])
 
 (defn prune-S [x]
   (if (and (:parsers x)

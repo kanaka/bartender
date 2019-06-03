@@ -47,7 +47,6 @@
                                    (or (:start-seed cfg)
                                        (rand-int 1000000000))))))]
     (:current-seed s)))
-    
 
 (defn log!
   "Merges (mutates) log entry (map) into the current run and/or iter
@@ -77,25 +76,44 @@
 (defn printable-state
   "Return a more printable form of the test state the elides: Clojure
   objects/functions, parsers, and long weight lists"
-  [state]
-  (->> state
+  [state-val]
+  (->> state-val
        (setval [:sessions ALL LAST] :ELIDED)
        (setval [:server] :ELIDED)
        (setval [:cleanup-fn] :ELIDED)
        (setval [:weights] :ELIDED)
+       (setval [:run-log] :ELIDED)
        (setval [:cfg :weights :base] :ELIDED)
        (setval [:cfg :weights :start] :ELIDED)
        (setval [:cfg :html-parser] :ELIDED)
        (setval [:cfg :css-parser] :ELIDED)))
 
+(defn reset-state!
+  "Reset the test state. If new-weights is not nil, then it will
+  replace the current :weights value. If next-seed is not nil, then it
+  will replace the current :current-seed value with (dec next-seed) so
+  that the next seed used will be next-seed."
+  [state & [new-weights next-seed]]
+  (printable-state
+    (swap! state #(let [wfixed (-> % :cfg :weights :fixed)
+                        weights (if (nil? new-weights)
+                                  (:weights %)
+                                  (merge new-weights wfixed))
+                        seed (if (nil? next-seed)
+                               (:current-seed %)
+                               (dec next-seed))]
+                    (merge % {:current-seed seed
+                              :weights weights})))))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Browser render quick check functions
+;; Lower level testing functions
 
 (defn check-page*
   "Utility function for check-page. See check-page."
-  [state test-dir test-iteration html]
+  [state extra-cfg test-dir test-iteration html]
   (let [{:keys [cfg sessions]} @state
+        cfg (util/deep-merge cfg extra-cfg) ;; add extra-cfg
         text (hiccup.core/html html)
         test-prefix (str test-dir "/" test-iteration)
         path (str test-prefix ".html")
@@ -182,8 +200,10 @@
                            "_diff_" (:id browser) "_" (:id obrowser))
                   pre2 (str test-iteration
                             "_diff_" (:id obrowser) "_" (:id browser))]
-              (if (.exists (io/as-file
-                             (str test-dir "/" pre2 ".png")))
+              (if (and (.exists (io/as-file
+                                  (str test-dir "/" pre2 ".png")))
+                       (not (.exists (io/as-file
+                                       (str test-dir "/" pre ".png")))))
                 (do
                   (sh "ln" "-sf"
                       (str pre2 ".png")
@@ -205,15 +225,101 @@
         (prn :check-page-exception t)
         [false "Exception" nil]))))
 
+;; SIDE-EFFECTS: updates state atom with report summary
+(defn reporter
+  "Prune clojure objects from the report data and print it. If the
+  current report type has changed output a report file and send an
+  update to any browsers currently viewing the page."
+  [state report]
+  (let [{:keys [cfg iteration]} @state
+        test-id (:test-id cfg)
+        r (dissoc report :property)
+        r (update-in r [:current-smallest]
+                     dissoc :function)
+        printed-report (merge r {:failing-args :elided :args :elided})
+        saved-report (merge {:latest-report r}
+                            (when (:trial-number r)
+                              {:first-fail-number (:trial-number r)
+                               :failing-args (:failing-args r)})
+                            (when (:current-smallest r)
+                              {:smallest-number iteration
+                               :smallest (:current-smallest r)}))]
+    (if (:verbose cfg)
+      (prn :report printed-report)
+      (println "Report type:" (name (:type r))))
+    ;; Save the latest report
+    (swap! state merge saved-report)
+    ;; Broadcast to listening browsers. We need this here in addition
+    ;; to check-page because we may receive multiple reports for the
+    ;; same page
+    (rend.server/ws-broadcast
+      (str
+        "summary:" test-id ":"
+        (hiccup.core/html
+          (rend.html/render-summary @state))))))
+
+;;(def reducible-regex #"^element$|^[\S-]*-attribute$|^css-declaration$")
+(def reducible-regex #"^\[:element :alt [0-9]+\]$|^\[[\S-]*-attribute :alt [0-9]+\]$|^\[:css-known-standard :alt [0-9]+\]$")
+
+(defn reducible-path?
+  "Is the path in base-weights and a path that we actually want to
+  reduce (based on reducible-regex). Ignores the weight (for now)."
+  [base-weights path weight]
+  (and (get base-weights path)
+       (re-seq reducible-regex (str path))))
+
+(defn reducer-half [w] (int (/ w 2)))
+
+;; TODO: omit normalize.css and rend.css
+(defn wrap-adjust-weights
+  "If the test mode is \"reduce-weights\" then will call
+  wend/adjust-weights to a get a new set of weights reduced by the
+  reducer function."
+  [cfg weights html test-dir]
+  (let [mode (-> cfg :test :mode)
+        weights-full (merge (-> cfg :weights :base) weights)
+        html-parser (:html-parser cfg)
+        css-parser (:css-parser cfg)]
+    (if (and (= "reduce-weights" mode) html html-parser css-parser)
+      (let [html-only (wend/extract-html html)
+            css-only (wend/extract-inline-css html)
+            html-weights (wend/parse-weights html-parser html-only)
+            css-weights (wend/parse-weights css-parser css-only)
+            adjust-weights (merge-with + html-weights css-weights)]
+        (wend/adjust-weights reducible-path? reducer-half
+                             weights-full adjust-weights))
+      {})))
+
+;; TODO: do we really want base weights? It should be implicit in the
+;; *_generators.clj code.
+(defn load-weights
+  "Load the base, start, and fixed weights paths listed in the
+  configuration. Returns map containing :base, :start, and :fixed."
+  [cfg]
+  (let [weights-base (apply merge
+                            (map #(edn/read-string (slurp %))
+                                 (-> cfg :weights :base)))
+        weights-fixed (when (-> cfg :weights :fixed)
+                        (edn/read-string (slurp (-> cfg :weights :fixed))))
+        weights-start (when (-> cfg :weights :start)
+                        (edn/read-string (slurp (-> cfg :weights :start))))]
+    {:base  weights-base
+     :start weights-start
+     :fixed weights-fixed}))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Test execution API
+
 ;; SIDE-EFFECTS: updates log in state atom, updates the overall
 ;; report index.html, and broadcasts the updates to any browsers
 ;; viewing the report document.
 (defn check-page
   "Render and check a test case page. Then output a report file and
   send an update to any browsers currently viewing the page."
-  [state test-dir html]
+  [state extra-cfg test-dir html]
   (let [test-dir (string/replace test-dir #"/*$" "")
-        cfg (:cfg @state)
+        cfg (util/deep-merge (-> @state :cfg) extra-cfg) ;; add extra-cfg
         test-id (:test-id cfg)]
 
     ;; Communicate the test directories to the web server
@@ -225,7 +331,8 @@
           (rend.html/render-report @state))
 
     (let [test-iteration (new-test-iteration! state)
-          [res diffs violations] (check-page* state test-dir test-iteration html)
+          [res diffs violations] (check-page* state extra-cfg
+                                              test-dir test-iteration html)
           log-entry {:prefix (str test-dir "/" test-iteration)
                      :html html
                      :result res
@@ -252,54 +359,6 @@
             (rend.html/render-summary state-val))))
       res)))
 
-;; SIDE-EFFECTS: updates state atom with report summary
-(defn reporter
-  "Prune clojure objects from the report data and print it. If the
-  current report type has changed output a report file and send an
-  update to any browsers currently viewing the page."
-  [state report]
-  (let [{:keys [cfg iteration]} @state
-        test-id (:test-id cfg)
-        r (dissoc report :property)
-	r (update-in r [:current-smallest]
-		     dissoc :function)
-        printed-report (merge r {:failing-args :elided :args :elided})
-        saved-report (merge {:latest-report r}
-                            (when (:trial-number r)
-                              {:first-fail-number (:trial-number r)
-                               :failing-args (:failing-args r)})
-                            (when (:current-smallest r)
-                              {:smallest-number iteration
-                               :smallest (:current-smallest r)}))]
-    (if (:verbose cfg)
-      (prn :report printed-report)
-      (println "Report type:" (name (:type r))))
-    ;; Save the latest report
-    (swap! state merge saved-report)
-    ;; Broadcast to listening browsers. We need this here in addition
-    ;; to check-page because we may receive multiple reports for the
-    ;; same page
-    (rend.server/ws-broadcast
-      (str
-        "summary:" test-id ":"
-        (hiccup.core/html
-          (rend.html/render-summary @state))))))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Test execution
-
-(defn adjust-weights
-  "If the test mode is \"reduce-weights\" then will call
-  wend/reduce-weights to a get a new set of weights reduced by the
-  reducer function."
-  [cfg weights html reducer]
-  (let [mode (-> cfg :test :mode)
-        weights-full (merge (-> cfg :weights :base) weights)
-        parser (:parser cfg)]
-    (if (and (= "reduce-weights" mode) html parser)
-      (wend/reduce-weights weights-full parser html reducer)
-      {})))
-
 ;; SIDE-EFFECTS: updates state atom
 (defn run-iterations
   "Run the quick check process against the test-state and update the
@@ -307,8 +366,9 @@
   is set to \"reduce-weights\" then the resulting shrunk test case
   will be used to adjust/reduce the weights in the test state for
   subsequent runs."
-  [test-state]
+  [test-state extra-cfg]
   (let [{:keys [cfg weights]} @test-state
+        cfg (util/deep-merge (-> @test-state :cfg) extra-cfg) ;; add extra-cfg
         run (new-test-run! test-state)
         current-seed (new-test-seed! test-state)
         test-dir (str (-> cfg :web :dir)
@@ -323,7 +383,7 @@
     (let [;; Config and state specific versions of the
           ;; functions/generators used for the actual check process
           gen-html-fn (rend.generator/get-html-generator weights)
-          check-fn (partial check-page test-state test-dir)
+          check-fn (partial check-page test-state extra-cfg test-dir)
           reporter-fn (partial reporter test-state)
 
           start-time (ctime/now)
@@ -344,7 +404,7 @@
 
           ;; if requested, adjust weights for next run
           html (-> qc-res :shrunk :smallest first)
-          adjusted-weights (adjust-weights cfg weights html wend/reducer-half)
+          adjusted-weights (wrap-adjust-weights cfg weights html test-dir)
           new-weights (merge weights
                              adjusted-weights
                              (-> cfg :weights :fixed))]
@@ -369,32 +429,15 @@
 (defn run-tests
   "Calls run-iterations the number of times specified in the
   configuration (-> cfg :test :runs)."
-  [test-state]
-  (swap! test-state merge {:run -1})
-  ;; Do the test runs and report
-  (doseq [run (range (-> @test-state :cfg :test :runs))]
-    (println (str "--- Run number " (inc run) " --------------------"))
-    (run-iterations test-state)))
+  [test-state extra-cfg]
+  (let [cfg (util/deep-merge (-> @test-state :cfg) extra-cfg)] ;; add extra-cfg
+    (swap! test-state merge {:run -1})
+    ;; Do the test runs and report
+    (doseq [run (range (-> cfg :test :runs))]
+      (println (str "--- Run number " (inc run) " -----------------"))
+      (run-iterations test-state extra-cfg))))
 
 ;; ---
-
-;; TODO: do we really want base weights? It should be implicit in the
-;; *_generators.clj code.
-(defn load-weights
-  "Load the base, start, and fixed weights paths listed in the
-  configuration. Returns map containing :base, :start, and :fixed."
-  [cfg]
-  (let [weights-base (apply merge
-                            (map #(edn/read-string (slurp %))
-                                 (-> cfg :weights :base)))
-        weights-fixed (when (-> cfg :weights :fixed)
-                        (edn/read-string (slurp (-> cfg :weights :fixed))))
-        weights-start (when (-> cfg :weights :start)
-                        (edn/read-string (slurp (-> cfg :weights :start))))]
-    {:base  weights-base
-     :start weights-start
-     :fixed weights-fixed}))
-
 
 (defn init-tester
   "Takes a configuration map (usually loaded from a config.yaml file)
@@ -405,8 +448,9 @@
     - Generates a cleanup functions to tear down browser connections.
   Returns a map containing the config, references the above stateful
   objects, and other settings that are updates as testing progresses."
-  [user-cfg]
-  (let [;; Current test state contains values that change over
+  [user-cfg & [extra-cfg]]
+  (let [user-cfg (util/deep-merge user-cfg extra-cfg) ;; add extra-cfg
+        ;; Current test state contains values that change over
         ;; runs/iterations
         test-state (atom {:test-dirs #{}})
         ;; Start a web server for the test cases and reporting
@@ -425,7 +469,7 @@
         ;; If mode is :reduce-weights, then load a parser
         html-parser (when (= "reduce-weights" (-> user-cfg :test :mode))
                       (println "Loading/creating HTML parser")
-                      (wend/load-parser :html-gen))
+                      (wend/load-parser :html-gen-min))
         css-parser (when (= "reduce-weights" (-> user-cfg :test :mode))
                       (println "Loading/creating CSS parser")
                       (wend/load-parser :css-gen))
@@ -476,21 +520,28 @@
 (comment
 
 (require '[clj-yaml.core :as yaml])
-
 (def file-cfg (yaml/parse-string (slurp "config.yaml")))
-(def my-cfg {:verbose true :test {:runs 1} :quick-check {:iterations 3}})
-(def user-cfg (util/deep-merge file-cfg my-cfg))
 
-(time (def test-state (init-tester user-cfg)))
+(time (def test-state (init-tester file-cfg {:verbose true})))
 
-(def res (check-page test-state "gen/test1" (slurp "test1.html")))
+(def res (run-tests test-state {:test {:runs 1} :quick-check {:iterations 3}}))
   ;; OR
-(def res (run-tests test-state))
+(def res (run-iterations test-state {:quick-check {:iterations 3}}))
+  ;; OR
+(def res (check-page test-state {} "gen/test1" "<html><link rel=\"stylesheet\" href=\"../static/normalize.css\"><link rel=\"stylesheet\" href=\"../static/rend.css\"><body>hello</body></html>"))
 
 ;; Do not use :reload-all or it will break ring/rend.server
 (require 'rend.core 'rend.html :reload)
 
-(def res (run-tests test-state))
+)
+
+(comment
+
+(def html "<html><head><link rel=\"stylesheet\" href=\"../static/normalize.css\"><link rel=\"stylesheet\" href=\"../static/rend.css\"><title></title></head><body>x</body></html>")
+
+(def html "<html><head><link rel=\"stylesheet\" href=\"../static/normalize.css\"><link rel=\"stylesheet\" href=\"../static/rend.css\"><title></title></head><body>x<div style=\"background-color: red\">X</div></body></html>")
+
+(wrap-adjust-weights (-> @test-state :cfg) (-> @test-state :weights) html "gen/38244-2-33" wend/reducer-half)
 
 )
 

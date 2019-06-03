@@ -1,3 +1,8 @@
+(*
+Definitions used for created generators and parsing HTML generated
+by those generators.
+*)
+
 html-test = '<html>' head-test body-test '</html>'
 
 head-test = '<head>' normalize-css rend-css title-test? '</head>'
@@ -11,3 +16,11 @@ title-test = '<title' (<rS> title-attribute)* '>' content* '</title>'
 body-test = '<body' (<rS> body-attribute)* '>' 'x' (element | content)* '</body>'
 
 
+(*
+Alternate entry point that omits the normalizing stylesheets. Used for
+parsing the weights out of the generated files without getting weight
+values for the normalization stylesheets.
+*)
+html-test-min = '<html>' head-test-min body-test '</html>'
+
+head-test-min = '<head>' title-test? '</head>'
