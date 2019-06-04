@@ -1,4 +1,4 @@
-(defproject rend "0.2.0-SNAPSHOT"
+(defproject bartender "0.2.0"
   :description "Property based testing of browser rendering engines."
   :url "http://example.com/FIXME"
   :license {:name "Mozilla Public License version 2"

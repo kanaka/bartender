@@ -1,7 +1,9 @@
-# Tend
+# Bartender
 
-A suite of Clojure tools for generative (property-based) testing using
-formal grammars (EBNF) with a focus on web browser rendering.
+***B***rowser ***A***utomated ***R***ender ***T***esti***n***g ***D***riv***er***:
+Clojure tools for automated testing of browser rendering engines using
+generative (property-based) testing, formal grammars (EBNF), and
+a concensus test oracle.
 
 ## Prerequisites
 
