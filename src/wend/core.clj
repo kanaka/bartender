@@ -270,9 +270,12 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Grammar weight functions
 
+;; TODO: these generic functions should move to instacheck
+
 (defn save-weights [path weights]
   (io/make-parents path)
-  (spit path (with-out-str (pprint (into (sorted-map) weights)))))
+  (let [sm (sorted-map-by #(compare (str %1) (str %2)))]
+    (spit path (with-out-str (pprint (into sm weights))))))
 
 (defn parse-weights [parser texts]
   (let [texts (if (string? texts) [texts] texts)
@@ -302,8 +305,6 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Grammar/weight path functions
-
-;; TODO: these generic functions should move to instacheck
 
 (defn grammar-node
   "Get the a grammar node for the given path in grammar. Nil is
