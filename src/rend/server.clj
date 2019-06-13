@@ -1,5 +1,6 @@
 (ns rend.server
-  (:require [compojure.core :refer [GET]]
+  (:require [clojure.data.json :as json]
+            [compojure.core :refer [GET]]
             [compojure.route :as route]
             [org.httpkit.server :refer [run-server with-channel send!
                                         on-close on-receive]]
@@ -26,7 +27,7 @@
 
 (defn ws-broadcast [data]
   (doseq [ch @ws-clients]
-    (send! ch data)))
+    (send! ch (json/write-str data))))
 
 (defn start-server [port dir root-handler]
   (let [routes (compojure.core/routes

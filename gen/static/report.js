@@ -1,6 +1,11 @@
 let thumb_display = 'none'
 let tlink_display = 'inline'
 let ws = null
+let [curTestId,curRun,curSeed] = location.pathname
+    .match(/\/([\d]+)-([\d]+)-([\d]+)/)
+    .slice(1)
+    .map(x => parseInt(x))
+console.log(curTestId, curRun, curSeed)
 
 function update_thumbs() {
   for (let x of document.getElementsByClassName('thumb')) {
@@ -30,21 +35,22 @@ function toggle_thumbs() {
 function connect(uri) {
   let results = document.getElementById('results')
   let summary = document.getElementById('summary')
-  let curTestId = null
   ws = new WebSocket(uri)
+  ws.onopen = function() {
+      console.log("WebSocket connection opened")
+  }
+  ws.onclose = function() {
+      console.log("WebSocket connection closed")
+  }
   ws.onmessage = function (msg) {
-    const match = msg.data.match(/^([^:]*):([^:]*):(.*)/)
-    if (!match) {
-      console.log('msg without type, ignoring')
+    const {msgType,testId,run,iteration,data} = JSON.parse(msg.data)
+    console.log(`msg '${msgType}': id ${testId}: ${data.slice(0,40)}...`)
+    if (!msgType) {
+      console.log('msg without msgType, ignoring')
       return
     }
-    const [_,msgType,testId,data] = match
-    console.log(`msg '${msgType}': id ${testId}: ${data.slice(0,40)}...`)
-    if (curTestId === null) {
-        curTestId = testId
-    } else if (curTestId !== testId) {
-        console.error(`msg test id ${testId} does not match current id ${curTestId}, closing`)
-        ws.close()
+    if (curTestId !== testId || curRun !== run) {
+        console.error(`msg test id ${testId} does not match page ${curTestId}, ignoring`)
         return
     }
     switch (msgType) {
@@ -66,4 +72,6 @@ function connect(uri) {
 if (location.hash.indexOf('thumbs') > -1) {
   toggle_thumbs()
 }
+
+
 

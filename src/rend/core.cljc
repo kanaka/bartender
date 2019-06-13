@@ -5,6 +5,7 @@
             [clojure.java.shell :refer [sh]]
             [clojure.pprint :refer [pprint]]
             [clojure.string :as string]
+            [clojure.set :as set]
 
             [com.rpl.specter :refer [setval ALL LAST]]
             [hiccup.core]
@@ -88,22 +89,39 @@
        (setval [:cfg :html-parser] :ELIDED)
        (setval [:cfg :css-parser] :ELIDED)))
 
-(defn reset-state!
-  "Reset the test state. If new-weights is not nil, then it will
-  replace the current :weights value. If next-seed is not nil, then it
-  will replace the current :current-seed value with (dec next-seed) so
-  that the next seed used will be next-seed."
-  [state & [new-weights next-seed]]
+(defn update-state!
+  "Update the test state by merging (shallow) new-state with the
+  following special cases:
+    - override :weights with :cfg :weights :fixed weights
+    - decrement :current-seed so that it become the next seed"
+  [state & [new-state]]
   (printable-state
     (swap! state #(let [wfixed (-> % :cfg :weights :fixed)
-                        weights (if (nil? new-weights)
-                                  (:weights %)
-                                  (merge new-weights wfixed))
-                        seed (if (nil? next-seed)
-                               (:current-seed %)
-                               (dec next-seed))]
-                    (merge % {:current-seed seed
-                              :weights weights})))))
+                        new-weights (:weights new-state)
+                        next-seed (:current-seed new-state)
+                        new-sessions (:sessions new-state)]
+                    (merge
+                      %
+                      new-state
+                      ;; Fixed weights always override
+                      (when new-weights
+                        {:weights (merge new-weights wfixed)})
+                      ;; If a seed value is specified we
+                      ;; decrement so that the next seed is the
+                      ;; one specified
+                      (when next-seed
+                        {:current-seed (dec next-seed)}))))))
+
+(defn reset-state!
+  "Reset the test state by setting :run and :iteration to -1, emptying
+  :sessions and :run-log, and then call update-state! with the
+  new-state"
+  [state & [new-state]]
+  (update-state! state (merge {:run       -1
+                               :iteration -1
+                               :sessions  {}
+                               :run-log   {}}
+                              new-state)))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -225,11 +243,9 @@
         (prn :check-page-exception t)
         [false "Exception" nil]))))
 
-;; SIDE-EFFECTS: updates state atom with report summary
+;; SIDE-EFFECTS: updates state atom with saved report
 (defn reporter
-  "Prune clojure objects from the report data and print it. If the
-  current report type has changed output a report file and send an
-  update to any browsers currently viewing the page."
+  "Prune clojure objects from the report data and print it."
   [state report]
   (let [{:keys [cfg iteration]} @state
         test-id (:test-id cfg)
@@ -248,15 +264,70 @@
       (prn :report printed-report)
       (println "Report type:" (name (:type r))))
     ;; Save the latest report
-    (swap! state merge saved-report)
-    ;; Broadcast to listening browsers. We need this here in addition
-    ;; to check-page because we may receive multiple reports for the
-    ;; same page
-    (rend.server/ws-broadcast
-      (str
-        "summary:" test-id ":"
-        (hiccup.core/html
-          (rend.html/render-summary @state))))))
+    (update-state! state saved-report)
+))
+
+(defn web-report-root-handler
+  [test-state req]
+  (let [test-dirs (-> @test-state :test-dirs set)]
+    (str "<html><body>"
+         (string/join
+           "\n"
+           (if (seq test-dirs)
+             (doall (for [dir test-dirs]
+                      (str "<a href=\"" dir "\">"
+                           dir "</a><br>")))
+             ["No data yet."]))
+         "</body></html>")))
+
+(defn web-report-update
+  "Keep the web report page up-to-date based on the changes to the
+  state atom. This includes notifying WebSocket clients so that
+  browsers viewing the report page get live updates. There are three
+  types of state changes that are handled:
+  1. New test-dir created (right before quick-check)
+  2. New quick-check report received (during quick-check)
+  3. A iteration log created (during quick-check, after each check-page)"
+  [_key _atom old-state new-state]
+  (let [{:keys [cfg server run iteration]} new-state
+        {:keys [test-id]} cfg
+        ws-msg #(rend.server/ws-broadcast {:msgType %1
+                                           :data (hiccup.core/html %2)
+                                           :testId test-id
+                                           :run run
+                                           :iteration iteration})
+        changed? #(not= (get-in old-state %) (get-in new-state %))
+        ;; a new test-dir was just added prior to quick-check
+        new-test-dir (changed? [:test-dirs])
+        ;; quick-check generated a report during execution
+        new-report (changed? [:latest-report])
+        ;; check-page finished running a set of quick-check iterations
+        new-iter-log (changed? [:run-log run :iter-log])]
+
+    (when (or new-test-dir new-iter-log)
+      ;; Generate the full report page when new test dir is created
+      ;; (new-test-dir) and after every check-page (new-iter-log).
+      (let [test-dir (-> new-state :test-dirs last)]
+        (io/make-parents (java.io.File. (str test-dir "/index.html")))
+        (spit (str test-dir "/index.html")
+              (hiccup.core/html
+                (rend.html/render-report new-state)))))
+
+    (when new-iter-log
+      ;; We just finished a single check-page call so we know the
+      ;; result and can add a new report row.
+      (let [log-entry (-> new-state
+                          :run-log (get run)
+                          :iter-log (get iteration))]
+        (ws-msg :row (rend.html/render-report-row (:browsers cfg)
+                                                  log-entry
+                                                  iteration))))
+
+    (when (or new-report new-iter-log)
+      ;; We need to do this for new reports in addition to each
+      ;; iter-log (check-page) because we may receive multiple reports
+      ;; for the same page.
+      (ws-msg :summary (rend.html/render-summary new-state)))))
 
 ;;(def reducible-regex #"^element$|^[\S-]*-attribute$|^css-declaration$")
 (def reducible-regex #"^\[:element :alt [0-9]+\]$|^\[[\S-]*-attribute :alt [0-9]+\]$|^\[:css-known-standard :alt [0-9]+\]$")
@@ -270,7 +341,6 @@
 
 (defn reducer-half [w] (int (/ w 2)))
 
-;; TODO: omit normalize.css and rend.css
 (defn wrap-adjust-weights
   "If the test mode is \"reduce-weights\" then will call
   wend/adjust-weights to a get a new set of weights reduced by the
@@ -311,9 +381,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Test execution API
 
-;; SIDE-EFFECTS: updates log in state atom, updates the overall
-;; report index.html, and broadcasts the updates to any browsers
-;; viewing the report document.
+;; SIDE-EFFECTS: updates state atom test-dirs, iteration value, and
+;; iter log.
 (defn check-page
   "Render and check a test case page. Then output a report file and
   send an update to any browsers currently viewing the page."
@@ -325,11 +394,6 @@
     ;; Communicate the test directories to the web server
     (swap! state update-in [:test-dirs] conj (str test-dir "/"))
 
-    ;; Create the initial report page
-    (io/make-parents (java.io.File. (str test-dir "/index.html")))
-    (spit (str test-dir "/index.html")
-          (rend.html/render-report @state))
-
     (let [test-iteration (new-test-iteration! state)
           [res diffs violations] (check-page* state extra-cfg
                                               test-dir test-iteration html)
@@ -339,27 +403,10 @@
                      :diffs diffs
                      :violations violations}
           state-val (log! state :iter log-entry)]
-
-      ;; Generate report page after every check and notify browsers
-      ;; viewing it of the change.
-      (spit (str test-dir "/index.html")
-            (rend.html/render-report state-val))
-
-      (rend.server/ws-broadcast
-        (str
-          "row:" test-id ":"
-          (hiccup.core/html
-            (rend.html/render-report-row (:browsers cfg)
-                                         log-entry
-                                         test-iteration))))
-      (rend.server/ws-broadcast
-        (str
-          "summary:" test-id ":"
-          (hiccup.core/html
-            (rend.html/render-summary state-val))))
       res)))
 
-;; SIDE-EFFECTS: updates state atom
+;; SIDE-EFFECTS: updates state atom run value, seed value, iteration
+;; value, run log, and weights
 (defn run-iterations
   "Run the quick check process against the test-state and update the
   test-state progressively as the checking happens. If the test mode
@@ -373,7 +420,7 @@
         current-seed (new-test-seed! test-state)
         test-dir (str (-> cfg :web :dir)
                       "/" (:test-id cfg) "-" run "-" current-seed)]
-    (swap! test-state assoc :iteration -1)
+    (update-state! test-state {:iteration -1})
 
     (println "Test State:")
     (pprint (printable-state @test-state))
@@ -406,13 +453,11 @@
           html (-> qc-res :shrunk :smallest first)
           adjusted-weights (wrap-adjust-weights cfg weights html test-dir)
           new-weights (merge weights
-                             adjusted-weights
-                             (-> cfg :weights :fixed))]
+                             adjusted-weights)]
+      ;; Update current weights
+      (update-state! test-state {:weights new-weights})
       (prn :adjusted-weights adjusted-weights)
       (prn :new-weights new-weights)
-
-      ;; Update current weights
-      (swap! test-state assoc :weights new-weights)
 
       (println "------")
       (println (str "Quick check results (also in " test-dir "/results.edn):"))
@@ -425,16 +470,16 @@
 
 ;; ---
 
-;; SIDE-EFFECTS: updates state atom here and in run-iterations
+;; SIDE-EFFECTS: updates state atom run value
 (defn run-tests
   "Calls run-iterations the number of times specified in the
   configuration (-> cfg :test :runs)."
   [test-state extra-cfg]
   (let [cfg (util/deep-merge (-> @test-state :cfg) extra-cfg)] ;; add extra-cfg
-    (swap! test-state merge {:run -1})
+    ;;(update-state! test-state {:run -1})
     ;; Do the test runs and report
-    (doseq [run (range (-> cfg :test :runs))]
-      (println (str "--- Run number " (inc run) " -----------------"))
+    (doseq [run-idx (range (-> cfg :test :runs))]
+      (println (str "--- Run index " (inc run-idx) " -----------------"))
       (run-iterations test-state extra-cfg))))
 
 ;; ---
@@ -452,16 +497,9 @@
   (let [user-cfg (util/deep-merge user-cfg extra-cfg) ;; add extra-cfg
         ;; Current test state contains values that change over
         ;; runs/iterations
-        test-state (atom {:test-dirs #{}})
+        test-state (atom {:test-dirs []})
         ;; Start a web server for the test cases and reporting
-        root-handler (fn [req]
-                       (str "<html><body>"
-                            (string/join
-                              "\n"
-                              (doall (for [dir (-> @test-state :test-dirs)]
-                                       (str "<a href=\"" dir "\">"
-                                            dir "</a><br>"))))
-                            "</body></html>"))
+        root-handler (partial #'web-report-root-handler test-state)
         server (rend.server/start-server (-> user-cfg :web :port)
                                          (-> user-cfg :web :dir)
                                          root-handler)
@@ -474,8 +512,8 @@
                       (println "Loading/creating CSS parser")
                       (wend/load-parser :css-gen))
         weights (load-weights user-cfg)
-
         test-id (rand-int 100000)
+
         ;; Add constant values to the user config
         base-cfg (merge
                    user-cfg
@@ -496,18 +534,19 @@
                            (catch Throwable e
                              (println "Failed to stop browser session:" e))))))]
 
-    (swap! test-state merge {:cfg base-cfg
-                             :server server
-                             :run 0
-                             :iteration -1
-                             :sessions {}
-                             ;; User specified weights (no base)
-                             :weights (merge (:start weights)
-                                             (:fixed weights))
-                             :cleanup-fn cleanup-fn})
+    (reset-state! test-state {:cfg base-cfg
+                              :server server
+                              :sessions {}
+                              ;; User specified weights (no base)
+                              :weights (:start weights)
+                              :cleanup-fn cleanup-fn})
 
     ;; On Ctrl-C cleanup browser sessions we are about to create
     (.addShutdownHook (Runtime/getRuntime) (Thread. cleanup-fn))
+
+    ;; Attach watcher function to state atom to send updates to any
+    ;; listening browser websocket clients
+    (add-watch test-state :web-report-update #'web-report-update)
 
     ;; Create webdriver/selenium sessions to the testing browsers
     (doseq [browser (:browsers base-cfg)]

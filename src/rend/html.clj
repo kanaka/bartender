@@ -92,40 +92,39 @@
         threshold (-> cfg :compare :threshold)
         browsers  (-> cfg :browsers)
         run       (-> state :run)
-        logs      (-> state :run-log (get run) :iter-log vals)]
-    (hiccup/html
-      [:html
-       [:style "a {text-decoration: none}"]
-       [:body {:style "margin: 0px;"}
-        [:div {:class "header"
-               :style "position: fixed;
-                       height: 45px;
-                       width: 100%;
-                       padding: 5px;
-                       background-color: #efefef"}
-         [:input#toggle {:type "button"
-                         :value "Show Thumbnails"
-                         :onclick "toggle_thumbs()"}]
-         [:span {:style "padding: 4px;"}
-          "Threshold value: " (format "%.6f" threshold)]
-         [:div {:id "summary"
-                :style "padding: 4px;"}
-          (render-summary state)]]
-        [:div {:class "content"
-               :style "padding-top: 55px"}
-         (vec
-           (concat
-             [:table {:id "results" :style "border-spacing: 4px 0px"}
-              (vec
-                (concat
-                  [:tr [:th "Iteration"] [:th "Result"] [:th "Html"]
-                   [:th "&nbsp;"]]
-                  (for [browser browsers]
-                    [:th (str (:id browser))])
-                  [[:th "&nbsp;"] [:th "Average"] [:th "&nbsp;"]]
-                  (for [[ba bb] (combinations browsers 2)]
-                    [:th (str (:id ba) "&Delta;" (:id bb))])))]
-             (for [i (range (count logs))]
-               (render-report-row browsers (nth logs i) i))))]
-        [:script {:src "../static/report.js"}]
-        [:script (str "connect('ws://' + location.host + '/ws')")]]])))
+        logs      (-> state :run-log (get run) :iter-log)]
+    [:html
+     [:style "a {text-decoration: none}"]
+     [:body {:style "margin: 0px;"}
+      [:div {:class "header"
+             :style "position: fixed;
+                     height: 45px;
+                     width: 100%;
+                     padding: 5px;
+                     background-color: #efefef"}
+       [:input#toggle {:type "button"
+                       :value "Show Thumbnails"
+                       :onclick "toggle_thumbs()"}]
+       [:span {:style "padding: 4px;"}
+        "Threshold value: " (format "%.6f" threshold)]
+       [:div {:id "summary"
+              :style "padding: 4px;"}
+        (render-summary state)]]
+      [:div {:class "content"
+             :style "padding-top: 55px"}
+       (vec
+         (concat
+           [:table {:id "results" :style "border-spacing: 4px 0px"}
+            (vec
+              (concat
+                [:tr [:th "Iteration"] [:th "Result"] [:th "Html"]
+                 [:th "&nbsp;"]]
+                (for [browser browsers]
+                  [:th (str (:id browser))])
+                [[:th "&nbsp;"] [:th "Average"] [:th "&nbsp;"]]
+                (for [[ba bb] (combinations browsers 2)]
+                  [:th (str (:id ba) "&Delta;" (:id bb))])))]
+           (for [[i log-entry] (sort-by first logs)]
+             (render-report-row browsers log-entry i))))]
+      [:script {:src "../static/report.js"}]
+      [:script (str "connect('ws://' + location.host + '/ws')")]]]))
