@@ -193,7 +193,7 @@ browsers:
 
 ## Images
 
-The following images are included in gen/static/:
+The following images are included in static/:
 
 * [File:Books-aj.svg\_aj\_ashton\_01g\*.png](https://commons.wikimedia.org/wiki/Openclipart#/media/File:Books-aj.svg_aj_ashton_01g.png) (Public Domain)
 * [B\_stop.svg](https://commons.wikimedia.org/wiki/Openclipart#/media/File:B_stop.svg) (CC0)

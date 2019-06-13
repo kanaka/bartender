@@ -7110,7 +7110,7 @@
         g (assoc g :html gen-html)
 
         gen-rend-css
-        (gen/return "<link rel=\"stylesheet\" href=\"../static/rend.css\">")
+        (gen/return "<link rel=\"stylesheet\" href=\"/static/rend.css\">")
         g (assoc g :rend-css gen-rend-css)
 
         gen-comment-generic
@@ -7118,7 +7118,7 @@
         g (assoc g :comment-generic gen-comment-generic)
 
         gen-normalize-css
-        (gen/return "<link rel=\"stylesheet\" href=\"../static/normalize.css\">")
+        (gen/return "<link rel=\"stylesheet\" href=\"/static/normalize.css\">")
         g (assoc g :normalize-css gen-normalize-css)
 
         gen-body-test

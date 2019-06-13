@@ -7,6 +7,7 @@
             [clojure.string :as string]
             [clojure.set :as set]
 
+            [flatland.ordered.set :refer [ordered-set]]
             [com.rpl.specter :refer [setval ALL LAST]]
             [hiccup.core]
             [clj-time.core :as ctime]
@@ -122,7 +123,6 @@
                                :sessions  {}
                                :run-log   {}}
                               new-state)))
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Lower level testing functions
@@ -269,7 +269,7 @@
 
 (defn web-report-root-handler
   [test-state req]
-  (let [test-dirs (-> @test-state :test-dirs set)]
+  (let [test-dirs (-> @test-state :test-dirs)]
     (str "<html><body>"
          (string/join
            "\n"
@@ -497,7 +497,7 @@
   (let [user-cfg (util/deep-merge user-cfg extra-cfg) ;; add extra-cfg
         ;; Current test state contains values that change over
         ;; runs/iterations
-        test-state (atom {:test-dirs []})
+        test-state (atom {:test-dirs (ordered-set)})
         ;; Start a web server for the test cases and reporting
         root-handler (partial #'web-report-root-handler test-state)
         server (rend.server/start-server (-> user-cfg :web :port)
@@ -567,7 +567,7 @@
   ;; OR
 (def res (run-iterations test-state {:quick-check {:iterations 3}}))
   ;; OR
-(def res (check-page test-state {} "gen/test1" "<html><link rel=\"stylesheet\" href=\"../static/normalize.css\"><link rel=\"stylesheet\" href=\"../static/rend.css\"><body>hello</body></html>"))
+(def res (check-page test-state {} "gen/test1" "<html><link rel=\"stylesheet\" href=\"/static/normalize.css\"><link rel=\"stylesheet\" href=\"/static/rend.css\"><body>hello</body></html>"))
 
 ;; Do not use :reload-all or it will break ring/rend.server
 (require 'rend.core 'rend.html :reload)
@@ -576,9 +576,9 @@
 
 (comment
 
-(def html "<html><head><link rel=\"stylesheet\" href=\"../static/normalize.css\"><link rel=\"stylesheet\" href=\"../static/rend.css\"><title></title></head><body>x</body></html>")
+(def html "<html><head><link rel=\"stylesheet\" href=\"/static/normalize.css\"><link rel=\"stylesheet\" href=\"/static/rend.css\"><title></title></head><body>x</body></html>")
 
-(def html "<html><head><link rel=\"stylesheet\" href=\"../static/normalize.css\"><link rel=\"stylesheet\" href=\"../static/rend.css\"><title></title></head><body>x<div style=\"background-color: red\">X</div></body></html>")
+(def html "<html><head><link rel=\"stylesheet\" href=\"/static/normalize.css\"><link rel=\"stylesheet\" href=\"/static/rend.css\"><title></title></head><body>x<div style=\"background-color: red\">X</div></body></html>")
 
 (wrap-adjust-weights (-> @test-state :cfg) (-> @test-state :weights) html "gen/38244-2-33" wend/reducer-half)
 

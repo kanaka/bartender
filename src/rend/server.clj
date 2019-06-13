@@ -29,20 +29,22 @@
   (doseq [ch @ws-clients]
     (send! ch (json/write-str data))))
 
-(defn start-server [port dir root-handler]
+(defn start-server [port gen-dir root-handler]
   (let [routes (compojure.core/routes
                  ;;(GET "/" [] (file-response default-index {}))
                  ;;(GET "/" [] (redirect default-path))
                  (GET "/" [] root-handler)
                  (GET "/ws" [] ws-handler)
-                 (route/files "/gen" {:root dir})
+                 (route/files "/gen" {:root gen-dir})
+                 (route/files "/static" {:root "static"})
                  (route/not-found "Not Found"))
         app (-> routes
 ;                (wrap-defaults site-defaults)
-                (wrap-file dir)
+                (wrap-file gen-dir)
+                (wrap-file "static")
                 (wrap-content-type)
                 (wrap-not-modified))
         server (run-server app {:port port :join? false})]
     (println (str "HTTP kit server started on port: " port
-                  ", serving directory: " dir))
+                  ", serving directory: " gen-dir))
     server))

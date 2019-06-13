@@ -395,7 +395,7 @@
 
 (def p (load-parser :html))
 
-(def html "<html><head><link rel=\"stylesheet\" href=\"../static/normalize.css\"><link rel=\"stylesheet\" href=\"../static/rend.css\"></head><body>x<div style=\"background: red\"></div></body></html>")
+(def html "<html><head><link rel=\"stylesheet\" href=\"/static/normalize.css\"><link rel=\"stylesheet\" href=\"/static/rend.css\"></head><body>x<div style=\"background: red\"></div></body></html>")
 
 (def w (instacheck/filter-alts (parse-weights p html)))
 
