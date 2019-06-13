@@ -209,14 +209,20 @@
 ;;      #"(-webkit-|-moz-|-ms-)(transform|text-size-adjust|box-sizing|font-feature-settings)\b" "$2"
 
 (defn extract-inline-css
+  "Return text of all inline styles. Specifically it converts the HTML
+  file to hickory, extracts the content from style tags and
+  concatenates it together."
   [html]
   (let [h (-> html
               hickory.core/parse
               hickory.core/as-hickory)
         ;; Extract inline tag specific styles
         styles (map #(->> % :attrs :style)
-                    (s/select (s/child (s/attr :style)) h))]
-    (string/join "\n" styles)))
+                    (s/select (s/child (s/attr :style)) h))
+        ;; Remove trailing semis, then join with single semi+newline
+        style (string/join ";\n" (map #(string/replace % #";\s*$" "")
+                                      styles))]
+    style))
 
 (defn extract-css-map
   "Return a map of CSS texts with the following keys:

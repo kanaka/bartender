@@ -17,7 +17,7 @@ sudo apt-get install libopencv-dev
 make deps
 ```
 
-* Download/build the drivers/browsers/servers:
+* Download/build the drivers/browsers that you want to test:
   * Firefox (https://developer.mozilla.org/en-US/Firefox/Headless_mode):
   ```
   curl -L https://github.com/mozilla/geckodriver/releases/download/v0.22.0/geckodriver-v0.22.0-linux64.tar.gz | tar xvzf -
@@ -45,7 +45,7 @@ make deps
   unzip BrowserStackLocal-linux-x64.zip
   ```
 
-## Rend: Running Tests
+## Running Tests (rend)
 
 * Start the drivers/browsers/servers:
   * Firefox:
@@ -80,9 +80,10 @@ Monitor results at `http://localhost:3000` (3000 is the :web :port
 specified in config.yaml.
 
 
-## Mend: Update HTML5 and CSS3 Generators
+## Update HTML5 and CSS3 Generators (mend)
 
-Generate Clojure generator source based on the HTML5 EBNF grammar:
+Generate Clojure generator source based on the HTML5 EBNF grammar from
+[kanaka/html5-css3-ebnf](https://github.com/kanaka/html5-css3-ebnf):
 
 ```
 time lein with-profile mend run --mode html5 --weights-output data/html5-weights-output.edn --namespace rend.html5-generators --function html5-generators --clj-output src/rend/html5_generators.clj
@@ -101,6 +102,26 @@ lein repl
 (require '[rend.generator])
 (in-ns 'rend.generator)
 (clojure.pprint/pprint (gen/sample (get-html-generator) 5))
+```
+
+## Extract/parse weights from an existing web page (wend)
+
+```
+time lein with-profile wend run --weights-output data/my-page.edn my-page.html
+```
+
+This can then be used to generate and test with similarly weighted
+pages by updating the config yaml:
+
+```yaml
+...
+weights:
+    start: data/my-pages.edn
+...
+```
+
+```
+lein run config.yaml
 ```
 
 ## Browser Configuration
