@@ -1,9 +1,7 @@
 let thumb_display = 'none'
 let tlink_display = 'inline'
 let ws = null
-let curTestId = null
-let curRun = null
-let curSeed = null
+let curTestSlug = null
 
 
 function update_thumbs() {
@@ -31,21 +29,18 @@ function toggle_thumbs() {
   update_thumbs()
 }
 
-function parseTestDir(path) {
-    return path
-        .match(/\/([\d]+)-([\d]+)-([\d]+)/)
-        .slice(1)
-        .map(x => parseInt(x))
+function parseTestSlug(path) {
+    return path.match(/\/([\d]+-[\d]+-[\d]+)/)[1]
 }
 
 function reportHandler(msg) {
-  if (curTestId === null) {
-    [curTestId,curRun,curSeed] = parseTestDir(location.pathname)
-    console.log(curTestId, curRun, curSeed)
+  if (curTestSlug === null) {
+    curTestSlug = parseTestSlug(location.pathname)
+    console.log(curTestSlug)
   }
-  const {msgType,testId,run,data} = msg
-  if (curTestId !== testId || curRun !== run) {
-      console.error(`msg test id ${testId} does not match page ${curTestId}, ignoring`)
+  const {msgType,testSlug,data} = msg
+  if (curTestSlug !== testSlug) {
+      console.error(`msg test ${testSlug} does not match page ${curTestSlug}, ignoring`)
       return
   }
   switch (msgType) {
@@ -60,7 +55,7 @@ function reportHandler(msg) {
     let summary = document.getElementById('summary')
     summary.innerHTML = data
     break
-  case 'testDir':
+  case 'newDir':
     console.log('ignoring msg type:', msgType)
     break
   default:
@@ -69,17 +64,16 @@ function reportHandler(msg) {
 }
 
 function logHandler(msg) {
-  const {msgType,testId,run,seed,iteration,testDir,data} = msg
+  const {msgType,testSlug,iteration,data} = msg
   let logs = document.getElementById('logs')
   let tr = document.createElement('tr')
-  let tds = `<td>${msgType}</td><td><a href="/${testDir}/">${testId}-${run}-${seed}</a></td>`
+  let tds = `<td>${msgType}</td><td><a href="/gen/${testSlug}/">${testSlug}</a></td>`
   switch (msgType) {
   case 'row':
     // iteration is already included in received row data
     tds += data
         .replace(/^<tr>(.*)<\/tr>$/, '$1')
-        .replace(/((?:href="|src="))/g, `$1/${testDir}/`)
-    update_thumbs()
+        .replace(/((?:href="|src="))/g, `$1/gen/${testSlug}/`)
     break
   case 'summary':
     // There will be at least 9 additional cols (with 2 browsers)
@@ -94,17 +88,18 @@ function logHandler(msg) {
   }
   tr.innerHTML = tds
   logs.appendChild(tr)
+  update_thumbs()
 }
 
 function dirHandler(msg) {
-  const {msgType,testId,run,seed,iteration,testDir,data} = msg
+  const {msgType,data} = msg
   let dirs = document.getElementById('dirs')
   switch (msgType) {
   case 'newDir':
     dirs.innerHTML = ''
-    for (let testDir of data) {
+    for (let testSlug of data) {
         let tr = document.createElement('tr')
-        tr.innerHTML = `<td><a href="/${testDir}">${testDir}</a></td>`
+        tr.innerHTML = `<td><a href="/gen/${testSlug}/">${testSlug}</a></td>`
         dirs.appendChild(tr)
     }
     break
@@ -124,8 +119,8 @@ function connect(uri, handler) {
   }
   ws.onmessage = function (event) {
     const msg = JSON.parse(event.data)
-    const {msgType,testId,run,iteration,data} = msg
-    console.log(`msg '${msgType}': id ${testId}: ${data.toString().slice(0,60)}...`)
+    const {msgType,testSlug,iteration,data} = msg
+    console.log(`msg ${msgType}, slug ${testSlug}, iteration ${iteration}: ${data.toString().slice(0,60)}...`)
     if (!msgType) {
       console.log('msg without msgType, ignoring')
       return

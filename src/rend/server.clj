@@ -30,9 +30,7 @@
                               (println "channel" ch "received data:" data)))))
 
         routes (compojure.core/routes
-                 ;;(GET "/" [] (file-response default-index {}))
                  (GET "/" [] (redirect "/static/index.html"))
-                 ;;(GET "/" [] root-handler)
                  (GET "/ws" [] ws-handler)
                  (route/files "/gen" {:root gen-dir})
                  (route/files "/static" {:root "static"})

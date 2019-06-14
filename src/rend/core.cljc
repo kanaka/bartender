@@ -141,42 +141,39 @@
   "Keep the web page report and file report up-to-date based on the
   changes to the state atom. This includes notifying WebSocket clients
   so that browsers viewing the report page get live updates. There are
-  three types of state changes that are handled:
-  1. New test-dir created (right before quick-check)
-  2. New quick-check report received (during quick-check)
-  3. A iteration log created (during quick-check, after each check-page)"
+  four types of state changes that are handled:
+    1. New websocket client connected
+    2. New test-slug created (right before quick-check)
+    3. New quick-check report received (during quick-check)
+    4. A iteration log created (during quick-check, after each check-page)"
   [_key _atom old-state new-state]
-  (let [{:keys [cfg test-id ws-clients run iteration current-seed]} new-state
-        test-dir (-> new-state :test-dirs last)
+  (let [{:keys [cfg ws-clients test-slug run iteration]} new-state
         ws-msg #(rend.server/ws-broadcast ws-clients
                                           {:msgType %1
                                            :data %2
-                                           :testId test-id
-                                           :run run
-                                           :iteration iteration
-                                           :seed current-seed
-                                           :testDir test-dir})
+                                           :testSlug test-slug
+                                           :iteration iteration})
         changed? #(not= (get-in old-state %) (get-in new-state %))
         ;; a websocket client was added/removed
         new-ws-client (changed? [:ws-clients])
-        ;; a new test-dir was just added prior to quick-check
-        new-test-dir (changed? [:test-dirs])
+        ;; a new test-slug was just added prior to quick-check
+        new-test-slug (changed? [:test-slugs])
         ;; quick-check generated a report during execution
         new-report (changed? [:latest-report])
         ;; check-page finished running a set of quick-check iterations
         new-iter-log (changed? [:run-log run :iter-log])]
 
-    (when (and (or new-ws-client new-test-dir)
-               (seq (-> new-state :test-dirs)))
-      (ws-msg :newDir (-> new-state :test-dirs)))
+    (when (and (or new-ws-client new-test-slug)
+               (seq (-> new-state :test-slugs)))
+      (ws-msg :newDir (-> new-state :test-slugs)))
 
-    (when (or new-test-dir new-iter-log)
+    (when (or new-test-slug new-iter-log)
       ;; Generate the full report page when new test dir is created
-      ;; (new-test-dir) and after every check-page (new-iter-log).
-      (io/make-parents (java.io.File. (str test-dir "/index.html")))
-      (spit (str test-dir "/index.html")
-            (hiccup.core/html
-              (rend.html/render-report new-state))))
+      ;; (new-test-slug) and after every check-page (new-iter-log).
+      (let [test-dir (str (-> cfg :web :dir) "/" test-slug)]
+        (spit (str test-dir "/index.html")
+              (hiccup.core/html
+                (rend.html/render-report new-state)))))
 
     (when new-iter-log
       ;; We just finished a single check-page call so we know the
@@ -370,28 +367,26 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Test execution API
 
-;; TODO: replace test-dir with test-slug: <test-id>-<run>-<seend>
-
-;; SIDE-EFFECTS: updates state atom test-dirs, iteration value, and
-;; iter log.
+;; SIDE-EFFECTS: updates state atom :test-slugs, :iteration value, and
+;; :iter log.
 (defn check-page
   "Render and check a test case page. Then output a report file and
   send an update to any browsers currently viewing the page."
-  [state extra-cfg test-dir html]
-  (let [test-dir (string/replace test-dir #"/*$" "")]
+  [state extra-cfg test-slug html]
+  (let [{:keys [cfg sessions]} @state
+        cfg (merge (:cfg @state) extra-cfg)
+        test-dir (str (-> cfg :web :dir) "/" test-slug)]
 
-    ;; Communicate the test directories to the web server
-    (swap! state update-in [:test-dirs] conj (str test-dir "/"))
+    ;; TODO: combine into a single update
+    (update-state! state {:test-slug test-slug})
+    ;; Create and communicate the test directories to the web server
+    (io/make-parents (str test-dir "/foo"))
+    (swap! state update-in [:test-slugs] conj test-slug)
 
     (let [test-iteration (new-test-iteration! state)
-          {:keys [cfg sessions]} @state
-          cfg (merge (:cfg @state) extra-cfg)
           host-port (str (get-in cfg [:web :host] "localhost")
                          ":" (get-in cfg [:web :port]))
-          ;; TODO: this makes bad assumptions about relationship
-          ;; between test-dir, url-path
-          test-url (str "http://" host-port "/gen/"
-                        (.getName (io/file test-dir)))
+          test-url (str "http://" host-port "/gen/" test-slug)
           comp-method (get-in cfg [:compare :method])
           comp-threshold (get-in cfg [:compare :threshold])
           [res diffs violations] (check-page* sessions
@@ -401,13 +396,13 @@
                                               test-url
                                               test-iteration
                                               html)
-          log-entry {:prefix (str test-dir "/" test-iteration)
-                     :html html
+          log-entry {:html html
                      :result res
                      :diffs diffs
                      :violations violations}
           state-val (log! state :iter log-entry)]
       res)))
+
 
 ;; SIDE-EFFECTS: updates state atom run value, seed value, iteration
 ;; value, run log, and weights
@@ -422,8 +417,8 @@
         cfg (util/deep-merge (-> @test-state :cfg) extra-cfg) ;; add extra-cfg
         run (new-test-run! test-state)
         current-seed (new-test-seed! test-state)
-        test-dir (str (-> cfg :web :dir)
-                      "/" test-id "-" run "-" current-seed)]
+        test-slug (str test-id "-" run "-" current-seed)
+        test-dir (str (-> cfg :web :dir) "/" test-slug)]
     (update-state! test-state {:iteration -1})
 
     (println "Test State:")
@@ -434,7 +429,7 @@
     (let [;; Config and state specific versions of the
           ;; functions/generators used for the actual check process
           gen-html-fn (rend.generator/get-html-generator weights)
-          check-fn (partial check-page test-state extra-cfg test-dir)
+          check-fn (partial check-page test-state extra-cfg test-slug)
           report-fn (fn [report]
                         (let [{:keys [cfg iteration]} @test-state
                               verbose (:verbose cfg)
@@ -520,11 +515,13 @@
         ;; while parsers are being loaded
         test-state (atom {:ws-clients   #{}})
         ;; Start a web server for the test cases and reporting
-        server (rend.server/start-server
-                 (-> cfg :web :port)
-                 (-> cfg :web :dir)
-                 (partial #'add-ws-client! test-state)
-                 (partial #'remove-ws-client! test-state))
+        server (do
+                 (io/make-parents (str (-> cfg :web :dir) "/foo"))
+                 (rend.server/start-server
+                   (-> cfg :web :port)
+                   (-> cfg :web :dir)
+                   (partial #'add-ws-client! test-state)
+                   (partial #'remove-ws-client! test-state)))
 
         ;; If mode is :reduce-weights, then load a parser
         html-parser (when (= "reduce-weights" (-> cfg :test :mode))
@@ -547,7 +544,7 @@
                              (println "Failed to stop browser session:" e))))))]
 
     (reset-state! test-state {:cfg          cfg
-                              :test-dirs    (ordered-set)
+                              :test-slugs   (ordered-set)
                               :test-id      (rand-int 100000)
                               :server       server
                               :html-parser  html-parser
@@ -583,7 +580,7 @@
   ;; OR
 (def res (run-iterations test-state {:quick-check {:iterations 3}}))
   ;; OR
-(def res (check-page test-state {} "gen/test1" "<html><link rel=\"stylesheet\" href=\"/static/normalize.css\"><link rel=\"stylesheet\" href=\"/static/rend.css\"><body>hello</body></html>"))
+(check-page test-state {} "test1" "<html><link rel=\"stylesheet\" href=\"/static/normalize.css\"><link rel=\"stylesheet\" href=\"/static/rend.css\"><body>hello</body></html>")
 
 ;; Do not use :reload-all or it will break ring/rend.server
 (require 'rend.core 'rend.html :reload)
