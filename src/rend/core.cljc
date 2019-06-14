@@ -572,7 +572,7 @@
 (comment
 
 (require '[clj-yaml.core :as yaml])
-(def file-cfg (yaml/parse-string (slurp "config.yaml")))
+(def file-cfg (yaml/parse-string (slurp "config-dev.yaml")))
 
 (time (def test-state (init-tester file-cfg {:verbose true})))
 
@@ -581,19 +581,25 @@
 (def res (run-iterations test-state {:quick-check {:iterations 3}}))
   ;; OR
 (check-page test-state {} "test1" "<html><link rel=\"stylesheet\" href=\"/static/normalize.css\"><link rel=\"stylesheet\" href=\"/static/rend.css\"><body>hello</body></html>")
+  ;; OR
+(check-page test-state {} "test1" "<html><link rel=\"stylesheet\" href=\"/static/normalize.css\"><link rel=\"stylesheet\" href=\"/static/rend.css\"><body>hello<button></button></body></html>")
 
 ;; Do not use :reload-all or it will break ring/rend.server
-(require 'rend.core 'rend.html :reload)
+(require 'wend.core 'rend.core 'rend.html  :reload)
 
 )
 
 (comment
 
-(def html "<html><head><link rel=\"stylesheet\" href=\"/static/normalize.css\"><link rel=\"stylesheet\" href=\"/static/rend.css\"><title></title></head><body>x</body></html>")
+(def adj-test (partial wrap-adjust-weights
+                       (-> @test-state :html-parser)
+                       (-> @test-state :css-parser)
+                       (merge (-> @test-state :cfg :weights :base)
+                              (-> @test-state :weights))))
 
-(def html "<html><head><link rel=\"stylesheet\" href=\"/static/normalize.css\"><link rel=\"stylesheet\" href=\"/static/rend.css\"><title></title></head><body>x<div style=\"background-color: red\">X</div></body></html>")
+(adj-test "<html><head><link rel=\"stylesheet\" href=\"/static/normalize.css\"><link rel=\"stylesheet\" href=\"/static/rend.css\"><title></title></head><body>x</body></html>")
 
-(wrap-adjust-weights (-> @test-state :cfg) (-> @test-state :weights) html)
+(adj-test "<html><head><link rel=\"stylesheet\" href=\"/static/normalize.css\"><link rel=\"stylesheet\" href=\"/static/rend.css\"><title></title></head><body>x<div style=\"background-color: red\">X</div></body></html>")
 
 )
 
