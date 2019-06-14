@@ -323,6 +323,8 @@
           (println "Threshold violations:" (map (comp :id first) violations)))
 
         [(not violation) diffs violations])
+      (catch java.lang.ThreadDeath e
+        (throw e))
       (catch Throwable t
         (prn :check-page-exception t)
         [false "Exception" nil]))))
