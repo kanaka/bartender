@@ -125,6 +125,76 @@
                               new-state)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Web Report Page Updates
+
+(defn web-report-ws-open
+  [test-state ch req]
+  (swap! test-state update-in [:ws-clients] conj ch))
+
+(defn web-report-ws-close
+  [test-state ch status]
+  (swap! test-state update-in [:ws-clients] disj ch))
+
+(defn web-report-update
+  "Keep the web report page up-to-date based on the changes to the
+  state atom. This includes notifying WebSocket clients so that
+  browsers viewing the report page get live updates. There are three
+  types of state changes that are handled:
+  1. New test-dir created (right before quick-check)
+  2. New quick-check report received (during quick-check)
+  3. A iteration log created (during quick-check, after each check-page)"
+  [_key _atom old-state new-state]
+  (let [{:keys [cfg ws-clients run iteration current-seed]} new-state
+        {:keys [test-id]} cfg
+        test-dir (-> new-state :test-dirs last)
+        ws-msg #(rend.server/ws-broadcast ws-clients
+                                          {:msgType %1
+                                           :data %2
+                                           :testId test-id
+                                           :run run
+                                           :iteration iteration
+                                           :seed current-seed
+                                           :testDir test-dir})
+        changed? #(not= (get-in old-state %) (get-in new-state %))
+        ;; a websocket client was added/removed
+        new-ws-client (changed? [:ws-clients])
+        ;; a new test-dir was just added prior to quick-check
+        new-test-dir (changed? [:test-dirs])
+        ;; quick-check generated a report during execution
+        new-report (changed? [:latest-report])
+        ;; check-page finished running a set of quick-check iterations
+        new-iter-log (changed? [:run-log run :iter-log])]
+
+    (when (or new-ws-client new-test-dir)
+      (io/make-parents (java.io.File. (str test-dir "/index.html")))
+      (ws-msg :newDir (-> new-state :test-dirs)))
+
+    (when (or new-test-dir new-iter-log)
+      ;; Generate the full report page when new test dir is created
+      ;; (new-test-dir) and after every check-page (new-iter-log).
+      (spit (str test-dir "/index.html")
+            (hiccup.core/html
+              (rend.html/render-report new-state))))
+
+    (when new-iter-log
+      ;; We just finished a single check-page call so we know the
+      ;; result and can add a new report row.
+      (let [log-entry (-> new-state
+                          :run-log (get run)
+                          :iter-log (get iteration))]
+        (ws-msg :row (hiccup.core/html
+                       (rend.html/render-report-row (:browsers cfg)
+                                                    log-entry
+                                                    iteration)))))
+
+    (when (or new-report new-iter-log)
+      ;; We need to do this for new reports in addition to each
+      ;; iter-log (check-page) because we may receive multiple reports
+      ;; for the same page.
+      (ws-msg :summary (hiccup.core/html
+                         (rend.html/render-summary new-state))))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Lower level testing functions
 
 (defn check-page*
@@ -266,68 +336,6 @@
     ;; Save the latest report
     (update-state! state saved-report)
 ))
-
-(defn web-report-root-handler
-  [test-state req]
-  (let [test-dirs (-> @test-state :test-dirs)]
-    (str "<html><body>"
-         (string/join
-           "\n"
-           (if (seq test-dirs)
-             (doall (for [dir test-dirs]
-                      (str "<a href=\"" dir "\">"
-                           dir "</a><br>")))
-             ["No data yet."]))
-         "</body></html>")))
-
-(defn web-report-update
-  "Keep the web report page up-to-date based on the changes to the
-  state atom. This includes notifying WebSocket clients so that
-  browsers viewing the report page get live updates. There are three
-  types of state changes that are handled:
-  1. New test-dir created (right before quick-check)
-  2. New quick-check report received (during quick-check)
-  3. A iteration log created (during quick-check, after each check-page)"
-  [_key _atom old-state new-state]
-  (let [{:keys [cfg server run iteration]} new-state
-        {:keys [test-id]} cfg
-        ws-msg #(rend.server/ws-broadcast {:msgType %1
-                                           :data (hiccup.core/html %2)
-                                           :testId test-id
-                                           :run run
-                                           :iteration iteration})
-        changed? #(not= (get-in old-state %) (get-in new-state %))
-        ;; a new test-dir was just added prior to quick-check
-        new-test-dir (changed? [:test-dirs])
-        ;; quick-check generated a report during execution
-        new-report (changed? [:latest-report])
-        ;; check-page finished running a set of quick-check iterations
-        new-iter-log (changed? [:run-log run :iter-log])]
-
-    (when (or new-test-dir new-iter-log)
-      ;; Generate the full report page when new test dir is created
-      ;; (new-test-dir) and after every check-page (new-iter-log).
-      (let [test-dir (-> new-state :test-dirs last)]
-        (io/make-parents (java.io.File. (str test-dir "/index.html")))
-        (spit (str test-dir "/index.html")
-              (hiccup.core/html
-                (rend.html/render-report new-state)))))
-
-    (when new-iter-log
-      ;; We just finished a single check-page call so we know the
-      ;; result and can add a new report row.
-      (let [log-entry (-> new-state
-                          :run-log (get run)
-                          :iter-log (get iteration))]
-        (ws-msg :row (rend.html/render-report-row (:browsers cfg)
-                                                  log-entry
-                                                  iteration))))
-
-    (when (or new-report new-iter-log)
-      ;; We need to do this for new reports in addition to each
-      ;; iter-log (check-page) because we may receive multiple reports
-      ;; for the same page.
-      (ws-msg :summary (rend.html/render-summary new-state)))))
 
 ;;(def reducible-regex #"^element$|^[\S-]*-attribute$|^css-declaration$")
 (def reducible-regex #"^\[:element :alt [0-9]+\]$|^\[[\S-]*-attribute :alt [0-9]+\]$|^\[:css-known-standard :alt [0-9]+\]$")
@@ -497,12 +505,14 @@
   (let [user-cfg (util/deep-merge user-cfg extra-cfg) ;; add extra-cfg
         ;; Current test state contains values that change over
         ;; runs/iterations
-        test-state (atom {:test-dirs (ordered-set)})
+        test-state (atom {:test-dirs (ordered-set)
+                          :ws-clients #{}})
         ;; Start a web server for the test cases and reporting
-        root-handler (partial #'web-report-root-handler test-state)
-        server (rend.server/start-server (-> user-cfg :web :port)
-                                         (-> user-cfg :web :dir)
-                                         root-handler)
+        server (rend.server/start-server
+                 (-> user-cfg :web :port)
+                 (-> user-cfg :web :dir)
+                 (partial #'web-report-ws-open test-state)
+                 (partial #'web-report-ws-close test-state))
 
         ;; If mode is :reduce-weights, then load a parser
         html-parser (when (= "reduce-weights" (-> user-cfg :test :mode))

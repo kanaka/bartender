@@ -127,4 +127,4 @@
            (for [[i log-entry] (sort-by first logs)]
              (render-report-row browsers log-entry i))))]
       [:script {:src "/static/report.js"}]
-      [:script (str "connect('ws://' + location.host + '/ws')")]]]))
+      [:script (str "connect('ws://' + location.host + '/ws', reportHandler)")]]]))

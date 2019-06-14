@@ -13,27 +13,26 @@
 ;; TODO: make reloadable:
 ;; https://github.com/ring-clojure/ring/wiki/Reloading
 
-(defonce ws-clients
-  (atom #{}))
-
-(defn ws-handler [request]
-  (with-channel request ch
-    (swap! ws-clients conj ch)
-    (on-close ch (fn [status]
-                   (swap! ws-clients disj ch)
-                   (println "channel closed: " status)))
-    (on-receive ch (fn [data] ;; echo it back
-                     (println "channel" ch "received data:" data)))))
-
-(defn ws-broadcast [data]
-  (doseq [ch @ws-clients]
+(defn ws-broadcast [channels data]
+  (doseq [ch channels]
     (send! ch (json/write-str data))))
 
-(defn start-server [port gen-dir root-handler]
-  (let [routes (compojure.core/routes
+(defn start-server [port gen-dir open-handler close-handler]
+  (let [ws-handler (fn [request]
+                     (with-channel request ch
+                       (open-handler ch request)
+                       (on-close
+                         ch (fn [status]
+                              (close-handler ch status)
+                              (println "channel closed: " status)))
+                       (on-receive
+                         ch (fn [data] ;; echo it back
+                              (println "channel" ch "received data:" data)))))
+
+        routes (compojure.core/routes
                  ;;(GET "/" [] (file-response default-index {}))
-                 ;;(GET "/" [] (redirect default-path))
-                 (GET "/" [] root-handler)
+                 (GET "/" [] (redirect "/static/index.html"))
+                 ;;(GET "/" [] root-handler)
                  (GET "/ws" [] ws-handler)
                  (route/files "/gen" {:root gen-dir})
                  (route/files "/static" {:root "static"})
@@ -41,7 +40,7 @@
         app (-> routes
 ;                (wrap-defaults site-defaults)
                 (wrap-file gen-dir)
-                (wrap-file "static")
+                ;;(wrap-file "static")
                 (wrap-content-type)
                 (wrap-not-modified))
         server (run-server app {:port port :join? false})]

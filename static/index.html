@@ -1,0 +1,19 @@
+<html>
+    <style>a {text-decoration: none}</style>
+    <body style="margin: 0px;">
+        <div class="header" style="position: fixed;
+                                   height: 45px;
+                                   width: 100%;
+                                   padding: 5px;
+                                   background-color: #efefef">
+            <a href="logs.html">Logs</a><br>
+            Test Directories:
+        </div>
+        <div class="content" style="padding-top: 55px">
+            <table id="dirs" style="border-spacing: 4px 0px">
+            </table>
+        </div>
+        <script src="/static/report.js"></script>
+        <script>connect('ws://' + location.host + '/ws', dirHandler)</script>
+    </body>
+</html>
