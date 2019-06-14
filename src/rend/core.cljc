@@ -8,7 +8,7 @@
             [clojure.set :as set]
 
             [flatland.ordered.set :refer [ordered-set]]
-            [com.rpl.specter :refer [setval ALL LAST]]
+            [com.rpl.specter :refer [setval transform MAP-VALS]]
             [hiccup.core]
             [clj-time.core :as ctime]
 
@@ -24,7 +24,7 @@
             [wend.core :as wend]))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Test state atom mutation and printing
+;; Test state management
 
 (defn new-test-run!
   "Update (mutate) state run number (to add 1) and return it"
@@ -49,6 +49,15 @@
                                    (or (:start-seed cfg)
                                        (rand-int 1000000000))))))]
     (:current-seed s)))
+
+(defn add-ws-client!
+  [state ch req]
+  (swap! state update-in [:ws-clients] conj ch))
+
+(defn remove-ws-client!
+  [state ch status]
+  (swap! state update-in [:ws-clients] disj ch))
+
 
 (defn log!
   "Merges (mutates) log entry (map) into the current run and/or iter
@@ -79,16 +88,18 @@
   "Return a more printable form of the test state the elides: Clojure
   objects/functions, parsers, and long weight lists"
   [state-val]
-  (->> state-val
-       (setval [:sessions ALL LAST] :ELIDED)
-       (setval [:server] :ELIDED)
-       (setval [:cleanup-fn] :ELIDED)
-       (setval [:weights] :ELIDED)
-       (setval [:run-log] :ELIDED)
-       (setval [:cfg :weights :base] :ELIDED)
-       (setval [:cfg :weights :start] :ELIDED)
-       (setval [:cfg :html-parser] :ELIDED)
-       (setval [:cfg :css-parser] :ELIDED)))
+  (let [cnt-elide (fn [x] (keyword (str "ELIDED-" (count x))))]
+    (->> state-val
+         (setval    [:sessions MAP-VALS]   :ELIDED)
+         (transform [:ws-clients]          cnt-elide)
+         (setval    [:server]              :ELIDED)
+         (setval    [:cleanup-fn]          :ELIDED)
+         (transform [:weights]             cnt-elide)
+         (transform [:run-log]             cnt-elide)
+         (transform [:cfg :weights :base]  cnt-elide)
+         (transform [:cfg :weights :start] cnt-elide)
+         (setval    [:html-parser]         :ELIDED)
+         (setval    [:css-parser]          :ELIDED))))
 
 (defn update-state!
   "Update the test state by merging (shallow) new-state with the
@@ -124,28 +135,18 @@
                                :run-log   {}}
                               new-state)))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Web Report Page Updates
-
-(defn web-report-ws-open
-  [test-state ch req]
-  (swap! test-state update-in [:ws-clients] conj ch))
-
-(defn web-report-ws-close
-  [test-state ch status]
-  (swap! test-state update-in [:ws-clients] disj ch))
-
-(defn web-report-update
-  "Keep the web report page up-to-date based on the changes to the
-  state atom. This includes notifying WebSocket clients so that
-  browsers viewing the report page get live updates. There are three
-  types of state changes that are handled:
+;; Watch state atom and keep report web page state and file report state
+;; in sync.
+(defn state-watcher
+  "Keep the web page report and file report up-to-date based on the
+  changes to the state atom. This includes notifying WebSocket clients
+  so that browsers viewing the report page get live updates. There are
+  three types of state changes that are handled:
   1. New test-dir created (right before quick-check)
   2. New quick-check report received (during quick-check)
   3. A iteration log created (during quick-check, after each check-page)"
   [_key _atom old-state new-state]
-  (let [{:keys [cfg ws-clients run iteration current-seed]} new-state
-        {:keys [test-id]} cfg
+  (let [{:keys [cfg test-id ws-clients run iteration current-seed]} new-state
         test-dir (-> new-state :test-dirs last)
         ws-msg #(rend.server/ws-broadcast ws-clients
                                           {:msgType %1
@@ -165,13 +166,14 @@
         ;; check-page finished running a set of quick-check iterations
         new-iter-log (changed? [:run-log run :iter-log])]
 
-    (when (or new-ws-client new-test-dir)
-      (io/make-parents (java.io.File. (str test-dir "/index.html")))
+    (when (and (or new-ws-client new-test-dir)
+               (seq (-> new-state :test-dirs)))
       (ws-msg :newDir (-> new-state :test-dirs)))
 
     (when (or new-test-dir new-iter-log)
       ;; Generate the full report page when new test dir is created
       ;; (new-test-dir) and after every check-page (new-iter-log).
+      (io/make-parents (java.io.File. (str test-dir "/index.html")))
       (spit (str test-dir "/index.html")
             (hiccup.core/html
               (rend.html/render-report new-state))))
@@ -196,38 +198,53 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Lower level testing functions
+;; - these may affect file state but not test state atom
+
+(defn qc-report
+  "Prune clojure objects from the report data, print it if
+  print-full?, and return it."
+  [iteration report & [print-full?]]
+  (let [r (dissoc report :property)
+        r (update-in r [:current-smallest]
+                     dissoc :function)
+        printed-report (merge r {:failing-args :ELIDED
+                                 :args :ELIDED})
+        saved-report (merge {:latest-report r}
+                            (when (:trial-number r)
+                              {:first-fail-number (:trial-number r)
+                               :failing-args (:failing-args r)})
+                            (when (:current-smallest r)
+                              {:smallest-number iteration
+                               :smallest (:current-smallest r)}))]
+    (if print-full?
+      (prn :report printed-report)
+      (println "Report type:" (name (:type r))))))
 
 (defn check-page*
   "Utility function for check-page. See check-page."
-  [state extra-cfg test-dir test-iteration html]
-  (let [{:keys [cfg sessions]} @state
-        cfg (util/deep-merge cfg extra-cfg) ;; add extra-cfg
-        text (hiccup.core/html html)
-        test-prefix (str test-dir "/" test-iteration)
-        path (str test-prefix ".html")
-        host-port (str (get-in cfg [:web :host] "localhost")
-                       ":" (get-in cfg [:web :port]))
-        url (str "http://" host-port "/" path)
-        comp-alg (get-in image/compare-methods
-                         [(get-in cfg [:compare :method]) :alg])
-        comp-op (get-in image/compare-methods
-                        [(get-in cfg [:compare :method]) :op])
-        threshold (get-in cfg [:compare :threshold])
-        comp-fn (fn [x] (comp-op threshold x))
-        d-path (str test-prefix "_diffs.edn")]
+  [sessions comp-method comp-thresh test-dir test-url iteration html]
+  (let [path-prefix (str test-dir "/" iteration)
+        url-prefix (str test-url "/" iteration)
+        h-path (str path-prefix ".html")
+        h-url (str url-prefix ".html")
+        comp-alg (get-in image/compare-methods [comp-method :alg])
+        comp-op  (get-in image/compare-methods [comp-method :op])
+        comp-fn (fn [x] (comp-op comp-thresh x))
+        d-path (str path-prefix "_diffs.edn")
+        html-text (hiccup.core/html html)]
     (try
       (println "------")
-      ;; (println "Test case:" text)
+      ;; (println "Test case:" html-text)
       ;; (println "Writing to " path)
-      (spit path text)
-      ;; (println "Writing to " (str path ".txt"))
-      ;;(spit (str path ".txt") (rend.html/pprint-html text))
-      (spit (str path ".txt") text)
+      (spit h-path html-text)
+      ;; (println "Writing to " (str h-path ".txt"))
+      ;;(spit (str h-path ".txt") (rend.html/pprint-html html-text))
+      (spit (str h-path ".txt") html-text)
 
       ;; Load the page in each browser
-      (println "Loading" url "in each browser")
+      (println "Loading" h-url "in each browser")
       (doseq [[browser session] sessions]
-        (webdriver/load-page session url))
+        (webdriver/load-page session h-url))
 
       (Thread/sleep 1000)
 
@@ -241,7 +258,7 @@
       ;;   a failed test
       (let [images (into {}
                          (for [[browser session] sessions]
-                           (let [ss-path (str test-prefix "_" (:id browser)  ".png")
+                           (let [ss-path (str path-prefix "_" (:id browser)  ".png")
                                  img (webdriver/screenshot-page session ss-path)]
                              [browser img])))
             imgs (apply assoc {}
@@ -265,7 +282,7 @@
         ; (println "Saving thumbnail for each screenshot")
         (doseq [[browser img] imgs]
           (let [thumb (image/thumbnail img)]
-            (image/imwrite (str test-prefix "_"
+            (image/imwrite (str path-prefix "_"
                                   (:id browser) "_thumb.png") thumb)))
 
         ; (println "Saving difference values to" d-path)
@@ -278,31 +295,31 @@
         ; (println "Saving average picture")
         (let [avg (image/average (vals imgs))
               thumb (image/thumbnail avg)]
-          (image/imwrite (str test-prefix "_avg.png") avg)
-          (image/imwrite (str test-prefix "_avg_thumb.png") thumb))
+          (image/imwrite (str path-prefix "_avg.png") avg)
+          (image/imwrite (str path-prefix "_avg_thumb.png") thumb))
 
         ; (println "Saving difference pictures")
         (doseq [[browser img] imgs]
           (doseq [[obrowser oimg] (dissoc imgs browser)]
-            (let [pre (str test-iteration
+            (let [pre1 (str path-prefix
                            "_diff_" (:id browser) "_" (:id obrowser))
-                  pre2 (str test-iteration
+                  pre2 (str path-prefix
                             "_diff_" (:id obrowser) "_" (:id browser))]
               (if (and (.exists (io/as-file
-                                  (str test-dir "/" pre2 ".png")))
+                                  (str pre2 ".png")))
                        (not (.exists (io/as-file
-                                       (str test-dir "/" pre ".png")))))
+                                       (str pre1 ".png")))))
                 (do
                   (sh "ln" "-sf"
-                      (str pre2 ".png")
-                      (str test-dir "/" pre ".png"))
+                      (str (.getName (io/file pre2)) ".png")
+                      (str pre1 ".png"))
                   (sh "ln" "-sf"
-                      (str pre2 "_thumb.png")
-                      (str test-dir "/" pre "_thumb.png")))
+                      (str (.getName (io/file pre2)) "_thumb.png")
+                      (str pre1 "_thumb.png")))
                 (let [diff (image/absdiff img oimg)
                       thumb (image/thumbnail diff)]
-                  (image/imwrite (str test-dir "/" pre ".png") diff)
-                  (image/imwrite (str test-dir "/" pre "_thumb.png") thumb))))))
+                  (image/imwrite (str pre1 ".png") diff)
+                  (image/imwrite (str pre1 "_thumb.png") thumb))))))
 
         ;; Do the actual check
         (when (not (empty? violations))
@@ -312,30 +329,6 @@
       (catch Throwable t
         (prn :check-page-exception t)
         [false "Exception" nil]))))
-
-;; SIDE-EFFECTS: updates state atom with saved report
-(defn reporter
-  "Prune clojure objects from the report data and print it."
-  [state report]
-  (let [{:keys [cfg iteration]} @state
-        test-id (:test-id cfg)
-        r (dissoc report :property)
-        r (update-in r [:current-smallest]
-                     dissoc :function)
-        printed-report (merge r {:failing-args :elided :args :elided})
-        saved-report (merge {:latest-report r}
-                            (when (:trial-number r)
-                              {:first-fail-number (:trial-number r)
-                               :failing-args (:failing-args r)})
-                            (when (:current-smallest r)
-                              {:smallest-number iteration
-                               :smallest (:current-smallest r)}))]
-    (if (:verbose cfg)
-      (prn :report printed-report)
-      (println "Report type:" (name (:type r))))
-    ;; Save the latest report
-    (update-state! state saved-report)
-))
 
 ;;(def reducible-regex #"^element$|^[\S-]*-attribute$|^css-declaration$")
 (def reducible-regex #"^\[:element :alt [0-9]+\]$|^\[[\S-]*-attribute :alt [0-9]+\]$|^\[:css-known-standard :alt [0-9]+\]$")
@@ -350,44 +343,34 @@
 (defn reducer-half [w] (int (/ w 2)))
 
 (defn wrap-adjust-weights
-  "If the test mode is \"reduce-weights\" then will call
-  wend/adjust-weights to a get a new set of weights reduced by the
-  reducer function."
-  [cfg weights html test-dir]
-  (let [mode (-> cfg :test :mode)
-        weights-full (merge (-> cfg :weights :base) weights)
-        html-parser (:html-parser cfg)
-        css-parser (:css-parser cfg)]
-    (if (and (= "reduce-weights" mode) html html-parser css-parser)
-      (let [html-only (wend/extract-html html)
-            css-only (wend/extract-inline-css html)
-            html-weights (wend/parse-weights html-parser html-only)
-            css-weights (wend/parse-weights css-parser css-only)
-            adjust-weights (merge-with + html-weights css-weights)]
-        (wend/adjust-weights reducible-path? reducer-half
-                             weights-full adjust-weights))
-      {})))
+  "Call wend/adjust-weights to a get a new set of weights reduced by
+  the reducer function."
+  [html-parser css-parser weights-full html]
+  (let [html-only (wend/extract-html html)
+        css-only (wend/extract-inline-css html)
+        _ (prn :css-only css-only)
+        html-weights (wend/parse-weights html-parser html-only)
+        css-weights (wend/parse-weights css-parser css-only)
+        adjust-weights (merge-with + html-weights css-weights)]
+    (wend/adjust-weights reducible-path? reducer-half
+                         weights-full adjust-weights)))
 
 ;; TODO: do we really want base weights? It should be implicit in the
 ;; *_generators.clj code.
 (defn load-weights
-  "Load the base, start, and fixed weights paths listed in the
-  configuration. Returns map containing :base, :start, and :fixed."
-  [cfg]
-  (let [weights-base (apply merge
-                            (map #(edn/read-string (slurp %))
-                                 (-> cfg :weights :base)))
-        weights-fixed (when (-> cfg :weights :fixed)
-                        (edn/read-string (slurp (-> cfg :weights :fixed))))
-        weights-start (when (-> cfg :weights :start)
-                        (edn/read-string (slurp (-> cfg :weights :start))))]
-    {:base  weights-base
-     :start weights-start
-     :fixed weights-fixed}))
+  "Load the base (multiple), start, and fixed weights paths. Returns
+  map containing :base, :start, and :fixed."
+  [base-paths fixed-path start-path]
+  {:base  (apply merge
+                 (map #(edn/read-string (slurp %)) base-paths))
+   :start (when start-path (edn/read-string (slurp start-path)))
+   :fixed (when fixed-path (edn/read-string (slurp fixed-path)))})
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Test execution API
+
+;; TODO: replace test-dir with test-slug: <test-id>-<run>-<seend>
 
 ;; SIDE-EFFECTS: updates state atom test-dirs, iteration value, and
 ;; iter log.
@@ -395,16 +378,29 @@
   "Render and check a test case page. Then output a report file and
   send an update to any browsers currently viewing the page."
   [state extra-cfg test-dir html]
-  (let [test-dir (string/replace test-dir #"/*$" "")
-        cfg (util/deep-merge (-> @state :cfg) extra-cfg) ;; add extra-cfg
-        test-id (:test-id cfg)]
+  (let [test-dir (string/replace test-dir #"/*$" "")]
 
     ;; Communicate the test directories to the web server
     (swap! state update-in [:test-dirs] conj (str test-dir "/"))
 
     (let [test-iteration (new-test-iteration! state)
-          [res diffs violations] (check-page* state extra-cfg
-                                              test-dir test-iteration html)
+          {:keys [cfg sessions]} @state
+          cfg (merge (:cfg @state) extra-cfg)
+          host-port (str (get-in cfg [:web :host] "localhost")
+                         ":" (get-in cfg [:web :port]))
+          ;; TODO: this makes bad assumptions about relationship
+          ;; between test-dir, url-path
+          test-url (str "http://" host-port "/gen/"
+                        (.getName (io/file test-dir)))
+          comp-method (get-in cfg [:compare :method])
+          comp-threshold (get-in cfg [:compare :threshold])
+          [res diffs violations] (check-page* sessions
+                                              comp-method
+                                              comp-threshold
+                                              test-dir
+                                              test-url
+                                              test-iteration
+                                              html)
           log-entry {:prefix (str test-dir "/" test-iteration)
                      :html html
                      :result res
@@ -422,12 +418,12 @@
   will be used to adjust/reduce the weights in the test state for
   subsequent runs."
   [test-state extra-cfg]
-  (let [{:keys [cfg weights]} @test-state
+  (let [{:keys [cfg test-id weights html-parser css-parser]} @test-state
         cfg (util/deep-merge (-> @test-state :cfg) extra-cfg) ;; add extra-cfg
         run (new-test-run! test-state)
         current-seed (new-test-seed! test-state)
         test-dir (str (-> cfg :web :dir)
-                      "/" (:test-id cfg) "-" run "-" current-seed)]
+                      "/" test-id "-" run "-" current-seed)]
     (update-state! test-state {:iteration -1})
 
     (println "Test State:")
@@ -439,14 +435,20 @@
           ;; functions/generators used for the actual check process
           gen-html-fn (rend.generator/get-html-generator weights)
           check-fn (partial check-page test-state extra-cfg test-dir)
-          reporter-fn (partial reporter test-state)
+          report-fn (fn [report]
+                        (let [{:keys [cfg iteration]} @test-state
+                              verbose (:verbose cfg)
+                              save (qc-report iteration report verbose)]
+                          ;; Save the latest report
+                          (update-state! test-state save)))
 
           start-time (ctime/now)
+          ;; ****** QuickCheck ******
           qc-res (instacheck/run-check (merge (:quick-check cfg)
                                               {:seed current-seed})
                                        gen-html-fn
                                        check-fn
-                                       reporter-fn)
+                                       report-fn)
           end-time (ctime/now)
           qc-res (merge qc-res
                         {:current-seed current-seed
@@ -459,9 +461,16 @@
 
           ;; if requested, adjust weights for next run
           html (-> qc-res :shrunk :smallest first)
-          adjusted-weights (wrap-adjust-weights cfg weights html test-dir)
-          new-weights (merge weights
-                             adjusted-weights)]
+          full-weights (merge (-> cfg :weights :base) weights)
+          adjusted-weights (when (and (= "reduce-weights" (-> cfg :test :mode))
+                                      html-parser
+                                      css-parser
+                                      html)
+                             (wrap-adjust-weights html-parser
+                                                  css-parser
+                                                  full-weights
+                                                  html))
+          new-weights (merge weights adjusted-weights)]
       ;; Update current weights
       (update-state! test-state {:weights new-weights})
       (prn :adjusted-weights adjusted-weights)
@@ -494,7 +503,7 @@
 
 (defn init-tester
   "Takes a configuration map (usually loaded from a config.yaml file)
-  and initializes the test state:
+  and returns an initialized the test state atom:
     - Starts a web server for testing and reporting.
     - Loads a html and css parser (if test mode is \"reduce-weights\"
     - Makes a webdriver connection to each browser listed in config.
@@ -503,34 +512,27 @@
   objects, and other settings that are updates as testing progresses."
   [user-cfg & [extra-cfg]]
   (let [user-cfg (util/deep-merge user-cfg extra-cfg) ;; add extra-cfg
-        ;; Current test state contains values that change over
-        ;; runs/iterations
-        test-state (atom {:test-dirs (ordered-set)
-                          :ws-clients #{}})
+        ;; Replace weight paths with loaded weight maps
+        weights-map (let [w (-> user-cfg :weights)]
+                      (load-weights (:base w) (:fixed w) (:start w)))
+        cfg (assoc user-cfg :weights weights-map)
+        ;; ws-clients needs to be here early in case client connect
+        ;; while parsers are being loaded
+        test-state (atom {:ws-clients   #{}})
         ;; Start a web server for the test cases and reporting
         server (rend.server/start-server
-                 (-> user-cfg :web :port)
-                 (-> user-cfg :web :dir)
-                 (partial #'web-report-ws-open test-state)
-                 (partial #'web-report-ws-close test-state))
+                 (-> cfg :web :port)
+                 (-> cfg :web :dir)
+                 (partial #'add-ws-client! test-state)
+                 (partial #'remove-ws-client! test-state))
 
         ;; If mode is :reduce-weights, then load a parser
-        html-parser (when (= "reduce-weights" (-> user-cfg :test :mode))
+        html-parser (when (= "reduce-weights" (-> cfg :test :mode))
                       (println "Loading/creating HTML parser")
                       (wend/load-parser :html-gen-min))
-        css-parser (when (= "reduce-weights" (-> user-cfg :test :mode))
+        css-parser (when (= "reduce-weights" (-> cfg :test :mode))
                       (println "Loading/creating CSS parser")
                       (wend/load-parser :css-gen))
-        weights (load-weights user-cfg)
-        test-id (rand-int 100000)
-
-        ;; Add constant values to the user config
-        base-cfg (merge
-                   user-cfg
-                   {:html-parser html-parser
-                    :css-parser  css-parser
-                    :weights     weights ;; loaded weights map
-                    :test-id     test-id})
 
         ;; Cleanup browser sessions on exit
         cleanup-fn (fn []
@@ -544,22 +546,26 @@
                            (catch Throwable e
                              (println "Failed to stop browser session:" e))))))]
 
-    (reset-state! test-state {:cfg base-cfg
-                              :server server
-                              :sessions {}
+    (reset-state! test-state {:cfg          cfg
+                              :test-dirs    (ordered-set)
+                              :test-id      (rand-int 100000)
+                              :server       server
+                              :html-parser  html-parser
+                              :css-parser   css-parser
+                              :sessions     {}
                               ;; User specified weights (no base)
-                              :weights (:start weights)
-                              :cleanup-fn cleanup-fn})
+                              :weights      (:start weights-map)
+                              :cleanup-fn   cleanup-fn})
+
+    ;; Attach watcher function to state atom to send updates to any
+    ;; listening browser websocket clients
+    (add-watch test-state :state-watcher #'state-watcher)
 
     ;; On Ctrl-C cleanup browser sessions we are about to create
     (.addShutdownHook (Runtime/getRuntime) (Thread. cleanup-fn))
 
-    ;; Attach watcher function to state atom to send updates to any
-    ;; listening browser websocket clients
-    (add-watch test-state :web-report-update #'web-report-update)
-
     ;; Create webdriver/selenium sessions to the testing browsers
-    (doseq [browser (:browsers base-cfg)]
+    (doseq [browser (:browsers cfg)]
       (println "Initializing browser session for:" (:id browser))
       (swap! test-state update-in [:sessions] assoc browser
              (webdriver/init-session (:url browser) (or (:capabilities browser) {}))))
@@ -590,7 +596,7 @@
 
 (def html "<html><head><link rel=\"stylesheet\" href=\"/static/normalize.css\"><link rel=\"stylesheet\" href=\"/static/rend.css\"><title></title></head><body>x<div style=\"background-color: red\">X</div></body></html>")
 
-(wrap-adjust-weights (-> @test-state :cfg) (-> @test-state :weights) html "gen/38244-2-33" wend/reducer-half)
+(wrap-adjust-weights (-> @test-state :cfg) (-> @test-state :weights) html)
 
 )
 
