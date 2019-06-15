@@ -16,7 +16,8 @@
    :html-gen-min ["html5-test.ebnf"
                   "html5.ebnf"]
    :html-parse   ["html5.ebnf"]
-   :css-gen      ["css3.ebnf"]
+   :css-gen      ["css3-test.ebnf"
+                  "css3.ebnf"]
    :css-parse    ["css3.ebnf"]})
 
 (def GRAMMAR-MANGLES
@@ -34,7 +35,7 @@
   {:html-gen     :html-test
    :html-gen-min :html-test-min
    :html-parse   :html
-   :css-gen      :css-assignments
+   :css-gen      :css-assignments-test
    :css-parse    :stylesheet})
 
 (defn mangle-parser
@@ -419,8 +420,9 @@
 (time (def cp (load-parser :css-parse)))
 
 (def text (slurp "test/html/example.com-20190422.html"))
-(def text (slurp "test/html/apple.com-20190422.html"))
 (def text (slurp "test/html/mozilla.com-20190506.html"))
+;; Parses HTML, issues with CSS
+(def text (slurp "test/html/apple.com-20190422.html"))
 
 (def html    (extract-html text))
 (def css-map (extract-css-map text "test/html"))

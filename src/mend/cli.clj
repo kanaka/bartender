@@ -19,42 +19,103 @@
 
 ;; Find each :path in a grammar and replace it with :value
 ;; This allows us to replace stub generators in the grammar with
-;; references to generators in a different namespace as just one
-;; example.
+;; references to generators in a different namespace, avoid mutual
+;; recursion, etc. Uses specter setval so the following type of path
+;; is supported:
+;;   [:RULE :parsers (nthpath 6) :parsers (nthpath 1)]
+(def common-grammar-updates
+  [;; Replace regex number generators with actual numeric/sized types
+   {:path [:integer]
+    :value {:tag :nt :keyword :gen/int}}
+   {:path [:non-negative-integer]
+    :value {:tag :nt :keyword :gen/nat}}
+   {:path [:positive-integer]
+    :value {:tag :nt :keyword :gen/s-pos-int}}
+   {:path [:floating-point-number]
+    :value {:tag :nt :keyword :gen/double}}])
+
 (def html5-grammar-updates
   [;; Replace the stub CSS value generator with real one
-   {:path [:attr-val-style]
-    :value {:tag :nt :keyword :css-assignments}}
-   ;; Replace the image generator
-   {:path [:img-attribute :parsers (nthpath 6) :parsers (nthpath 1)]
-    :value {:tag :nt :keyword :rgen/image-path}}])
+   {:path [:attr-val-global__style]
+    :value {:tag :nt :keyword :css-assignments-test}}
+   ;; Simplify rules that result in lots of noise/unicode
+   {:path [:name]
+    :value {:tag :nt :keyword :rgen/simple-identifier}}
+   {:path [:reference]
+    :value {:tag :string :string "&#x00c9;"}}
+   {:path [:comment]
+    :value {:tag :string :string "<!-- HTML comment -->"}}
+   {:path [:attribute-data]
+    :value {:tag :nt :keyword :rgen/simple-identifier}}
+   {:path [:aria-attribute]
+    :value {:tag :epsilon}}
+   {:path [:role-attribute]
+    :value {:tag :epsilon}}
+   {:path [:event-attribute]
+    :value {:tag :epsilon}}
+   ;; More with more efficient native generators
+   {:path [:attr-val-img__src]
+    :value {:tag :nt :keyword :rgen/image-path}}
+   ])
 
 (def css3-grammar-updates
-  [;; Replace regex number generators with actual numeric/sized types
-   {:path [:nonprop-integer]
-    :value {:tag :nt :keyword :gen/int}}
-   {:path [:nonprop-positive-integer]
-    :value {:tag :nt :keyword :gen/pos-int}}
-   {:path [:number-float]
-    :value {:tag :nt :keyword :gen/double}}
-   ;; Remove recursive definitions
+  [;; Remove recursive definitions
    {:path [:nonprop-image]
     :value {:tag :nt :keyword :nonprop-url}}
    {:path [:nonprop-calc-value]
-    :value {:tag :nt :keyword :nonprop-number}}])
+    :value {:tag :nt :keyword :any-number}}
+   ;; More with more efficient native generators
+   {:path [:nonprop-custom-ident]
+    :value {:tag :cat :parsers [{:tag :nt :keyword :rgen/simple-identifier}
+                                {:tag :string :string " "}]}}
+   ;; Remove css-unknown from css-declaration
+   {:path [:css-declaration :parsers (nthpath 0) :parsers (nthpath 0)]
+    :value {:tag :nt, :keyword :css-known-standard}}
+   ;; Simplify rules that result in lots of noise/unicode
+   {:path [:IDENT]
+    :value {:tag :nt :keyword :gen/symbol}}
+   {:path [:css-comment]
+    :value {:tag :string :string "/* CSS comment */ "}}
+   ])
 
-(defn prune-S [x]
-  (if (and (:parsers x)
-           (> (count (:parsers x)) 1))
-    (assoc x :parsers (filter #(not= (:keyword %) :S)
-                              (:parsers x)))
+(defn reduce-strings*
+  [a p2]
+  (let [p1 (last a)]
+    (if (and (= :string (:tag p1)) (= :string (:tag p2)))
+      ;; Two strings, concatenate
+      (conj (pop a) {:tag :string :string (str (:string p1) (:string p2))})
+      (conj a p2))))
+
+(defn reduce-strings
+  "Combine strings and spaces that immediately follow each other in
+  a concatenation."
+  [x]
+  (if (and (= :cat (:tag x))
+           (:parsers x))
+    (assoc x :parsers (reduce reduce-strings* [] (:parsers x)))
     x))
 
-(defn css3-grammar-update-fn [ctx grammar]
-  (let [g1 (instacheck/apply-grammar-updates grammar css3-grammar-updates)
-        ;; Remove empty strings
-        g2 (postwalk prune-S g1)]
-    g2))
+(defn replace-spaces
+  "Replaces spaces with literal space strings."
+  [x]
+  (if (and (= :nt (:tag x))
+           (#{:S :rS} (:keyword x)))
+    {:tag :string :string (str " ")}
+    x))
+
+(defn html5-grammar-update-fn [grammar]
+  (let [g1 (instacheck/apply-grammar-updates grammar common-grammar-updates)
+        g2 (instacheck/apply-grammar-updates g1 html5-grammar-updates)
+        g3 (postwalk replace-spaces g2)
+        g4 (postwalk reduce-strings g3)]
+    g4))
+
+(defn css3-grammar-update-fn [grammar]
+  (let [g1 (instacheck/apply-grammar-updates grammar common-grammar-updates)
+        g2 (instacheck/apply-grammar-updates g1 css3-grammar-updates)
+        g3 (postwalk replace-spaces g2)
+        g4 (postwalk reduce-strings g3)]
+    g4))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -100,6 +161,8 @@
         :validate [#(get #{"html5" "css3"} %) "Must be 'html5' or 'css3'"]]
        [nil "--clj-output CLJ-OUTPUT"
         "Write Clojure code to path."]
+       [nil "--grammar-output GRAMMAR-OUTPUT"
+        "Write EDN grammar tree to path."]
        [nil "--namespace NAMESPACE"
         "Name of namespace to generate"]
        [nil "--function FUNCTION"
@@ -107,24 +170,30 @@
 
 (defn ebnf->clj [opts]
   (let [grammar-update (condp = (:mode opts)
-                         "html5" html5-grammar-updates
+                         "html5" html5-grammar-update-fn
                          "css3"  css3-grammar-update-fn)
+                         ;;"css3"  css3-grammar-updates)
         grammar-type (condp = (:mode opts)
                        "html5" :html-gen
                        "css3"  :css-gen)
 
-        ctx (merge {:weights-res (atom {})
-                    :grammar-updates grammar-update}
+        ctx (merge {:weights-res (atom {})}
                    (select-keys opts [:namespace
                                       :weights :function]))
 
 
         ;; The following each take 4-6 seconds
         _ (println "Loading" grammar-type "grammar")
-        grammar (instacheck-grammar/parser->grammar
-                  (wend/load-parser grammar-type))
+        raw-grammar (instacheck-grammar/parser->grammar
+                      (wend/load-parser grammar-type))
+        _ (println "Apply grammar updates")
+        grammar (grammar-update raw-grammar)
         _ (println "Converting grammar to clojure generators")
         ns-str (grammar->ns ctx grammar)]
+
+    (when-let [gfile (:grammar-output opts)]
+      (println "Saving grammar to" gfile)
+      (spit gfile (with-out-str (pprint grammar))))
 
     (when-let [wfile (:weights-output opts)]
       (println "Saving weights to" wfile)

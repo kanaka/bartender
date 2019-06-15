@@ -2,11 +2,20 @@
  ;; Increase style attribute frequency
  [:global-attribute :alt 11] 10000,
 
- ;; Skip entity/character references and comments
- [:content :alt 1] 0,
- [:content :alt 2] 0,
-
  ;; Increase div and span element frequency
  [:element :alt 26] 10000, ;; div
- [:element :alt 87] 10000, ;; span
+ [:element :alt 87] 5000, ;; span
+
+ ;; Decrease HTML reference and comment frequency
+ [:content :alt 1] 5,
+ [:content :alt 2] 5,
+
+ ;; Decrease Ahem unicode glyph
+ [:char-data :alt 2] 10,
+
+ ;; Decrease CSS comments
+ [:css-declaration :alt 1] 5,
+
+ ;; Decrease CSS !important flag
+ [:css-declaration :alt 0 :cat 1 :alt 1] 5,
 }

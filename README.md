@@ -86,12 +86,14 @@ Generate Clojure generator source based on the HTML5 EBNF grammar from
 [kanaka/html5-css3-ebnf](https://github.com/kanaka/html5-css3-ebnf):
 
 ```
+lein deps
 time lein with-profile mend run --mode html5 --weights-output data/html5-weights-output.edn --namespace rend.html5-generators --function html5-generators --clj-output src/rend/html5_generators.clj
 ```
 
 Generate Clojure generator source based on the CSS3 EBNF grammar:
 
 ```
+lein deps
 time lein with-profile mend run --mode css3 --weights-output data/css3-weights-output.edn --namespace rend.css3-generators --function css3-generators --clj-output src/rend/css3_generators.clj
 ```
 

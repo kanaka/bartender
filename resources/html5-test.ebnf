@@ -24,3 +24,4 @@ values for the normalization stylesheets.
 html-test-min = '<html>' head-test-min body-test '</html>'
 
 head-test-min = '<head>' title-test? '</head>'
+

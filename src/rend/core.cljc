@@ -116,8 +116,7 @@
                       %
                       new-state
                       ;; Fixed weights always override
-                      (when new-weights
-                        {:weights (merge new-weights wfixed)})
+                      {:weights (merge new-weights wfixed)}
                       ;; If a seed value is specified we
                       ;; decrement so that the next seed is the
                       ;; one specified
@@ -346,6 +345,7 @@
   the reducer function."
   [html-parser css-parser weights-full html]
   (let [html-only (wend/extract-html html)
+        _ (prn :html-only html-only)
         css-only (wend/extract-inline-css html)
         _ (prn :css-only css-only)
         html-weights (wend/parse-weights html-parser html-only)
@@ -573,6 +573,20 @@
 
 (comment
 
+(require '[clojure.test.check.generators :as gen])
+(def weights-map (load-weights ["data/html5-weights-output.edn"
+                                "data/css3-weights-output.edn"]
+                               "weights.edn" nil))
+
+(def gen-html-fn (rend.generator/get-html-generator
+                   (merge (:start weights-map) (:fixed weights-map))))
+
+(doseq [s (gen/sample gen-html-fn)] (println s))
+
+)
+
+(comment
+
 (require '[clj-yaml.core :as yaml])
 (def file-cfg (yaml/parse-string (slurp "config-dev.yaml")))
 
@@ -593,7 +607,7 @@
 
 (comment
 
-(def adj-test (partial wrap-adjust-weights
+(def adj-test (partial #'wrap-adjust-weights
                        (-> @test-state :html-parser)
                        (-> @test-state :css-parser)
                        (merge (-> @test-state :cfg :weights :base)

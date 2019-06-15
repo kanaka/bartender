@@ -10,23 +10,6 @@
   (let [g gmap
         w weights
 
-        gen-S
-        (gen/vector
-          (chuck/string-from-regex #"\s"))
-        g (assoc g :S gen-S)
-
-        gen-string
-        (igen/freq [
-          [(get w [:string :alt 0] 100)
-            (gen/tuple
-              (chuck/string-from-regex #"'[\"A-Za-z0-9 .,_:/%=#?+\-^]*'")
-              (:S g))]
-          [(get w [:string :alt 1] 100)
-            (gen/tuple
-              (chuck/string-from-regex #"\"['A-Za-z0-9 .,_:/%=#?+\-^]*\"")
-              (:S g))]])
-        g (assoc g :string gen-string)
-
         gen-attr-val-img__sizes
         (igen/freq [
           [(get w [:attr-val-img__sizes :alt 0] 100)
@@ -36,7 +19,7 @@
         g (assoc g :attr-val-img__sizes gen-attr-val-img__sizes)
 
         gen-non-negative-integer
-        (chuck/string-from-regex #"[0-9]+")
+        gen/nat
         g (assoc g :non-negative-integer gen-non-negative-integer)
 
         gen-attr-val-textarea__maxlength
@@ -120,7 +103,7 @@
         g (assoc g :attr-val-img__crossorigin gen-attr-val-img__crossorigin)
 
         gen-attribute-data
-        (chuck/string-from-regex #"[^\"]*")
+        rgen/simple-identifier
         g (assoc g :attribute-data gen-attribute-data)
 
         gen-attr-val-input__dirname
@@ -132,7 +115,7 @@
         g (assoc g :attr-val-input__dirname gen-attr-val-input__dirname)
 
         gen-comment
-        (chuck/string-from-regex #"<!--(?:[A-Za-z0-9_<>/\\ .]|-[A-Za-z0-9_<>/\\ .])*-->")
+        (gen/return "<!-- HTML comment -->")
         g (assoc g :comment gen-comment)
 
         gen-comment-or-space
@@ -140,7 +123,7 @@
           [(get w [:comment-or-space :alt 0] 100)
             (:comment g)]
           [(get w [:comment-or-space :alt 1] 100)
-            (:S g)]])
+            (gen/return " ")]])
         g (assoc g :comment-or-space gen-comment-or-space)
 
         gen-opt-boolean
@@ -173,12 +156,8 @@
             (gen/return "yes")]])
         g (assoc g :attr-val-global__translate gen-attr-val-global__translate)
 
-        gen-rS
-        (gen/tuple (gen/return " "))
-        g (assoc g :rS gen-rS)
-
         gen-name
-        (chuck/string-from-regex #"[A-Za-z_:][A-Za-z_:\-.0-9]*")
+        rgen/simple-identifier
         g (assoc g :name gen-name)
 
         gen-attr-val-global__accesskey
@@ -190,14 +169,14 @@
               (:name g)
               (gen/vector
                 (gen/tuple
-                  (:rS g)
+                  (gen/return " ")
                   (:name g))))]
           [(get w [:attr-val-global__accesskey :alt 2] 100)
             (gen/return "STUB case-sensitive")]])
         g (assoc g :attr-val-global__accesskey gen-attr-val-global__accesskey)
 
         gen-attr-val-global__style
-        (gen/return "")
+        (:css-assignments-test g)
         g (assoc g :attr-val-global__style gen-attr-val-global__style)
 
         gen-attr-val-global__contenteditable
@@ -241,7 +220,7 @@
         g (assoc g :attr-val-global__id gen-attr-val-global__id)
 
         gen-integer
-        (chuck/string-from-regex #"-?[0-9]+")
+        gen/int
         g (assoc g :integer gen-integer)
 
         gen-attr-val-global__spellcheck
@@ -267,10 +246,7 @@
         g (assoc g :attr-val-global__title gen-attr-val-global__title)
 
         gen-role-attribute
-        (gen/tuple
-          (gen/return "role=\"")
-          (:attribute-data g)
-          (gen/return "\""))
+        (gen/return "")
         g (assoc g :role-attribute gen-role-attribute)
 
         gen-attr-val-global__lang
@@ -292,15 +268,12 @@
               (:name g)
               (gen/vector
                 (gen/tuple
-                  (:rS g)
+                  (gen/return " ")
                   (:name g))))]])
         g (assoc g :attr-val-global__dropzone gen-attr-val-global__dropzone)
 
         gen-event-attribute
-        (gen/tuple
-          (chuck/string-from-regex #"on[a-z]+=\"")
-          (:attribute-data g)
-          (gen/return "\""))
+        (gen/return "")
         g (assoc g :event-attribute gen-event-attribute)
 
         gen-attr-val-global__class
@@ -312,17 +285,12 @@
               (:name g)
               (gen/vector
                 (gen/tuple
-                  (:rS g)
+                  (gen/return " ")
                   (:name g))))]])
         g (assoc g :attr-val-global__class gen-attr-val-global__class)
 
         gen-aria-attribute
-        (gen/tuple
-          (gen/return "aria-")
-          (:name g)
-          (gen/return "=\"")
-          (:attribute-data g)
-          (gen/return "\""))
+        (gen/return "")
         g (assoc g :aria-attribute gen-aria-attribute)
 
         gen-attr-val-global__tabindex
@@ -562,12 +530,7 @@
 
         gen-section-attribute
         (:global-attribute g)
-        g (assoc g :section-attribute gen-section-attribute)]
-    g))
-
-(defn- html5-generators-part-1 [gmap weights]
-  (let [g gmap
-        w weights
+        g (assoc g :section-attribute gen-section-attribute)
 
         gen-attr-val-base__target
         (igen/freq [
@@ -587,12 +550,15 @@
             (gen/return "")]
           [(get w [:attr-val-input__src :alt 1] 100)
             (:url g)]])
-        g (assoc g :attr-val-input__src gen-attr-val-input__src)
+        g (assoc g :attr-val-input__src gen-attr-val-input__src)]
+    g))
+
+(defn- html5-generators-part-1 [gmap weights]
+  (let [g gmap
+        w weights
 
         gen-doctype
-        (gen/tuple
-          (gen/return "<!DOCTYPE html>")
-          (:S g))
+        (gen/return "<!DOCTYPE html> ")
         g (assoc g :doctype gen-doctype)
 
         gen-h3-attribute
@@ -809,7 +775,7 @@
               (:name g)
               (gen/vector
                 (gen/tuple
-                  (:rS g)
+                  (gen/return " ")
                   (:name g))))]
           [(get w [:attr-val-output__for :alt 2] 100)
             (gen/return "STUB case-sensitive")]])
@@ -1052,11 +1018,7 @@
         g (assoc g :attr-val-video__width gen-attr-val-video__width)
 
         gen-attr-val-img__src
-        (igen/freq [
-          [(get w [:attr-val-img__src :alt 0] 100)
-            (gen/return "")]
-          [(get w [:attr-val-img__src :alt 1] 100)
-            (:url g)]])
+        rgen/image-path
         g (assoc g :attr-val-img__src gen-attr-val-img__src)
 
         gen-attr-val-textarea__form
@@ -1077,12 +1039,7 @@
 
         gen-h1-attribute
         (:global-attribute g)
-        g (assoc g :h1-attribute gen-h1-attribute)]
-    g))
-
-(defn- html5-generators-part-2 [gmap weights]
-  (let [g gmap
-        w weights
+        g (assoc g :h1-attribute gen-h1-attribute)
 
         gen-attr-val-textarea__dirname
         (igen/freq [
@@ -1102,7 +1059,12 @@
             (gen/return "")]
           [(get w [:attr-val-dfn__title :alt 1] 100)
             (:attribute-data g)]])
-        g (assoc g :attr-val-dfn__title gen-attr-val-dfn__title)
+        g (assoc g :attr-val-dfn__title gen-attr-val-dfn__title)]
+    g))
+
+(defn- html5-generators-part-2 [gmap weights]
+  (let [g gmap
+        w weights
 
         gen-dfn-attribute
         (igen/freq [
@@ -1124,7 +1086,7 @@
         g (assoc g :attr-val-table__border gen-attr-val-table__border)
 
         gen-floating-point-number
-        (chuck/string-from-regex #"-?[0-9]*.[0-9]+")
+        gen/double
         g (assoc g :floating-point-number gen-floating-point-number)
 
         gen-attr-val-meter__value
@@ -1214,7 +1176,7 @@
               (:name g)
               (gen/vector
                 (gen/tuple
-                  (:rS g)
+                  (gen/return " ")
                   (:name g))))]])
         g (assoc g :attr-val-iframe__sandbox gen-attr-val-iframe__sandbox)
 
@@ -1301,7 +1263,7 @@
               (:name g)
               (gen/vector
                 (gen/tuple
-                  (:rS g)
+                  (gen/return " ")
                   (:name g))))]])
         g (assoc g :attr-val-area__rel gen-attr-val-area__rel)
 
@@ -1606,12 +1568,7 @@
             (gen/return "")]
           [(get w [:attr-val-th__colspan :alt 1] 100)
             (:non-negative-integer g)]])
-        g (assoc g :attr-val-th__colspan gen-attr-val-th__colspan)]
-    g))
-
-(defn- html5-generators-part-3 [gmap weights]
-  (let [g gmap
-        w weights
+        g (assoc g :attr-val-th__colspan gen-attr-val-th__colspan)
 
         gen-ul-attribute
         (:global-attribute g)
@@ -1627,7 +1584,12 @@
             (gen/return "")]
           [(get w [:attr-val-input__list :alt 1] 100)
             (:name g)]])
-        g (assoc g :attr-val-input__list gen-attr-val-input__list)
+        g (assoc g :attr-val-input__list gen-attr-val-input__list)]
+    g))
+
+(defn- html5-generators-part-3 [gmap weights]
+  (let [g gmap
+        w weights
 
         gen-kbd-attribute
         (:global-attribute g)
@@ -2391,14 +2353,9 @@
               (:name g)
               (gen/vector
                 (gen/tuple
-                  (:rS g)
+                  (gen/return " ")
                   (:name g))))]])
-        g (assoc g :attr-val-link__sizes gen-attr-val-link__sizes)]
-    g))
-
-(defn- html5-generators-part-4 [gmap weights]
-  (let [g gmap
-        w weights
+        g (assoc g :attr-val-link__sizes gen-attr-val-link__sizes)
 
         gen-attr-val-progress__value
         (igen/freq [
@@ -2430,7 +2387,12 @@
               (gen/return "\""))]
           [(get w [:progress-attribute :alt 2] 100)
             (:global-attribute g)]])
-        g (assoc g :progress-attribute gen-progress-attribute)
+        g (assoc g :progress-attribute gen-progress-attribute)]
+    g))
+
+(defn- html5-generators-part-4 [gmap weights]
+  (let [g gmap
+        w weights
 
         gen-attr-val-del__datetime
         (igen/freq [
@@ -2473,7 +2435,7 @@
               (:name g)
               (gen/vector
                 (gen/tuple
-                  (:rS g)
+                  (gen/return " ")
                   (:name g))))]
           [(get w [:attr-val-th__headers :alt 2] 100)
             (gen/return "STUB case-sensitive")]])
@@ -2586,13 +2548,6 @@
         gen-nav-attribute
         (:global-attribute g)
         g (assoc g :nav-attribute gen-nav-attribute)
-
-        gen-entity-ref
-        (gen/tuple
-          (gen/return "&")
-          (:name g)
-          (gen/return ";"))
-        g (assoc g :entity-ref gen-entity-ref)
 
         gen-attr-val-a__hreflang
         (igen/freq [
@@ -2737,22 +2692,8 @@
             (:url g)]])
         g (assoc g :attr-val-a__href gen-attr-val-a__href)
 
-        gen-char-ref-dec
-        (chuck/string-from-regex #"&#[0-9]{1,7};")
-        g (assoc g :char-ref-dec gen-char-ref-dec)
-
-        gen-char-ref-hex
-        (chuck/string-from-regex #"&#x[0-9A-F]{1,6};")
-        g (assoc g :char-ref-hex gen-char-ref-hex)
-
         gen-reference
-        (igen/freq [
-          [(get w [:reference :alt 0] 100)
-            (:entity-ref g)]
-          [(get w [:reference :alt 1] 100)
-            (:char-ref-dec g)]
-          [(get w [:reference :alt 2] 100)
-            (:char-ref-hex g)]])
+        (gen/return "&#x00c9;")
         g (assoc g :reference gen-reference)
 
         gen-attr-val-textarea__autocomplete
@@ -2910,12 +2851,7 @@
             (gen/return "")]
           [(get w [:attr-val-select__form :alt 1] 100)
             (:name g)]])
-        g (assoc g :attr-val-select__form gen-attr-val-select__form)]
-    g))
-
-(defn- html5-generators-part-5 [gmap weights]
-  (let [g gmap
-        w weights
+        g (assoc g :attr-val-select__form gen-attr-val-select__form)
 
         gen-select-attribute
         (igen/freq [
@@ -2981,7 +2917,12 @@
 
         gen-caption-attribute
         (:global-attribute g)
-        g (assoc g :caption-attribute gen-caption-attribute)
+        g (assoc g :caption-attribute gen-caption-attribute)]
+    g))
+
+(defn- html5-generators-part-5 [gmap weights]
+  (let [g gmap
+        w weights
 
         gen-attr-val-textarea__placeholder
         (igen/freq [
@@ -3000,7 +2941,7 @@
               (:name g)
               (gen/vector
                 (gen/tuple
-                  (:rS g)
+                  (gen/return " ")
                   (:name g))))]
           [(get w [:attr-val-td__headers :alt 2] 100)
             (gen/return "STUB case-sensitive")]])
@@ -3248,7 +3189,7 @@
               (:name g)
               (gen/vector
                 (gen/tuple
-                  (:rS g)
+                  (gen/return " ")
                   (:name g))))]])
         g (assoc g :attr-val-a__rel gen-attr-val-a__rel)
 
@@ -3277,7 +3218,7 @@
               (:name g)
               (gen/vector
                 (gen/tuple
-                  (:rS g)
+                  (gen/return " ")
                   (:name g))))]])
         g (assoc g :attr-val-link__rel gen-attr-val-link__rel)
 
@@ -3308,7 +3249,7 @@
               (:name g)
               (gen/vector
                 (gen/tuple
-                  (:rS g)
+                  (gen/return " ")
                   (:name g))))]])
         g (assoc g :attr-val-link__rev gen-attr-val-link__rev)
 
@@ -3504,7 +3445,7 @@
               (:name g)
               (gen/vector
                 (gen/tuple
-                  (:rS g)
+                  (gen/return " ")
                   (:name g))))]])
         g (assoc g :attr-val-a__rev gen-attr-val-a__rev)
 
@@ -3562,12 +3503,7 @@
             (gen/return "")]
           [(get w [:attr-val-meta__content :alt 1] 100)
             (:attribute-data g)]])
-        g (assoc g :attr-val-meta__content gen-attr-val-meta__content)]
-    g))
-
-(defn- html5-generators-part-6 [gmap weights]
-  (let [g gmap
-        w weights
+        g (assoc g :attr-val-meta__content gen-attr-val-meta__content)
 
         gen-meta-attribute
         (igen/freq [
@@ -3661,7 +3597,12 @@
               (gen/return "\""))]
           [(get w [:meter-attribute :alt 6] 100)
             (:global-attribute g)]])
-        g (assoc g :meter-attribute gen-meter-attribute)
+        g (assoc g :meter-attribute gen-meter-attribute)]
+    g))
+
+(defn- html5-generators-part-6 [gmap weights]
+  (let [g gmap
+        w weights
 
         gen-br-attribute
         (:global-attribute g)
@@ -3876,7 +3817,7 @@
           (gen/one-of [
             (gen/return "")
             (gen/tuple
-              (:rS g)
+              (gen/return " ")
               (gen/tuple
                 (:any-number g)
                 (igen/freq [
@@ -3886,19 +3827,18 @@
                     (gen/return "x")]])))])
           (gen/vector
             (gen/tuple
-              (gen/return ",")
-              (:S g)
+              (gen/return ", ")
               (:url g)
               (gen/one-of [
                 (gen/return "")
                 (gen/tuple
-                  (:rS g)
+                  (gen/return " ")
                   (gen/tuple
                     (:any-number g)
                     (igen/freq [
-                      [(get w [:srcset :cat 2 :star :cat 3 :opt :cat 1 :cat 1 :alt 0] 100)
+                      [(get w [:srcset :cat 2 :star :cat 2 :opt :cat 1 :cat 1 :alt 0] 100)
                         (gen/return "w")]
-                      [(get w [:srcset :cat 2 :star :cat 3 :opt :cat 1 :cat 1 :alt 1] 100)
+                      [(get w [:srcset :cat 2 :star :cat 2 :opt :cat 1 :cat 1 :alt 1] 100)
                         (gen/return "x")]])))]))))
         g (assoc g :srcset gen-srcset)
 
@@ -3964,7 +3904,7 @@
               (:name g)
               (gen/vector
                 (gen/tuple
-                  (:rS g)
+                  (gen/return " ")
                   (:name g))))]
           [(get w [:attr-val-form__accept-charset :alt 4] 100)
             (gen/return "STUB labels")]])
@@ -4049,6 +3989,14 @@
         gen-legend-attribute
         (:global-attribute g)
         g (assoc g :legend-attribute gen-legend-attribute)
+
+        gen-attr-val-img__srcset
+        (igen/freq [
+          [(get w [:attr-val-img__srcset :alt 0] 100)
+            (gen/return "")]
+          [(get w [:attr-val-img__srcset :alt 1] 100)
+            (:srcset g)]])
+        g (assoc g :attr-val-img__srcset gen-attr-val-img__srcset)
 
         gen-attr-val-col__span
         (igen/freq [
@@ -4246,7 +4194,7 @@
           [(get w [:img-attribute :alt 6] 100)
             (gen/tuple
               (gen/return "srcset=\"")
-              rgen/image-path
+              (:attr-val-img__srcset g)
               (gen/return "\""))]
           [(get w [:img-attribute :alt 7] 100)
             (gen/tuple
@@ -4290,12 +4238,7 @@
               (gen/return "\""))]
           [(get w [:source-attribute :alt 4] 100)
             (:global-attribute g)]])
-        g (assoc g :source-attribute gen-source-attribute)]
-    g))
-
-(defn- html5-generators-part-7 [gmap weights]
-  (let [g gmap
-        w weights
+        g (assoc g :source-attribute gen-source-attribute)
 
         gen-div-attribute
         (:global-attribute g)
@@ -4310,7 +4253,7 @@
                   (gen/return "<a")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:a-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -4325,7 +4268,7 @@
                   (gen/return "<abbr")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:abbr-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -4340,7 +4283,7 @@
                   (gen/return "<address")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:address-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -4355,7 +4298,7 @@
                   (gen/return "<area")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:area-attribute g)))
                   (gen/return ">"))]
               [(get w [:element :alt 4] 100)
@@ -4363,7 +4306,7 @@
                   (gen/return "<article")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:article-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -4378,7 +4321,7 @@
                   (gen/return "<aside")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:aside-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -4393,7 +4336,7 @@
                   (gen/return "<audio")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:audio-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -4408,7 +4351,7 @@
                   (gen/return "<b")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:b-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -4423,7 +4366,7 @@
                   (gen/return "<base")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:base-attribute g)))
                   (gen/return ">"))]
               [(get w [:element :alt 9] 100)
@@ -4431,7 +4374,7 @@
                   (gen/return "<bdi")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:bdi-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -4446,7 +4389,7 @@
                   (gen/return "<bdo")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:bdo-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -4461,7 +4404,7 @@
                   (gen/return "<blockquote")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:blockquote-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -4476,7 +4419,7 @@
                   (gen/return "<br")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:br-attribute g)))
                   (gen/return ">"))]
               [(get w [:element :alt 13] 100)
@@ -4484,7 +4427,7 @@
                   (gen/return "<button")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:button-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -4499,7 +4442,7 @@
                   (gen/return "<canvas")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:canvas-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -4514,7 +4457,7 @@
                   (gen/return "<caption")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:caption-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -4529,7 +4472,7 @@
                   (gen/return "<cite")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:cite-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -4544,7 +4487,7 @@
                   (gen/return "<code")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:code-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -4559,7 +4502,7 @@
                   (gen/return "<col")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:col-attribute g)))
                   (gen/return ">"))]
               [(get w [:element :alt 19] 100)
@@ -4567,7 +4510,7 @@
                   (gen/return "<colgroup")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:colgroup-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -4582,7 +4525,7 @@
                   (gen/return "<data")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:data-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -4597,7 +4540,7 @@
                   (gen/return "<datalist")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:datalist-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -4612,7 +4555,7 @@
                   (gen/return "<dd")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:dd-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -4627,7 +4570,7 @@
                   (gen/return "<del")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:del-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -4642,7 +4585,7 @@
                   (gen/return "<details")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:details-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -4657,7 +4600,7 @@
                   (gen/return "<dfn")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:dfn-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -4672,7 +4615,7 @@
                   (gen/return "<div")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:div-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -4687,7 +4630,7 @@
                   (gen/return "<dl")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:dl-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -4702,7 +4645,7 @@
                   (gen/return "<dt")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:dt-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -4717,7 +4660,7 @@
                   (gen/return "<em")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:em-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -4732,7 +4675,7 @@
                   (gen/return "<embed")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:embed-attribute g)))
                   (gen/return ">"))]
               [(get w [:element :alt 31] 100)
@@ -4740,7 +4683,7 @@
                   (gen/return "<fieldset")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:fieldset-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -4755,7 +4698,7 @@
                   (gen/return "<figcaption")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:figcaption-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -4770,7 +4713,7 @@
                   (gen/return "<figure")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:figure-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -4785,7 +4728,7 @@
                   (gen/return "<footer")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:footer-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -4800,7 +4743,7 @@
                   (gen/return "<form")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:form-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -4815,7 +4758,7 @@
                   (gen/return "<h1")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:h1-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -4830,7 +4773,7 @@
                   (gen/return "<h2")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:h2-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -4845,7 +4788,7 @@
                   (gen/return "<h3")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:h3-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -4860,7 +4803,7 @@
                   (gen/return "<h4")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:h4-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -4875,7 +4818,7 @@
                   (gen/return "<h5")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:h5-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -4890,7 +4833,7 @@
                   (gen/return "<h6")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:h6-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -4905,7 +4848,7 @@
                   (gen/return "<header")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:header-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -4920,7 +4863,7 @@
                   (gen/return "<hr")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:hr-attribute g)))
                   (gen/return ">"))]
               [(get w [:element :alt 44] 100)
@@ -4928,7 +4871,7 @@
                   (gen/return "<i")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:i-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -4943,7 +4886,7 @@
                   (gen/return "<iframe")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:iframe-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -4958,7 +4901,7 @@
                   (gen/return "<img")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:img-attribute g)))
                   (gen/return ">"))]
               [(get w [:element :alt 47] 100)
@@ -4966,7 +4909,7 @@
                   (gen/return "<input")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:input-attribute g)))
                   (gen/return ">"))]
               [(get w [:element :alt 48] 100)
@@ -4974,7 +4917,7 @@
                   (gen/return "<ins")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:ins-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -4989,7 +4932,7 @@
                   (gen/return "<kbd")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:kbd-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -5004,7 +4947,7 @@
                   (gen/return "<keygen")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:keygen-attribute g)))
                   (gen/return ">"))]
               [(get w [:element :alt 51] 100)
@@ -5012,7 +4955,7 @@
                   (gen/return "<label")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:label-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -5027,7 +4970,7 @@
                   (gen/return "<legend")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:legend-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -5042,7 +4985,7 @@
                   (gen/return "<li")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:li-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -5057,7 +5000,7 @@
                   (gen/return "<link")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:link-attribute g)))
                   (gen/return ">"))]
               [(get w [:element :alt 55] 100)
@@ -5065,7 +5008,7 @@
                   (gen/return "<main")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:main-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -5080,7 +5023,7 @@
                   (gen/return "<map")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:map-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -5095,7 +5038,7 @@
                   (gen/return "<mark")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:mark-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -5110,7 +5053,7 @@
                   (gen/return "<menu")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:menu-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -5125,7 +5068,7 @@
                   (gen/return "<menuitem")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:menuitem-attribute g)))
                   (gen/return ">"))]
               [(get w [:element :alt 60] 100)
@@ -5133,7 +5076,7 @@
                   (gen/return "<meta")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:meta-attribute g)))
                   (gen/return ">"))]
               [(get w [:element :alt 61] 100)
@@ -5141,7 +5084,7 @@
                   (gen/return "<meter")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:meter-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -5156,7 +5099,7 @@
                   (gen/return "<nav")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:nav-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -5171,7 +5114,7 @@
                   (gen/return "<noscript")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:noscript-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -5186,7 +5129,7 @@
                   (gen/return "<object")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:object-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -5201,7 +5144,7 @@
                   (gen/return "<ol")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:ol-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -5216,7 +5159,7 @@
                   (gen/return "<optgroup")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:optgroup-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -5231,7 +5174,7 @@
                   (gen/return "<option")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:option-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -5246,7 +5189,7 @@
                   (gen/return "<output")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:output-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -5261,7 +5204,7 @@
                   (gen/return "<p")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:p-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -5276,7 +5219,7 @@
                   (gen/return "<param")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:param-attribute g)))
                   (gen/return ">"))]
               [(get w [:element :alt 71] 100)
@@ -5284,7 +5227,7 @@
                   (gen/return "<picture")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:picture-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -5299,7 +5242,7 @@
                   (gen/return "<pre")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:pre-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -5314,7 +5257,7 @@
                   (gen/return "<progress")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:progress-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -5329,7 +5272,7 @@
                   (gen/return "<q")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:q-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -5344,7 +5287,7 @@
                   (gen/return "<rb")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:rb-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -5359,7 +5302,7 @@
                   (gen/return "<rp")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:rp-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -5374,7 +5317,7 @@
                   (gen/return "<rt")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:rt-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -5389,7 +5332,7 @@
                   (gen/return "<rtc")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:rtc-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -5404,7 +5347,7 @@
                   (gen/return "<ruby")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:ruby-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -5419,7 +5362,7 @@
                   (gen/return "<s")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:s-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -5434,7 +5377,7 @@
                   (gen/return "<samp")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:samp-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -5449,7 +5392,7 @@
                   (gen/return "<script")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:script-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -5464,7 +5407,7 @@
                   (gen/return "<section")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:section-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -5479,7 +5422,7 @@
                   (gen/return "<select")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:select-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -5494,7 +5437,7 @@
                   (gen/return "<small")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:small-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -5509,7 +5452,7 @@
                   (gen/return "<source")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:source-attribute g)))
                   (gen/return ">"))]
               [(get w [:element :alt 87] 100)
@@ -5517,7 +5460,7 @@
                   (gen/return "<span")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:span-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -5532,7 +5475,7 @@
                   (gen/return "<strong")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:strong-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -5547,7 +5490,7 @@
                   (gen/return "<style")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:style-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -5562,7 +5505,7 @@
                   (gen/return "<sub")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:sub-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -5577,7 +5520,7 @@
                   (gen/return "<summary")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:summary-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -5592,7 +5535,7 @@
                   (gen/return "<sup")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:sup-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -5607,7 +5550,7 @@
                   (gen/return "<table")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:table-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -5622,7 +5565,7 @@
                   (gen/return "<tbody")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:tbody-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -5637,7 +5580,7 @@
                   (gen/return "<td")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:td-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -5652,7 +5595,7 @@
                   (gen/return "<template")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:template-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -5667,7 +5610,7 @@
                   (gen/return "<textarea")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:textarea-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -5682,7 +5625,7 @@
                   (gen/return "<tfoot")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:tfoot-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -5697,7 +5640,7 @@
                   (gen/return "<th")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:th-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -5712,7 +5655,7 @@
                   (gen/return "<thead")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:thead-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -5727,7 +5670,7 @@
                   (gen/return "<time")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:time-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -5742,7 +5685,7 @@
                   (gen/return "<tr")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:tr-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -5757,7 +5700,7 @@
                   (gen/return "<track")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:track-attribute g)))
                   (gen/return ">"))]
               [(get w [:element :alt 104] 100)
@@ -5765,7 +5708,7 @@
                   (gen/return "<u")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:u-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -5780,7 +5723,7 @@
                   (gen/return "<ul")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:ul-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -5795,7 +5738,7 @@
                   (gen/return "<var")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:var-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -5810,7 +5753,7 @@
                   (gen/return "<video")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:video-attribute g)))
                   (gen/return ">")
                   (gen/vector
@@ -5825,7 +5768,7 @@
                   (gen/return "<wbr")
                   (gen/vector
                     (gen/tuple
-                      (:rS g)
+                      (gen/return " ")
                       (:wbr-attribute g)))
                   (gen/return ">"))]]))
           (igen/freq [
@@ -5834,7 +5777,7 @@
                 (gen/return "<a")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:a-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -5845,7 +5788,7 @@
                 (gen/return "<abbr")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:abbr-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -5856,7 +5799,7 @@
                 (gen/return "<address")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:address-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -5867,7 +5810,7 @@
                 (gen/return "<area")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:area-attribute g)))
                 (gen/return ">"))]
             [(get w [:element :alt 4] 100)
@@ -5875,7 +5818,7 @@
                 (gen/return "<article")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:article-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -5886,7 +5829,7 @@
                 (gen/return "<aside")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:aside-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -5897,7 +5840,7 @@
                 (gen/return "<audio")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:audio-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -5908,7 +5851,7 @@
                 (gen/return "<b")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:b-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -5919,7 +5862,7 @@
                 (gen/return "<base")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:base-attribute g)))
                 (gen/return ">"))]
             [(get w [:element :alt 9] 100)
@@ -5927,7 +5870,7 @@
                 (gen/return "<bdi")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:bdi-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -5938,7 +5881,7 @@
                 (gen/return "<bdo")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:bdo-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -5949,7 +5892,7 @@
                 (gen/return "<blockquote")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:blockquote-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -5960,7 +5903,7 @@
                 (gen/return "<br")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:br-attribute g)))
                 (gen/return ">"))]
             [(get w [:element :alt 13] 100)
@@ -5968,7 +5911,7 @@
                 (gen/return "<button")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:button-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -5979,7 +5922,7 @@
                 (gen/return "<canvas")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:canvas-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -5990,7 +5933,7 @@
                 (gen/return "<caption")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:caption-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6001,7 +5944,7 @@
                 (gen/return "<cite")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:cite-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6012,7 +5955,7 @@
                 (gen/return "<code")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:code-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6023,7 +5966,7 @@
                 (gen/return "<col")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:col-attribute g)))
                 (gen/return ">"))]
             [(get w [:element :alt 19] 100)
@@ -6031,7 +5974,7 @@
                 (gen/return "<colgroup")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:colgroup-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6042,7 +5985,7 @@
                 (gen/return "<data")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:data-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6053,7 +5996,7 @@
                 (gen/return "<datalist")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:datalist-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6064,7 +6007,7 @@
                 (gen/return "<dd")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:dd-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6075,7 +6018,7 @@
                 (gen/return "<del")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:del-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6086,7 +6029,7 @@
                 (gen/return "<details")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:details-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6097,7 +6040,7 @@
                 (gen/return "<dfn")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:dfn-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6108,7 +6051,7 @@
                 (gen/return "<div")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:div-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6119,7 +6062,7 @@
                 (gen/return "<dl")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:dl-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6130,7 +6073,7 @@
                 (gen/return "<dt")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:dt-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6141,7 +6084,7 @@
                 (gen/return "<em")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:em-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6152,7 +6095,7 @@
                 (gen/return "<embed")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:embed-attribute g)))
                 (gen/return ">"))]
             [(get w [:element :alt 31] 100)
@@ -6160,7 +6103,7 @@
                 (gen/return "<fieldset")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:fieldset-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6171,7 +6114,7 @@
                 (gen/return "<figcaption")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:figcaption-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6182,7 +6125,7 @@
                 (gen/return "<figure")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:figure-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6193,7 +6136,7 @@
                 (gen/return "<footer")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:footer-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6204,7 +6147,7 @@
                 (gen/return "<form")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:form-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6215,7 +6158,7 @@
                 (gen/return "<h1")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:h1-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6226,7 +6169,7 @@
                 (gen/return "<h2")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:h2-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6237,7 +6180,7 @@
                 (gen/return "<h3")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:h3-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6248,7 +6191,7 @@
                 (gen/return "<h4")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:h4-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6259,7 +6202,7 @@
                 (gen/return "<h5")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:h5-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6270,7 +6213,7 @@
                 (gen/return "<h6")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:h6-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6281,7 +6224,7 @@
                 (gen/return "<header")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:header-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6292,7 +6235,7 @@
                 (gen/return "<hr")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:hr-attribute g)))
                 (gen/return ">"))]
             [(get w [:element :alt 44] 100)
@@ -6300,7 +6243,7 @@
                 (gen/return "<i")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:i-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6311,7 +6254,7 @@
                 (gen/return "<iframe")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:iframe-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6322,7 +6265,7 @@
                 (gen/return "<img")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:img-attribute g)))
                 (gen/return ">"))]
             [(get w [:element :alt 47] 100)
@@ -6330,7 +6273,7 @@
                 (gen/return "<input")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:input-attribute g)))
                 (gen/return ">"))]
             [(get w [:element :alt 48] 100)
@@ -6338,7 +6281,7 @@
                 (gen/return "<ins")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:ins-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6349,7 +6292,7 @@
                 (gen/return "<kbd")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:kbd-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6360,7 +6303,7 @@
                 (gen/return "<keygen")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:keygen-attribute g)))
                 (gen/return ">"))]
             [(get w [:element :alt 51] 100)
@@ -6368,7 +6311,7 @@
                 (gen/return "<label")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:label-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6379,7 +6322,7 @@
                 (gen/return "<legend")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:legend-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6390,7 +6333,7 @@
                 (gen/return "<li")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:li-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6401,7 +6344,7 @@
                 (gen/return "<link")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:link-attribute g)))
                 (gen/return ">"))]
             [(get w [:element :alt 55] 100)
@@ -6409,7 +6352,7 @@
                 (gen/return "<main")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:main-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6420,7 +6363,7 @@
                 (gen/return "<map")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:map-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6431,7 +6374,7 @@
                 (gen/return "<mark")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:mark-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6442,7 +6385,7 @@
                 (gen/return "<menu")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:menu-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6453,7 +6396,7 @@
                 (gen/return "<menuitem")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:menuitem-attribute g)))
                 (gen/return ">"))]
             [(get w [:element :alt 60] 100)
@@ -6461,7 +6404,7 @@
                 (gen/return "<meta")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:meta-attribute g)))
                 (gen/return ">"))]
             [(get w [:element :alt 61] 100)
@@ -6469,7 +6412,7 @@
                 (gen/return "<meter")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:meter-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6480,7 +6423,7 @@
                 (gen/return "<nav")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:nav-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6491,7 +6434,7 @@
                 (gen/return "<noscript")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:noscript-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6502,7 +6445,7 @@
                 (gen/return "<object")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:object-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6513,7 +6456,7 @@
                 (gen/return "<ol")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:ol-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6524,7 +6467,7 @@
                 (gen/return "<optgroup")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:optgroup-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6535,7 +6478,7 @@
                 (gen/return "<option")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:option-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6546,7 +6489,7 @@
                 (gen/return "<output")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:output-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6557,7 +6500,7 @@
                 (gen/return "<p")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:p-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6568,7 +6511,7 @@
                 (gen/return "<param")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:param-attribute g)))
                 (gen/return ">"))]
             [(get w [:element :alt 71] 100)
@@ -6576,7 +6519,7 @@
                 (gen/return "<picture")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:picture-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6587,7 +6530,7 @@
                 (gen/return "<pre")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:pre-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6598,7 +6541,7 @@
                 (gen/return "<progress")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:progress-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6609,7 +6552,7 @@
                 (gen/return "<q")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:q-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6620,7 +6563,7 @@
                 (gen/return "<rb")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:rb-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6631,7 +6574,7 @@
                 (gen/return "<rp")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:rp-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6642,7 +6585,7 @@
                 (gen/return "<rt")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:rt-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6653,7 +6596,7 @@
                 (gen/return "<rtc")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:rtc-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6664,7 +6607,7 @@
                 (gen/return "<ruby")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:ruby-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6675,7 +6618,7 @@
                 (gen/return "<s")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:s-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6686,7 +6629,7 @@
                 (gen/return "<samp")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:samp-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6697,7 +6640,7 @@
                 (gen/return "<script")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:script-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6708,7 +6651,7 @@
                 (gen/return "<section")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:section-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6719,7 +6662,7 @@
                 (gen/return "<select")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:select-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6730,7 +6673,7 @@
                 (gen/return "<small")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:small-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6741,7 +6684,7 @@
                 (gen/return "<source")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:source-attribute g)))
                 (gen/return ">"))]
             [(get w [:element :alt 87] 100)
@@ -6749,7 +6692,7 @@
                 (gen/return "<span")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:span-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6760,7 +6703,7 @@
                 (gen/return "<strong")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:strong-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6771,7 +6714,7 @@
                 (gen/return "<style")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:style-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6782,7 +6725,7 @@
                 (gen/return "<sub")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:sub-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6793,7 +6736,7 @@
                 (gen/return "<summary")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:summary-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6804,7 +6747,7 @@
                 (gen/return "<sup")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:sup-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6815,7 +6758,7 @@
                 (gen/return "<table")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:table-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6826,7 +6769,7 @@
                 (gen/return "<tbody")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:tbody-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6837,7 +6780,7 @@
                 (gen/return "<td")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:td-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6848,7 +6791,7 @@
                 (gen/return "<template")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:template-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6859,7 +6802,7 @@
                 (gen/return "<textarea")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:textarea-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6870,7 +6813,7 @@
                 (gen/return "<tfoot")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:tfoot-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6881,7 +6824,7 @@
                 (gen/return "<th")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:th-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6892,7 +6835,7 @@
                 (gen/return "<thead")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:thead-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6903,7 +6846,7 @@
                 (gen/return "<time")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:time-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6914,7 +6857,7 @@
                 (gen/return "<tr")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:tr-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6925,7 +6868,7 @@
                 (gen/return "<track")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:track-attribute g)))
                 (gen/return ">"))]
             [(get w [:element :alt 104] 100)
@@ -6933,7 +6876,7 @@
                 (gen/return "<u")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:u-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6944,7 +6887,7 @@
                 (gen/return "<ul")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:ul-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6955,7 +6898,7 @@
                 (gen/return "<var")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:var-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6966,7 +6909,7 @@
                 (gen/return "<video")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:video-attribute g)))
                 (gen/return ">")
                 (gen/vector
@@ -6977,7 +6920,7 @@
                 (gen/return "<wbr")
                 (gen/vector
                   (gen/tuple
-                    (:rS g)
+                    (gen/return " ")
                     (:wbr-attribute g)))
                 (gen/return ">"))]]))
         g (assoc g :element gen-element)
@@ -6987,7 +6930,7 @@
           (gen/return "<body")
           (gen/vector
             (gen/tuple
-              (:rS g)
+              (gen/return " ")
               (:body-attribute g)))
           (gen/return ">")
           (gen/vector
@@ -6996,8 +6939,7 @@
                 (:element g)]
               [(get w [:body :cat 3 :star :alt 1] 100)
                 (:content g)]]))
-          (gen/return "</body>")
-          (:S g))
+          (gen/return "</body> "))
         g (assoc g :body gen-body)
 
         gen-title-attribute
@@ -7006,7 +6948,12 @@
 
         gen-url-generic
         (chuck/string-from-regex #"[A-Za-z0-9$-_@.&+%=;/#?:]+")
-        g (assoc g :url-generic gen-url-generic)
+        g (assoc g :url-generic gen-url-generic)]
+    g))
+
+(defn- html5-generators-part-7 [gmap weights]
+  (let [g gmap
+        w weights
 
         gen-html-attribute
         (igen/freq [
@@ -7034,10 +6981,9 @@
           (gen/return "<link")
           (gen/vector
             (gen/tuple
-              (:rS g)
+              (gen/return " ")
               (:link-attribute g)))
-          (gen/return ">")
-          (:S g))
+          (gen/return "> "))
         g (assoc g :link gen-link)
 
         gen-title
@@ -7045,13 +6991,12 @@
           (gen/return "<title")
           (gen/vector
             (gen/tuple
-              (:rS g)
+              (gen/return " ")
               (:title-attribute g)))
           (gen/return ">")
           (gen/vector
             (:content g))
-          (gen/return "</title>")
-          (:S g))
+          (gen/return "</title> "))
         g (assoc g :title gen-title)
 
         gen-meta
@@ -7059,10 +7004,9 @@
           (gen/return "<meta")
           (gen/vector
             (gen/tuple
-              (:rS g)
+              (gen/return " ")
               (:meta-attribute g)))
-          (gen/return ">")
-          (:S g))
+          (gen/return "> "))
         g (assoc g :meta gen-meta)
 
         gen-head-elements
@@ -7079,12 +7023,10 @@
 
         gen-head
         (gen/tuple
-          (gen/return "<head>")
-          (:S g)
+          (gen/return "<head> ")
           (gen/vector
             (:head-elements g))
-          (gen/return "</head>")
-          (:S g))
+          (gen/return "</head> "))
         g (assoc g :head gen-head)
 
         gen-html
@@ -7097,17 +7039,79 @@
           (gen/return "<html")
           (gen/vector
             (gen/tuple
-              (:rS g)
+              (gen/return " ")
               (:html-attribute g)))
-          (gen/return ">")
-          (:S g)
+          (gen/return "> ")
           (gen/one-of [
             (gen/return "")
             (:head g)])
           (:body g)
-          (gen/return "</html>")
-          (:S g))
+          (gen/return "</html> "))
         g (assoc g :html gen-html)
+
+        gen-title-test
+        (gen/tuple
+          (gen/return "<title")
+          (gen/vector
+            (gen/tuple
+              (gen/return " ")
+              (:title-attribute g)))
+          (gen/return ">")
+          (gen/vector
+            (:content g))
+          (gen/return "</title>"))
+        g (assoc g :title-test gen-title-test)
+
+        gen-head-test-min
+        (gen/tuple
+          (gen/return "<head>")
+          (gen/one-of [
+            (gen/return "")
+            (:title-test g)])
+          (gen/return "</head>"))
+        g (assoc g :head-test-min gen-head-test-min)
+
+        gen-body-test
+        (gen/tuple
+          (gen/return "<body")
+          (gen/vector
+            (gen/tuple
+              (gen/return " ")
+              (:body-attribute g)))
+          (gen/return ">x")
+          (gen/vector
+            (igen/freq [
+              [(get w [:body-test :cat 3 :star :alt 0] 100)
+                (:element g)]
+              [(get w [:body-test :cat 3 :star :alt 1] 100)
+                (:content g)]]))
+          (gen/return "</body>"))
+        g (assoc g :body-test gen-body-test)
+
+        gen-html-test-min
+        (gen/tuple
+          (gen/return "<html>")
+          (:head-test-min g)
+          (:body-test g)
+          (gen/return "</html>"))
+        g (assoc g :html-test-min gen-html-test-min)
+
+        gen-S
+        (gen/vector
+          (chuck/string-from-regex #"\s"))
+        g (assoc g :S gen-S)
+
+        gen-quoted-string
+        (igen/freq [
+          [(get w [:quoted-string :alt 0] 100)
+            (gen/tuple
+              (chuck/string-from-regex #"'[\"A-Za-z0-9 .,_:/%=#?+\-^]*'")
+              (gen/return " "))]
+          [(get w [:quoted-string :alt 1] 100)
+            (gen/tuple
+              (chuck/string-from-regex #"\"['A-Za-z0-9 .,_:/%=#?+\-^]*\"")
+              (gen/return " "))]])
+        g (assoc g :quoted-string gen-quoted-string)
 
         gen-rend-css
         (gen/return "<link rel=\"stylesheet\" href=\"/static/rend.css\">")
@@ -7117,40 +7121,16 @@
         (chuck/string-from-regex #"<!--(?:[^-]|-[^-])*-->")
         g (assoc g :comment-generic gen-comment-generic)
 
+        gen-entity-ref
+        (gen/tuple
+          (gen/return "&")
+          (:name g)
+          (gen/return ";"))
+        g (assoc g :entity-ref gen-entity-ref)
+
         gen-normalize-css
         (gen/return "<link rel=\"stylesheet\" href=\"/static/normalize.css\">")
         g (assoc g :normalize-css gen-normalize-css)
-
-        gen-body-test
-        (gen/tuple
-          (gen/return "<body")
-          (gen/vector
-            (gen/tuple
-              (:rS g)
-              (:body-attribute g)))
-          (gen/return ">")
-          (gen/return "x")
-          (gen/vector
-            (igen/freq [
-              [(get w [:body-test :cat 4 :star :alt 0] 100)
-                (:element g)]
-              [(get w [:body-test :cat 4 :star :alt 1] 100)
-                (:content g)]]))
-          (gen/return "</body>"))
-        g (assoc g :body-test gen-body-test)
-
-        gen-title-test
-        (gen/tuple
-          (gen/return "<title")
-          (gen/vector
-            (gen/tuple
-              (:rS g)
-              (:title-attribute g)))
-          (gen/return ">")
-          (gen/vector
-            (:content g))
-          (gen/return "</title>"))
-        g (assoc g :title-test gen-title-test)
 
         gen-head-test
         (gen/tuple
@@ -7181,29 +7161,29 @@
             (gen/return "iso-8859-15")]])
         g (assoc g :charset gen-charset)
 
-        gen-attr-val-style
-        (:css-assignments g)
-        g (assoc g :attr-val-style gen-attr-val-style)
+        gen-rS
+        (gen/tuple (gen/return " "))
+        g (assoc g :rS gen-rS)
 
         gen-head-attribute
         (:global-attribute g)
         g (assoc g :head-attribute gen-head-attribute)
 
-        gen-attr-val-img__srcset
-        (igen/freq [
-          [(get w [:attr-val-img__srcset :alt 0] 100)
-            (gen/return "")]
-          [(get w [:attr-val-img__srcset :alt 1] 100)
-            (:srcset g)]])
-        g (assoc g :attr-val-img__srcset gen-attr-val-img__srcset)
-
         gen-positive-integer
-        (chuck/string-from-regex #"[1-9][0-9]*")
+        gen/s-pos-int
         g (assoc g :positive-integer gen-positive-integer)
+
+        gen-char-ref-dec
+        (chuck/string-from-regex #"&#[0-9]{1,7};")
+        g (assoc g :char-ref-dec gen-char-ref-dec)
 
         gen-char-data-generic
         (chuck/string-from-regex #"[^<&]*")
-        g (assoc g :char-data-generic gen-char-data-generic)]
+        g (assoc g :char-data-generic gen-char-data-generic)
+
+        gen-char-ref-hex
+        (chuck/string-from-regex #"&#x[0-9A-F]{1,6};")
+        g (assoc g :char-ref-hex gen-char-ref-hex)]
     g))
 
 (defn html5-generators [& [gmap weights]]
