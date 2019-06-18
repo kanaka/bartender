@@ -1,0 +1,25 @@
+@import url('https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
+
+.summary {
+  background-color: #dddddd;
+  width: 100%;
+}
+
+.fontawesome-red {
+  font-family: fontawesome;
+  color: #d44;
+  font-weight: normal;
+  margin-left: 10px;
+}
+
+.fontawesome-green {
+  font-family: fontawesome;
+  color: #d44;
+  font-weight: normal;
+  margin-left: 10px;
+}
+
+.connect-icon {
+    vertical-align: middle;
+    margin-right: 10px;
+}

@@ -17,6 +17,12 @@ sudo apt-get install libopencv-dev
 make deps
 ```
 
+* Compile ClojureScript Report page application:
+
+```
+lein cljsbuild once app
+```
+
 * Download/build the drivers/browsers that you want to test:
   * Firefox (https://developer.mozilla.org/en-US/Firefox/Headless_mode):
   ```
@@ -201,6 +207,8 @@ The following images are included in static/:
 * [B\_stop.svg](https://commons.wikimedia.org/wiki/Openclipart#/media/File:B_stop.svg) (CC0)
 * [Eilat_-_Dolphin\_reef\*.jpg](https://commons.wikimedia.org/wiki/Dolphin#/media/File:Eilat_-_Dolphin_reef.jpg) (CC BY-SA 3.0)
 * [SpaceX\_Kestrel\_engine2\*.gif](https://commons.wikimedia.org/wiki/File:SpaceX_Kestrel_engine2.gif) (CC BY-SA-3.0)
+* [Connected.\*](https://commons.wikimedia.org/wiki/Category:Computer_hardware_icons#/media/File:Network-error.svg) (Public Domain)
+* [Disconnected.\*](https://commons.wikimedia.org/wiki/Category:Computer_hardware_icons#/media/File:Network-error.svg) (Public Domain)
 
 ## License
 

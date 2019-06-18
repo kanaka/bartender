@@ -19,43 +19,49 @@ web:
     port: 3000
     dir: "gen"
 browsers:
-    - id: "firefox"
-      url: "http://localhost:7000"
-      capabilities: {"moz:firefoxOptions":
-                     {"args": ["--headless"]}}
-    - id: "chrome"
-      url: "http://localhost:7001"
-      capabilities: {"chromeOptions":
-                     {"args": ["--headless"]}}
-    - id: servo
-      url: "http://192.168.88.2:7002"
+    firefox:
+        url: "http://localhost:7000"
+        capabilities: {"moz:firefoxOptions":
+                       {"args": ["--headless"]}}
+    chrome:
+        url: "http://localhost:7001"
+        capabilities: {"chromeOptions":
+                       {"args": ["--headless"]}}
+    servo:
+        url: "http://192.168.88.2:7002"
 
-#    - id: "brave"
-#      url: "http://localhost:7003"
-#      capabilities: {"chromeOptions":
-#                     { "args": ["--headless", "--disable-gpu"],
-#                       "binary": "/usr/bin/brave-browser"}}
-#    - id: bs-chrome-win-62
-#      url: "https://USER:KEY@hub-cloud.browserstack.com/wd/hub"
-#      capabilities: {"browserstack.local": true,
-#                     "browser": "Chrome",
-#                     "browser_version": "69.0",
-#                     "os": "Windows",
-#                     "os_version": "10",
-#                     "resolution": "1024x768"}
-#    - id: bs-firefox-win-62
-#      url: "https://USER:KEY@hub-cloud.browserstack.com/wd/hub"
-#      capabilities: {"browserstack.local": true,
-#                     "browser": "Firefox",
-#                     "browser_version": "62.0",
-#                     "os": "Windows",
-#                     "os_version": "10",
-#                     "resolution": "1024x768"}
-#    - id: bs-edge-win-17
-#      url: "https://USER:KEY@hub-cloud.browserstack.com/wd/hub"
-#      capabilities: {"browserstack.local": true,
-#                     "browser": "Edge",
-#                     "browser_version": "17.0",
-#                     "os": "Windows",
-#                     "os_version": "10",
-#                     "resolution": "1024x768"}
+#    opera:
+#      url: "http://localhost:7002"
+#      capabilities: {"chromeOptions"
+#                     {"args" ["--headless"]
+#                      "binary" "/usr/bin/opera"}}
+#
+#    brave:
+#        url: "http://localhost:7003"
+#        capabilities: {"chromeOptions":
+#                       { "args": ["--headless", "--disable-gpu"],
+#                         "binary": "/usr/bin/brave-browser"}}
+#    bs-chrome-win-62:
+#        url: "https://USER:KEY@hub-cloud.browserstack.com/wd/hub"
+#        capabilities: {"browserstack.local": true,
+#                       "browser": "Chrome",
+#                       "browser_version": "69.0",
+#                       "os": "Windows",
+#                       "os_version": "10",
+#                       "resolution": "1024x768"}
+#    bs-firefox-win-62:
+#        url: "https://USER:KEY@hub-cloud.browserstack.com/wd/hub"
+#        capabilities: {"browserstack.local": true,
+#                       "browser": "Firefox",
+#                       "browser_version": "62.0",
+#                       "os": "Windows",
+#                       "os_version": "10",
+#                       "resolution": "1024x768"}
+#    bs-edge-win-17:
+#        url: "https://USER:KEY@hub-cloud.browserstack.com/wd/hub"
+#        capabilities: {"browserstack.local": true,
+#                       "browser": "Edge",
+#                       "browser_version": "17.0",
+#                       "os": "Windows",
+#                       "os_version": "10",
+#                       "resolution": "1024x768"}

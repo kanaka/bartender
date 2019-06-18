@@ -11,6 +11,7 @@
             [com.rpl.specter :refer [setval transform MAP-VALS]]
             [hiccup.core]
             [clj-time.core :as ctime]
+            [differ.core :as differ]
 
             [instaparse.core :as instaparse]
             [instacheck.core :as instacheck]
@@ -18,13 +19,38 @@
             [mend.util :as util]
             [rend.generator]
             [rend.image :as image]
-            [rend.html]
             [rend.server]
             [rend.webdriver :as webdriver]
             [wend.core :as wend]))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Test state management
+
+(defn serializable-state
+  "Return a network serializable form of the test state that elides
+  Clojure objects/functions, parsers, and the base weights."
+  [state-val]
+  (let [cnt-elide (fn [x] (keyword (str "ELIDED-" (count x))))]
+    (->> state-val
+         (setval    [:sessions MAP-VALS]   :ELIDED)
+         (transform [:ws-clients]          cnt-elide)
+         (setval    [:server]              :ELIDED)
+         (setval    [:cleanup-fn]          :ELIDED)
+         (transform [:cfg :weights :base]  cnt-elide)
+         (setval    [:html-parser]         :ELIDED)
+         (setval    [:css-parser]          :ELIDED))))
+
+(defn printable-state
+  "Return a more printable form of the test state that elides
+  everything that serializable-state does plus the log and the
+  start weight list."
+  [state-val]
+  (let [cnt-elide (fn [x] (keyword (str "ELIDED-" (count x))))]
+    (->> state-val
+         serializable-state
+         (transform [:weights]             cnt-elide)
+         (transform [:log MAP-VALS]        :ELIDED)
+         (transform [:cfg :weights :start] cnt-elide))))
 
 (defn new-test-run!
   "Update (mutate) state run number (to add 1) and return it"
@@ -52,54 +78,48 @@
 
 (defn add-ws-client!
   [state ch req]
+  ;;(println "new websocket client" ch)
   (swap! state update-in [:ws-clients] conj ch))
 
 (defn remove-ws-client!
   [state ch status]
+  ;;(println "lost websocket client" ch)
   (swap! state update-in [:ws-clients] disj ch))
 
 
 (defn log!
   "Merges (mutates) log entry (map) into the current run and/or iter
-  log position (depending on kind).
+  log position (depending on mode).
 
   The log structure looks like this:
-     {:run-log {0 ...
-                1 {:run      0
-                   ...
-                   :iter-log {0 {:iter   0
-                                 ...}]}]}}}"
-  [state kind entry]
-  (swap!
-    state
-    (fn [{:keys [run iteration] :as data}]
-      (condp = kind
-        :run (-> data
-                 (update-in [:run-log run]
-                            merge entry {:run run}))
-        :iter (-> data
-                  ;; Ensure that parent run-log always has :run key
-                  (update-in [:run-log run]
-                             merge {:run run})
-                  (update-in [:run-log run :iter-log iteration]
-                             merge entry {:iter iteration}))))))
+     {:log {SLUG-0 ...
+            SLUG-1 {:test-slug SLUG-1
+                    :run       1
+                    ...
+                    :iter-log  {0 {:iter   0
+                                   ...}]}]}}}"
+  [state mode entry]
 
-(defn printable-state
-  "Return a more printable form of the test state the elides: Clojure
-  objects/functions, parsers, and long weight lists"
-  [state-val]
-  (let [cnt-elide (fn [x] (keyword (str "ELIDED-" (count x))))]
-    (->> state-val
-         (setval    [:sessions MAP-VALS]   :ELIDED)
-         (transform [:ws-clients]          cnt-elide)
-         (setval    [:server]              :ELIDED)
-         (setval    [:cleanup-fn]          :ELIDED)
-         (transform [:weights]             cnt-elide)
-         (transform [:run-log]             cnt-elide)
-         (transform [:cfg :weights :base]  cnt-elide)
-         (transform [:cfg :weights :start] cnt-elide)
-         (setval    [:html-parser]         :ELIDED)
-         (setval    [:css-parser]          :ELIDED))))
+  ;; Update log both in memory and on disk
+  (let [s (swap!
+            state
+            (fn [{:keys [test-slug run iteration] :as data}]
+              (condp = mode
+                :run (-> data
+                         (update-in [:log test-slug]
+                                    merge entry {:test-slug test-slug
+                                                 :run run}))
+                :iter (-> data
+                          ;; Ensure that parent log always has :run key
+                          (update-in [:log test-slug]
+                                     merge {:test-slug test-slug
+                                            :run run})
+                          (update-in [:log test-slug :iter-log iteration]
+                                     merge entry {:iter iteration})))))
+        test-dir (str (-> (:cfg s) :web :dir) "/" (:test-slug s))]
+    (spit (str test-dir "/log.edn")
+          (get-in s [:log (:test-slug s)]))))
+
 
 (defn update-state!
   "Update the test state by merging (shallow) new-state with the
@@ -125,13 +145,13 @@
 
 (defn reset-state!
   "Reset the test state by setting :run and :iteration to -1, emptying
-  :sessions and :run-log, and then call update-state! with the
+  :sessions and :log, and then call update-state! with the
   new-state"
   [state & [new-state]]
   (update-state! state (merge {:run       -1
                                :iteration -1
                                :sessions  {}
-                               :run-log   {}}
+                               :log       {}}
                               new-state)))
 
 ;; Watch state atom and keep report web page state and file report state
@@ -139,82 +159,32 @@
 (defn state-watcher
   "Keep the web page report and file report up-to-date based on the
   changes to the state atom. This includes notifying WebSocket clients
-  so that browsers viewing the report page get live updates. There are
-  four types of state changes that are handled:
-    1. New websocket client connected
-    2. New test-slug created (right before quick-check)
-    3. New quick-check report received (during quick-check)
-    4. A iteration log created (during quick-check, after each check-page)"
+  so that browsers viewing the report page get live updates. New
+  clients are sent the whole serializable state. After that clients
+  are sent diffs between old-state and new-state."
   [_key _atom old-state new-state]
-  (let [{:keys [cfg ws-clients test-slug run iteration]} new-state
-        ws-msg #(rend.server/ws-broadcast ws-clients
-                                          {:msgType %1
-                                           :data %2
-                                           :testSlug test-slug
-                                           :iteration iteration})
-        changed? #(not= (get-in old-state %) (get-in new-state %))
-        ;; a websocket client was added/removed
-        new-ws-client (changed? [:ws-clients])
-        ;; a new test-slug was just added prior to quick-check
-        new-test-slug (changed? [:test-slugs])
-        ;; quick-check generated a report during execution
-        new-report (changed? [:latest-report])
-        ;; check-page finished running a set of quick-check iterations
-        new-iter-log (changed? [:run-log run :iter-log])]
+  (let [{:keys [ws-clients]} new-state
+        new-ws-clients (set/difference (:ws-clients new-state)
+                                       (:ws-clients old-state))
+        cur-ws-clients (set/difference (:ws-clients new-state)
+                                       new-ws-clients)]
 
-    (when (and (or new-ws-client new-test-slug)
-               (seq (-> new-state :test-slugs)))
-      (ws-msg :newDir (-> new-state :test-slugs)))
+    ;;(prn :state-watcher :new-ws-clients new-ws-clients :cur-ws-clients cur-ws-clients)
 
-    (when (or new-test-slug new-iter-log)
-      ;; Generate the full report page when new test dir is created
-      ;; (new-test-slug) and after every check-page (new-iter-log).
-      (let [test-dir (str (-> cfg :web :dir) "/" test-slug)]
-        (spit (str test-dir "/index.html")
-              (hiccup.core/html
-                (rend.html/render-report new-state)))))
+    (when (not (empty? new-ws-clients))
+      (rend.server/ws-broadcast
+        new-ws-clients {:msgType :full
+                        :data (serializable-state new-state)}))
 
-    (when new-iter-log
-      ;; We just finished a single check-page call so we know the
-      ;; result and can add a new report row.
-      (let [log-entry (-> new-state
-                          :run-log (get run)
-                          :iter-log (get iteration))]
-        (ws-msg :row (hiccup.core/html
-                       (rend.html/render-report-row (:browsers cfg)
-                                                    log-entry
-                                                    iteration)))))
-
-    (when (or new-report new-iter-log)
-      ;; We need to do this for new reports in addition to each
-      ;; iter-log (check-page) because we may receive multiple reports
-      ;; for the same page.
-      (ws-msg :summary (hiccup.core/html
-                         (rend.html/render-summary new-state))))))
+    (when (not (empty? cur-ws-clients))
+      (rend.server/ws-broadcast
+        cur-ws-clients {:msgType :patch
+                        :data (differ/diff (serializable-state old-state)
+                                           (serializable-state new-state))}))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Lower level testing functions
 ;; - these may affect file state but not test state atom
-
-(defn qc-report
-  "Prune clojure objects from the report data, print it if
-  print-full?, and return it."
-  [iteration report & [print-full?]]
-  (let [r (dissoc report :property)
-        r (update-in r [:current-smallest]
-                     dissoc :function)
-        printed-report (merge r {:failing-args :ELIDED
-                                 :args :ELIDED})
-        saved-report (merge {:latest-report r}
-                            (when (:trial-number r)
-                              {:first-fail-number (:trial-number r)
-                               :failing-args (:failing-args r)})
-                            (when (:current-smallest r)
-                              {:smallest-number iteration
-                               :smallest (:current-smallest r)}))]
-    (if print-full?
-      (prn :report printed-report)
-      (println "Report type:" (name (:type r))))))
 
 (defn check-page*
   "Utility function for check-page. See check-page."
@@ -233,8 +203,6 @@
       ;; (println "Test case:" html-text)
       ;; (println "Writing to " path)
       (spit h-path html-text)
-      ;; (println "Writing to " (str h-path ".txt"))
-      ;;(spit (str h-path ".txt") (rend.html/pprint-html html-text))
       (spit (str h-path ".txt") html-text)
 
       ;; Load the page in each browser
@@ -252,11 +220,13 @@
       ;;   image relative to the every other image.
       ;; - If any difference value is above a threshold, then that is
       ;;   a failed test
-      (let [images (into {}
-                         (for [[browser session] sessions]
-                           (let [ss-path (str path-prefix "_" (:id browser)  ".png")
-                                 img (webdriver/screenshot-page session ss-path)]
-                             [browser img])))
+      (let [images (into
+                     {}
+                     (for [[browser-kw session] sessions]
+                       (let [browser (name browser-kw)
+                             ss-path (str path-prefix "_" browser ".png")
+                             img (webdriver/screenshot-page session ss-path)]
+                         [browser img])))
             imgs (apply assoc {}
                         (interleave (keys images)
                                     (image/normalize-images (vals images))))
@@ -278,15 +248,14 @@
         ; (println "Saving thumbnail for each screenshot")
         (doseq [[browser img] imgs]
           (let [thumb (image/thumbnail img)]
-            (image/imwrite (str path-prefix "_"
-                                  (:id browser) "_thumb.png") thumb)))
+            (image/imwrite (str path-prefix "_" browser "_thumb.png") thumb)))
 
         ; (println "Saving difference values to" d-path)
         (spit d-path
               (pr-str
                 (into {} (for [[b v] diffs]
-                           [(:id b) (into {} (for [[bx t] v]
-                                               [(:id bx) t]))]))))
+                           [b (into {} (for [[bx t] v]
+                                         [bx t]))]))))
 
         ; (println "Saving average picture")
         (let [avg (image/average (vals imgs))
@@ -297,10 +266,8 @@
         ; (println "Saving difference pictures")
         (doseq [[browser img] imgs]
           (doseq [[obrowser oimg] (dissoc imgs browser)]
-            (let [pre1 (str path-prefix
-                           "_diff_" (:id browser) "_" (:id obrowser))
-                  pre2 (str path-prefix
-                            "_diff_" (:id obrowser) "_" (:id browser))]
+            (let [pre1 (str path-prefix "_diff_" browser "_" obrowser)
+                  pre2 (str path-prefix "_diff_" obrowser "_" browser)]
               (if (and (.exists (io/as-file
                                   (str pre2 ".png")))
                        (not (.exists (io/as-file
@@ -319,7 +286,7 @@
 
         ;; Do the actual check
         (when (not (empty? violations))
-          (println "Threshold violations:" (map (comp :id first) violations)))
+          (println "Threshold violations:" (map first violations)))
 
         [(not violation) diffs violations])
       (catch java.lang.ThreadDeath e
@@ -379,10 +346,10 @@
         cfg (merge (:cfg @state) extra-cfg)
         test-dir (str (-> cfg :web :dir) "/" test-slug)]
 
-    ;; TODO: combine into a single update
-    (update-state! state {:test-slug test-slug})
     ;; Create and communicate the test directories to the web server
     (io/make-parents (str test-dir "/foo"))
+    ;; TODO: combine into a single update
+    (update-state! state {:test-slug test-slug})
     (swap! state update-in [:test-slugs] conj test-slug)
 
     (let [test-iteration (new-test-iteration! state)
@@ -403,6 +370,7 @@
                      :diffs diffs
                      :violations violations}
           state-val (log! state :iter log-entry)]
+
       res)))
 
 
@@ -430,14 +398,25 @@
 
     (let [;; Config and state specific versions of the
           ;; functions/generators used for the actual check process
+          get-smallest #(or (get-in % [:shrunk :smallest])
+                            (get-in % [:shrinking :smallest]))
           gen-html-fn (rend.generator/get-html-generator weights)
           check-fn (partial check-page test-state extra-cfg test-slug)
           report-fn (fn [report]
-                        (let [{:keys [cfg iteration]} @test-state
-                              verbose (:verbose cfg)
-                              save (qc-report iteration report verbose)]
+                        (let [{:keys [cfg log iteration]} @test-state
+                              ;; Remove property object
+                              r (dissoc report :property)
+                              ;; Track iter of smallest test case
+                              r (if (not= (get-smallest (get log test-slug))
+                                          (get-smallest r))
+                                  (assoc r :smallest-iter iteration)
+                                  r)]
+                          ;; Print status report
+                          (if (:verbose cfg)
+                            (prn :report (assoc r :args :ELIDED))
+                            (println "Report type:" (name (:type r))))
                           ;; Save the latest report
-                          (update-state! test-state save)))
+                          (log! test-state :run r)))
 
           start-time (ctime/now)
           ;; ****** QuickCheck ******
@@ -474,12 +453,16 @@
       (prn :new-weights new-weights)
 
       (println "------")
-      (println (str "Quick check results (also in " test-dir "/results.edn):"))
+      (println (str "Quick check results:"))
       (pprint qc-res)
-      (spit (str test-dir "/results.edn") (with-out-str (pprint qc-res)))
       (wend/save-weights (str test-dir "/weights-end.edn") new-weights)
-      (println (str "Full run results in: " test-dir "/full-results.edn"))
-      (spit (str test-dir "/full-results.edn") @test-state)
+      (println (str "Final test state: " test-dir "/test-state.edn"))
+      (spit (str test-dir "/test-state.edn")
+            ;; Limit to just the log for this slug
+            (let [s @test-state]
+              (assoc (serializable-state s)
+                     :log
+                     (select-keys (:log s) [test-slug]))))
       qc-res)))
 
 ;; ---
@@ -515,7 +498,7 @@
         cfg (assoc user-cfg :weights weights-map)
         ;; ws-clients needs to be here early in case client connect
         ;; while parsers are being loaded
-        test-state (atom {:ws-clients   #{}})
+        test-state (atom {:ws-clients  #{}})
         ;; Start a web server for the test cases and reporting
         server (do
                  (io/make-parents (str (-> cfg :web :dir) "/foo"))
@@ -538,7 +521,7 @@
                      (when (not (empty? (:sessions @test-state)))
                        (println "Cleaning up browser sessions")
                        (doseq [[browser session] (:sessions @test-state)]
-                         (println "Stopping browser session for:" (:id browser))
+                         (println "Stopping browser session for:" browser)
                          (try
                            (webdriver/stop-session session)
                            (swap! test-state update-in [:sessions] dissoc browser)
@@ -564,10 +547,11 @@
     (.addShutdownHook (Runtime/getRuntime) (Thread. cleanup-fn))
 
     ;; Create webdriver/selenium sessions to the testing browsers
-    (doseq [browser (:browsers cfg)]
-      (println "Initializing browser session for:" (:id browser))
+    ;; TODO: check that all browser IDs are unique
+    (doseq [[browser {:keys [url capabilities]}] (:browsers cfg)]
+      (println "Initializing browser session for:" browser)
       (swap! test-state update-in [:sessions] assoc browser
-             (webdriver/init-session (:url browser) (or (:capabilities browser) {}))))
+             (webdriver/init-session url (or capabilities {}))))
 
     test-state))
 
@@ -601,7 +585,7 @@
 (check-page test-state {} "test1" "<html><link rel=\"stylesheet\" href=\"/static/normalize.css\"><link rel=\"stylesheet\" href=\"/static/rend.css\"><body>hello<button></button></body></html>")
 
 ;; Do not use :reload-all or it will break ring/rend.server
-(require 'wend.core 'rend.core 'rend.html  :reload)
+(require 'wend.core 'rend.core :reload)
 
 )
 

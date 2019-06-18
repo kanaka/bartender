@@ -4,7 +4,8 @@
   :license {:name "Mozilla Public License version 2"
             :url "https://www.mozilla.org/en-US/MPL/2.0/"}
 
-  :plugins [[lein-localrepo "0.5.3"]]
+  :plugins [[lein-localrepo "0.5.3"]
+            [lein-cljsbuild "1.1.7"]]
 
   :injections [(clojure.lang.RT/loadLibrary org.opencv.core.Core/NATIVE_LIBRARY_NAME)]
 
@@ -18,7 +19,7 @@
                  [com.rpl/specter "1.1.0"]
                  [org.clojure/data.json "0.2.6"]
                  [org.clojure/data.codec "0.1.0"]
-                 [org.clojure/math.combinatorics "0.1.4"]
+                 [org.clojure/math.combinatorics "0.1.5"]
                  [hiccup "1.0.5"]
                  [hickory "0.7.0"]
 
@@ -44,12 +45,36 @@
                  [kanaka/instaparse "1.4.9.1"]
 
                  [kanaka/instacheck "0.6.2"]
-                 [kanaka/html5-css3-ebnf "0.5.2"]]
+                 [kanaka/html5-css3-ebnf "0.5.2"]
+
+                 ;; send
+                 [org.clojure/clojurescript "1.10.520"]
+                 [reagent "0.8.1"]
+                 [com.cognitect/transit-clj "0.8.313"]
+                 [com.cognitect/transit-cljs "0.8.256"]
+                 ;; Patched clj-diff with cljc support
+                 ;; Turns maps into sequences
+                 ;;[org.clojars.rymndhng/clj-diff "1.1.1-SNAPSHOT"]
+                 [differ "0.3.2"]
+                 ]
 
   :profiles {:rend      {:main rend.cli}
              :mend      {:main mend.cli}
              :wend      {:main wend.cli}
              :rend.core {:main rend.core}
-             :wend.core {:main wend.core}}
+             :wend.core {:main wend.core}
+             :send.core {:main send.core}}
+
+  :cljsbuild
+  {:builds {:app
+            {:source-paths ["src/cljs"]
+             :compiler
+             {:main          "send.init"
+              :asset-path    "/static/build/js/out"
+              :output-to     "static/build/js/app.js"
+              :output-dir    "static/build/js/out"
+              :source-map    true
+              :optimizations :none
+              :pretty-print  true}}}}
 
   :main rend.cli)
