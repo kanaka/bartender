@@ -495,6 +495,25 @@
 
 ;; ---
 
+(defn cleanup-tester
+  "Close webdriver browser sessions and websocket browser clients on
+  exit"
+  [state]
+  (let [{:keys [ws-clients sessions]} @state]
+    (when (not (empty? ws-clients))
+      (println "Closing WebSocket browser clients")
+      (doseq [ch ws-clients]
+        (rend.server/ws-close ch)))
+    (when (not (empty? sessions))
+      (println "Cleaning up browser sessions")
+      (doseq [[browser session] sessions]
+        (println "Stopping browser session for:" browser)
+        (try
+          (webdriver/stop-session session)
+          (swap! state update-in [:sessions] dissoc browser)
+          (catch Throwable e
+            (println "Failed to stop browser session:" e)))))))
+
 (defn init-tester
   "Takes a configuration map (usually loaded from a config.yaml file)
   and returns an initialized the test state atom:
@@ -530,17 +549,7 @@
                       (println "Loading/creating CSS parser")
                       (wend/load-parser :css-gen))
 
-        ;; Cleanup browser sessions on exit
-        cleanup-fn (fn []
-                     (when (not (empty? (:sessions @test-state)))
-                       (println "Cleaning up browser sessions")
-                       (doseq [[browser session] (:sessions @test-state)]
-                         (println "Stopping browser session for:" browser)
-                         (try
-                           (webdriver/stop-session session)
-                           (swap! test-state update-in [:sessions] dissoc browser)
-                           (catch Throwable e
-                             (println "Failed to stop browser session:" e))))))]
+        cleanup-fn (partial cleanup-tester test-state)]
 
     (reset-state! test-state {:cfg          cfg
                               :test-slugs   (ordered-set)

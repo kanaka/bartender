@@ -4,7 +4,7 @@
             [compojure.core :refer [GET]]
             [compojure.route :as route]
             [org.httpkit.server :refer [run-server with-channel send!
-                                        on-close on-receive]]
+                                        close on-close on-receive]]
 ;            [ring.middleware.defaults :refer [wrap-defaults site-defaults]]
             [ring.middleware.content-type :refer [wrap-content-type]]
             [ring.middleware.not-modified :refer [wrap-not-modified]]
@@ -23,6 +23,9 @@
     ;;(prn :ws-broadcast :count (count string))
     (doseq [ch channels]
       (send! ch string))))
+
+(defn ws-close [channel]
+  (close channel))
 
 (defn start-server [port gen-dir open-handler close-handler]
   (let [ws-handler (fn [request]
