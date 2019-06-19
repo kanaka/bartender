@@ -67,7 +67,7 @@ label:hover {
   cursor: pointer;
 }
 
-input:checked + label {
+.tabButton:checked + label {
   color: #0af;
   border: 1px solid #abc;
   border-top: 2px solid #0af;

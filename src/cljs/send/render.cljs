@@ -5,12 +5,34 @@
             [send.core :as core]
             [send.net :refer [load-edn]]))
 
-(def RED "#ff8080")
-(def GREEN "#80ff80")
+(def RED "#f09090")
+(def GREEN "#90f090")
+(def TAN "#ffffd0")
 
-(defn report-summary-text [slug slug-log]
-  (let [iteration (-> slug-log :iter-log keys sort last)
-        shrink (or (:shrunk slug-log) (:shrinking slug-log))]
+(defn mode-bg-style [token]
+  {:background-color (get {:complete GREEN
+                           true      GREEN
+                           :shrunk   RED
+                           false     RED}
+                          token
+                          TAN)})
+
+(defn report-summary-info [slug-log]
+  (let [shrink (or (:shrunk slug-log) (:shrinking slug-log))]
+    (when (:smallest shrink)
+      [", Shrink: "
+       [:a {:href (str (:failing-size slug-log) ".html.txt")
+            :title (str (get-in slug-log [:fail 0]))}
+        (count (get-in slug-log [:fail 0]))]
+       " \u2192 " ;; &rarr;
+       [:a {:href (str (:smallest-iter slug-log) ".html.txt")
+            :title (str (get-in shrink [:smallest 0]))}
+        (count (get-in shrink [:smallest 0]))]
+       " bytes"])))
+
+(defn report-summary-text [slug-log]
+  (let [slug (:test-slug slug-log)
+        iteration (-> slug-log :iter-log keys sort last)]
     (apply
       conj
       [:div {:class "summary"}
@@ -19,25 +41,15 @@
          :defaultChecked (get-in @core/state [:tabs slug :thumbs])
          :on-change #(swap! core/state update-in [:tabs slug :thumbs] not)}]
        "Show thumbnails | "
-       "Iteration " iteration
+       "Iterations " (inc iteration)
        ", Mode: " (name (or (:type slug-log) :init))
        (when (:fail slug-log)
          (str ", First Failure: " (:failing-size slug-log)))]
-      (when (:smallest shrink)
-        [", Shrink: "
-         [:a {:href (str (:failing-size slug-log) ".html.txt")
-              :title (str (get-in slug-log [:fail 0]))}
-          (count (get-in slug-log [:fail 0]))]
-         " \u2192 " ;; &rarr;
-         [:a {:href (str (:smallest-iter slug-log) ".html.txt")
-              :title (str (get-in shrink [:smallest 0]))}
-          (count (get-in shrink [:smallest 0]))]
-         " bytes"]))))
+      (report-summary-info slug-log))))
 
-(defn report-summary-row [idx slug-log]
+(defn report-summary-row [slug-log]
   (let [slug (:test-slug slug-log)
-        iteration (-> slug-log :iter-log keys sort last)
-        shrink (or (:shrunk slug-log) (:shrinking slug-log))]
+        iteration (-> slug-log :iter-log keys sort last)]
     [:tr
      [:td
       [:button
@@ -49,23 +61,15 @@
               (str "/gen/" slug "/log.edn")
               #(swap! core/state assoc-in [:test-state :log slug] %))))}
        slug]]
-     [:td iteration]
-     [:td (name (or (:type slug-log) :init))]
+     [:td (inc iteration)]
+     [:td {:style (mode-bg-style (:type slug-log))}
+      (name (or (:type slug-log) :init))]
      (apply
        conj
        [:td
         (when (:fail slug-log)
           (str "First Failure: " (:failing-size slug-log)))]
-       (when (:smallest shrink)
-         [", Shrink: "
-          [:a {:href (str (:failing-size slug-log) ".html.txt")
-               :title (str (get-in slug-log [:fail 0]))}
-           (count (get-in slug-log [:fail 0]))]
-          " \u2192 " ;; &rarr;
-          [:a {:href (str (:smallest-iter slug-log) ".html.txt")
-               :title (str (get-in shrink [:smallest 0]))}
-           (count (get-in shrink [:smallest 0]))]
-          " bytes"]))]))
+       (report-summary-info slug-log))]))
 
 
 (defn report-table-header [browsers]
@@ -92,9 +96,7 @@
     [:tr
      [:td idx]
      [:td
-      {:style (if pass
-                {:background-color GREEN}
-                {:background-color RED})}
+      {:style (mode-bg-style pass)}
       (if pass "PASS" "FAIL")]
      [:td
       [:a {:href (url-fn ".html")
@@ -182,12 +184,12 @@
     [:tbody
      [:tr
       [:th "Test"]
-      [:th "Iteration"]
+      [:th "Iterations"]
       [:th "Mode"]
       [:th "Info"]]
      (for [[idx slug] indexed-slugs
            :let [slug-log (-> log (get slug))]]
-       ^{:key idx} [report-summary-row idx slug-log])]]])
+       ^{:key idx} [report-summary-row slug-log])]]])
 
 (defn tab-label-slug [idx slug]
   [:label {:for (str "tab" idx)}
@@ -203,7 +205,7 @@
 (defn tab-content-slug [idx slug browsers slug-log thumbs?]
   (let [iter-log (-> slug-log :iter-log)]
     [:section {:id (str "content" idx)}
-     [report-summary-text slug slug-log]
+     [report-summary-text slug-log]
      [report-table slug browsers iter-log thumbs?]]))
 
 
@@ -211,9 +213,10 @@
   (let [{:keys [test-state tabs connected]} @core/state
         {:keys [cfg log test-slugs]} test-state
         browsers (map name (-> cfg :browsers keys))
-        indexed-slugs (map vector (drop 1 (range)) test-slugs)
+        indexed-slugs (map vector (drop 1 (range))
+                           (sort test-slugs))
         indexed-tabs (map vector (drop 1 (range))
-                          (filter (comp :visible val) tabs))]
+                          (sort-by key (filter (comp :visible val) tabs)))]
     [:main
      (list
        ^{:key :input} [tab-input 0]
