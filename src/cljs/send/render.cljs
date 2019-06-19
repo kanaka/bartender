@@ -169,12 +169,12 @@
             :defaultChecked (= idx 0)}])
 
 (defn tab-label-main [idx connected?]
-  (let [img (if connected?
-              "/static/Connected.png"
-              "/static/Disconnected.png")]
-    [:label {:for (str "tab" idx)}
-     [:img.connect-icon {:src img}]
-     "Main"]))
+  [:label {:for (str "tab" idx)}
+   (if connected?
+     [:span.connected.fontawesome.fa-wifi]
+     [:span.disconnected.fontawesome.fa-wifi])
+   [:span.fontawesome
+    "Main"]])
 
 (defn tab-content-main [idx indexed-slugs log]
   [:section {:id (str "content" idx)}
