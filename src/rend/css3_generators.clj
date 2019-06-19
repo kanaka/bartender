@@ -12172,12 +12172,16 @@
         g (assoc g :nonprop-color-stop gen-nonprop-color-stop)
 
         gen-css-assignments-test
-        (gen/tuple
-          (:css-declaration g)
-          (gen/vector
+        (igen/freq [
+          [(get w [:css-assignments-test :alt 0] 100)
             (gen/tuple
-              (gen/return "; ")
-              (:css-declaration g))))
+              (:css-declaration g)
+              (gen/vector
+                (gen/tuple
+                  (gen/return "; ")
+                  (:css-declaration g))))]
+          [(get w [:css-assignments-test :alt 1] 100)
+            (gen/return "")]])
         g (assoc g :css-assignments-test gen-css-assignments-test)
 
         gen-nonprop-generic-name
