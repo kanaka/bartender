@@ -451,24 +451,27 @@
 
           ;; if requested, adjust weights for next run
           html (-> qc-res :shrunk :smallest first)
-          full-weights (merge (-> cfg :weights :base) weights)
-          adjusted-weights (when (and (= "reduce-weights" (-> cfg :test :mode))
+          weights-full (merge (-> cfg :weights :base) weights)
+          weight-adjusts (when (and (= "reduce-weights" (-> cfg :test :mode))
                                       html-parser
                                       css-parser
                                       html)
                              (wrap-adjust-weights html-parser
                                                   css-parser
-                                                  full-weights
+                                                  weights-full
                                                   html))
-          new-weights (merge weights adjusted-weights)]
+          new-weights (merge weights
+                             weight-adjusts
+                             (-> cfg :weights :fixed))]
       ;; Update current weights
       (update-state! test-state {:weights new-weights})
-      (prn :adjusted-weights adjusted-weights)
-      (prn :new-weights new-weights)
-
       (println "------")
       (println (str "Quick check results:"))
       (pprint qc-res)
+      (println "------")
+      (when (:verbose cfg)
+        (prn :weight-adjusts weight-adjusts)
+        (prn :result-weights (:weights @test-state)))
       (wend/save-weights (str test-dir "/weights-end.edn") new-weights)
       (let [test-id-path (str (-> cfg :web :dir) "/" test-id ".edn")]
         (println (str "Final test state: " test-id-path))
