@@ -1,10 +1,10 @@
 {
  ;; Increase style attribute frequency
- [:global-attribute :alt 11] 10000,
+ [:global-attribute :alt 11] 1000,
 
  ;; Increase div and span element frequency
- [:element :alt 26] 10000, ;; div
- [:element :alt 87] 5000, ;; span
+ [:element :alt 26] 1000, ;; div
+ [:element :alt 87] 500, ;; span
 
  ;; Decrease HTML reference and comment frequency
  [:content :alt 1] 5,

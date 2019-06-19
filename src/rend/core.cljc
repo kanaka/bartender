@@ -586,7 +586,7 @@
 (require '[clojure.test.check.generators :as gen])
 (def weights-map (load-weights ["data/html5-weights-output.edn"
                                 "data/css3-weights-output.edn"]
-                               "weights.edn" nil))
+                               "data/fixed-weights.edn" nil))
 
 (def gen-html-fn (rend.generator/get-html-generator
                    (merge (:start weights-map) (:fixed weights-map))))

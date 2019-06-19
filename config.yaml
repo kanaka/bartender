@@ -9,7 +9,7 @@ weights:
     base:
         - "data/html5-weights-output.edn"
         - "data/css3-weights-output.edn"
-    fixed: "weights.edn"
+    fixed: "data/fixed-weights.edn"
 compare:
     #method: "SQDIFF"
     method: "SQDIFF_NORMED"
