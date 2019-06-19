@@ -1,6 +1,8 @@
 (ns send.core
   (:require [clojure.math.combinatorics :refer [combinations]]
-            [reagent.core :as r]))
+            [reagent.core :as r]
+
+            [send.net :refer [load-edn]]))
 
 (def RED "#ff8080")
 (def GREEN "#80ff80")
@@ -18,6 +20,7 @@
       [:div {:class "summary"}
        [:input.toggle
         {:type "checkbox"
+         :defaultChecked (get-in @state [:tabs slug :thumbs])
          :on-change #(swap! state update-in [:tabs slug :thumbs] not)}]
        "Show thumbnails | "
        "Iteration " iteration
@@ -44,14 +47,11 @@
       [:button
        {:onClick
         (fn [evt]
-          (do
-            (swap! state assoc-in [:tabs slug :visible] true)
-            ;; Wait briefly for new tab to render
-            ;;(js/setTimeout #(let [input (js/document.getElementById
-            ;;                              (str "tab" idx))]
-            ;;                  (set! (.-checked input) true))
-            ;;               100)
-            ))}
+          (swap! state assoc-in [:tabs slug :visible] true)
+          (when (not (get-in @state [:test-state :log slug :iter-log 0]))
+            (load-edn
+              (str "/gen/" slug "/log.edn")
+              #(swap! state assoc-in [:test-state :log slug] %))))}
        slug]]
      [:td iteration]
      [:td (name (or (:type slug-log) :init))]
@@ -159,9 +159,10 @@
   [:table {:id "results" #_ #_ :border "1px" :style {:border-spacing "4px 0px"}}
    [:tbody
     [report-table-header browsers]
-    (for [[i log] (sort-by first iter-log)]
-      ^{:key i}
-      [report-table-row slug browsers log i])]])
+    (when (get iter-log 0)
+      (for [[i log] (sort-by first iter-log)]
+        ^{:key i}
+        [report-table-row slug browsers log i]))]])
 
 ;; ---
 

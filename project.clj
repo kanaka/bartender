@@ -49,7 +49,10 @@
 
                  ;; send
                  [org.clojure/clojurescript "1.10.520"]
+                 [org.clojure/core.async "0.4.500"]
+                 [com.cemerick/url "0.1.1"]
                  [reagent "0.8.1"]
+                 [cljs-http "0.1.46"]
                  [com.cognitect/transit-clj "0.8.313"]
                  [com.cognitect/transit-cljs "0.8.256"]
                  ;; Patched clj-diff with cljc support

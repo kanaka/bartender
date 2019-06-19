@@ -1,9 +1,12 @@
 (ns send.init
-  (:require [cognitect.transit :as transit]
-            [reagent.core :as r]
-            [send.core :as core]
+  (:require [reagent.core :as r]
             [differ.core :as differ]
-            [cljs.pprint :refer [pprint]]))
+            [cljs.pprint :refer [pprint]]
+            [cemerick.url :refer [url]]
+
+            [send.net :as net]
+            [send.core :as core])
+  (:require-macros [cljs.core.async.macros :refer [go]]))
 
 (defn update-tabs [state-val]
   (let [cur-tabs (:tabs state-val)
@@ -31,33 +34,27 @@
     ;; Sync tab state
     (swap! state update-tabs)))
 
-
-(defn connect [state uri]
-  (let [ws (js/WebSocket. uri)
-        treader (transit/reader :json)]
-    (set! (.-onopen ws)
-          (fn []
-            (println "WebSocket connection opened")
-            (swap! state assoc :connected true)))
-    (set! (.-onclose ws)
-          (fn []
-            (println "WebSocket connection closed")
-            (swap! state assoc :connected false)))
-    (set! (.-onmessage ws)
-          (fn [event]
-            (let [msg (transit/read treader (.-data event))]
-              (println "WebSocket message"
-                       (:msgType msg)
-                       "with" (count (.-data event)) "bytes")
-              (msg-handler state msg))))))
-
 (defn ^:export run []
-  (connect core/state (str "ws://" js/location.host "/ws"))
-  (r/render [core/main-element]
-            (js/document.getElementById "app")))
+  (let [query (into {} (for [[k v] (:query (url js/location.href))]
+                         [(keyword k) v]))]
+    ;; If testid is specified as a query parameter, then we load the
+    ;; top-level EDN data for the testid via a GET request. Otherwise,
+    ;; we connect via WebSockets to the server to get both the current
+    ;; state and state deltas over time.
+    (if (:testid query)
+      (net/load-edn (str "/gen/" (:testid query) ".edn")
+                    #(msg-handler core/state {:msgType :full :data %}))
+      (net/ws-connect core/state
+                      (str "ws://" js/location.host "/ws")
+                      msg-handler))
+    (r/render [core/main-element]
+              (js/document.getElementById "app"))))
 
 (defn ^:export print-state []
-  (pprint (assoc @core/state :test-state :ELIDED)))
+  (pprint (assoc-in @core/state [:test-state :log] :ELIDED)))
+
+(defn ^:export print-top-state []
+  (pprint (assoc-in @core/state [:test-state] :ELIDED)))
 
 (enable-console-print!)
 (run)

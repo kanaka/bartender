@@ -8,7 +8,7 @@
             [clojure.set :as set]
 
             [flatland.ordered.set :refer [ordered-set]]
-            [com.rpl.specter :refer [setval transform MAP-VALS]]
+            [com.rpl.specter :refer [setval transform ALL LAST MAP-VALS]]
             [hiccup.core]
             [clj-time.core :as ctime]
             [differ.core :as differ]
@@ -26,9 +26,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Test state management
 
-(defn serializable-state
-  "Return a network serializable form of the test state that elides
-  Clojure objects/functions, parsers, and the base weights."
+(defn- elided-state*
+  "Return a form of the test state that elides Clojure
+  objects/functions, parsers, and the base weights."
   [state-val]
   (let [cnt-elide (fn [x] (keyword (str "ELIDED-" (count x))))]
     (->> state-val
@@ -40,6 +40,14 @@
          (setval    [:html-parser]         :ELIDED)
          (setval    [:css-parser]          :ELIDED))))
 
+(defn serializable-state
+  "Return a network serializable form of the test state that elides
+  Clojure objects/functions, parsers, and the base weights."
+  [state-val]
+  (->> state-val
+       elided-state*
+       (transform [:test-slugs] #(into #{} %))))
+
 (defn printable-state
   "Return a more printable form of the test state that elides
   everything that serializable-state does plus the log and the
@@ -47,7 +55,7 @@
   [state-val]
   (let [cnt-elide (fn [x] (keyword (str "ELIDED-" (count x))))]
     (->> state-val
-         serializable-state
+         elided-state*
          (transform [:weights]             cnt-elide)
          (transform [:log MAP-VALS]        :ELIDED)
          (transform [:cfg :weights :start] cnt-elide))))
@@ -172,15 +180,21 @@
     ;;(prn :state-watcher :new-ws-clients new-ws-clients :cur-ws-clients cur-ws-clients)
 
     (when (not (empty? new-ws-clients))
-      (rend.server/ws-broadcast
-        new-ws-clients {:msgType :full
-                        :data (serializable-state new-state)}))
+      ;; Limit to just the iter-log for the current slug
+      (let [slug (:test-slug new-state)
+            no-iters (setval [:log ALL LAST :iter-log ALL LAST] nil
+                             (serializable-state new-state))
+            data (assoc-in no-iters
+                           [:log slug]
+                           (get-in new-state [:log slug]))]
+        (rend.server/ws-broadcast
+          new-ws-clients {:msgType :full :data data})))
 
     (when (not (empty? cur-ws-clients))
+      (let [data (differ/diff (serializable-state old-state)
+                              (serializable-state new-state))]
       (rend.server/ws-broadcast
-        cur-ws-clients {:msgType :patch
-                        :data (differ/diff (serializable-state old-state)
-                                           (serializable-state new-state))}))))
+        cur-ws-clients {:msgType :patch :data data})))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Lower level testing functions
@@ -456,13 +470,13 @@
       (println (str "Quick check results:"))
       (pprint qc-res)
       (wend/save-weights (str test-dir "/weights-end.edn") new-weights)
-      (println (str "Final test state: " test-dir "/test-state.edn"))
-      (spit (str test-dir "/test-state.edn")
-            ;; Limit to just the log for this slug
-            (let [s @test-state]
-              (assoc (serializable-state s)
-                     :log
-                     (select-keys (:log s) [test-slug]))))
+      (let [test-id-path (str (-> cfg :web :dir) "/" test-id ".edn")]
+        (println (str "Final test state: " test-id-path))
+        ;; Convert ordered set to regular set and remove iter log data
+        ;; (which can be loaded on-demand from slug log.edn files.
+        (spit test-id-path
+              (setval [:log ALL LAST :iter-log ALL LAST] nil
+                      (serializable-state @test-state))))
       qc-res)))
 
 ;; ---
