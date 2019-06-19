@@ -1,8 +1,7 @@
 (ns send.net
   (:require [cljs.core.async :refer [<!]]
             [cljs-http.client :as http]
-            [cognitect.transit :as transit]
-            [cljs.pprint :refer [pprint]])
+            [cognitect.transit :as transit])
   (:require-macros [cljs.core.async.macros :refer [go]]))
 
 (defn load-edn [path & [callback]]
