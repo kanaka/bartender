@@ -406,7 +406,7 @@
     (update-state! test-state {:iteration -1})
 
     (println "Test State:")
-    (pprint (printable-state @test-state))
+    (pprint (assoc (printable-state @test-state) :cfg :ELIDED))
 
     (wend/save-weights (str test-dir "/weights-start.edn") weights)
 

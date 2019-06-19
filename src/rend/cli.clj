@@ -1,6 +1,7 @@
 (ns rend.cli
   (:require [clojure.tools.cli :refer [parse-opts summarize]]
             [clj-yaml.core :as yaml]
+            [clojure.pprint :refer [pprint]]
 
             [mend.util :as util]
             [rend.core :as core]))
@@ -28,7 +29,7 @@
     :default false]
    ["-s" "--seed SEED" "Test random seed (overrides config file)"
     :parse-fn #(Integer. %)]
-   [nil "--exit-after-run" "Exit after a test run rather than pausing for enter."
+   ["-y" "--no-interactive" "Do not pause for user confirmation before starting tests and before exiting."
     :default false]])
 
 (defn -main [& argv]
@@ -43,12 +44,17 @@
                                   (when start-seed
                                     {:quick-check {:start-seed start-seed}}))
         test-state (core/init-tester user-cfg)]
+    (println "Test Configuration:")
+    (pprint (:cfg (core/printable-state @test-state)))
+    (when (not (:no-interactive options))
+      (println "\nPress <Enter> to start tests")
+      (read-line))
     (core/run-tests test-state {})
     (println "\n-----------------------------------------------")
     (:cleanup-fn test-state)
-    (when (not (:exit-after-run options))
-      (println "Continuing to serve on port" (-> user-cfg :web :port))
-      (println "Press <Enter> to exit.")
+    (when (not (:no-interactive options))
+      (println "\nContinuing to serve on port" (-> user-cfg :web :port))
+      (println "Press <Enter> to exit")
       (read-line))
     (System/exit 0)))
 

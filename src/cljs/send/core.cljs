@@ -18,7 +18,6 @@
                                    :thumbs  false}]))]
     ;; Add new tabs without touching existing ones by merging
     ;; (shallow) the current tabs last
-    (prn :all-tabs all-tabs :cur-tabs cur-tabs)
     (assoc state-val :tabs
            (merge all-tabs cur-tabs))))
 

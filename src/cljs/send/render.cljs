@@ -178,8 +178,10 @@
    [:span.fontawesome
     "Main"]])
 
-(defn tab-content-main [idx indexed-slugs log]
+(defn tab-content-main [idx indexed-slugs log connected?]
   [:section {:id (str "content" idx)}
+   [:span "Network state: " (if connected? "Connected" "Disconnected")]
+   [:br][:br]
    [:table {:border "1px"}
     [:tbody
      [:tr
@@ -227,7 +229,7 @@
            ^{:key :input} [tab-input idx]
            ^{:key :label} [tab-label-slug idx slug]))
 
-       ^{:key :content-main} [tab-content-main 0 indexed-slugs log]
+       ^{:key :content-main} [tab-content-main 0 indexed-slugs log connected]
        (for [[idx [slug tab]] indexed-tabs
              :let [slug-log (-> log (get slug))
                    thumbs? (get-in tabs [slug :thumbs])]]
