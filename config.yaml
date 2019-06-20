@@ -6,9 +6,7 @@ quick-check:
     iterations: 20
     max-size: 100
 weights:
-    base:
-        - "data/html5-weights-output.edn"
-        - "data/css3-weights-output.edn"
+    base: ["data/html5-weights-output.edn", "data/css3-weights-output.edn"]
     fixed: "data/fixed-weights.edn"
 compare:
     #method: "SQDIFF"

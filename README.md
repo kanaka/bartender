@@ -132,35 +132,40 @@ weights:
 lein run config.yaml
 ```
 
+You can then connect to `http://localhost:3000` (config file default)
+to view a report/log of the tests as they run.
+
 ## Browser Configuration
 
-Here is example yaml configuration file that connects to geckodriver
-and chromedriver running locally:
+Here is example yaml configuration file that connects to Firefox
+(geckodriver) and Chrome (chromedriver) running locally:
 
 ```yaml
+test:
+    runs: 5
+start-seed: 2
 quick-check:
     iterations: 20
-    seed: 2
     max-size: 100
-weights: "weights.edn"
+weights:
+    base: ["data/html5-weights-output.edn", "data/css3-weights-output.edn"]
+    fixed: "data/fixed-weights.edn"
 compare:
     method: SQDIFF_NORMED
     threshold: 0.00003
 web:
-    host: 192.168.88.2
+    host: 127.0.0.1
     port: 3000
     dir: "gen"
 browsers:
-    - id: firefox
+    firefox:
       url: "http://localhost:7000"
       capabilities: {"moz:firefoxOptions":
                      {"args": ["--headless"]}}
-    - id: chrome
+    chrome:
       url: "http://localhost:7001"
       capabilities: {"chromeOptions":
                      {"args": ["--headless"]}}
-    - id: servo
-      url: "http://localhost:7002"
 
 ```
 
@@ -172,7 +177,7 @@ to three browsers running in BrowserStack:
 ```yaml
 ...
 browsers:
-    - id: bs-chrome-win-62
+    bs-chrome-win-62:
       url: "https://USER:KEY@hub-cloud.browserstack.com/wd/hub"
       capabilities: {"browserstack.local": true,
                      "browser": "Chrome",
@@ -180,7 +185,7 @@ browsers:
                      "os": "Windows",
                      "os_version": "10",
                      "resolution": "1024x768"}
-    - id: bs-firefox-win-62
+    bs-firefox-win-62:
       url: "https://USER:KEY@hub-cloud.browserstack.com/wd/hub"
       capabilities: {"browserstack.local": true,
                      "browser": "Firefox",
@@ -188,7 +193,7 @@ browsers:
                      "os": "Windows",
                      "os_version": "10",
                      "resolution": "1024x768"}
-    - id: bs-edge-win-17
+    bs-edge-win-17:
       url: "https://USER:KEY@hub-cloud.browserstack.com/wd/hub"
       capabilities: {"browserstack.local": true,
                      "browser": "Edge",
@@ -207,8 +212,6 @@ The following images are included in static/:
 * [B\_stop.svg](https://commons.wikimedia.org/wiki/Openclipart#/media/File:B_stop.svg) (CC0)
 * [Eilat_-_Dolphin\_reef\*.jpg](https://commons.wikimedia.org/wiki/Dolphin#/media/File:Eilat_-_Dolphin_reef.jpg) (CC BY-SA 3.0)
 * [SpaceX\_Kestrel\_engine2\*.gif](https://commons.wikimedia.org/wiki/File:SpaceX_Kestrel_engine2.gif) (CC BY-SA-3.0)
-* [Connected.\*](https://commons.wikimedia.org/wiki/Category:Computer_hardware_icons#/media/File:Network-error.svg) (Public Domain)
-* [Disconnected.\*](https://commons.wikimedia.org/wiki/Category:Computer_hardware_icons#/media/File:Network-error.svg) (Public Domain)
 
 ## License
 
