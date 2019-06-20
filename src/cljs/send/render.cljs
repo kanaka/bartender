@@ -173,8 +173,8 @@
 (defn tab-label-main [idx connected?]
   [:label {:for (str "tab" idx)}
    (if connected?
-     [:span.connected.fontawesome.fa-wifi]
-     [:span.disconnected.fontawesome.fa-wifi])
+     [:span.connected.fontawesome.fa-exchange]
+     [:span.disconnected.fontawesome.fa-exchange])
    [:span.fontawesome
     "Main"]])
 
