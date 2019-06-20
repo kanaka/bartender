@@ -45,7 +45,7 @@
                  [kanaka/instaparse "1.4.9.1"]
 
                  [kanaka/instacheck "0.6.2"]
-                 [kanaka/html5-css3-ebnf "0.5.2"]
+                 [kanaka/html5-css3-ebnf "0.5.3"]
 
                  ;; send
                  [org.clojure/clojurescript "1.10.520"]
@@ -55,11 +55,7 @@
                  [cljs-http "0.1.46"]
                  [com.cognitect/transit-clj "0.8.313"]
                  [com.cognitect/transit-cljs "0.8.256"]
-                 ;; Patched clj-diff with cljc support
-                 ;; Turns maps into sequences
-                 ;;[org.clojars.rymndhng/clj-diff "1.1.1-SNAPSHOT"]
-                 [differ "0.3.2"]
-                 ]
+                 [differ "0.3.2"]]
 
   :profiles {:rend      {:main rend.cli}
              :mend      {:main mend.cli}
