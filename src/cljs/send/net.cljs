@@ -1,16 +1,19 @@
 (ns send.net
-  (:require [cljs.core.async :refer [<!]]
+  (:require [clojure.edn :as edn]
+            [cljs.core.async :refer [<!]]
             [cljs-http.client :as http]
             [cognitect.transit :as transit])
   (:require-macros [cljs.core.async.macros :refer [go]]))
 
-(defn load-edn [path & [callback]]
+(defn load-edn [path callback]
   (go
-    (let [response (<! (http/get path))]
-      (prn :status (:status response))
-      (prn :body-count (count (:body response)))
-      (when callback
-        (callback (:body response))))))
+    (let [{:keys [body status]} (<! (http/get path))
+          edn (if (string? body)
+                (edn/read-string body)
+                body)]
+      (prn :status status)
+      (prn :body-count (count edn))
+        (callback edn))))
 
 
 (defn ws-connect [state uri msg-handler]

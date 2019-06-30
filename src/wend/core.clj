@@ -21,11 +21,13 @@
    :css-parse    ["css3.ebnf"]})
 
 (def GRAMMAR-MANGLES
-  {:html-gen     {}
-   :html-gen-min {}
-   :html-parse   {:char-data :char-data-generic
-                  :comment :comment-generic
-                  :url :url-generic}
+  {:html-gen     {:char-data :char-data-test
+                  :comment :comment-test
+                  :url :url-test}
+   :html-gen-min {:char-data :char-data-test
+                  :comment :comment-test
+                  :url :url-test}
+   :html-parse   {}
    :css-gen      {}
    :css-parse    {:nonprop-group-rule-body :stylesheet
                   :prop-group-rule-body :css-ruleset
@@ -221,8 +223,11 @@
         styles (map #(->> % :attrs :style)
                     (s/select (s/child (s/attr :style)) h))
         ;; Remove trailing semis, then join with single semi+newline
-        style (string/join ";\n" (map #(string/replace % #";\s*$" "")
-                                      styles))]
+        style (string/join
+                ";\n"
+                (filter (complement empty?)
+                        (map #(string/replace % #";\s*$" "")
+                             styles)))]
     style))
 
 (defn extract-css-map

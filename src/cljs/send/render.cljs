@@ -18,17 +18,31 @@
                           TAN)})
 
 (defn report-summary-info [slug-log]
-  (let [shrink (or (:shrunk slug-log) (:shrinking slug-log))]
+  (let [slug (:test-slug slug-log)
+        shrink (or (:shrunk slug-log) (:shrinking slug-log))]
     (when (:smallest shrink)
-      [", Shrink: "
-       [:a {:href (str (:failing-size slug-log) ".html.txt")
-            :title (str (get-in slug-log [:fail 0]))}
-        (count (get-in slug-log [:fail 0]))]
-       " \u2192 " ;; &rarr;
-       [:a {:href (str (:smallest-iter slug-log) ".html.txt")
-            :title (str (get-in shrink [:smallest 0]))}
-        (count (get-in shrink [:smallest 0]))]
-       " bytes"])))
+      (let [start-value (get-in @core/state [:test-state :test-start-value])
+            base-size (count start-value)
+            fail-size (count (get-in slug-log [:fail 0]))
+            shrunk-size (count (get-in shrink [:smallest 0]))]
+        ;;(prn :base-size base-size :base-value start-value)
+        ;;(prn :fail-size fail-size :fail-value (get-in slug-log [:fail 0]))
+        ;;(prn :shrunk-size shrunk-size :shrunk-value (get-in shrink [:smallest 0]))
+        [", Shrink: "
+         [:a {:href (str "/gen/" slug "/" (:failing-size slug-log) ".html.txt")
+              :title (str (get-in slug-log [:fail 0]))}
+          (- fail-size base-size)]
+         " \u2192 " ;; &rarr;
+         [:a {:href (str "/gen/" slug "/" (:smallest-iter slug-log) ".html.txt")
+              :title (str (get-in shrink [:smallest 0]))}
+          (- shrunk-size base-size)]
+         " bytes"
+         [:div
+          "Elements: "
+          (str (get-in @core/state [:test-state
+                                    :log
+                                    slug
+                                    :weight-adjusts-summary]))]]))))
 
 (defn report-summary-text [slug-log]
   (let [slug (:test-slug slug-log)
@@ -176,7 +190,7 @@
      [:span.connected.fontawesome.fa-exchange]
      [:span.disconnected.fontawesome.fa-exchange])
    [:span.fontawesome
-    "Main"]])
+    "Bartender"]])
 
 (defn tab-content-main [idx indexed-slugs log connected?]
   [:section {:id (str "content" idx)}

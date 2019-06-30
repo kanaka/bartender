@@ -1481,15 +1481,7 @@
         g (assoc g :prop-text-decoration gen-prop-text-decoration)
 
         gen-quoted-string
-        (igen/freq [
-          [(get w [:quoted-string :alt 0] 100)
-            (gen/tuple
-              (chuck/string-from-regex #"'[\"A-Za-z0-9 .,_:/%=#?+\-^]*'")
-              (gen/return " "))]
-          [(get w [:quoted-string :alt 1] 100)
-            (gen/tuple
-              (chuck/string-from-regex #"\"['A-Za-z0-9 .,_:/%=#?+\-^]*\"")
-              (gen/return " "))]])
+        (gen/return "'QUOTED STRING'")
         g (assoc g :quoted-string gen-quoted-string)
 
         gen-nonprop-resolution
@@ -5359,7 +5351,7 @@
               (:nonprop-grid-line g)
               (igen/freq [
                 [(get w [:prop-grid-area :alt 1 :cat 1 :alt 0] 100)
-                  (gen/return "       rS\n")]
+                  (gen/return "")]
                 [(get w [:prop-grid-area :alt 1 :cat 1 :alt 1] 100)
                   (gen/tuple
                     (gen/return "/ ")
@@ -11839,27 +11831,9 @@
                 (:css-comment g)]])))
         g (assoc g :stylesheet gen-stylesheet)
 
-        gen-mime-type
-        (chuck/string-from-regex #"[a-z]+/[a-z0-9+-]+")
-        g (assoc g :mime-type gen-mime-type)
-
         gen-url
-        (igen/freq [
-          [(get w [:url :alt 0] 100)
-            (chuck/string-from-regex #"(?:https:|http:)?//[A-Za-z0-9._\-/&#=,?]+")]
-          [(get w [:url :alt 1] 100)
-            (chuck/string-from-regex #"[A-Za-z0-9._\-/#=]+")]
-          [(get w [:url :alt 2] 100)
-            (gen/tuple
-              (gen/return "data:")
-              (:mime-type g)
-              (gen/return ";base64,")
-              (chuck/string-from-regex #"[A-Za-z0-9+=/]*"))]])
-        g (assoc g :url gen-url)
-
-        gen-url-generic
         (chuck/string-from-regex #"[A-Za-z0-9$-_@.&+%=;/#?:]+")
-        g (assoc g :url-generic gen-url-generic)
+        g (assoc g :url gen-url)
 
         gen-nonprop-outline-radius
         (igen/freq [
@@ -12007,6 +11981,10 @@
               (gen/return ", ")
               (:nonprop-complex-selector g))))
         g (assoc g :nonprop-complex-selector-list gen-nonprop-complex-selector-list)
+
+        gen-mime-type
+        (chuck/string-from-regex #"[a-z]+/[a-z0-9+-]+")
+        g (assoc g :mime-type gen-mime-type)
 
         gen-nonprop-time-percentage
         (igen/freq [
@@ -12233,16 +12211,16 @@
 
         gen-nonprop-mask-image
         (:prop-mask-image g)
-        g (assoc g :nonprop-mask-image gen-nonprop-mask-image)]
+        g (assoc g :nonprop-mask-image gen-nonprop-mask-image)
+
+        gen-non-negative-integer
+        gen/nat
+        g (assoc g :non-negative-integer gen-non-negative-integer)]
     g))
 
 (defn- css3-generators-part-15 [gmap weights]
   (let [g gmap
         w weights
-
-        gen-non-negative-integer
-        gen/nat
-        g (assoc g :non-negative-integer gen-non-negative-integer)
 
         gen-func-counters
         (gen/tuple

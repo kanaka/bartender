@@ -302,12 +302,7 @@
         g (assoc g :attr-val-global__tabindex gen-attr-val-global__tabindex)
 
         gen-custom-data-attribute
-        (gen/tuple
-          (gen/return "data-")
-          (:name g)
-          (gen/return "=\"")
-          (:attribute-data g)
-          (gen/return "\""))
+        (gen/return "")
         g (assoc g :custom-data-attribute gen-custom-data-attribute)
 
         gen-attr-val-global__contextmenu
@@ -412,18 +407,22 @@
         (chuck/string-from-regex #"[a-z]+/[a-z0-9+-]+")
         g (assoc g :mime-type gen-mime-type)
 
-        gen-url
+        gen-url-test
         (igen/freq [
-          [(get w [:url :alt 0] 100)
+          [(get w [:url-test :alt 0] 100)
             (chuck/string-from-regex #"(?:https:|http:)?//[A-Za-z0-9._\-/&#=,?]+")]
-          [(get w [:url :alt 1] 100)
+          [(get w [:url-test :alt 1] 100)
             (chuck/string-from-regex #"[A-Za-z0-9._\-/#=]+")]
-          [(get w [:url :alt 2] 100)
+          [(get w [:url-test :alt 2] 100)
             (gen/tuple
               (gen/return "data:")
               (:mime-type g)
               (gen/return ";base64,")
               (chuck/string-from-regex #"[A-Za-z0-9+=/]*"))]])
+        g (assoc g :url-test gen-url-test)
+
+        gen-url
+        (:url-test g)
         g (assoc g :url gen-url)
 
         gen-attr-val-track__src
@@ -542,7 +541,12 @@
 
         gen-pre-attribute
         (:global-attribute g)
-        g (assoc g :pre-attribute gen-pre-attribute)
+        g (assoc g :pre-attribute gen-pre-attribute)]
+    g))
+
+(defn- html5-generators-part-1 [gmap weights]
+  (let [g gmap
+        w weights
 
         gen-attr-val-input__src
         (igen/freq [
@@ -550,12 +554,7 @@
             (gen/return "")]
           [(get w [:attr-val-input__src :alt 1] 100)
             (:url g)]])
-        g (assoc g :attr-val-input__src gen-attr-val-input__src)]
-    g))
-
-(defn- html5-generators-part-1 [gmap weights]
-  (let [g gmap
-        w weights
+        g (assoc g :attr-val-input__src gen-attr-val-input__src)
 
         gen-doctype
         (gen/return "<!DOCTYPE html> ")
@@ -1051,7 +1050,12 @@
 
         gen-h4-attribute
         (:global-attribute g)
-        g (assoc g :h4-attribute gen-h4-attribute)
+        g (assoc g :h4-attribute gen-h4-attribute)]
+    g))
+
+(defn- html5-generators-part-2 [gmap weights]
+  (let [g gmap
+        w weights
 
         gen-attr-val-dfn__title
         (igen/freq [
@@ -1059,12 +1063,7 @@
             (gen/return "")]
           [(get w [:attr-val-dfn__title :alt 1] 100)
             (:attribute-data g)]])
-        g (assoc g :attr-val-dfn__title gen-attr-val-dfn__title)]
-    g))
-
-(defn- html5-generators-part-2 [gmap weights]
-  (let [g gmap
-        w weights
+        g (assoc g :attr-val-dfn__title gen-attr-val-dfn__title)
 
         gen-dfn-attribute
         (igen/freq [
@@ -1576,7 +1575,12 @@
 
         gen-body-attribute
         (:global-attribute g)
-        g (assoc g :body-attribute gen-body-attribute)
+        g (assoc g :body-attribute gen-body-attribute)]
+    g))
+
+(defn- html5-generators-part-3 [gmap weights]
+  (let [g gmap
+        w weights
 
         gen-attr-val-input__list
         (igen/freq [
@@ -1584,12 +1588,7 @@
             (gen/return "")]
           [(get w [:attr-val-input__list :alt 1] 100)
             (:name g)]])
-        g (assoc g :attr-val-input__list gen-attr-val-input__list)]
-    g))
-
-(defn- html5-generators-part-3 [gmap weights]
-  (let [g gmap
-        w weights
+        g (assoc g :attr-val-input__list gen-attr-val-input__list)
 
         gen-kbd-attribute
         (:global-attribute g)
@@ -2371,7 +2370,12 @@
             (gen/return "")]
           [(get w [:attr-val-progress__max :alt 1] 100)
             (:floating-point-number g)]])
-        g (assoc g :attr-val-progress__max gen-attr-val-progress__max)
+        g (assoc g :attr-val-progress__max gen-attr-val-progress__max)]
+    g))
+
+(defn- html5-generators-part-4 [gmap weights]
+  (let [g gmap
+        w weights
 
         gen-progress-attribute
         (igen/freq [
@@ -2387,12 +2391,7 @@
               (gen/return "\""))]
           [(get w [:progress-attribute :alt 2] 100)
             (:global-attribute g)]])
-        g (assoc g :progress-attribute gen-progress-attribute)]
-    g))
-
-(defn- html5-generators-part-4 [gmap weights]
-  (let [g gmap
-        w weights
+        g (assoc g :progress-attribute gen-progress-attribute)
 
         gen-attr-val-del__datetime
         (igen/freq [
@@ -2556,6 +2555,18 @@
           [(get w [:attr-val-a__hreflang :alt 1] 100)
             (:lang g)]])
         g (assoc g :attr-val-a__hreflang gen-attr-val-a__hreflang)
+
+        gen-char-data-test
+        (igen/freq [
+          [(get w [:char-data-test :alt 0] 100)
+            (gen/return " ")]
+          [(get w [:char-data-test :alt 1] 100)
+            (gen/return "p")]
+          [(get w [:char-data-test :alt 2] 100)
+            (gen/return "&#x00c9;")]
+          [(get w [:char-data-test :alt 3] 100)
+            (gen/return "X")]])
+        g (assoc g :char-data-test gen-char-data-test)
 
         gen-rtc-attribute
         (:global-attribute g)
@@ -2909,7 +2920,12 @@
 
         gen-sub-attribute
         (:global-attribute g)
-        g (assoc g :sub-attribute gen-sub-attribute)
+        g (assoc g :sub-attribute gen-sub-attribute)]
+    g))
+
+(defn- html5-generators-part-5 [gmap weights]
+  (let [g gmap
+        w weights
 
         gen-footer-attribute
         (:global-attribute g)
@@ -2917,12 +2933,7 @@
 
         gen-caption-attribute
         (:global-attribute g)
-        g (assoc g :caption-attribute gen-caption-attribute)]
-    g))
-
-(defn- html5-generators-part-5 [gmap weights]
-  (let [g gmap
-        w weights
+        g (assoc g :caption-attribute gen-caption-attribute)
 
         gen-attr-val-textarea__placeholder
         (igen/freq [
@@ -3553,7 +3564,12 @@
             (gen/return "")]
           [(get w [:attr-val-meter__optimum :alt 1] 100)
             (:floating-point-number g)]])
-        g (assoc g :attr-val-meter__optimum gen-attr-val-meter__optimum)
+        g (assoc g :attr-val-meter__optimum gen-attr-val-meter__optimum)]
+    g))
+
+(defn- html5-generators-part-6 [gmap weights]
+  (let [g gmap
+        w weights
 
         gen-attr-val-meter__high
         (igen/freq [
@@ -3597,12 +3613,7 @@
               (gen/return "\""))]
           [(get w [:meter-attribute :alt 6] 100)
             (:global-attribute g)]])
-        g (assoc g :meter-attribute gen-meter-attribute)]
-    g))
-
-(defn- html5-generators-part-6 [gmap weights]
-  (let [g gmap
-        w weights
+        g (assoc g :meter-attribute gen-meter-attribute)
 
         gen-br-attribute
         (:global-attribute g)
@@ -3674,15 +3685,7 @@
         g (assoc g :attr-val-script__nonce gen-attr-val-script__nonce)
 
         gen-char-data
-        (igen/freq [
-          [(get w [:char-data :alt 0] 100)
-            (gen/return " ")]
-          [(get w [:char-data :alt 1] 100)
-            (gen/return "p")]
-          [(get w [:char-data :alt 2] 100)
-            (gen/return "&#x00c9;")]
-          [(get w [:char-data :alt 3] 100)
-            (gen/return "X")]])
+        (:char-data-test g)
         g (assoc g :char-data gen-char-data)
 
         gen-content
@@ -6940,27 +6943,23 @@
               [(get w [:body :cat 3 :star :alt 1] 100)
                 (:content g)]]))
           (gen/return "</body> "))
-        g (assoc g :body gen-body)
-
-        gen-title-attribute
-        (:global-attribute g)
-        g (assoc g :title-attribute gen-title-attribute)
-
-        gen-url-generic
-        (chuck/string-from-regex #"[A-Za-z0-9$-_@.&+%=;/#?:]+")
-        g (assoc g :url-generic gen-url-generic)]
+        g (assoc g :body gen-body)]
     g))
 
 (defn- html5-generators-part-7 [gmap weights]
   (let [g gmap
         w weights
 
+        gen-title-attribute
+        (:global-attribute g)
+        g (assoc g :title-attribute gen-title-attribute)
+
         gen-html-attribute
         (igen/freq [
           [(get w [:html-attribute :alt 0] 100)
             (gen/tuple
               (gen/return "xmlns=\"")
-              (:url-generic g)
+              (:url g)
               (gen/return "\""))]
           [(get w [:html-attribute :alt 1] 100)
             (gen/tuple
@@ -7113,13 +7112,13 @@
               (gen/return " "))]])
         g (assoc g :quoted-string gen-quoted-string)
 
+        gen-comment-test
+        (chuck/string-from-regex #"<!--(?:[A-Za-z0-9_<>/\\ .]|-[A-Za-z0-9_<>/\\ .])*-->")
+        g (assoc g :comment-test gen-comment-test)
+
         gen-rend-css
         (gen/return "<link rel=\"stylesheet\" href=\"/static/rend.css\">")
         g (assoc g :rend-css gen-rend-css)
-
-        gen-comment-generic
-        (chuck/string-from-regex #"<!--(?:[^-]|-[^-])*-->")
-        g (assoc g :comment-generic gen-comment-generic)
 
         gen-entity-ref
         (gen/tuple
@@ -7176,10 +7175,6 @@
         gen-char-ref-dec
         (chuck/string-from-regex #"&#[0-9]{1,7};")
         g (assoc g :char-ref-dec gen-char-ref-dec)
-
-        gen-char-data-generic
-        (chuck/string-from-regex #"[^<&]*")
-        g (assoc g :char-data-generic gen-char-data-generic)
 
         gen-char-ref-hex
         (chuck/string-from-regex #"&#x[0-9A-F]{1,6};")

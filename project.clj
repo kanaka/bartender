@@ -45,7 +45,7 @@
                  [kanaka/instaparse "1.4.9.1"]
 
                  [kanaka/instacheck "0.6.2"]
-                 [kanaka/html5-css3-ebnf "0.5.3"]
+                 [kanaka/html5-css3-ebnf "0.5.4"]
 
                  ;; send
                  [org.clojure/clojurescript "1.10.520"]

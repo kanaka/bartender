@@ -15,6 +15,16 @@ title-test = '<title' (<rS> title-attribute)* '>' content* '</title>'
 
 body-test = '<body' (<rS> body-attribute)* '>' 'x' (element | content)* '</body>'
 
+(* Just include the Ahem glyphs that render differently *)
+char-data-test = ' ' | 'p' | '&#x00c9;' | 'X'
+
+comment-test = #'<!--(?:[A-Za-z0-9_<>/\\ .]|-[A-Za-z0-9_<>/\\ .])*-->'
+
+url-test = #'(?:https:|http:)?//[A-Za-z0-9._\-/&#=,?]+'
+         | #'[A-Za-z0-9._\-/#=]+'
+         | 'data:' mime-type ';base64,' #'[A-Za-z0-9+=/]*'
+
+
 
 (*
 Alternate entry point that omits the normalizing stylesheets. Used for

@@ -47,6 +47,8 @@
     :value {:tag :epsilon}}
    {:path [:event-attribute]
     :value {:tag :epsilon}}
+   {:path [:custom-data-attribute]
+    :value {:tag :epsilon}}
    ;; More with more efficient native generators
    {:path [:attr-val-img__src]
     :value {:tag :nt :keyword :rgen/image-path}}
@@ -70,6 +72,9 @@
     :value {:tag :nt :keyword :gen/symbol}}
    {:path [:css-comment]
     :value {:tag :string :string "/* CSS comment */ "}}
+
+   {:path [:quoted-string]
+    :value {:tag :string :string "'QUOTED STRING'"}}
    ])
 
 (defn reduce-strings*

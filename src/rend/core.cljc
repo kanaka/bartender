@@ -57,7 +57,7 @@
     (->> state-val
          elided-state*
          (transform [:weights]             cnt-elide)
-         (transform [:log MAP-VALS]        :ELIDED)
+         (setval    [:log MAP-VALS]        :ELIDED)
          (transform [:cfg :weights :start] cnt-elide))))
 
 (defn new-test-run!
@@ -197,7 +197,7 @@
         cur-ws-clients {:msgType :patch :data data})))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Lower level testing functions
+;; Lower level testing functions (no state changes)
 ;; - these may affect file state but not test state atom
 
 (defn check-page*
@@ -309,7 +309,9 @@
         (prn :check-page-exception t)
         [false "Exception" nil]))))
 
-;;(def reducible-regex #"^element$|^[\S-]*-attribute$|^css-declaration$")
+
+;; Weight functions
+
 (def reducible-regex #"^\[:element :alt [0-9]+\]$|^\[[\S-]*-attribute :alt [0-9]+\]$|^\[:css-known-standard :alt [0-9]+\]$")
 
 (defn reducible-path?
@@ -325,15 +327,48 @@
   "Call wend/adjust-weights to a get a new set of weights reduced by
   the reducer function."
   [html-parser css-parser weights-full html]
+  (prn :html html)
   (let [html-only (wend/extract-html html)
         _ (prn :html-only html-only)
         css-only (wend/extract-inline-css html)
         _ (prn :css-only css-only)
         html-weights (wend/parse-weights html-parser html-only)
         css-weights (wend/parse-weights css-parser css-only)
-        adjust-weights (merge-with + html-weights css-weights)]
+        parsed-weights (merge-with + html-weights css-weights)]
     (wend/adjust-weights reducible-path? reducer-half
-                         weights-full adjust-weights)))
+                         weights-full parsed-weights)))
+
+(defn summarize-weights
+  "Return a summary of the tags, attributes, and properties that are
+  represented by the weights."
+  [html-grammar css-grammar weights]
+  (reduce
+    (fn [a [[base & _left :as p] _w]]
+      (let [[grammar kind] (cond (= :element base)
+                                 [html-grammar :tags]
+
+                                 (re-seq #"-attribute" (name base))
+                                 [html-grammar :attrs]
+
+                                 (= :css-known-standard base)
+                                 [css-grammar  :props])
+            string (when grammar
+                     (->> p
+                          (wend/grammar-node grammar)
+                          :parsers
+                          first
+                          :string))
+            tok (when string
+                  (string/replace string #"^<?([^=\"]*)[=\"]*$" "$1"))]
+        (if (and tok
+                 (not= [kind tok] [:attrs "style"]))
+          (update-in a [kind] conj tok)
+          a)))
+    {:tags  #{}
+     :attrs #{}
+     :props #{}}
+    weights))
+
 
 ;; TODO: do we really want base weights? It should be implicit in the
 ;; *_generators.clj code.
@@ -346,6 +381,45 @@
    :start (when start-path (edn/read-string (slurp start-path)))
    :fixed (when fixed-path (edn/read-string (slurp fixed-path)))})
 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Lower level testing functions (with state changes)
+
+(defn qc-report
+  [state test-slug report]
+  (let [{:keys [cfg log weights html-parser css-parser iteration]} @state
+        get-smallest #(or (get-in % [:shrunk :smallest 0])
+                          (get-in % [:shrinking :smallest 0]))
+        html-grammar (:grammar html-parser)
+        css-grammar (:grammar css-parser)
+        prev-html (get-smallest (get log test-slug))
+        cur-html (get-smallest report)
+        ;; Remove property object
+        r (dissoc report :property)
+        ;; If there is a new smallest test case then track iter of
+        ;; smallest test case and add weight adjustment info
+        r (if (not= prev-html cur-html)
+            (let [weights-full (merge (-> cfg :weights :base) weights)
+                  adjusts (wrap-adjust-weights html-parser
+                                               css-parser
+                                               weights-full
+                                               cur-html)
+                  summary (summarize-weights html-grammar
+                                             css-grammar
+                                             adjusts)]
+              (when (:verbose cfg)
+                (prn :weight-adjusts adjusts)
+                (prn :weight-adjust-summary summary))
+              (merge r {:smallest-iter iteration
+                        :weight-adjusts adjusts
+                        :weight-adjusts-summary summary}))
+            r)]
+    ;; Print status report
+    (println "Report type:" (name (:type r)))
+    (when (:verbose cfg)
+      (prn :report (assoc r :args :ELIDED)))
+    ;; Save the latest report
+    (log! state :run r)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Test execution API
@@ -397,7 +471,7 @@
   will be used to adjust/reduce the weights in the test state for
   subsequent runs."
   [test-state extra-cfg]
-  (let [{:keys [cfg test-id weights html-parser css-parser]} @test-state
+  (let [{:keys [cfg test-id weights]} @test-state
         cfg (util/deep-merge (-> @test-state :cfg) extra-cfg) ;; add extra-cfg
         run (new-test-run! test-state)
         current-seed (new-test-seed! test-state)
@@ -412,25 +486,9 @@
 
     (let [;; Config and state specific versions of the
           ;; functions/generators used for the actual check process
-          get-smallest #(or (get-in % [:shrunk :smallest])
-                            (get-in % [:shrinking :smallest]))
           gen-html-fn (rend.generator/get-html-generator weights)
           check-fn (partial check-page test-state extra-cfg test-slug)
-          report-fn (fn [report]
-                        (let [{:keys [cfg log iteration]} @test-state
-                              ;; Remove property object
-                              r (dissoc report :property)
-                              ;; Track iter of smallest test case
-                              r (if (not= (get-smallest (get log test-slug))
-                                          (get-smallest r))
-                                  (assoc r :smallest-iter iteration)
-                                  r)]
-                          ;; Print status report
-                          (if (:verbose cfg)
-                            (prn :report (assoc r :args :ELIDED))
-                            (println "Report type:" (name (:type r))))
-                          ;; Save the latest report
-                          (log! test-state :run r)))
+          report-fn (partial qc-report test-state test-slug)
 
           start-time (ctime/now)
           ;; ****** QuickCheck ******
@@ -445,38 +503,24 @@
                          :start-time (.toDate start-time)
                          :end-time (.toDate end-time)
                          :elapsed-ms (ctime/in-millis
-                                       (ctime/interval start-time end-time))})
-          ;; Merge the quick check results into the run log
-          _ (log! test-state :run qc-res)
+                                       (ctime/interval start-time end-time))})]
+      ;; Merge the quick check results into the run log
+      (log! test-state :run qc-res)
 
-          ;; if requested, adjust weights for next run
-          html (-> qc-res :shrunk :smallest first)
-          weights-full (merge (-> cfg :weights :base) weights)
-          weight-adjusts (when (and (= "reduce-weights" (-> cfg :test :mode))
-                                      html-parser
-                                      css-parser
-                                      html)
-                             (wrap-adjust-weights html-parser
-                                                  css-parser
-                                                  weights-full
-                                                  html))
-          new-weights (merge weights
-                             weight-adjusts
-                             (-> cfg :weights :fixed))]
-      ;; Update current weights
-      (update-state! test-state {:weights new-weights})
+      ;; If requested, adjust weights for next run
+      (when (= "reduce-weights" (-> cfg :test :mode))
+        (let [new-weights (merge weights (:weight-adjusts @test-state))]
+          (update-state! test-state {:weights new-weights})))
       (println "------")
       (println (str "Quick check results:"))
       (pprint qc-res)
       (println "------")
-      (when (:verbose cfg)
-        (prn :weight-adjusts weight-adjusts)
-        (prn :result-weights (:weights @test-state)))
-      (wend/save-weights (str test-dir "/weights-end.edn") new-weights)
+      (wend/save-weights (str test-dir "/weights-end.edn")
+                         (:weights @test-state))
       (let [test-id-path (str (-> cfg :web :dir) "/" test-id ".edn")]
         (println (str "Final test state: " test-id-path))
-        ;; Convert ordered set to regular set and remove iter log data
-        ;; (which can be loaded on-demand from slug log.edn files.
+        ;; Convert ordered set to regular set (which can be loaded
+        ;; on-demand from slug log.edn files) and remove iter log data
         (spit test-id-path
               (setval [:log ALL LAST :iter-log ALL LAST] nil
                       (serializable-state @test-state))))
@@ -502,11 +546,14 @@
   "Close webdriver browser sessions and websocket browser clients on
   exit"
   [state]
-  (let [{:keys [ws-clients sessions]} @state]
+  (let [{:keys [ws-clients server sessions]} @state]
     (when (not (empty? ws-clients))
       (println "Closing WebSocket browser clients")
       (doseq [ch ws-clients]
         (rend.server/ws-close ch)))
+    (when server
+      (println "Stopping web server")
+      (server :timeout 100))
     (when (not (empty? sessions))
       (println "Cleaning up browser sessions")
       (doseq [[browser session] sessions]
@@ -521,7 +568,7 @@
   "Takes a configuration map (usually loaded from a config.yaml file)
   and returns an initialized the test state atom:
     - Starts a web server for testing and reporting.
-    - Loads a html and css parser (if test mode is \"reduce-weights\"
+    - Loads the html and css parser
     - Makes a webdriver connection to each browser listed in config.
     - Generates a cleanup functions to tear down browser connections.
   Returns a map containing the config, references the above stateful
@@ -544,26 +591,31 @@
                    (partial #'add-ws-client! test-state)
                    (partial #'remove-ws-client! test-state)))
 
-        ;; If mode is :reduce-weights, then load a parser
-        html-parser (when (= "reduce-weights" (-> cfg :test :mode))
-                      (println "Loading/creating HTML parser")
-                      (wend/load-parser :html-gen-min))
-        css-parser (when (= "reduce-weights" (-> cfg :test :mode))
-                      (println "Loading/creating CSS parser")
-                      (wend/load-parser :css-gen))
+        _ (println "Loading/creating HTML parser")
+        ;; We use the full parse version of the grammar because we
+        ;; pass the HTML through hiccup which can modify it in
+        ;; someways that make the smaller html-gen parser unhappy.
+        html-parser (wend/load-parser :html-parse)
+        _ (println "Loading/creating CSS parser")
+        css-parser (wend/load-parser :css-gen)
+
+        ;; get the smallest possible test case
+        test-start-value (rend.generator/html-start-value
+                           (rend.generator/get-html-generator {}))
 
         cleanup-fn (partial cleanup-tester test-state)]
 
-    (reset-state! test-state {:cfg          cfg
-                              :test-slugs   (ordered-set)
-                              :test-id      (rand-int 100000)
-                              :server       server
-                              :html-parser  html-parser
-                              :css-parser   css-parser
-                              :sessions     {}
+    (reset-state! test-state {:cfg              cfg
+                              :test-slugs       (ordered-set)
+                              :test-id          (rand-int 100000)
+                              :server           server
+                              :html-parser      html-parser
+                              :css-parser       css-parser
+                              :test-start-value test-start-value
+                              :sessions         {}
                               ;; User specified weights (no base)
-                              :weights      (:start weights-map)
-                              :cleanup-fn   cleanup-fn})
+                              :weights          (:start weights-map)
+                              :cleanup-fn       cleanup-fn})
 
     ;; Attach watcher function to state atom to send updates to any
     ;; listening browser websocket clients
@@ -574,12 +626,15 @@
 
     ;; Create webdriver/selenium sessions to the testing browsers
     ;; TODO: check that all browser IDs are unique
-    (doseq [[browser {:keys [url capabilities]}] (:browsers cfg)]
-      (println "Initializing browser session for:" browser)
-      (swap! test-state update-in [:sessions] assoc browser
-             (webdriver/init-session url (or capabilities {}))))
-
-    test-state))
+    (try
+      (doseq [[browser {:keys [url capabilities]}] (:browsers cfg)]
+        (println "Initializing browser session for:" browser)
+        (swap! test-state update-in [:sessions] assoc browser
+               (webdriver/init-session url (or capabilities {}))))
+      test-state
+      (catch Exception e
+        (cleanup-fn)
+        (throw e)))))
 
 (comment
 
@@ -592,6 +647,8 @@
                    (merge (:start weights-map) (:fixed weights-map))))
 
 (doseq [s (gen/sample gen-html-fn)] (println s))
+
+(first (drop 19 (gen/sample-seq gen-html-fn 20)))
 
 )
 
@@ -629,3 +686,19 @@
 
 )
 
+(comment
+
+(->> [:element :alt 1] (wend/grammar-node (:grammar hp)) :parsers first :string)
+; "<abbr"
+
+(->> [:abbr-attribute :alt 1] (wend/grammar-node (:grammar hp)) :parsers first :string)
+; nil
+
+(->> [:global-attribute :alt 13] (wend/grammar-node (:grammar hp)) :parsers first :string)
+; "title=\""
+
+(->> [:css-known-standard :alt 18] (wend/grammar-node (:grammar cp)) :parsers first :string)
+; "background-color"
+
+
+)
