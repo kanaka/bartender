@@ -1,7 +1,7 @@
 # Bartender
 
 ***B***rowser ***A***utomated ***R***ender ***T***esti***n***g ***D***riv***er***:
-Clojure tools for automated testing of browser rendering engines using
+Automated testing of browser rendering engines using Clojure,
 generative (property-based) testing, formal grammars (EBNF), and
 a consensus test oracle.
 
