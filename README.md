@@ -3,7 +3,7 @@
 ***B***rowser ***A***utomated ***R***ender ***T***esti***n***g ***D***riv***er***:
 Clojure tools for automated testing of browser rendering engines using
 generative (property-based) testing, formal grammars (EBNF), and
-a concensus test oracle.
+a consensus test oracle.
 
 ## Prerequisites
 
