@@ -93,14 +93,15 @@ Generate Clojure generator source based on the HTML5 EBNF grammar from
 
 ```
 lein deps
-time lein with-profile mend run --mode html5 --weights-output data/html5-weights-output.edn --namespace rend.html5-generators --function html5-generators --clj-output src/rend/html5_generators.clj
+time lein with-profile mend run --mode html --namespace rend.html5-generators --function html5-generators --weights-output resources/html5-weights.edn --clj-output resources/rend/html5_generators.clj --grammar-output resources/html5.grammar
 ```
 
-Generate Clojure generator source based on the CSS3 EBNF grammar:
+Generate Clojure generator source based on the CSS3 EBNF grammar
+(warning this requires about 2GB of free memory):
 
 ```
 lein deps
-time lein with-profile mend run --mode css3 --weights-output data/css3-weights-output.edn --namespace rend.css3-generators --function css3-generators --clj-output src/rend/css3_generators.clj
+time lein with-profile mend run --mode css --namespace rend.css3-generators --function css3-generators --weights-output resources/css3-weights.edn --clj-output resources/rend/css3_generators.clj --grammar-output resources/css3.grammar
 ```
 
 Use the generators from a Clojure REPL:
@@ -148,8 +149,8 @@ quick-check:
     iterations: 20
     max-size: 100
 weights:
-    base: ["data/html5-weights-output.edn", "data/css3-weights-output.edn"]
-    fixed: "data/fixed-weights.edn"
+    base: ["resources/html5-weights.edn", "resources/css3-weights.edn"]
+    fixed: "resources/fixed-weights.edn"
 compare:
     method: SQDIFF_NORMED
     threshold: 0.00003

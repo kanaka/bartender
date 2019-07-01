@@ -6,58 +6,7 @@
             [hickory.core]
             [hickory.render]
             [hickory.select :as s]
-            [instacheck.core :as instacheck]
-            [instaparse.core]
-            [instaparse.print]))
-
-(def EBNF-PATHS
-  {:html-gen     ["html5-test.ebnf"
-                  "html5.ebnf"]
-   :html-gen-min ["html5-test.ebnf"
-                  "html5.ebnf"]
-   :html-parse   ["html5.ebnf"]
-   :css-gen      ["css3-test.ebnf"
-                  "css3.ebnf"]
-   :css-parse    ["css3.ebnf"]})
-
-(def GRAMMAR-MANGLES
-  {:html-gen     {:char-data :char-data-test
-                  :comment :comment-test
-                  :url :url-test}
-   :html-gen-min {:char-data :char-data-test
-                  :comment :comment-test
-                  :url :url-test}
-   :html-parse   {}
-   :css-gen      {}
-   :css-parse    {:nonprop-group-rule-body :stylesheet
-                  :prop-group-rule-body :css-ruleset
-                  :nonprop-declaration-list :css-assignments}})
-
-(def START-RULES
-  {:html-gen     :html-test
-   :html-gen-min :html-test-min
-   :html-parse   :html
-   :css-gen      :css-assignments-test
-   :css-parse    :stylesheet})
-
-(defn mangle-parser
-  [parser mangles]
-  (reduce (fn [p [k v]] (assoc-in p [:grammar k]
-                                  {:tag :nt, :keyword v
-                                   :red {:reduction-type :hiccup, :key k}}))
-          parser mangles))
-
-(defn load-parser* [paths mangles]
-  (let [ebnf (string/join "\n" (map slurp (map io/resource paths)))
-        base-parser (instaparse.core/parser ebnf)
-        parser (mangle-parser base-parser mangles)]
-    parser))
-
-(defn load-parser [kind]
-  (let [parser (load-parser* (get EBNF-PATHS kind) (get GRAMMAR-MANGLES kind))]
-    (assoc parser :start-production (get START-RULES kind))))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+            [instacheck.grammar :as grammar]))
 
 (def PRUNE-TAGS
   #{:style
@@ -284,139 +233,26 @@
 
 ;; TODO: these generic functions should move to instacheck
 
-(defn save-weights [path weights]
-  (io/make-parents path)
-  (let [sm (sorted-map-by #(compare (str %1) (str %2)))]
-    (spit path (with-out-str (pprint (into sm weights))))))
-
-(defn parse-weights [parser texts]
-  (let [texts (if (string? texts) [texts] texts)
-        parsed (map #(instacheck/parse parser %) texts)]
-    (apply merge-with +
-           (map #(frequencies (-> % meta :path-log)) parsed))))
 
 (defn adjust-weights
-  "Returns a subset of base-weights with weight values adjusted by the
+  "Returns a subset of base-wtrek with weight values adjusted by the
   adjuster function. For a weight to be adjusted, it must satisfy the
   following criteria:
-  - the path must present in both adjust-weights and base-weights
-  - the path must also be present in base-weights
-  - the path must specify an alternation (e.g. [... :alt X])
+  - the path must present in both path-log-wtrek and base-wtrek
+  - the path must end with a weighted node (:alt, :ord, :star, :opt)
+  - the weight in path-log-wtrek must be greater than 0
   - the path must satisfy the adjustable? function
   If the criteria are satisfied then the path is added to the returned
   map with the weight value from base-weights adjusted by the adjuster
   function.
   "
-  [adjustable? adjuster base-weights adjust-weights]
-  (let [alt-weights (instacheck/filter-alts adjust-weights)
-        adjusted (for [[p w] alt-weights
-                       :when (adjustable? base-weights p w)]
-                   [p (adjuster (get base-weights p))])]
+  [adjustable? adjuster base-wtrek path-log-wtrek]
+  (let [adjusted (for [[p w] path-log-wtrek
+                       :when (and (> (get path-log-wtrek p) 0)
+                                  (adjustable? base-wtrek p w))]
+                   [p (adjuster (get base-wtrek p))])]
     (into {} adjusted)))
 
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Grammar/weight path functions
-
-(defn grammar-node
-  "Get the a grammar node for the given path in grammar. Nil is
-  returned if the path does not exist in the grammar, the tag type
-  along the path don't match, or the numeric parser index is
-  out-of-bounds."
-  [grammar path]
-  (loop [g (get grammar (first path))
-         p (rest path)]
-    (let [[t1 t2 & ts] p]
-      (cond
-        (empty? p)
-        g
-
-        (or (nil? g) (not= (:tag g) t1))
-        nil
-
-        (and (number? t2) (:parsers g) (> (count (:parsers g)) t2))
-        (recur (nth (:parsers g) t2) ts)
-
-        (:parser g)
-        (recur (:parser g) (rest p))
-
-        :else
-        nil))))
-
-(defn grammar-path*
-  "Given a grammar for a rule and a grammar path (not including the
-  rule key), prune the grammar to include only the alt values
-  specified in the grammar path."
-  [grammar path]
-  (let [[g p] [grammar path]
-        [t1 t2 & ts] p]
-    ;;(prn :t1 t1 :t2 t2 :alt? (= t1 :alt)
-    ;;     :parsers? (contains? g :parsers)
-    ;;     :parser? (contains? g :parser))
-    (cond
-      (empty? p)
-      g
-
-      (= t1 :alt)
-      (grammar-path* (nth (:parsers g) t2) ts)
-
-      (= t1 :cat)
-      (assoc g :parsers (map-indexed (fn [idx itm]
-                                       (if (= t2 idx)
-                                         (grammar-path* itm ts)
-                                         itm))
-                                     (:parsers g)))
-
-      (:parser g)
-      (assoc g :parser (grammar-path* (:parser g) (rest p)))
-
-      :else
-      (throw (Exception. (str "Unknown node at path element " t1))))))
-
-
-(defn grammar-path
-  "Given a grammar and a full grammar path (including the rule key),
-  prune the grammar to include only the alt values specified in the
-  grammar path."
-  [grammar path]
-  (assert (grammar-node grammar path) (str "no node at path: " path))
-  {(first path) (grammar-path* (get grammar (first path)) (rest path))})
-
-(defn grammar-node-string
-  "Print the EBNF grammar for a single grammar node (i.e. call on the
-  result of grammar-node)"
-  [node]
-  (instaparse.print/combinators->str node))
-
-(defn grammar-path-string
-  "Use grammar-path to prune the grammar and then print the
-  EBNF grammar for that pruned grammar."
-  [grammar path]
-  (let [pruned-grammar (grammar-path grammar path)
-        rule (first path)]
-    (instaparse.print/rule->str rule (get pruned-grammar rule))))
-
-
-(comment
-
-(def p (load-parser :html))
-
-(def html "<html><head><link rel=\"stylesheet\" href=\"/static/normalize.css\"><link rel=\"stylesheet\" href=\"/static/rend.css\"></head><body>x<div style=\"background: red\"></div></body></html>")
-
-(def w (instacheck/filter-alts (parse-weights p html)))
-
-;; List used rules sorted by rule name
-(doseq [[k v] (sort-by (comp str key) w)]
-  (println (str (grammar-path-string (:grammar p) k)
-                "  (* {:weight " v "} *)")))
-
-;; List used rules sorted by rule weight (usage frequency)
-(doseq [[k v] (sort-by val w)]
-  (println (str (grammar-path-string (:grammar p) k)
-                "  (* {:weight " v "} *)")))
-
-
-)
 
 
 (comment
@@ -432,7 +268,7 @@
 (def html    (extract-html text))
 (def css-map (extract-css-map text "test/html"))
 
-(time (def hw (instacheck/filter-alts (parse-weights hp html))))
-(time (def cw (instacheck/filter-alts (parse-weights cp (vals css-map)))))
+(time (def hw (grammar/filter-trek-weighted (parse-weights hp html))))
+(time (def cw (grammar/filter-trek-weighted (parse-weights cp (vals css-map)))))
 
 )

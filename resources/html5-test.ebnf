@@ -26,12 +26,3 @@ url-test = #'(?:https:|http:)?//[A-Za-z0-9._\-/&#=,?]+'
 
 
 
-(*
-Alternate entry point that omits the normalizing stylesheets. Used for
-parsing the weights out of the generated files without getting weight
-values for the normalization stylesheets.
-*)
-html-test-min = '<html>' head-test-min body-test '</html>'
-
-head-test-min = '<head>' title-test? '</head>'
-

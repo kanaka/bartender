@@ -13,15 +13,15 @@
             [clj-time.core :as ctime]
             [differ.core :as differ]
 
-            [instaparse.core :as instaparse]
             [instacheck.core :as instacheck]
 
-            [mend.util :as util]
+            [rend.util :as util]
             [rend.generator]
             [rend.image :as image]
             [rend.server]
             [rend.webdriver :as webdriver]
-            [wend.core :as wend]))
+            [wend.core :as wend]
+            [mend.parse]))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Test state management
@@ -312,6 +312,7 @@
 
 ;; Weight functions
 
+;; TODO: use instacheck reduce instead
 (def reducible-regex #"^\[:element :alt [0-9]+\]$|^\[[\S-]*-attribute :alt [0-9]+\]$|^\[:css-known-standard :alt [0-9]+\]$")
 
 (defn reducible-path?
@@ -326,17 +327,17 @@
 (defn wrap-adjust-weights
   "Call wend/adjust-weights to a get a new set of weights reduced by
   the reducer function."
-  [html-parser css-parser weights-full html]
+  [html-parser css-parser full-wtrek html]
   (prn :html html)
   (let [html-only (wend/extract-html html)
         _ (prn :html-only html-only)
         css-only (wend/extract-inline-css html)
         _ (prn :css-only css-only)
-        html-weights (wend/parse-weights html-parser html-only)
-        css-weights (wend/parse-weights css-parser css-only)
-        parsed-weights (merge-with + html-weights css-weights)]
+        html-wtrek (instacheck/parse-weights html-parser html-only)
+        css-wtrek (instacheck/parse-weights css-parser css-only)
+        adjust-wtrek (merge-with + html-wtrek css-wtrek)]
     (wend/adjust-weights reducible-path? reducer-half
-                         weights-full parsed-weights)))
+                         full-wtrek adjust-wtrek)))
 
 (defn summarize-weights
   "Return a summary of the tags, attributes, and properties that are
@@ -354,7 +355,7 @@
                                  [css-grammar  :props])
             string (when grammar
                      (->> p
-                          (wend/grammar-node grammar)
+                          (instacheck/get-in-grammar grammar)
                           :parsers
                           first
                           :string))
@@ -482,7 +483,7 @@
     (println "Test State:")
     (pprint (assoc (printable-state @test-state) :cfg :ELIDED))
 
-    (wend/save-weights (str test-dir "/weights-start.edn") weights)
+    (instacheck/save-weights (str test-dir "/weights-start.edn") weights)
 
     (let [;; Config and state specific versions of the
           ;; functions/generators used for the actual check process
@@ -492,11 +493,11 @@
 
           start-time (ctime/now)
           ;; ****** QuickCheck ******
-          qc-res (instacheck/run-check (merge (:quick-check cfg)
-                                              {:seed current-seed})
-                                       gen-html-fn
-                                       check-fn
-                                       report-fn)
+          qc-res (instacheck/quick-check (merge (:quick-check cfg)
+                                                {:seed current-seed})
+                                         gen-html-fn
+                                         check-fn
+                                         report-fn)
           end-time (ctime/now)
           qc-res (merge qc-res
                         {:current-seed current-seed
@@ -515,7 +516,7 @@
       (println (str "Quick check results:"))
       (pprint qc-res)
       (println "------")
-      (wend/save-weights (str test-dir "/weights-end.edn")
+      (instacheck/save-weights (str test-dir "/weights-end.edn")
                          (:weights @test-state))
       (let [test-id-path (str (-> cfg :web :dir) "/" test-id ".edn")]
         (println (str "Final test state: " test-id-path))
@@ -591,13 +592,13 @@
                    (partial #'add-ws-client! test-state)
                    (partial #'remove-ws-client! test-state)))
 
-        _ (println "Loading/creating HTML parser")
-        ;; We use the full parse version of the grammar because we
+        ;; We use the full parse versions of the grammar because we
         ;; pass the HTML through hiccup which can modify it in
-        ;; someways that make the smaller html-gen parser unhappy.
-        html-parser (wend/load-parser :html-parse)
-        _ (println "Loading/creating CSS parser")
-        css-parser (wend/load-parser :css-gen)
+        ;; someways that make the gen parser unhappy.
+        _ (println "Loading HTML parser")
+        html-parser (mend.parse/load-parser-from-grammar :html)
+        _ (println "Loading CSS parser")
+        css-parser (mend.parse/load-parser-from-grammar :css)
 
         ;; get the smallest possible test case
         test-start-value (rend.generator/html-start-value
@@ -688,16 +689,16 @@
 
 (comment
 
-(->> [:element :alt 1] (wend/grammar-node (:grammar hp)) :parsers first :string)
+(->> [:element :alt 1] (instacheck/get-in-grammar (:grammar hp)) :parsers first :string)
 ; "<abbr"
 
-(->> [:abbr-attribute :alt 1] (wend/grammar-node (:grammar hp)) :parsers first :string)
+(->> [:abbr-attribute :alt 1] (instacheck/get-in-grammar (:grammar hp)) :parsers first :string)
 ; nil
 
-(->> [:global-attribute :alt 13] (wend/grammar-node (:grammar hp)) :parsers first :string)
+(->> [:global-attribute :alt 13] (instacheck/get-in-grammar (:grammar hp)) :parsers first :string)
 ; "title=\""
 
-(->> [:css-known-standard :alt 18] (wend/grammar-node (:grammar cp)) :parsers first :string)
+(->> [:css-known-standard :alt 18] (instacheck/get-in-grammar (:grammar cp)) :parsers first :string)
 ; "background-color"
 
 

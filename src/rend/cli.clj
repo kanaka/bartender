@@ -3,7 +3,7 @@
             [clj-yaml.core :as yaml]
             [clojure.pprint :refer [pprint]]
 
-            [mend.util :as util]
+            [rend.util :as util]
             [rend.core :as core]))
 
 (defn usage [data]

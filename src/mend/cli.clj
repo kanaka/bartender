@@ -4,9 +4,9 @@
             [clojure.pprint :refer [pprint]]
 
             [instacheck.cli :as instacheck-cli]
-            [instacheck.grammar :as instacheck-grammar]
-            [mend.core :as mend]
-            [wend.core :as wend]))
+            [instacheck.core :as instacheck]
+            [mend.gen :as mend.gen]
+            [mend.parse :as mend.parse]))
 
 (defn pr-err
   [& args]
@@ -25,8 +25,8 @@
     (concat
       instacheck-cli/general-cli-options
       [[nil "--mode MODE"
-        "Mode: html5 or css3."
-        :validate [#(get #{"html5" "css3"} %) "Must be 'html5' or 'css3'"]]
+        "Mode: html or css."
+        :validate [#(get #{"html" "css"} %) "Must be 'html' or 'css'"]]
        [nil "--clj-output CLJ-OUTPUT"
         "Write Clojure code to path."]
        [nil "--grammar-output GRAMMAR-OUTPUT"
@@ -37,13 +37,7 @@
         "Emit a function named FUNCTION which returns a generator rather than a defn for every generator"]])))
 
 (defn ebnf->clj [opts]
-  (let [grammar-update (condp = (:mode opts)
-                         "html5" mend/html5-grammar-update-fn
-                         "css3"  mend/css3-grammar-update-fn)
-                         ;;"css3"  css3-grammar-updates)
-        grammar-type (condp = (:mode opts)
-                       "html5" :html-gen
-                       "css3"  :css-gen)
+  (let [mode (keyword (:mode opts))
 
         ctx (merge {:weights-res (atom {})}
                    (select-keys opts [:namespace
@@ -51,30 +45,34 @@
 
 
         ;; The following each take 4-6 seconds
-        _ (println "Loading" grammar-type "grammar")
-        raw-grammar (instacheck-grammar/parser->grammar
-                      (wend/load-parser grammar-type))
-        _ (println "Apply grammar updates")
-        grammar (grammar-update raw-grammar)
-        _ (println "Converting grammar to clojure generators")
-        ns-str (mend/grammar->ns ctx grammar)]
+        _ (println "Loading" mode "parser grammar")
+        parse-grammar (instacheck/parser->grammar
+                            (mend.parse/load-parser mode :parse))
+        _ (println "Loading" mode "generator grammar")
+        gen-grammar (instacheck/parser->grammar
+                          (mend.parse/load-parser mode :gen))
+        _ (println "Applying generator grammar updates")
+        mangled-gen-grammar    (mend.gen/grammar-update gen-grammar mode)
+        _ (println "Converting generator grammar to clojure generators")
+        ns-str (instacheck/grammar->ns
+                 ctx mangled-gen-grammar "[rend.misc-generators :as rgen]")]
 
     (when-let [gfile (:grammar-output opts)]
-      (println "Saving grammar to" gfile)
-      (spit gfile (with-out-str (pprint grammar))))
+      (println "Saving parser grammar to" gfile)
+      (spit gfile (with-out-str (pprint parse-grammar))))
 
     (when-let [wfile (:weights-output opts)]
-      (println "Saving weights to" wfile)
-      (wend/save-weights wfile @(:weights-res ctx)))
+      (println "Saving generator weights to" wfile)
+      (instacheck/save-weights wfile @(:weights-res ctx)))
 
     ns-str))
 
 (defn -main
-  "This takes about 10-30 seconds to run"
+  "This takes about 20-60 seconds to run"
   [& args]
   (let [opts (:options (opt-errors (parse-opts args cli-options)))]
     (when (not (:mode opts))
-      (println "--mode MODE (html5 or css3) is required")
+      (println "--mode MODE (html or css) is required")
       (System/exit 2))
     (when (not (:clj-output opts))
       (println "--clj-output CLJ-OUTPUT is required")

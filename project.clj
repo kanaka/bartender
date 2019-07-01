@@ -9,7 +9,7 @@
 
   :injections [(clojure.lang.RT/loadLibrary org.opencv.core.Core/NATIVE_LIBRARY_NAME)]
 
-  :source-paths ["src"]
+  :source-paths ["src", "resources"]
   :resource-paths ["resources"]
 
   :dependencies [[org.clojure/clojure "1.10.0"]
@@ -41,11 +41,8 @@
 
                  [org.clojure/test.check "0.10.0-alpha3"]
 
-                 ;; Patched version (retain comments, parsed path log)
-                 [kanaka/instaparse "1.4.9.1"]
-
-                 [kanaka/instacheck "0.6.2"]
-                 [kanaka/html5-css3-ebnf "0.5.4"]
+                 [kanaka/instacheck "0.7.1"]
+                 [kanaka/html5-css3-ebnf "0.5.6"]
 
                  ;; send
                  [org.clojure/clojurescript "1.10.520"]
