@@ -415,30 +415,25 @@
  [:css-psuedo :cat 2 :opt 0 :alt 1] 100,
  [:css-psuedo :cat 2 :opt 0] 100,
  [:css-psuedo :cat 2 :opt nil] 100,
- [:css-ruleset :cat 1 :star 0 :plus 0 :opt 0] 100,
- [:css-ruleset :cat 1 :star 0 :plus 0 :opt nil] 100,
+ [:css-ruleset :cat 1 :star 0 :opt 0] 100,
+ [:css-ruleset :cat 1 :star 0 :opt nil] 100,
  [:css-ruleset :cat 1 :star 0] 100,
  [:css-ruleset :cat 1 :star nil] 100,
- [:css-selector :cat 1 :star 0 :plus 0 :opt 0] 100,
- [:css-selector :cat 1 :star 0 :plus 0 :opt nil] 100,
+ [:css-selector :cat 1 :star 0 :opt 0] 100,
+ [:css-selector :cat 1 :star 0 :opt nil] 100,
  [:css-selector :cat 1 :star 0] 100,
  [:css-selector :cat 1 :star nil] 100,
  [:css-simple-selector :alt 0 :cat 0 :opt 0 :alt 0] 100,
  [:css-simple-selector :alt 0 :cat 0 :opt 0 :alt 1] 100,
  [:css-simple-selector :alt 0 :cat 0 :opt 0] 100,
  [:css-simple-selector :alt 0 :cat 0 :opt nil] 100,
- [:css-simple-selector :alt 0 :cat 1 :star 0 :plus 0 :opt 0 :alt 0]
- 100,
- [:css-simple-selector :alt 0 :cat 1 :star 0 :plus 0 :opt 0 :alt 1]
- 100,
- [:css-simple-selector :alt 0 :cat 1 :star 0 :plus 0 :opt 0 :alt 2]
- 100,
- [:css-simple-selector :alt 0 :cat 1 :star 0 :plus 0 :opt 0 :alt 3]
- 100,
- [:css-simple-selector :alt 0 :cat 1 :star 0 :plus 0 :opt 0 :alt 4]
- 100,
- [:css-simple-selector :alt 0 :cat 1 :star 0 :plus 0 :opt 0] 100,
- [:css-simple-selector :alt 0 :cat 1 :star 0 :plus 0 :opt nil] 100,
+ [:css-simple-selector :alt 0 :cat 1 :star 0 :opt 0 :alt 0] 100,
+ [:css-simple-selector :alt 0 :cat 1 :star 0 :opt 0 :alt 1] 100,
+ [:css-simple-selector :alt 0 :cat 1 :star 0 :opt 0 :alt 2] 100,
+ [:css-simple-selector :alt 0 :cat 1 :star 0 :opt 0 :alt 3] 100,
+ [:css-simple-selector :alt 0 :cat 1 :star 0 :opt 0 :alt 4] 100,
+ [:css-simple-selector :alt 0 :cat 1 :star 0 :opt 0] 100,
+ [:css-simple-selector :alt 0 :cat 1 :star 0 :opt nil] 100,
  [:css-simple-selector :alt 0 :cat 1 :star 0] 100,
  [:css-simple-selector :alt 0 :cat 1 :star nil] 100,
  [:css-simple-selector :alt 0] 100,
@@ -653,26 +648,12 @@
  [:nonprop-angular-color-stop :cat 1 :opt nil] 100,
  [:nonprop-angular-color-stop-list :cat 0 :cat 1 :opt 0] 100,
  [:nonprop-angular-color-stop-list :cat 0 :cat 1 :opt nil] 100,
- [:nonprop-angular-color-stop-list
-  :cat
-  1
-  :star
-  0
-  :plus
-  0
-  :cat
-  1
-  :cat
-  1
-  :opt
-  0]
+ [:nonprop-angular-color-stop-list :cat 1 :star 0 :cat 1 :cat 1 :opt 0]
  100,
  [:nonprop-angular-color-stop-list
   :cat
   1
   :star
-  0
-  :plus
   0
   :cat
   1
@@ -710,18 +691,18 @@
  [:nonprop-auto-repeat :cat 4 :plus 0 :cat 0 :opt nil] 100,
  [:nonprop-auto-repeat :cat 5 :opt 0] 100,
  [:nonprop-auto-repeat :cat 5 :opt nil] 100,
- [:nonprop-auto-track-list :cat 0 :star 0 :plus 0 :cat 0 :opt 0] 100,
- [:nonprop-auto-track-list :cat 0 :star 0 :plus 0 :cat 0 :opt nil] 100,
- [:nonprop-auto-track-list :cat 0 :star 0 :plus 0 :cat 1 :alt 0] 100,
- [:nonprop-auto-track-list :cat 0 :star 0 :plus 0 :cat 1 :alt 1] 100,
+ [:nonprop-auto-track-list :cat 0 :star 0 :cat 0 :opt 0] 100,
+ [:nonprop-auto-track-list :cat 0 :star 0 :cat 0 :opt nil] 100,
+ [:nonprop-auto-track-list :cat 0 :star 0 :cat 1 :alt 0] 100,
+ [:nonprop-auto-track-list :cat 0 :star 0 :cat 1 :alt 1] 100,
  [:nonprop-auto-track-list :cat 0 :star 0] 100,
  [:nonprop-auto-track-list :cat 0 :star nil] 100,
  [:nonprop-auto-track-list :cat 1 :opt 0] 100,
  [:nonprop-auto-track-list :cat 1 :opt nil] 100,
- [:nonprop-auto-track-list :cat 3 :star 0 :plus 0 :cat 0 :opt 0] 100,
- [:nonprop-auto-track-list :cat 3 :star 0 :plus 0 :cat 0 :opt nil] 100,
- [:nonprop-auto-track-list :cat 3 :star 0 :plus 0 :cat 1 :alt 0] 100,
- [:nonprop-auto-track-list :cat 3 :star 0 :plus 0 :cat 1 :alt 1] 100,
+ [:nonprop-auto-track-list :cat 3 :star 0 :cat 0 :opt 0] 100,
+ [:nonprop-auto-track-list :cat 3 :star 0 :cat 0 :opt nil] 100,
+ [:nonprop-auto-track-list :cat 3 :star 0 :cat 1 :alt 0] 100,
+ [:nonprop-auto-track-list :cat 3 :star 0 :cat 1 :alt 1] 100,
  [:nonprop-auto-track-list :cat 3 :star 0] 100,
  [:nonprop-auto-track-list :cat 3 :star nil] 100,
  [:nonprop-auto-track-list :cat 4 :opt 0] 100,
@@ -803,12 +784,12 @@
  [:nonprop-box :alt 0] 100,
  [:nonprop-box :alt 1] 100,
  [:nonprop-box :alt 2] 100,
- [:nonprop-calc-product :cat 1 :star 0 :plus 0 :alt 0] 100,
- [:nonprop-calc-product :cat 1 :star 0 :plus 0 :alt 1] 100,
+ [:nonprop-calc-product :cat 1 :star 0 :alt 0] 100,
+ [:nonprop-calc-product :cat 1 :star 0 :alt 1] 100,
  [:nonprop-calc-product :cat 1 :star 0] 100,
  [:nonprop-calc-product :cat 1 :star nil] 100,
- [:nonprop-calc-sum :cat 1 :star 0 :plus 0 :cat 0 :alt 0] 100,
- [:nonprop-calc-sum :cat 1 :star 0 :plus 0 :cat 0 :alt 1] 100,
+ [:nonprop-calc-sum :cat 1 :star 0 :cat 0 :alt 0] 100,
+ [:nonprop-calc-sum :cat 1 :star 0 :cat 0 :alt 1] 100,
  [:nonprop-calc-sum :cat 1 :star 0] 100,
  [:nonprop-calc-sum :cat 1 :star nil] 100,
  [:nonprop-cf-final-image :alt 0] 100,
@@ -831,22 +812,8 @@
  [:nonprop-color-stop-length :alt 1] 100,
  [:nonprop-color-stop-list :cat 0 :cat 1 :opt 0] 100,
  [:nonprop-color-stop-list :cat 0 :cat 1 :opt nil] 100,
- [:nonprop-color-stop-list :cat 1 :star 0 :plus 0 :cat 1 :cat 1 :opt 0]
- 100,
- [:nonprop-color-stop-list
-  :cat
-  1
-  :star
-  0
-  :plus
-  0
-  :cat
-  1
-  :cat
-  1
-  :opt
-  nil]
- 100,
+ [:nonprop-color-stop-list :cat 1 :star 0 :cat 1 :cat 1 :opt 0] 100,
+ [:nonprop-color-stop-list :cat 1 :star 0 :cat 1 :cat 1 :opt nil] 100,
  [:nonprop-color-stop-list :cat 1 :star 0] 100,
  [:nonprop-color-stop-list :cat 1 :star nil] 100,
  [:nonprop-combinator :alt 0] 100,
@@ -868,9 +835,8 @@
  [:nonprop-compat :alt 7] 100,
  [:nonprop-compat :alt 8] 100,
  [:nonprop-compat :alt 9] 100,
- [:nonprop-complex-selector :cat 1 :star 0 :plus 0 :cat 0 :opt 0] 100,
- [:nonprop-complex-selector :cat 1 :star 0 :plus 0 :cat 0 :opt nil]
- 100,
+ [:nonprop-complex-selector :cat 1 :star 0 :cat 0 :opt 0] 100,
+ [:nonprop-complex-selector :cat 1 :star 0 :cat 0 :opt nil] 100,
  [:nonprop-complex-selector :cat 1 :star 0] 100,
  [:nonprop-complex-selector :cat 1 :star nil] 100,
  [:nonprop-complex-selector-list :cat 1 :star 0] 100,
@@ -894,10 +860,8 @@
  [:nonprop-compound-selector :cat 0 :opt nil] 100,
  [:nonprop-compound-selector :cat 1 :star 0] 100,
  [:nonprop-compound-selector :cat 1 :star nil] 100,
- [:nonprop-compound-selector :cat 2 :star 0 :plus 0 :cat 1 :star 0]
- 100,
- [:nonprop-compound-selector :cat 2 :star 0 :plus 0 :cat 1 :star nil]
- 100,
+ [:nonprop-compound-selector :cat 2 :star 0 :cat 1 :star 0] 100,
+ [:nonprop-compound-selector :cat 2 :star 0 :cat 1 :star nil] 100,
  [:nonprop-compound-selector :cat 2 :star 0] 100,
  [:nonprop-compound-selector :cat 2 :star nil] 100,
  [:nonprop-compound-selector-list :cat 1 :star 0] 100,
@@ -1572,8 +1536,6 @@
   1
   :star
   0
-  :plus
-  0
   :cat
   1
   :alt
@@ -1592,8 +1554,6 @@
   1
   :star
   0
-  :plus
-  0
   :cat
   1
   :alt
@@ -1607,11 +1567,10 @@
   :star
   nil]
  100,
- [:nonprop-src :cat 1 :star 0 :plus 0 :cat 1 :alt 0 :cat 1 :opt 0] 100,
- [:nonprop-src :cat 1 :star 0 :plus 0 :cat 1 :alt 0 :cat 1 :opt nil]
- 100,
- [:nonprop-src :cat 1 :star 0 :plus 0 :cat 1 :alt 0] 100,
- [:nonprop-src :cat 1 :star 0 :plus 0 :cat 1 :alt 1] 100,
+ [:nonprop-src :cat 1 :star 0 :cat 1 :alt 0 :cat 1 :opt 0] 100,
+ [:nonprop-src :cat 1 :star 0 :cat 1 :alt 0 :cat 1 :opt nil] 100,
+ [:nonprop-src :cat 1 :star 0 :cat 1 :alt 0] 100,
+ [:nonprop-src :cat 1 :star 0 :cat 1 :alt 1] 100,
  [:nonprop-src :cat 1 :star 0] 100,
  [:nonprop-src :cat 1 :star nil] 100,
  [:nonprop-step-position :alt 0] 100,
@@ -1636,96 +1595,18 @@
  [:nonprop-supports-condition :alt 1 :cat 0 :alt 0] 100,
  [:nonprop-supports-condition :alt 1 :cat 0 :alt 1] 100,
  [:nonprop-supports-condition :alt 1 :cat 0 :alt 2] 100,
- [:nonprop-supports-condition
-  :alt
-  1
-  :cat
-  1
-  :star
-  0
-  :plus
-  0
-  :cat
-  1
-  :alt
-  0]
- 100,
- [:nonprop-supports-condition
-  :alt
-  1
-  :cat
-  1
-  :star
-  0
-  :plus
-  0
-  :cat
-  1
-  :alt
-  1]
- 100,
- [:nonprop-supports-condition
-  :alt
-  1
-  :cat
-  1
-  :star
-  0
-  :plus
-  0
-  :cat
-  1
-  :alt
-  2]
- 100,
+ [:nonprop-supports-condition :alt 1 :cat 1 :star 0 :cat 1 :alt 0] 100,
+ [:nonprop-supports-condition :alt 1 :cat 1 :star 0 :cat 1 :alt 1] 100,
+ [:nonprop-supports-condition :alt 1 :cat 1 :star 0 :cat 1 :alt 2] 100,
  [:nonprop-supports-condition :alt 1 :cat 1 :star 0] 100,
  [:nonprop-supports-condition :alt 1 :cat 1 :star nil] 100,
  [:nonprop-supports-condition :alt 1] 100,
  [:nonprop-supports-condition :alt 2 :cat 0 :alt 0] 100,
  [:nonprop-supports-condition :alt 2 :cat 0 :alt 1] 100,
  [:nonprop-supports-condition :alt 2 :cat 0 :alt 2] 100,
- [:nonprop-supports-condition
-  :alt
-  2
-  :cat
-  1
-  :star
-  0
-  :plus
-  0
-  :cat
-  1
-  :alt
-  0]
- 100,
- [:nonprop-supports-condition
-  :alt
-  2
-  :cat
-  1
-  :star
-  0
-  :plus
-  0
-  :cat
-  1
-  :alt
-  1]
- 100,
- [:nonprop-supports-condition
-  :alt
-  2
-  :cat
-  1
-  :star
-  0
-  :plus
-  0
-  :cat
-  1
-  :alt
-  2]
- 100,
+ [:nonprop-supports-condition :alt 2 :cat 1 :star 0 :cat 1 :alt 0] 100,
+ [:nonprop-supports-condition :alt 2 :cat 1 :star 0 :cat 1 :alt 1] 100,
+ [:nonprop-supports-condition :alt 2 :cat 1 :star 0 :cat 1 :alt 2] 100,
  [:nonprop-supports-condition :alt 2 :cat 1 :star 0] 100,
  [:nonprop-supports-condition :alt 2 :cat 1 :star nil] 100,
  [:nonprop-supports-condition :alt 2] 100,
@@ -1913,10 +1794,8 @@
  [:prop-animation-name :alt 0] 100,
  [:prop-animation-name :alt 1 :cat 0 :alt 0] 100,
  [:prop-animation-name :alt 1 :cat 0 :alt 1] 100,
- [:prop-animation-name :alt 1 :cat 1 :star 0 :plus 0 :cat 1 :alt 0]
- 100,
- [:prop-animation-name :alt 1 :cat 1 :star 0 :plus 0 :cat 1 :alt 1]
- 100,
+ [:prop-animation-name :alt 1 :cat 1 :star 0 :cat 1 :alt 0] 100,
+ [:prop-animation-name :alt 1 :cat 1 :star 0 :cat 1 :alt 1] 100,
  [:prop-animation-name :alt 1 :cat 1 :star 0] 100,
  [:prop-animation-name :alt 1 :cat 1 :star nil] 100,
  [:prop-animation-name :alt 1] 100,
@@ -2425,8 +2304,8 @@
  [:prop-counter-reset :alt 1] 100,
  [:prop-counter-reset :alt 2] 100,
  [:prop-cursor :alt 0] 100,
- [:prop-cursor :alt 1 :cat 0 :star 0 :plus 0 :cat 1 :opt 0] 100,
- [:prop-cursor :alt 1 :cat 0 :star 0 :plus 0 :cat 1 :opt nil] 100,
+ [:prop-cursor :alt 1 :cat 0 :star 0 :cat 1 :opt 0] 100,
+ [:prop-cursor :alt 1 :cat 0 :star 0 :cat 1 :opt nil] 100,
  [:prop-cursor :alt 1 :cat 0 :star 0] 100,
  [:prop-cursor :alt 1 :cat 0 :star nil] 100,
  [:prop-cursor :alt 1 :cat 1 :alt 0] 100,
@@ -2535,8 +2414,8 @@
  [:prop-font-family :alt 0] 100,
  [:prop-font-family :alt 1 :cat 0 :alt 0] 100,
  [:prop-font-family :alt 1 :cat 0 :alt 1] 100,
- [:prop-font-family :alt 1 :cat 1 :star 0 :plus 0 :cat 1 :alt 0] 100,
- [:prop-font-family :alt 1 :cat 1 :star 0 :plus 0 :cat 1 :alt 1] 100,
+ [:prop-font-family :alt 1 :cat 1 :star 0 :cat 1 :alt 0] 100,
+ [:prop-font-family :alt 1 :cat 1 :star 0 :cat 1 :alt 1] 100,
  [:prop-font-family :alt 1 :cat 1 :star 0] 100,
  [:prop-font-family :alt 1 :cat 1 :star nil] 100,
  [:prop-font-family :alt 1] 100,
@@ -2940,8 +2819,8 @@
  [:prop-mask-clip :alt 0] 100,
  [:prop-mask-clip :alt 1 :cat 0 :alt 0] 100,
  [:prop-mask-clip :alt 1 :cat 0 :alt 1] 100,
- [:prop-mask-clip :alt 1 :cat 1 :star 0 :plus 0 :cat 1 :alt 0] 100,
- [:prop-mask-clip :alt 1 :cat 1 :star 0 :plus 0 :cat 1 :alt 1] 100,
+ [:prop-mask-clip :alt 1 :cat 1 :star 0 :cat 1 :alt 0] 100,
+ [:prop-mask-clip :alt 1 :cat 1 :star 0 :cat 1 :alt 1] 100,
  [:prop-mask-clip :alt 1 :cat 1 :star 0] 100,
  [:prop-mask-clip :alt 1 :cat 1 :star nil] 100,
  [:prop-mask-clip :alt 1] 100,
@@ -3639,12 +3518,12 @@
  [:prop-unicode-bidi :alt 4] 100,
  [:prop-unicode-bidi :alt 5] 100,
  [:prop-unicode-bidi :alt 6] 100,
- [:prop-unknown :cat 1 :star 0 :plus 0 :alt 0] 100,
- [:prop-unknown :cat 1 :star 0 :plus 0 :alt 1] 100,
- [:prop-unknown :cat 1 :star 0 :plus 0 :alt 2] 100,
- [:prop-unknown :cat 1 :star 0 :plus 0 :alt 3] 100,
- [:prop-unknown :cat 1 :star 0 :plus 0 :alt 4] 100,
- [:prop-unknown :cat 1 :star 0 :plus 0 :alt 5] 100,
+ [:prop-unknown :cat 1 :star 0 :alt 0] 100,
+ [:prop-unknown :cat 1 :star 0 :alt 1] 100,
+ [:prop-unknown :cat 1 :star 0 :alt 2] 100,
+ [:prop-unknown :cat 1 :star 0 :alt 3] 100,
+ [:prop-unknown :cat 1 :star 0 :alt 4] 100,
+ [:prop-unknown :cat 1 :star 0 :alt 5] 100,
  [:prop-unknown :cat 1 :star 0] 100,
  [:prop-unknown :cat 1 :star nil] 100,
  [:prop-vertical-align :alt 0] 100,
@@ -3708,8 +3587,8 @@
  [:prop-z-index :alt 0] 100,
  [:prop-z-index :alt 1] 100,
  [:prop-z-index :alt 2] 100,
- [:stylesheet :cat 1 :star 0 :plus 0 :alt 0] 100,
- [:stylesheet :cat 1 :star 0 :plus 0 :alt 1] 100,
- [:stylesheet :cat 1 :star 0 :plus 0 :alt 2] 100,
+ [:stylesheet :cat 1 :star 0 :alt 0] 100,
+ [:stylesheet :cat 1 :star 0 :alt 1] 100,
+ [:stylesheet :cat 1 :star 0 :alt 2] 100,
  [:stylesheet :cat 1 :star 0] 100,
  [:stylesheet :cat 1 :star nil] 100}

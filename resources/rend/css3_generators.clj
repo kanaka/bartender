@@ -1278,14 +1278,14 @@
               (igen/vector+
                 (gen/tuple
                   (igen/freq [
-                    [(get w [:nonprop-auto-track-list :cat 0 :star 0 :plus 0 :cat 0 :opt nil] 100)
+                    [(get w [:nonprop-auto-track-list :cat 0 :star 0 :cat 0 :opt nil] 100)
                       (gen/return "")]
-                    [(get w [:nonprop-auto-track-list :cat 0 :star 0 :plus 0 :cat 0 :opt 0] 100)
+                    [(get w [:nonprop-auto-track-list :cat 0 :star 0 :cat 0 :opt 0] 100)
                       (:nonprop-line-names g)]])
                   (igen/freq [
-                    [(get w [:nonprop-auto-track-list :cat 0 :star 0 :plus 0 :cat 1 :alt 0] 100)
+                    [(get w [:nonprop-auto-track-list :cat 0 :star 0 :cat 1 :alt 0] 100)
                       (:nonprop-fixed-size g)]
-                    [(get w [:nonprop-auto-track-list :cat 0 :star 0 :plus 0 :cat 1 :alt 1] 100)
+                    [(get w [:nonprop-auto-track-list :cat 0 :star 0 :cat 1 :alt 1] 100)
                       (:nonprop-fixed-repeat g)]])))]])
           (igen/freq [
             [(get w [:nonprop-auto-track-list :cat 1 :opt nil] 100)
@@ -1300,14 +1300,14 @@
               (igen/vector+
                 (gen/tuple
                   (igen/freq [
-                    [(get w [:nonprop-auto-track-list :cat 3 :star 0 :plus 0 :cat 0 :opt nil] 100)
+                    [(get w [:nonprop-auto-track-list :cat 3 :star 0 :cat 0 :opt nil] 100)
                       (gen/return "")]
-                    [(get w [:nonprop-auto-track-list :cat 3 :star 0 :plus 0 :cat 0 :opt 0] 100)
+                    [(get w [:nonprop-auto-track-list :cat 3 :star 0 :cat 0 :opt 0] 100)
                       (:nonprop-line-names g)]])
                   (igen/freq [
-                    [(get w [:nonprop-auto-track-list :cat 3 :star 0 :plus 0 :cat 1 :alt 0] 100)
+                    [(get w [:nonprop-auto-track-list :cat 3 :star 0 :cat 1 :alt 0] 100)
                       (:nonprop-fixed-size g)]
-                    [(get w [:nonprop-auto-track-list :cat 3 :star 0 :plus 0 :cat 1 :alt 1] 100)
+                    [(get w [:nonprop-auto-track-list :cat 3 :star 0 :cat 1 :alt 1] 100)
                       (:nonprop-fixed-repeat g)]])))]])
           (igen/freq [
             [(get w [:nonprop-auto-track-list :cat 4 :opt nil] 100)
@@ -1882,9 +1882,9 @@
                   (gen/tuple
                     (:nonprop-linear-color-stop g)
                     (igen/freq [
-                      [(get w [:nonprop-color-stop-list :cat 1 :star 0 :plus 0 :cat 1 :cat 1 :opt nil] 100)
+                      [(get w [:nonprop-color-stop-list :cat 1 :star 0 :cat 1 :cat 1 :opt nil] 100)
                         (gen/return "")]
-                      [(get w [:nonprop-color-stop-list :cat 1 :star 0 :plus 0 :cat 1 :cat 1 :opt 0] 100)
+                      [(get w [:nonprop-color-stop-list :cat 1 :star 0 :cat 1 :cat 1 :opt 0] 100)
                         (gen/tuple
                           (gen/return ", ")
                           (:nonprop-linear-color-hint g))]]))))]])
@@ -2226,11 +2226,11 @@
             [(get w [:nonprop-calc-product :cat 1 :star 0] 100)
               (igen/vector+
                 (igen/freq [
-                  [(get w [:nonprop-calc-product :cat 1 :star 0 :plus 0 :alt 0] 100)
+                  [(get w [:nonprop-calc-product :cat 1 :star 0 :alt 0] 100)
                     (gen/tuple
                       (gen/return "* ")
                       (:nonprop-calc-value g))]
-                  [(get w [:nonprop-calc-product :cat 1 :star 0 :plus 0 :alt 1] 100)
+                  [(get w [:nonprop-calc-product :cat 1 :star 0 :alt 1] 100)
                     (gen/tuple
                       (gen/return "/ ")
                       (:nonprop-number g))]]))]]))
@@ -2246,9 +2246,9 @@
               (igen/vector+
                 (gen/tuple
                   (igen/freq [
-                    [(get w [:nonprop-calc-sum :cat 1 :star 0 :plus 0 :cat 0 :alt 0] 100)
+                    [(get w [:nonprop-calc-sum :cat 1 :star 0 :cat 0 :alt 0] 100)
                       (gen/return "+ ")]
-                    [(get w [:nonprop-calc-sum :cat 1 :star 0 :plus 0 :cat 0 :alt 1] 100)
+                    [(get w [:nonprop-calc-sum :cat 1 :star 0 :cat 0 :alt 1] 100)
                       (gen/return "- ")]])
                   (:nonprop-calc-product g)))]]))
         g (assoc g :nonprop-calc-sum gen-nonprop-calc-sum)
@@ -2270,25 +2270,25 @@
             [(get w [:prop-unknown :cat 1 :star 0] 100)
               (igen/vector+
                 (igen/freq [
-                  [(get w [:prop-unknown :cat 1 :star 0 :plus 0 :alt 0] 100)
+                  [(get w [:prop-unknown :cat 1 :star 0 :alt 0] 100)
                     (:nonprop-custom-ident g)]
-                  [(get w [:prop-unknown :cat 1 :star 0 :plus 0 :alt 1] 100)
+                  [(get w [:prop-unknown :cat 1 :star 0 :alt 1] 100)
                     (gen/tuple
                       (:nonprop-string g)
                       (gen/return " "))]
-                  [(get w [:prop-unknown :cat 1 :star 0 :plus 0 :alt 2] 100)
+                  [(get w [:prop-unknown :cat 1 :star 0 :alt 2] 100)
                     (gen/tuple
                       (:nonprop-number g)
                       (gen/return " "))]
-                  [(get w [:prop-unknown :cat 1 :star 0 :plus 0 :alt 3] 100)
+                  [(get w [:prop-unknown :cat 1 :star 0 :alt 3] 100)
                     (gen/tuple
                       (:nonprop-percentage g)
                       (gen/return " "))]
-                  [(get w [:prop-unknown :cat 1 :star 0 :plus 0 :alt 4] 100)
+                  [(get w [:prop-unknown :cat 1 :star 0 :alt 4] 100)
                     (gen/tuple
                       (:nonprop-hex-color g)
                       (gen/return " "))]
-                  [(get w [:prop-unknown :cat 1 :star 0 :plus 0 :alt 5] 100)
+                  [(get w [:prop-unknown :cat 1 :star 0 :alt 5] 100)
                     (:func-calc g)]]))]]))
         g (assoc g :prop-unknown gen-prop-unknown)
 
@@ -4086,9 +4086,9 @@
                     (gen/tuple
                       (gen/return ", ")
                       (igen/freq [
-                        [(get w [:prop-animation-name :alt 1 :cat 1 :star 0 :plus 0 :cat 1 :alt 0] 100)
+                        [(get w [:prop-animation-name :alt 1 :cat 1 :star 0 :cat 1 :alt 0] 100)
                           (gen/return "none ")]
-                        [(get w [:prop-animation-name :alt 1 :cat 1 :star 0 :plus 0 :cat 1 :alt 1] 100)
+                        [(get w [:prop-animation-name :alt 1 :cat 1 :star 0 :cat 1 :alt 1] 100)
                           (:nonprop-keyframes-name g)]])))]]))]])
         g (assoc g :prop-animation-name gen-prop-animation-name)
 
@@ -5699,9 +5699,9 @@
                     (gen/tuple
                       (gen/return ", ")
                       (igen/freq [
-                        [(get w [:prop-font-family :alt 1 :cat 1 :star 0 :plus 0 :cat 1 :alt 0] 100)
+                        [(get w [:prop-font-family :alt 1 :cat 1 :star 0 :cat 1 :alt 0] 100)
                           (:nonprop-family-name g)]
-                        [(get w [:prop-font-family :alt 1 :cat 1 :star 0 :plus 0 :cat 1 :alt 1] 100)
+                        [(get w [:prop-font-family :alt 1 :cat 1 :star 0 :cat 1 :alt 1] 100)
                           (:nonprop-generic-family g)]])))]]))]])
         g (assoc g :prop-font-family gen-prop-font-family)
 
@@ -5864,9 +5864,9 @@
                     (gen/tuple
                       (gen/return ", ")
                       (igen/freq [
-                        [(get w [:prop-mask-clip :alt 1 :cat 1 :star 0 :plus 0 :cat 1 :alt 0] 100)
+                        [(get w [:prop-mask-clip :alt 1 :cat 1 :star 0 :cat 1 :alt 0] 100)
                           (:nonprop-geometry-box g)]
-                        [(get w [:prop-mask-clip :alt 1 :cat 1 :star 0 :plus 0 :cat 1 :alt 1] 100)
+                        [(get w [:prop-mask-clip :alt 1 :cat 1 :star 0 :cat 1 :alt 1] 100)
                           (gen/return "no-clip ")]])))]]))]])
         g (assoc g :prop-mask-clip gen-prop-mask-clip)
 
@@ -8365,9 +8365,9 @@
                     (gen/tuple
                       (:nonprop-url g)
                       (igen/freq [
-                        [(get w [:prop-cursor :alt 1 :cat 0 :star 0 :plus 0 :cat 1 :opt nil] 100)
+                        [(get w [:prop-cursor :alt 1 :cat 0 :star 0 :cat 1 :opt nil] 100)
                           (gen/return "")]
-                        [(get w [:prop-cursor :alt 1 :cat 0 :star 0 :plus 0 :cat 1 :opt 0] 100)
+                        [(get w [:prop-cursor :alt 1 :cat 0 :star 0 :cat 1 :opt 0] 100)
                           (gen/tuple
                             (:nonprop-x g)
                             (:nonprop-y g))]])
@@ -11208,9 +11208,9 @@
                 (gen/tuple
                   (:nonprop-pseudo-element-selector g)
                   (igen/freq [
-                    [(get w [:nonprop-compound-selector :cat 2 :star 0 :plus 0 :cat 1 :star nil] 100)
+                    [(get w [:nonprop-compound-selector :cat 2 :star 0 :cat 1 :star nil] 100)
                       (gen/return "")]
-                    [(get w [:nonprop-compound-selector :cat 2 :star 0 :plus 0 :cat 1 :star 0] 100)
+                    [(get w [:nonprop-compound-selector :cat 2 :star 0 :cat 1 :star 0] 100)
                       (igen/vector+
                         (:nonprop-pseudo-class-selector g))]])))]]))
         g (assoc g :nonprop-compound-selector gen-nonprop-compound-selector)
@@ -11225,9 +11225,9 @@
               (igen/vector+
                 (gen/tuple
                   (igen/freq [
-                    [(get w [:nonprop-complex-selector :cat 1 :star 0 :plus 0 :cat 0 :opt nil] 100)
+                    [(get w [:nonprop-complex-selector :cat 1 :star 0 :cat 0 :opt nil] 100)
                       (gen/return "")]
-                    [(get w [:nonprop-complex-selector :cat 1 :star 0 :plus 0 :cat 0 :opt 0] 100)
+                    [(get w [:nonprop-complex-selector :cat 1 :star 0 :cat 0 :opt 0] 100)
                       (:nonprop-combinator g)]])
                   (:nonprop-compound-selector g)))]]))
         g (assoc g :nonprop-complex-selector gen-nonprop-complex-selector)
@@ -11369,9 +11369,9 @@
                   (gen/tuple
                     (:nonprop-angular-color-stop g)
                     (igen/freq [
-                      [(get w [:nonprop-angular-color-stop-list :cat 1 :star 0 :plus 0 :cat 1 :cat 1 :opt nil] 100)
+                      [(get w [:nonprop-angular-color-stop-list :cat 1 :star 0 :cat 1 :cat 1 :opt nil] 100)
                         (gen/return "")]
-                      [(get w [:nonprop-angular-color-stop-list :cat 1 :star 0 :plus 0 :cat 1 :cat 1 :opt 0] 100)
+                      [(get w [:nonprop-angular-color-stop-list :cat 1 :star 0 :cat 1 :cat 1 :opt 0] 100)
                         (gen/tuple
                           (gen/return ", ")
                           (:nonprop-angular-color-hint g))]]))))]])
@@ -11544,14 +11544,14 @@
                         (gen/tuple
                           (gen/return "and ")
                           (igen/freq [
-                            [(get w [:nonprop-supports-condition :alt 1 :cat 1 :star 0 :plus 0 :cat 1 :alt 0] 100)
+                            [(get w [:nonprop-supports-condition :alt 1 :cat 1 :star 0 :cat 1 :alt 0] 100)
                               (gen/tuple
                                 (gen/return "( ")
                                 inner
                                 (gen/return ") "))]
-                            [(get w [:nonprop-supports-condition :alt 1 :cat 1 :star 0 :plus 0 :cat 1 :alt 1] 100)
+                            [(get w [:nonprop-supports-condition :alt 1 :cat 1 :star 0 :cat 1 :alt 1] 100)
                               (:nonprop-supports-feature g)]
-                            [(get w [:nonprop-supports-condition :alt 1 :cat 1 :star 0 :plus 0 :cat 1 :alt 2] 100)
+                            [(get w [:nonprop-supports-condition :alt 1 :cat 1 :star 0 :cat 1 :alt 2] 100)
                               (:nonprop-general-enclosed g)]])))]]))]
               [(get w [:nonprop-supports-condition :alt 2] 100)
                 (gen/tuple
@@ -11573,14 +11573,14 @@
                         (gen/tuple
                           (gen/return "or ")
                           (igen/freq [
-                            [(get w [:nonprop-supports-condition :alt 2 :cat 1 :star 0 :plus 0 :cat 1 :alt 0] 100)
+                            [(get w [:nonprop-supports-condition :alt 2 :cat 1 :star 0 :cat 1 :alt 0] 100)
                               (gen/tuple
                                 (gen/return "( ")
                                 inner
                                 (gen/return ") "))]
-                            [(get w [:nonprop-supports-condition :alt 2 :cat 1 :star 0 :plus 0 :cat 1 :alt 1] 100)
+                            [(get w [:nonprop-supports-condition :alt 2 :cat 1 :star 0 :cat 1 :alt 1] 100)
                               (:nonprop-supports-feature g)]
-                            [(get w [:nonprop-supports-condition :alt 2 :cat 1 :star 0 :plus 0 :cat 1 :alt 2] 100)
+                            [(get w [:nonprop-supports-condition :alt 2 :cat 1 :star 0 :cat 1 :alt 2] 100)
                               (:nonprop-general-enclosed g)]])))]]))]]))
           (igen/freq [
             [(get w [:nonprop-supports-condition :alt 0] 100)
@@ -11606,9 +11606,9 @@
                       (gen/tuple
                         (gen/return "and ")
                         (igen/freq [
-                          [(get w [:nonprop-supports-condition :alt 1 :cat 1 :star 0 :plus 0 :cat 1 :alt 0] 100)
+                          [(get w [:nonprop-supports-condition :alt 1 :cat 1 :star 0 :cat 1 :alt 0] 100)
                             (:nonprop-supports-feature g)]
-                          [(get w [:nonprop-supports-condition :alt 1 :cat 1 :star 0 :plus 0 :cat 1 :alt 1] 100)
+                          [(get w [:nonprop-supports-condition :alt 1 :cat 1 :star 0 :cat 1 :alt 1] 100)
                             (:nonprop-general-enclosed g)]])))]]))]
             [(get w [:nonprop-supports-condition :alt 2] 100)
               (gen/tuple
@@ -11625,9 +11625,9 @@
                       (gen/tuple
                         (gen/return "or ")
                         (igen/freq [
-                          [(get w [:nonprop-supports-condition :alt 2 :cat 1 :star 0 :plus 0 :cat 1 :alt 0] 100)
+                          [(get w [:nonprop-supports-condition :alt 2 :cat 1 :star 0 :cat 1 :alt 0] 100)
                             (:nonprop-supports-feature g)]
-                          [(get w [:nonprop-supports-condition :alt 2 :cat 1 :star 0 :plus 0 :cat 1 :alt 1] 100)
+                          [(get w [:nonprop-supports-condition :alt 2 :cat 1 :star 0 :cat 1 :alt 1] 100)
                             (:nonprop-general-enclosed g)]])))]]))]]))
         g (assoc g :nonprop-supports-condition gen-nonprop-supports-condition)
 
@@ -12052,27 +12052,27 @@
                 (gen/tuple
                   (gen/return ", ")
                   (igen/freq [
-                    [(get w [:nonprop-src :cat 1 :star 0 :plus 0 :cat 1 :alt 0] 100)
+                    [(get w [:nonprop-src :cat 1 :star 0 :cat 1 :alt 0] 100)
                       (gen/tuple
                         (:nonprop-url g)
                         (igen/freq [
-                          [(get w [:nonprop-src :cat 1 :star 0 :plus 0 :cat 1 :alt 0 :cat 1 :opt nil] 100)
+                          [(get w [:nonprop-src :cat 1 :star 0 :cat 1 :alt 0 :cat 1 :opt nil] 100)
                             (gen/return "")]
-                          [(get w [:nonprop-src :cat 1 :star 0 :plus 0 :cat 1 :alt 0 :cat 1 :opt 0] 100)
+                          [(get w [:nonprop-src :cat 1 :star 0 :cat 1 :alt 0 :cat 1 :opt 0] 100)
                             (gen/tuple
                               (gen/return "format ")
                               (gen/return "( ")
                               (:nonprop-string g)
                               (igen/freq [
-                                [(get w [:nonprop-src :cat 1 :star 0 :plus 0 :cat 1 :alt 0 :cat 1 :opt 0 :cat 3 :star nil] 100)
+                                [(get w [:nonprop-src :cat 1 :star 0 :cat 1 :alt 0 :cat 1 :opt 0 :cat 3 :star nil] 100)
                                   (gen/return "")]
-                                [(get w [:nonprop-src :cat 1 :star 0 :plus 0 :cat 1 :alt 0 :cat 1 :opt 0 :cat 3 :star 0] 100)
+                                [(get w [:nonprop-src :cat 1 :star 0 :cat 1 :alt 0 :cat 1 :opt 0 :cat 3 :star 0] 100)
                                   (igen/vector+
                                     (gen/tuple
                                       (gen/return ", ")
                                       (:nonprop-string g)))]])
                               (gen/return ") "))]]))]
-                    [(get w [:nonprop-src :cat 1 :star 0 :plus 0 :cat 1 :alt 1] 100)
+                    [(get w [:nonprop-src :cat 1 :star 0 :cat 1 :alt 1] 100)
                       (gen/tuple
                         (gen/return "local ")
                         (gen/return "( ")
@@ -12330,19 +12330,19 @@
                 [(get w [:css-simple-selector :alt 0 :cat 1 :star 0] 100)
                   (igen/vector+
                     (igen/freq [
-                      [(get w [:css-simple-selector :alt 0 :cat 1 :star 0 :plus 0 :opt nil] 100)
+                      [(get w [:css-simple-selector :alt 0 :cat 1 :star 0 :opt nil] 100)
                         (gen/return "")]
-                      [(get w [:css-simple-selector :alt 0 :cat 1 :star 0 :plus 0 :opt 0] 100)
+                      [(get w [:css-simple-selector :alt 0 :cat 1 :star 0 :opt 0] 100)
                         (igen/freq [
-                          [(get w [:css-simple-selector :alt 0 :cat 1 :star 0 :plus 0 :opt 0 :alt 0] 100)
+                          [(get w [:css-simple-selector :alt 0 :cat 1 :star 0 :opt 0 :alt 0] 100)
                             (:css-hash g)]
-                          [(get w [:css-simple-selector :alt 0 :cat 1 :star 0 :plus 0 :opt 0 :alt 1] 100)
+                          [(get w [:css-simple-selector :alt 0 :cat 1 :star 0 :opt 0 :alt 1] 100)
                             (:css-class g)]
-                          [(get w [:css-simple-selector :alt 0 :cat 1 :star 0 :plus 0 :opt 0 :alt 2] 100)
+                          [(get w [:css-simple-selector :alt 0 :cat 1 :star 0 :opt 0 :alt 2] 100)
                             (:css-attr g)]
-                          [(get w [:css-simple-selector :alt 0 :cat 1 :star 0 :plus 0 :opt 0 :alt 3] 100)
+                          [(get w [:css-simple-selector :alt 0 :cat 1 :star 0 :opt 0 :alt 3] 100)
                             (:css-psuedo g)]
-                          [(get w [:css-simple-selector :alt 0 :cat 1 :star 0 :plus 0 :opt 0 :alt 4] 100)
+                          [(get w [:css-simple-selector :alt 0 :cat 1 :star 0 :opt 0 :alt 4] 100)
                             (:css-negate g)]])]]))]]))]
           [(get w [:css-simple-selector :alt 1] 100)
             (igen/vector+
@@ -12384,9 +12384,9 @@
             [(get w [:css-selector :cat 1 :star 0] 100)
               (igen/vector+
                 (igen/freq [
-                  [(get w [:css-selector :cat 1 :star 0 :plus 0 :opt nil] 100)
+                  [(get w [:css-selector :cat 1 :star 0 :opt nil] 100)
                     (gen/return "")]
-                  [(get w [:css-selector :cat 1 :star 0 :plus 0 :opt 0] 100)
+                  [(get w [:css-selector :cat 1 :star 0 :opt 0] 100)
                     (gen/tuple
                       (:css-combinator g)
                       (:css-simple-selector g))]]))]]))
@@ -12426,9 +12426,9 @@
             [(get w [:css-ruleset :cat 1 :star 0] 100)
               (igen/vector+
                 (igen/freq [
-                  [(get w [:css-ruleset :cat 1 :star 0 :plus 0 :opt nil] 100)
+                  [(get w [:css-ruleset :cat 1 :star 0 :opt nil] 100)
                     (gen/return "")]
-                  [(get w [:css-ruleset :cat 1 :star 0 :plus 0 :opt 0] 100)
+                  [(get w [:css-ruleset :cat 1 :star 0 :opt 0] 100)
                     (gen/tuple
                       (gen/return ", ")
                       (:css-selector g))]]))]])
@@ -12446,11 +12446,11 @@
             [(get w [:stylesheet :cat 1 :star 0] 100)
               (igen/vector+
                 (igen/freq [
-                  [(get w [:stylesheet :cat 1 :star 0 :plus 0 :alt 0] 100)
+                  [(get w [:stylesheet :cat 1 :star 0 :alt 0] 100)
                     (:css-ruleset g)]
-                  [(get w [:stylesheet :cat 1 :star 0 :plus 0 :alt 1] 100)
+                  [(get w [:stylesheet :cat 1 :star 0 :alt 1] 100)
                     (:css-at-rule g)]
-                  [(get w [:stylesheet :cat 1 :star 0 :plus 0 :alt 2] 100)
+                  [(get w [:stylesheet :cat 1 :star 0 :alt 2] 100)
                     (:css-comment g)]]))]]))
         g (assoc g :stylesheet gen-stylesheet)
 

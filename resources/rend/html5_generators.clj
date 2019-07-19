@@ -3892,17 +3892,17 @@
                   (gen/return ", ")
                   (:url g)
                   (igen/freq [
-                    [(get w [:srcset :cat 2 :star 0 :plus 0 :cat 2 :opt nil] 100)
+                    [(get w [:srcset :cat 2 :star 0 :cat 2 :opt nil] 100)
                       (gen/return "")]
-                    [(get w [:srcset :cat 2 :star 0 :plus 0 :cat 2 :opt 0] 100)
+                    [(get w [:srcset :cat 2 :star 0 :cat 2 :opt 0] 100)
                       (gen/tuple
                         (gen/return " ")
                         (gen/tuple
                           (:any-number g)
                           (igen/freq [
-                            [(get w [:srcset :cat 2 :star 0 :plus 0 :cat 2 :opt 0 :cat 1 :cat 1 :alt 0] 100)
+                            [(get w [:srcset :cat 2 :star 0 :cat 2 :opt 0 :cat 1 :cat 1 :alt 0] 100)
                               (gen/return "w")]
-                            [(get w [:srcset :cat 2 :star 0 :plus 0 :cat 2 :opt 0 :cat 1 :cat 1 :alt 1] 100)
+                            [(get w [:srcset :cat 2 :star 0 :cat 2 :opt 0 :cat 1 :cat 1 :alt 1] 100)
                               (gen/return "x")]])))]])))]]))
         g (assoc g :srcset gen-srcset)
 
@@ -4334,9 +4334,9 @@
                     [(get w [:element :alt 0 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 0 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 0 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 0 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 0 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</a>"))]
               [(get w [:element :alt 1] 100)
@@ -4357,9 +4357,9 @@
                     [(get w [:element :alt 1 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 1 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 1 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 1 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 1 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</abbr>"))]
               [(get w [:element :alt 2] 100)
@@ -4380,9 +4380,9 @@
                     [(get w [:element :alt 2 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 2 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 2 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 2 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 2 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</address>"))]
               [(get w [:element :alt 3] 100)
@@ -4415,9 +4415,9 @@
                     [(get w [:element :alt 4 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 4 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 4 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 4 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 4 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</article>"))]
               [(get w [:element :alt 5] 100)
@@ -4438,9 +4438,9 @@
                     [(get w [:element :alt 5 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 5 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 5 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 5 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 5 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</aside>"))]
               [(get w [:element :alt 6] 100)
@@ -4461,9 +4461,9 @@
                     [(get w [:element :alt 6 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 6 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 6 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 6 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 6 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</audio>"))]
               [(get w [:element :alt 7] 100)
@@ -4484,9 +4484,9 @@
                     [(get w [:element :alt 7 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 7 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 7 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 7 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 7 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</b>"))]
               [(get w [:element :alt 8] 100)
@@ -4519,9 +4519,9 @@
                     [(get w [:element :alt 9 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 9 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 9 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 9 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 9 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</bdi>"))]
               [(get w [:element :alt 10] 100)
@@ -4542,9 +4542,9 @@
                     [(get w [:element :alt 10 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 10 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 10 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 10 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 10 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</bdo>"))]
               [(get w [:element :alt 11] 100)
@@ -4565,9 +4565,9 @@
                     [(get w [:element :alt 11 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 11 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 11 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 11 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 11 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</blockquote>"))]
               [(get w [:element :alt 12] 100)
@@ -4600,9 +4600,9 @@
                     [(get w [:element :alt 13 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 13 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 13 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 13 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 13 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</button>"))]
               [(get w [:element :alt 14] 100)
@@ -4623,9 +4623,9 @@
                     [(get w [:element :alt 14 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 14 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 14 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 14 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 14 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</canvas>"))]
               [(get w [:element :alt 15] 100)
@@ -4646,9 +4646,9 @@
                     [(get w [:element :alt 15 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 15 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 15 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 15 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 15 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</caption>"))]
               [(get w [:element :alt 16] 100)
@@ -4669,9 +4669,9 @@
                     [(get w [:element :alt 16 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 16 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 16 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 16 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 16 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</cite>"))]
               [(get w [:element :alt 17] 100)
@@ -4692,9 +4692,9 @@
                     [(get w [:element :alt 17 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 17 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 17 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 17 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 17 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</code>"))]
               [(get w [:element :alt 18] 100)
@@ -4727,9 +4727,9 @@
                     [(get w [:element :alt 19 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 19 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 19 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 19 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 19 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</colgroup>"))]
               [(get w [:element :alt 20] 100)
@@ -4750,9 +4750,9 @@
                     [(get w [:element :alt 20 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 20 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 20 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 20 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 20 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</data>"))]
               [(get w [:element :alt 21] 100)
@@ -4773,9 +4773,9 @@
                     [(get w [:element :alt 21 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 21 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 21 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 21 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 21 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</datalist>"))]
               [(get w [:element :alt 22] 100)
@@ -4796,9 +4796,9 @@
                     [(get w [:element :alt 22 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 22 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 22 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 22 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 22 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</dd>"))]
               [(get w [:element :alt 23] 100)
@@ -4819,9 +4819,9 @@
                     [(get w [:element :alt 23 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 23 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 23 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 23 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 23 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</del>"))]
               [(get w [:element :alt 24] 100)
@@ -4842,9 +4842,9 @@
                     [(get w [:element :alt 24 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 24 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 24 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 24 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 24 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</details>"))]
               [(get w [:element :alt 25] 100)
@@ -4865,9 +4865,9 @@
                     [(get w [:element :alt 25 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 25 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 25 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 25 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 25 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</dfn>"))]
               [(get w [:element :alt 26] 100)
@@ -4888,9 +4888,9 @@
                     [(get w [:element :alt 26 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 26 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 26 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 26 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 26 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</div>"))]
               [(get w [:element :alt 27] 100)
@@ -4911,9 +4911,9 @@
                     [(get w [:element :alt 27 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 27 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 27 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 27 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 27 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</dl>"))]
               [(get w [:element :alt 28] 100)
@@ -4934,9 +4934,9 @@
                     [(get w [:element :alt 28 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 28 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 28 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 28 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 28 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</dt>"))]
               [(get w [:element :alt 29] 100)
@@ -4957,9 +4957,9 @@
                     [(get w [:element :alt 29 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 29 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 29 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 29 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 29 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</em>"))]
               [(get w [:element :alt 30] 100)
@@ -4992,9 +4992,9 @@
                     [(get w [:element :alt 31 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 31 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 31 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 31 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 31 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</fieldset>"))]
               [(get w [:element :alt 32] 100)
@@ -5015,9 +5015,9 @@
                     [(get w [:element :alt 32 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 32 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 32 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 32 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 32 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</figcaption>"))]
               [(get w [:element :alt 33] 100)
@@ -5038,9 +5038,9 @@
                     [(get w [:element :alt 33 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 33 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 33 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 33 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 33 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</figure>"))]
               [(get w [:element :alt 34] 100)
@@ -5061,9 +5061,9 @@
                     [(get w [:element :alt 34 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 34 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 34 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 34 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 34 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</footer>"))]
               [(get w [:element :alt 35] 100)
@@ -5084,9 +5084,9 @@
                     [(get w [:element :alt 35 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 35 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 35 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 35 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 35 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</form>"))]
               [(get w [:element :alt 36] 100)
@@ -5107,9 +5107,9 @@
                     [(get w [:element :alt 36 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 36 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 36 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 36 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 36 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</h1>"))]
               [(get w [:element :alt 37] 100)
@@ -5130,9 +5130,9 @@
                     [(get w [:element :alt 37 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 37 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 37 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 37 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 37 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</h2>"))]
               [(get w [:element :alt 38] 100)
@@ -5153,9 +5153,9 @@
                     [(get w [:element :alt 38 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 38 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 38 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 38 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 38 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</h3>"))]
               [(get w [:element :alt 39] 100)
@@ -5176,9 +5176,9 @@
                     [(get w [:element :alt 39 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 39 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 39 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 39 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 39 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</h4>"))]
               [(get w [:element :alt 40] 100)
@@ -5199,9 +5199,9 @@
                     [(get w [:element :alt 40 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 40 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 40 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 40 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 40 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</h5>"))]
               [(get w [:element :alt 41] 100)
@@ -5222,9 +5222,9 @@
                     [(get w [:element :alt 41 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 41 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 41 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 41 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 41 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</h6>"))]
               [(get w [:element :alt 42] 100)
@@ -5245,9 +5245,9 @@
                     [(get w [:element :alt 42 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 42 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 42 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 42 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 42 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</header>"))]
               [(get w [:element :alt 43] 100)
@@ -5280,9 +5280,9 @@
                     [(get w [:element :alt 44 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 44 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 44 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 44 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 44 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</i>"))]
               [(get w [:element :alt 45] 100)
@@ -5303,9 +5303,9 @@
                     [(get w [:element :alt 45 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 45 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 45 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 45 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 45 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</iframe>"))]
               [(get w [:element :alt 46] 100)
@@ -5350,9 +5350,9 @@
                     [(get w [:element :alt 48 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 48 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 48 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 48 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 48 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</ins>"))]
               [(get w [:element :alt 49] 100)
@@ -5373,9 +5373,9 @@
                     [(get w [:element :alt 49 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 49 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 49 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 49 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 49 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</kbd>"))]
               [(get w [:element :alt 50] 100)
@@ -5408,9 +5408,9 @@
                     [(get w [:element :alt 51 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 51 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 51 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 51 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 51 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</label>"))]
               [(get w [:element :alt 52] 100)
@@ -5431,9 +5431,9 @@
                     [(get w [:element :alt 52 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 52 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 52 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 52 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 52 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</legend>"))]
               [(get w [:element :alt 53] 100)
@@ -5454,9 +5454,9 @@
                     [(get w [:element :alt 53 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 53 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 53 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 53 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 53 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</li>"))]
               [(get w [:element :alt 54] 100)
@@ -5489,9 +5489,9 @@
                     [(get w [:element :alt 55 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 55 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 55 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 55 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 55 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</main>"))]
               [(get w [:element :alt 56] 100)
@@ -5512,9 +5512,9 @@
                     [(get w [:element :alt 56 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 56 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 56 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 56 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 56 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</map>"))]
               [(get w [:element :alt 57] 100)
@@ -5535,9 +5535,9 @@
                     [(get w [:element :alt 57 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 57 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 57 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 57 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 57 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</mark>"))]
               [(get w [:element :alt 58] 100)
@@ -5558,9 +5558,9 @@
                     [(get w [:element :alt 58 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 58 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 58 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 58 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 58 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</menu>"))]
               [(get w [:element :alt 59] 100)
@@ -5605,9 +5605,9 @@
                     [(get w [:element :alt 61 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 61 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 61 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 61 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 61 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</meter>"))]
               [(get w [:element :alt 62] 100)
@@ -5628,9 +5628,9 @@
                     [(get w [:element :alt 62 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 62 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 62 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 62 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 62 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</nav>"))]
               [(get w [:element :alt 63] 100)
@@ -5651,9 +5651,9 @@
                     [(get w [:element :alt 63 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 63 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 63 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 63 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 63 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</noscript>"))]
               [(get w [:element :alt 64] 100)
@@ -5674,9 +5674,9 @@
                     [(get w [:element :alt 64 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 64 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 64 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 64 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 64 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</object>"))]
               [(get w [:element :alt 65] 100)
@@ -5697,9 +5697,9 @@
                     [(get w [:element :alt 65 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 65 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 65 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 65 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 65 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</ol>"))]
               [(get w [:element :alt 66] 100)
@@ -5720,9 +5720,9 @@
                     [(get w [:element :alt 66 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 66 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 66 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 66 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 66 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</optgroup>"))]
               [(get w [:element :alt 67] 100)
@@ -5743,9 +5743,9 @@
                     [(get w [:element :alt 67 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 67 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 67 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 67 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 67 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</option>"))]
               [(get w [:element :alt 68] 100)
@@ -5766,9 +5766,9 @@
                     [(get w [:element :alt 68 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 68 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 68 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 68 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 68 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</output>"))]
               [(get w [:element :alt 69] 100)
@@ -5789,9 +5789,9 @@
                     [(get w [:element :alt 69 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 69 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 69 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 69 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 69 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</p>"))]
               [(get w [:element :alt 70] 100)
@@ -5824,9 +5824,9 @@
                     [(get w [:element :alt 71 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 71 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 71 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 71 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 71 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</picture>"))]
               [(get w [:element :alt 72] 100)
@@ -5847,9 +5847,9 @@
                     [(get w [:element :alt 72 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 72 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 72 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 72 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 72 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</pre>"))]
               [(get w [:element :alt 73] 100)
@@ -5870,9 +5870,9 @@
                     [(get w [:element :alt 73 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 73 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 73 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 73 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 73 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</progress>"))]
               [(get w [:element :alt 74] 100)
@@ -5893,9 +5893,9 @@
                     [(get w [:element :alt 74 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 74 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 74 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 74 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 74 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</q>"))]
               [(get w [:element :alt 75] 100)
@@ -5916,9 +5916,9 @@
                     [(get w [:element :alt 75 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 75 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 75 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 75 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 75 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</rb>"))]
               [(get w [:element :alt 76] 100)
@@ -5939,9 +5939,9 @@
                     [(get w [:element :alt 76 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 76 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 76 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 76 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 76 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</rp>"))]
               [(get w [:element :alt 77] 100)
@@ -5962,9 +5962,9 @@
                     [(get w [:element :alt 77 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 77 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 77 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 77 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 77 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</rt>"))]
               [(get w [:element :alt 78] 100)
@@ -5985,9 +5985,9 @@
                     [(get w [:element :alt 78 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 78 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 78 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 78 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 78 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</rtc>"))]
               [(get w [:element :alt 79] 100)
@@ -6008,9 +6008,9 @@
                     [(get w [:element :alt 79 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 79 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 79 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 79 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 79 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</ruby>"))]
               [(get w [:element :alt 80] 100)
@@ -6031,9 +6031,9 @@
                     [(get w [:element :alt 80 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 80 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 80 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 80 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 80 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</s>"))]
               [(get w [:element :alt 81] 100)
@@ -6054,9 +6054,9 @@
                     [(get w [:element :alt 81 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 81 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 81 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 81 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 81 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</samp>"))]
               [(get w [:element :alt 82] 100)
@@ -6077,9 +6077,9 @@
                     [(get w [:element :alt 82 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 82 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 82 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 82 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 82 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</script>"))]
               [(get w [:element :alt 83] 100)
@@ -6100,9 +6100,9 @@
                     [(get w [:element :alt 83 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 83 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 83 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 83 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 83 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</section>"))]
               [(get w [:element :alt 84] 100)
@@ -6123,9 +6123,9 @@
                     [(get w [:element :alt 84 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 84 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 84 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 84 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 84 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</select>"))]
               [(get w [:element :alt 85] 100)
@@ -6146,9 +6146,9 @@
                     [(get w [:element :alt 85 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 85 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 85 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 85 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 85 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</small>"))]
               [(get w [:element :alt 86] 100)
@@ -6181,9 +6181,9 @@
                     [(get w [:element :alt 87 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 87 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 87 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 87 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 87 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</span>"))]
               [(get w [:element :alt 88] 100)
@@ -6204,9 +6204,9 @@
                     [(get w [:element :alt 88 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 88 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 88 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 88 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 88 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</strong>"))]
               [(get w [:element :alt 89] 100)
@@ -6227,9 +6227,9 @@
                     [(get w [:element :alt 89 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 89 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 89 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 89 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 89 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</style>"))]
               [(get w [:element :alt 90] 100)
@@ -6250,9 +6250,9 @@
                     [(get w [:element :alt 90 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 90 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 90 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 90 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 90 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</sub>"))]
               [(get w [:element :alt 91] 100)
@@ -6273,9 +6273,9 @@
                     [(get w [:element :alt 91 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 91 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 91 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 91 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 91 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</summary>"))]
               [(get w [:element :alt 92] 100)
@@ -6296,9 +6296,9 @@
                     [(get w [:element :alt 92 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 92 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 92 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 92 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 92 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</sup>"))]
               [(get w [:element :alt 93] 100)
@@ -6319,9 +6319,9 @@
                     [(get w [:element :alt 93 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 93 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 93 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 93 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 93 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</table>"))]
               [(get w [:element :alt 94] 100)
@@ -6342,9 +6342,9 @@
                     [(get w [:element :alt 94 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 94 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 94 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 94 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 94 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</tbody>"))]
               [(get w [:element :alt 95] 100)
@@ -6365,9 +6365,9 @@
                     [(get w [:element :alt 95 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 95 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 95 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 95 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 95 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</td>"))]
               [(get w [:element :alt 96] 100)
@@ -6388,9 +6388,9 @@
                     [(get w [:element :alt 96 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 96 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 96 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 96 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 96 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</template>"))]
               [(get w [:element :alt 97] 100)
@@ -6411,9 +6411,9 @@
                     [(get w [:element :alt 97 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 97 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 97 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 97 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 97 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</textarea>"))]
               [(get w [:element :alt 98] 100)
@@ -6434,9 +6434,9 @@
                     [(get w [:element :alt 98 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 98 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 98 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 98 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 98 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</tfoot>"))]
               [(get w [:element :alt 99] 100)
@@ -6457,9 +6457,9 @@
                     [(get w [:element :alt 99 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 99 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 99 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 99 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 99 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</th>"))]
               [(get w [:element :alt 100] 100)
@@ -6480,9 +6480,9 @@
                     [(get w [:element :alt 100 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 100 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 100 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 100 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 100 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</thead>"))]
               [(get w [:element :alt 101] 100)
@@ -6503,9 +6503,9 @@
                     [(get w [:element :alt 101 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 101 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 101 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 101 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 101 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</time>"))]
               [(get w [:element :alt 102] 100)
@@ -6526,9 +6526,9 @@
                     [(get w [:element :alt 102 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 102 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 102 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 102 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 102 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</tr>"))]
               [(get w [:element :alt 103] 100)
@@ -6561,9 +6561,9 @@
                     [(get w [:element :alt 104 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 104 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 104 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 104 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 104 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</u>"))]
               [(get w [:element :alt 105] 100)
@@ -6584,9 +6584,9 @@
                     [(get w [:element :alt 105 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 105 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 105 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 105 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 105 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</ul>"))]
               [(get w [:element :alt 106] 100)
@@ -6607,9 +6607,9 @@
                     [(get w [:element :alt 106 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 106 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 106 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 106 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 106 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</var>"))]
               [(get w [:element :alt 107] 100)
@@ -6630,9 +6630,9 @@
                     [(get w [:element :alt 107 :cat 3 :star 0] 100)
                       (igen/vector+
                         (igen/freq [
-                          [(get w [:element :alt 107 :cat 3 :star 0 :plus 0 :alt 0] 100)
+                          [(get w [:element :alt 107 :cat 3 :star 0 :alt 0] 100)
                             inner]
-                          [(get w [:element :alt 107 :cat 3 :star 0 :plus 0 :alt 1] 100)
+                          [(get w [:element :alt 107 :cat 3 :star 0 :alt 1] 100)
                             (:content g)]]))]])
                   (gen/return "</video>"))]
               [(get w [:element :alt 108] 100)
@@ -8627,9 +8627,9 @@
             [(get w [:body :cat 3 :star 0] 100)
               (igen/vector+
                 (igen/freq [
-                  [(get w [:body :cat 3 :star 0 :plus 0 :alt 0] 100)
+                  [(get w [:body :cat 3 :star 0 :alt 0] 100)
                     (:element g)]
-                  [(get w [:body :cat 3 :star 0 :plus 0 :alt 1] 100)
+                  [(get w [:body :cat 3 :star 0 :alt 1] 100)
                     (:content g)]]))]])
           (gen/return "</body> "))
         g (assoc g :body gen-body)]
@@ -8695,7 +8695,7 @@
               (gen/return "")]
             [(get w [:title :cat 3 :star 0] 100)
               (igen/vector+
-                (:content g))]])
+                (:char-data g))]])
           (gen/return "</title> "))
         g (assoc g :title gen-title)
 
@@ -8827,9 +8827,9 @@
             [(get w [:body-test :cat 3 :star 0] 100)
               (igen/vector+
                 (igen/freq [
-                  [(get w [:body-test :cat 3 :star 0 :plus 0 :alt 0] 100)
+                  [(get w [:body-test :cat 3 :star 0 :alt 0] 100)
                     (:element g)]
-                  [(get w [:body-test :cat 3 :star 0 :plus 0 :alt 1] 100)
+                  [(get w [:body-test :cat 3 :star 0 :alt 1] 100)
                     (:content g)]]))]])
           (gen/return "</body>"))
         g (assoc g :body-test gen-body-test)

@@ -3120,7 +3120,7 @@
      ({:tag :nt, :keyword :rS, :hide true}
       {:tag :nt, :keyword :title-attribute})}}
    {:tag :string, :string ">"}
-   {:tag :star, :parser {:tag :nt, :keyword :content}}
+   {:tag :star, :parser {:tag :nt, :keyword :char-data}}
    {:tag :string, :string "</title>"}
    {:tag :nt, :keyword :S, :hide true})},
  :option-attribute
@@ -3185,8 +3185,7 @@
   :parsers
   ({:tag :epsilon}
    {:tag :string, :string "STUB Valid media query list"})},
- :lang
- {:tag :regexp, :regexp #"[a-z]+(?:-[A-Za-z]+)?", :comments (" CSS ")},
+ :lang {:tag :regexp, :regexp #"[a-z]+(?:-[A-Za-z]+)?"},
  :attr-val-area__rel
  {:tag :alt,
   :parsers
@@ -3856,7 +3855,8 @@
    {:tag :string, :string "in"}
    {:tag :string, :string "pt"}
    {:tag :string, :string "pc"}
-   {:tag :string, :string "mozmm"})},
+   {:tag :string, :string "mozmm"}),
+  :comments (" CSS ")},
  :kbd-attribute {:tag :nt, :keyword :global-attribute},
  :attr-val-input__list
  {:tag :alt, :parsers ({:tag :epsilon} {:tag :nt, :keyword :name})},
