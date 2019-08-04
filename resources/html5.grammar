@@ -3366,7 +3366,7 @@
   :parsers
   ({:tag :string, :string "&", :hide true}
    {:tag :nt, :keyword :name}
-   {:tag :string, :string ";", :hide true})},
+   {:tag :string, :string ";"})},
  :nav-attribute {:tag :nt, :keyword :global-attribute},
  :attr-val-form__method
  {:tag :alt,

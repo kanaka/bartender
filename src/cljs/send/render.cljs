@@ -42,7 +42,7 @@
           (str (get-in @core/state [:test-state
                                     :log
                                     slug
-                                    :weight-adjusts-summary]))]]))))
+                                    :TAP-summary]))]]))))
 
 (defn report-summary-text [slug-log]
   (let [slug (:test-slug slug-log)

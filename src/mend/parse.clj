@@ -9,32 +9,39 @@
 
             [instacheck.core :as instacheck]))
 
-(def EBNF-PATHS
-  {:html {:gen   ["html5-test.ebnf" "html5.ebnf"]
-          :parse ["html5.ebnf"]}
-   :css  {:gen   ["css3-test.ebnf" "css3.ebnf"]
-          :parse ["css3.ebnf"]}})
+(def EBNFs
+  {:html {:gen          ["html5-test.ebnf" "html5.ebnf"]
+          :parse        ["html5.ebnf"]}
+   :css  {:gen          ["css3-test.ebnf" "css3.ebnf"]
+          :parse        ["css3.ebnf"]
+          :parse-inline ["css3.ebnf"]}
+   :tNa  {:parse        ["tags-and-attrs.ebnf"]}})
 
-(def GRAMMAR-PATHS
+(def GRAMMARs
   {:html "html5.grammar"
    :css  "css3.grammar"})
 
 
 (def GRAMMAR-MANGLES
-  {:html {:gen   {:char-data :char-data-test
-                  :comment :comment-test
-                  :url :url-test}
-          :parse {}}
-   :css  {:gen   {}
-          :parse {:nonprop-group-rule-body :stylesheet
-                  :prop-group-rule-body :css-ruleset
-                  :nonprop-declaration-list :css-assignments}}})
+  {:html {:gen          {:char-data :char-data-test
+                         :comment   :comment-test
+                         :url       :url-test}
+          :parse        {}}
+   :css  {:gen          {}
+          :parse        {:nonprop-group-rule-body  :stylesheet
+                         :prop-group-rule-body     :css-ruleset
+                         :nonprop-declaration-list :css-assignments}
+          :parse-inline {:nonprop-group-rule-body  :stylesheet
+                         :prop-group-rule-body     :css-ruleset
+                         :nonprop-declaration-list :css-assignments}}})
 
 (def START-RULES
-  {:html {:gen    :html-test
-          :parse  :html}
-   :css  {:gen    :css-assignments-test
-          :parse  :stylesheet}})
+  {:html {:gen           :html-test
+          :parse         :html}
+   :css  {:gen           :css-assignments-test
+          :parse         :stylesheet
+          :parse-inline  :css-assignments}
+   :tNa  {:parse         :html}})
 
 (defn mangle-parser
   [parser mangles]
@@ -48,13 +55,14 @@
         parser (mangle-parser base-parser mangles)]
     parser))
 
-(defn load-parser [mode direction]
-  (let [parser (load-parser* (get-in EBNF-PATHS [mode direction])
-                             (get-in GRAMMAR-MANGLES [mode direction]))]
-    (assoc parser :start-production (get-in START-RULES [mode direction]))))
+(defn load-parser [kind mode]
+  (let [parser (load-parser* (get-in EBNFs [kind mode])
+                             (get-in GRAMMAR-MANGLES [kind mode]))
+        start (get-in START-RULES [kind mode])]
+    (assoc parser :start-production start)))
 
-(defn load-parser-from-grammar [mode]
-  (let [gfile (io/resource (get GRAMMAR-PATHS mode))
+(defn load-parser-from-grammar [kind mode]
+  (let [gfile (io/resource (get GRAMMARs kind))
         grammar (read-string (slurp gfile))
-        start (get-in START-RULES [mode :parse])]
+        start (get-in START-RULES [kind mode])]
     (instacheck/grammar->parser grammar start)))

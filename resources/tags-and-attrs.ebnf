@@ -1,0 +1,37 @@
+html = '<!DOCTYPE html>'? S comment? elem+ ;
+elem = script-elem
+     / style-elem
+     / svg-elem
+     / start-elem
+     / end-elem
+     / content ;
+
+script-elem = '<' 'script' attrs S '>' script-data '</script>' S ;
+style-elem  = '<' 'style'  attrs S '>' style-data  '</style>' S ;
+svg-elem    = '<' 'svg'    attrs S '>' svg-data    '</svg>' S ;
+start-elem  = '<' tag-name attrs S '>' S;
+end-elem    = '</' tag-name '>' S ;
+content     = char-data
+            | comment ;
+
+<script-data> = ( #'[^<]*' | !'</script>' #'<' )+ ;
+<style-data>  = ( #'[^<]*' | !'</style>' #'<' )+ ;
+<svg-data>    = ( #'[^<]*' | !'</svg>' #'<' )+ ;
+
+attrs = attr* ;
+attr = rS attr-name S <'='> attr-val
+     | rS attr-name ;
+
+<char-data> = #'[^<]+' ;
+
+attr-val = S <'"'> ( #'\\.' | #'[^\\"]*' )* <'"'>
+         | S <"'"> ( #"\\." | #"[^\\']*" )* <"'"> ;
+
+<tag-name> = name ;
+attr-name = name ;
+<name> = #'[A-Za-z_:][A-Za-z_:\-.0-9]*' ;
+
+<comment> = '<!--' ( #'[^-]*' | !'-->' #'-' )* '-->' ;
+
+<S> = #'\s*' ;
+<rS> = #'\s+' ;

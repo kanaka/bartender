@@ -1,8 +1,7 @@
 (ns rend.misc-generators
   (:require [clojure.test.check :as tc]
             [clojure.test.check.generators :as gen]
-            [clojure.test.check.properties :as prop]
-            [hiccup.core :as hiccup]))
+            [clojure.test.check.properties :as prop]))
 
 (def simple-identifier
   "Generate a simple HTML/CSS identifier (alpha string)"

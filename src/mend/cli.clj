@@ -5,7 +5,7 @@
 
             [instacheck.cli :as instacheck-cli]
             [instacheck.core :as instacheck]
-            [mend.gen :as mend.gen]
+            [mend.grammar :as mend.grammar]
             [mend.parse :as mend.parse]))
 
 (defn pr-err
@@ -51,15 +51,19 @@
         _ (println "Loading" mode "generator grammar")
         gen-grammar (instacheck/parser->grammar
                           (mend.parse/load-parser mode :gen))
-        _ (println "Applying generator grammar updates")
-        mangled-gen-grammar    (mend.gen/grammar-update gen-grammar mode)
+        _ (println "Applying updates to parser grammar")
+        mangled-parse-grammar (mend.grammar/parse-grammar-update
+                                parse-grammar mode)
+        _ (println "Applying updates to generator grammar")
+        mangled-gen-grammar   (mend.grammar/gen-grammar-update
+                                gen-grammar mode)
         _ (println "Converting generator grammar to clojure generators")
         ns-str (instacheck/grammar->ns
                  ctx mangled-gen-grammar "[rend.misc-generators :as rgen]")]
 
     (when-let [gfile (:grammar-output opts)]
       (println "Saving parser grammar to" gfile)
-      (spit gfile (with-out-str (pprint parse-grammar))))
+      (spit gfile (with-out-str (pprint mangled-parse-grammar))))
 
     (when-let [wfile (:weights-output opts)]
       (println "Saving generator weights to" wfile)
@@ -81,7 +85,8 @@
       (println "--namespace NAMESPACE required")
       (System/exit 2))
 
-    (println "Saving Clojure code to" (:clj-output opts))
-    (io/make-parents (:clj-output opts))
-    (spit (:clj-output opts) (ebnf->clj opts))))
+    (let [code (ebnf->clj opts)]
+      (println "Saving Clojure code to" (:clj-output opts))
+      (io/make-parents (:clj-output opts))
+      (spit (:clj-output opts) code))))
 

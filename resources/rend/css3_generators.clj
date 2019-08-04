@@ -350,7 +350,8 @@
               (:nonprop-right g)
               (gen/return ", ")
               (:nonprop-bottom g)
-              (gen/return ", ")
+              (gen/return ",")
+              (gen/return " ")
               (:nonprop-left g)
               (gen/return ") "))]
           [(get w [:nonprop-shape :alt 1] 100)
@@ -535,9 +536,11 @@
               (gen/return "( ")
               (gen/tuple
                 (:nonprop-percentage g)
-                (gen/return ", ")
+                (gen/return ",")
+                (gen/return " ")
                 (:nonprop-percentage g)
-                (gen/return ", ")
+                (gen/return ",")
+                (gen/return " ")
                 (:nonprop-percentage g))
               (gen/return ", ")
               (igen/freq [
@@ -552,9 +555,11 @@
               (gen/return "( ")
               (gen/tuple
                 (:nonprop-number g)
-                (gen/return ", ")
+                (gen/return ",")
+                (gen/return " ")
                 (:nonprop-number g)
-                (gen/return ", ")
+                (gen/return ",")
+                (gen/return " ")
                 (:nonprop-number g))
               (gen/return ", ")
               (igen/freq [
@@ -905,11 +910,12 @@
               (:nonprop-percentage g)
               (gen/return ", ")
               (:nonprop-percentage g)
-              (gen/return ", ")
+              (gen/return ",")
+              (gen/return " ")
               (igen/freq [
-                [(get w [:func-hsla :alt 1 :cat 8 :opt nil] 100)
+                [(get w [:func-hsla :alt 1 :cat 9 :opt nil] 100)
                   (gen/return "")]
-                [(get w [:func-hsla :alt 1 :cat 8 :opt 0] 100)
+                [(get w [:func-hsla :alt 1 :cat 9 :opt 0] 100)
                   (:nonprop-alpha-value g)]])
               (gen/return ") "))]])
         g (assoc g :func-hsla gen-func-hsla)
@@ -958,9 +964,11 @@
               (gen/return "( ")
               (gen/tuple
                 (:nonprop-percentage g)
-                (gen/return ", ")
+                (gen/return ",")
+                (gen/return " ")
                 (:nonprop-percentage g)
-                (gen/return ", ")
+                (gen/return ",")
+                (gen/return " ")
                 (:nonprop-percentage g))
               (gen/return ", ")
               (igen/freq [
@@ -975,9 +983,11 @@
               (gen/return "( ")
               (gen/tuple
                 (:nonprop-number g)
-                (gen/return ", ")
+                (gen/return ",")
+                (gen/return " ")
                 (:nonprop-number g)
-                (gen/return ", ")
+                (gen/return ",")
+                (gen/return " ")
                 (:nonprop-number g))
               (gen/return ", ")
               (igen/freq [
@@ -1059,7 +1069,8 @@
                 [(get w [:prop-box-shadow :alt 2 :cat 1 :star 0] 100)
                   (igen/vector+
                     (gen/tuple
-                      (gen/return ", ")
+                      (gen/return ",")
+                      (gen/return " ")
                       (:nonprop-shadow g)))]]))]])
         g (assoc g :prop-box-shadow gen-prop-box-shadow)
 
@@ -1741,7 +1752,8 @@
                 [(get w [:prop-transition-duration :alt 1 :cat 1 :star 0] 100)
                   (igen/vector+
                     (gen/tuple
-                      (gen/return ", ")
+                      (gen/return ",")
+                      (gen/return " ")
                       (:nonprop-time g)))]]))]])
         g (assoc g :prop-transition-duration gen-prop-transition-duration)
 
@@ -1878,13 +1890,14 @@
             [(get w [:nonprop-color-stop-list :cat 1 :star 0] 100)
               (igen/vector+
                 (gen/tuple
-                  (gen/return ", ")
+                  (gen/return ",")
+                  (gen/return " ")
                   (gen/tuple
                     (:nonprop-linear-color-stop g)
                     (igen/freq [
-                      [(get w [:nonprop-color-stop-list :cat 1 :star 0 :cat 1 :cat 1 :opt nil] 100)
+                      [(get w [:nonprop-color-stop-list :cat 1 :star 0 :cat 2 :cat 1 :opt nil] 100)
                         (gen/return "")]
-                      [(get w [:nonprop-color-stop-list :cat 1 :star 0 :cat 1 :cat 1 :opt 0] 100)
+                      [(get w [:nonprop-color-stop-list :cat 1 :star 0 :cat 2 :cat 1 :opt 0] 100)
                         (gen/tuple
                           (gen/return ", ")
                           (:nonprop-linear-color-hint g))]]))))]])
@@ -2010,7 +2023,8 @@
                 [(get w [:prop-animation-delay :alt 1 :cat 1 :star 0] 100)
                   (igen/vector+
                     (gen/tuple
-                      (gen/return ", ")
+                      (gen/return ",")
+                      (gen/return " ")
                       (:nonprop-time g)))]]))]])
         g (assoc g :prop-animation-delay gen-prop-animation-delay)
 
@@ -2066,11 +2080,13 @@
               (gen/return "cubic-bezier ")
               (gen/return "( ")
               (:nonprop-number g)
-              (gen/return ", ")
+              (gen/return ",")
+              (gen/return " ")
               (:nonprop-number g)
               (gen/return ", ")
               (:nonprop-number g)
-              (gen/return ", ")
+              (gen/return ",")
+              (gen/return " ")
               (:nonprop-number g)
               (gen/return ") "))]])
         g (assoc g :nonprop-cubic-bezier-timing-function gen-nonprop-cubic-bezier-timing-function)
@@ -2295,11 +2311,13 @@
         gen-css-unknown
         (gen/tuple
           (chuck/string-from-regex #"[A-Za-z-]+")
-          (gen/return " : ")
+          (gen/return " ")
+          (gen/return ":")
+          (gen/return " ")
           (igen/freq [
-            [(get w [:css-unknown :cat 2 :alt 0] 100)
+            [(get w [:css-unknown :cat 4 :alt 0] 100)
               (:prop-all g)]
-            [(get w [:css-unknown :cat 2 :alt 1] 100)
+            [(get w [:css-unknown :cat 4 :alt 1] 100)
               (:prop-unknown g)]]))
         g (assoc g :css-unknown gen-css-unknown)
 
@@ -2644,53 +2662,54 @@
 
         gen-css-attr
         (gen/tuple
-          (gen/return "[ ")
+          (gen/return "[")
+          (gen/return " ")
           (igen/freq [
-            [(get w [:css-attr :cat 1 :opt nil] 100)
+            [(get w [:css-attr :cat 2 :opt nil] 100)
               (gen/return "")]
-            [(get w [:css-attr :cat 1 :opt 0] 100)
+            [(get w [:css-attr :cat 2 :opt 0] 100)
               (igen/freq [
-                [(get w [:css-attr :cat 1 :opt 0 :opt nil] 100)
+                [(get w [:css-attr :cat 2 :opt 0 :opt nil] 100)
                   (gen/return "")]
-                [(get w [:css-attr :cat 1 :opt 0 :opt 0] 100)
+                [(get w [:css-attr :cat 2 :opt 0 :opt 0] 100)
                   (:css-ns-pre g)]])]])
           (:IDENT g)
           (gen/return " ")
           (igen/freq [
-            [(get w [:css-attr :cat 4 :opt nil] 100)
+            [(get w [:css-attr :cat 5 :opt nil] 100)
               (gen/return "")]
-            [(get w [:css-attr :cat 4 :opt 0] 100)
+            [(get w [:css-attr :cat 5 :opt 0] 100)
               (igen/freq [
-                [(get w [:css-attr :cat 4 :opt 0 :opt nil] 100)
+                [(get w [:css-attr :cat 5 :opt 0 :opt nil] 100)
                   (gen/return "")]
-                [(get w [:css-attr :cat 4 :opt 0 :opt 0] 100)
+                [(get w [:css-attr :cat 5 :opt 0 :opt 0] 100)
                   (gen/tuple
                     (igen/freq [
-                      [(get w [:css-attr :cat 4 :opt 0 :opt 0 :cat 0 :opt nil] 100)
+                      [(get w [:css-attr :cat 5 :opt 0 :opt 0 :cat 0 :opt nil] 100)
                         (gen/return "")]
-                      [(get w [:css-attr :cat 4 :opt 0 :opt 0 :cat 0 :opt 0] 100)
+                      [(get w [:css-attr :cat 5 :opt 0 :opt 0 :cat 0 :opt 0] 100)
                         (igen/freq [
-                          [(get w [:css-attr :cat 4 :opt 0 :opt 0 :cat 0 :opt 0 :alt 0] 100)
+                          [(get w [:css-attr :cat 5 :opt 0 :opt 0 :cat 0 :opt 0 :alt 0] 100)
                             (gen/return "^=")]
-                          [(get w [:css-attr :cat 4 :opt 0 :opt 0 :cat 0 :opt 0 :alt 1] 100)
+                          [(get w [:css-attr :cat 5 :opt 0 :opt 0 :cat 0 :opt 0 :alt 1] 100)
                             (gen/return "$=")]
-                          [(get w [:css-attr :cat 4 :opt 0 :opt 0 :cat 0 :opt 0 :alt 2] 100)
+                          [(get w [:css-attr :cat 5 :opt 0 :opt 0 :cat 0 :opt 0 :alt 2] 100)
                             (gen/return "*=")]
-                          [(get w [:css-attr :cat 4 :opt 0 :opt 0 :cat 0 :opt 0 :alt 3] 100)
+                          [(get w [:css-attr :cat 5 :opt 0 :opt 0 :cat 0 :opt 0 :alt 3] 100)
                             (gen/return "=")]
-                          [(get w [:css-attr :cat 4 :opt 0 :opt 0 :cat 0 :opt 0 :alt 4] 100)
+                          [(get w [:css-attr :cat 5 :opt 0 :opt 0 :cat 0 :opt 0 :alt 4] 100)
                             (gen/return "~=")]
-                          [(get w [:css-attr :cat 4 :opt 0 :opt 0 :cat 0 :opt 0 :alt 5] 100)
+                          [(get w [:css-attr :cat 5 :opt 0 :opt 0 :cat 0 :opt 0 :alt 5] 100)
                             (gen/return "|=")]])]])
                     (gen/return " ")
                     (igen/freq [
-                      [(get w [:css-attr :cat 4 :opt 0 :opt 0 :cat 2 :opt nil] 100)
+                      [(get w [:css-attr :cat 5 :opt 0 :opt 0 :cat 2 :opt nil] 100)
                         (gen/return "")]
-                      [(get w [:css-attr :cat 4 :opt 0 :opt 0 :cat 2 :opt 0] 100)
+                      [(get w [:css-attr :cat 5 :opt 0 :opt 0 :cat 2 :opt 0] 100)
                         (igen/freq [
-                          [(get w [:css-attr :cat 4 :opt 0 :opt 0 :cat 2 :opt 0 :alt 0] 100)
+                          [(get w [:css-attr :cat 5 :opt 0 :opt 0 :cat 2 :opt 0 :alt 0] 100)
                             (:IDENT g)]
-                          [(get w [:css-attr :cat 4 :opt 0 :opt 0 :cat 2 :opt 0 :alt 1] 100)
+                          [(get w [:css-attr :cat 5 :opt 0 :opt 0 :cat 2 :opt 0 :alt 1] 100)
                             (:STRING g)]])]])
                     (gen/return " "))]])]])
           (gen/return "]"))
@@ -2732,7 +2751,8 @@
         gen-css-func
         (gen/tuple
           (:IDENT g)
-          (gen/return "( ")
+          (gen/return "(")
+          (gen/return " ")
           (:css-expr g)
           (gen/return ") "))
         g (assoc g :css-func gen-css-func)
@@ -2792,23 +2812,24 @@
 
         gen-css-negate
         (gen/tuple
-          (gen/return ":not( ")
+          (gen/return ":not(")
+          (gen/return " ")
           (igen/freq [
-            [(get w [:css-negate :cat 1 :opt nil] 100)
+            [(get w [:css-negate :cat 2 :opt nil] 100)
               (gen/return "")]
-            [(get w [:css-negate :cat 1 :opt 0] 100)
+            [(get w [:css-negate :cat 2 :opt 0] 100)
               (igen/freq [
-                [(get w [:css-negate :cat 1 :opt 0 :alt 0] 100)
+                [(get w [:css-negate :cat 2 :opt 0 :alt 0] 100)
                   (:css-type g)]
-                [(get w [:css-negate :cat 1 :opt 0 :alt 1] 100)
+                [(get w [:css-negate :cat 2 :opt 0 :alt 1] 100)
                   (:css-univ g)]
-                [(get w [:css-negate :cat 1 :opt 0 :alt 2] 100)
+                [(get w [:css-negate :cat 2 :opt 0 :alt 2] 100)
                   (:css-hash g)]
-                [(get w [:css-negate :cat 1 :opt 0 :alt 3] 100)
+                [(get w [:css-negate :cat 2 :opt 0 :alt 3] 100)
                   (:css-class g)]
-                [(get w [:css-negate :cat 1 :opt 0 :alt 4] 100)
+                [(get w [:css-negate :cat 2 :opt 0 :alt 4] 100)
                   (:css-attr g)]
-                [(get w [:css-negate :cat 1 :opt 0 :alt 5] 100)
+                [(get w [:css-negate :cat 2 :opt 0 :alt 5] 100)
                   (:css-psuedo g)]])]])
           (gen/return " )"))
         g (assoc g :css-negate gen-css-negate)
@@ -3599,7 +3620,8 @@
                 [(get w [:prop-background-blend-mode :alt 1 :cat 1 :star 0] 100)
                   (igen/vector+
                     (gen/tuple
-                      (gen/return ", ")
+                      (gen/return ",")
+                      (gen/return " ")
                       (:nonprop-blend-mode g)))]]))]])
         g (assoc g :prop-background-blend-mode gen-prop-background-blend-mode)
 
@@ -4084,11 +4106,12 @@
                 [(get w [:prop-animation-name :alt 1 :cat 1 :star 0] 100)
                   (igen/vector+
                     (gen/tuple
-                      (gen/return ", ")
+                      (gen/return ",")
+                      (gen/return " ")
                       (igen/freq [
-                        [(get w [:prop-animation-name :alt 1 :cat 1 :star 0 :cat 1 :alt 0] 100)
+                        [(get w [:prop-animation-name :alt 1 :cat 1 :star 0 :cat 2 :alt 0] 100)
                           (gen/return "none ")]
-                        [(get w [:prop-animation-name :alt 1 :cat 1 :star 0 :cat 1 :alt 1] 100)
+                        [(get w [:prop-animation-name :alt 1 :cat 1 :star 0 :cat 2 :alt 1] 100)
                           (:nonprop-keyframes-name g)]])))]]))]])
         g (assoc g :prop-animation-name gen-prop-animation-name)
 
@@ -4406,7 +4429,8 @@
                 [(get w [:prop-animation-duration :alt 1 :cat 1 :star 0] 100)
                   (igen/vector+
                     (gen/tuple
-                      (gen/return ", ")
+                      (gen/return ",")
+                      (gen/return " ")
                       (:nonprop-time g)))]]))]])
         g (assoc g :prop-animation-duration gen-prop-animation-duration)
 
@@ -4531,7 +4555,8 @@
                 [(get w [:prop-text-shadow :alt 2 :cat 1 :star 0] 100)
                   (igen/vector+
                     (gen/tuple
-                      (gen/return ", ")
+                      (gen/return ",")
+                      (gen/return " ")
                       (:nonprop-shadow-t g)))]]))]])
         g (assoc g :prop-text-shadow gen-prop-text-shadow)
 
@@ -5195,7 +5220,8 @@
                 [(get w [:prop-background-position :alt 1 :cat 1 :star 0] 100)
                   (igen/vector+
                     (gen/tuple
-                      (gen/return ", ")
+                      (gen/return ",")
+                      (gen/return " ")
                       (:nonprop-bg-position g)))]]))]])
         g (assoc g :prop-background-position gen-prop-background-position)
 
@@ -5228,7 +5254,8 @@
                 [(get w [:prop-transition-delay :alt 1 :cat 1 :star 0] 100)
                   (igen/vector+
                     (gen/tuple
-                      (gen/return ", ")
+                      (gen/return ",")
+                      (gen/return " ")
                       (:nonprop-time g)))]]))]])
         g (assoc g :prop-transition-delay gen-prop-transition-delay)
 
@@ -5294,7 +5321,8 @@
                 [(get w [:prop-will-change :alt 2 :cat 1 :star 0] 100)
                   (igen/vector+
                     (gen/tuple
-                      (gen/return ", ")
+                      (gen/return ",")
+                      (gen/return " ")
                       (:nonprop-animateable-feature g)))]]))]])
         g (assoc g :prop-will-change gen-prop-will-change)
 
@@ -5580,7 +5608,8 @@
                 [(get w [:prop-background-image :alt 1 :cat 1 :star 0] 100)
                   (igen/vector+
                     (gen/tuple
-                      (gen/return ", ")
+                      (gen/return ",")
+                      (gen/return " ")
                       (:nonprop-bg-image g)))]]))]])
         g (assoc g :prop-background-image gen-prop-background-image)
 
@@ -5697,11 +5726,12 @@
                 [(get w [:prop-font-family :alt 1 :cat 1 :star 0] 100)
                   (igen/vector+
                     (gen/tuple
-                      (gen/return ", ")
+                      (gen/return ",")
+                      (gen/return " ")
                       (igen/freq [
-                        [(get w [:prop-font-family :alt 1 :cat 1 :star 0 :cat 1 :alt 0] 100)
+                        [(get w [:prop-font-family :alt 1 :cat 1 :star 0 :cat 2 :alt 0] 100)
                           (:nonprop-family-name g)]
-                        [(get w [:prop-font-family :alt 1 :cat 1 :star 0 :cat 1 :alt 1] 100)
+                        [(get w [:prop-font-family :alt 1 :cat 1 :star 0 :cat 2 :alt 1] 100)
                           (:nonprop-generic-family g)]])))]]))]])
         g (assoc g :prop-font-family gen-prop-font-family)
 
@@ -5726,7 +5756,8 @@
                 [(get w [:prop-animation-play-state :alt 1 :cat 1 :star 0] 100)
                   (igen/vector+
                     (gen/tuple
-                      (gen/return ", ")
+                      (gen/return ",")
+                      (gen/return " ")
                       (:nonprop-single-animation-play-state g)))]]))]])
         g (assoc g :prop-animation-play-state gen-prop-animation-play-state)
 
@@ -5862,11 +5893,12 @@
                 [(get w [:prop-mask-clip :alt 1 :cat 1 :star 0] 100)
                   (igen/vector+
                     (gen/tuple
-                      (gen/return ", ")
+                      (gen/return ",")
+                      (gen/return " ")
                       (igen/freq [
-                        [(get w [:prop-mask-clip :alt 1 :cat 1 :star 0 :cat 1 :alt 0] 100)
+                        [(get w [:prop-mask-clip :alt 1 :cat 1 :star 0 :cat 2 :alt 0] 100)
                           (:nonprop-geometry-box g)]
-                        [(get w [:prop-mask-clip :alt 1 :cat 1 :star 0 :cat 1 :alt 1] 100)
+                        [(get w [:prop-mask-clip :alt 1 :cat 1 :star 0 :cat 2 :alt 1] 100)
                           (gen/return "no-clip ")]])))]]))]])
         g (assoc g :prop-mask-clip gen-prop-mask-clip)
 
@@ -6005,7 +6037,8 @@
                 [(get w [:prop-background-repeat :alt 1 :cat 1 :star 0] 100)
                   (igen/vector+
                     (gen/tuple
-                      (gen/return ", ")
+                      (gen/return ",")
+                      (gen/return " ")
                       (:nonprop-repeat-style g)))]]))]])
         g (assoc g :prop-background-repeat gen-prop-background-repeat)
 
@@ -6104,7 +6137,8 @@
                 [(get w [:prop-mask-size :alt 1 :cat 1 :star 0] 100)
                   (igen/vector+
                     (gen/tuple
-                      (gen/return ", ")
+                      (gen/return ",")
+                      (gen/return " ")
                       (:nonprop-bg-size g)))]]))]])
         g (assoc g :prop-mask-size gen-prop-mask-size)
 
@@ -6180,7 +6214,8 @@
                 [(get w [:prop-mask-mode :alt 1 :cat 1 :star 0] 100)
                   (igen/vector+
                     (gen/tuple
-                      (gen/return ", ")
+                      (gen/return ",")
+                      (gen/return " ")
                       (:nonprop-masking-mode g)))]]))]])
         g (assoc g :prop-mask-mode gen-prop-mask-mode)
 
@@ -6346,7 +6381,8 @@
                 [(get w [:prop-mask-image :alt 1 :cat 1 :star 0] 100)
                   (igen/vector+
                     (gen/tuple
-                      (gen/return ", ")
+                      (gen/return ",")
+                      (gen/return " ")
                       (:nonprop-mask-reference g)))]]))]])
         g (assoc g :prop-mask-image gen-prop-mask-image)
 
@@ -6363,7 +6399,8 @@
                 [(get w [:prop-mask-position :alt 1 :cat 1 :star 0] 100)
                   (igen/vector+
                     (gen/tuple
-                      (gen/return ", ")
+                      (gen/return ",")
+                      (gen/return " ")
                       (:nonprop-position g)))]]))]])
         g (assoc g :prop-mask-position gen-prop-mask-position)
 
@@ -6392,7 +6429,8 @@
                 [(get w [:prop-transition :alt 1 :cat 1 :star 0] 100)
                   (igen/vector+
                     (gen/tuple
-                      (gen/return ", ")
+                      (gen/return ",")
+                      (gen/return " ")
                       (:nonprop-single-transition g)))]]))]])
         g (assoc g :prop-transition gen-prop-transition)
 
@@ -6469,7 +6507,8 @@
                 [(get w [:prop-animation-fill-mode :alt 1 :cat 1 :star 0] 100)
                   (igen/vector+
                     (gen/tuple
-                      (gen/return ", ")
+                      (gen/return ",")
+                      (gen/return " ")
                       (:nonprop-single-animation-fill-mode g)))]]))]])
         g (assoc g :prop-animation-fill-mode gen-prop-animation-fill-mode)
 
@@ -6683,7 +6722,8 @@
             [(get w [:func-polygon :cat 5 :star 0] 100)
               (igen/vector+
                 (gen/tuple
-                  (gen/return ", ")
+                  (gen/return ",")
+                  (gen/return " ")
                   (gen/tuple
                     (:nonprop-length-percentage g)
                     (:nonprop-length-percentage g))))]])
@@ -6832,7 +6872,8 @@
                 [(get w [:prop-transition-property :alt 2 :cat 1 :star 0] 100)
                   (igen/vector+
                     (gen/tuple
-                      (gen/return ", ")
+                      (gen/return ",")
+                      (gen/return " ")
                       (:nonprop-single-transition-property g)))]]))]])
         g (assoc g :prop-transition-property gen-prop-transition-property)
 
@@ -6953,7 +6994,8 @@
                 [(get w [:prop-transition-timing-function :alt 1 :cat 1 :star 0] 100)
                   (igen/vector+
                     (gen/tuple
-                      (gen/return ", ")
+                      (gen/return ",")
+                      (gen/return " ")
                       (:nonprop-timing-function g)))]]))]])
         g (assoc g :prop-transition-timing-function gen-prop-transition-timing-function)
 
@@ -6970,7 +7012,8 @@
                 [(get w [:prop-background-clip :alt 1 :cat 1 :star 0] 100)
                   (igen/vector+
                     (gen/tuple
-                      (gen/return ", ")
+                      (gen/return ",")
+                      (gen/return " ")
                       (:nonprop-box g)))]]))]])
         g (assoc g :prop-background-clip gen-prop-background-clip)
 
@@ -7022,7 +7065,8 @@
                       [(get w [:prop-font-variant-alternates :alt 2 :plus 0 :alt 2 :cat 3 :star 0] 100)
                         (igen/vector+
                           (gen/tuple
-                            (gen/return ", ")
+                            (gen/return ",")
+                            (gen/return " ")
                             (:nonprop-feature-value-name g)))]])
                     (gen/return ") "))]
                 [(get w [:prop-font-variant-alternates :alt 2 :plus 0 :alt 3] 100)
@@ -7036,7 +7080,8 @@
                       [(get w [:prop-font-variant-alternates :alt 2 :plus 0 :alt 3 :cat 3 :star 0] 100)
                         (igen/vector+
                           (gen/tuple
-                            (gen/return ", ")
+                            (gen/return ",")
+                            (gen/return " ")
                             (:nonprop-feature-value-name g)))]])
                     (gen/return ") "))]
                 [(get w [:prop-font-variant-alternates :alt 2 :plus 0 :alt 4] 100)
@@ -7177,7 +7222,8 @@
                 [(get w [:prop-background-attachment :alt 1 :cat 1 :star 0] 100)
                   (igen/vector+
                     (gen/tuple
-                      (gen/return ", ")
+                      (gen/return ",")
+                      (gen/return " ")
                       (:nonprop-attachment g)))]]))]])
         g (assoc g :prop-background-attachment gen-prop-background-attachment)
 
@@ -7259,7 +7305,8 @@
                 [(get w [:prop-animation-timing-function :alt 1 :cat 1 :star 0] 100)
                   (igen/vector+
                     (gen/tuple
-                      (gen/return ", ")
+                      (gen/return ",")
+                      (gen/return " ")
                       (:nonprop-timing-function g)))]]))]])
         g (assoc g :prop-animation-timing-function gen-prop-animation-timing-function)
 
@@ -7421,7 +7468,8 @@
                 [(get w [:prop-background-size :alt 1 :cat 1 :star 0] 100)
                   (igen/vector+
                     (gen/tuple
-                      (gen/return ", ")
+                      (gen/return ",")
+                      (gen/return " ")
                       (:nonprop-bg-size g)))]]))]])
         g (assoc g :prop-background-size gen-prop-background-size)
 
@@ -7463,7 +7511,8 @@
                 [(get w [:prop-animation :alt 1 :cat 1 :star 0] 100)
                   (igen/vector+
                     (gen/tuple
-                      (gen/return ", ")
+                      (gen/return ",")
+                      (gen/return " ")
                       (:nonprop-single-animation g)))]]))]])
         g (assoc g :prop-animation gen-prop-animation)
 
@@ -7529,7 +7578,8 @@
                 [(get w [:prop-animation-direction :alt 1 :cat 1 :star 0] 100)
                   (igen/vector+
                     (gen/tuple
-                      (gen/return ", ")
+                      (gen/return ",")
+                      (gen/return " ")
                       (:nonprop-single-animation-direction g)))]]))]])
         g (assoc g :prop-animation-direction gen-prop-animation-direction)
 
@@ -8020,7 +8070,8 @@
                 [(get w [:prop-mask-repeat :alt 1 :cat 1 :star 0] 100)
                   (igen/vector+
                     (gen/tuple
-                      (gen/return ", ")
+                      (gen/return ",")
+                      (gen/return " ")
                       (:nonprop-repeat-style g)))]]))]])
         g (assoc g :prop-mask-repeat gen-prop-mask-repeat)
 
@@ -8551,7 +8602,8 @@
                 [(get w [:prop-animation-iteration-count :alt 1 :cat 1 :star 0] 100)
                   (igen/vector+
                     (gen/tuple
-                      (gen/return ", ")
+                      (gen/return ",")
+                      (gen/return " ")
                       (:nonprop-single-animation-iteration-count g)))]]))]])
         g (assoc g :prop-animation-iteration-count gen-prop-animation-iteration-count)
 
@@ -8598,7 +8650,8 @@
                 [(get w [:prop-font-feature-settings :alt 2 :cat 1 :star 0] 100)
                   (igen/vector+
                     (gen/tuple
-                      (gen/return ", ")
+                      (gen/return ",")
+                      (gen/return " ")
                       (:nonprop-feature-tag-value g)))]]))]])
         g (assoc g :prop-font-feature-settings gen-prop-font-feature-settings)
 
@@ -8760,7 +8813,8 @@
                 [(get w [:prop-mask :alt 1 :cat 1 :star 0] 100)
                   (igen/vector+
                     (gen/tuple
-                      (gen/return ", ")
+                      (gen/return ",")
+                      (gen/return " ")
                       (:nonprop-mask-layer g)))]]))]])
         g (assoc g :prop-mask gen-prop-mask)
 
@@ -8797,7 +8851,8 @@
                 [(get w [:prop-background-origin :alt 1 :cat 1 :star 0] 100)
                   (igen/vector+
                     (gen/tuple
-                      (gen/return ", ")
+                      (gen/return ",")
+                      (gen/return " ")
                       (:nonprop-box g)))]]))]])
         g (assoc g :prop-background-origin gen-prop-background-origin)
 
@@ -9128,7 +9183,8 @@
                 [(get w [:prop-mask-origin :alt 1 :cat 1 :star 0] 100)
                   (igen/vector+
                     (gen/tuple
-                      (gen/return ", ")
+                      (gen/return ",")
+                      (gen/return " ")
                       (:nonprop-geometry-box g)))]]))]])
         g (assoc g :prop-mask-origin gen-prop-mask-origin)
 
@@ -9266,7 +9322,8 @@
                       [(get w [:prop-font-variant :alt 3 :plus 0 :alt 6 :cat 3 :star 0] 100)
                         (igen/vector+
                           (gen/tuple
-                            (gen/return ", ")
+                            (gen/return ",")
+                            (gen/return " ")
                             (:nonprop-feature-value-name g)))]])
                     (gen/return ") "))]
                 [(get w [:prop-font-variant :alt 3 :plus 0 :alt 7] 100)
@@ -9280,7 +9337,8 @@
                       [(get w [:prop-font-variant :alt 3 :plus 0 :alt 7 :cat 3 :star 0] 100)
                         (igen/vector+
                           (gen/tuple
-                            (gen/return ", ")
+                            (gen/return ",")
+                            (gen/return " ")
                             (:nonprop-feature-value-name g)))]])
                     (gen/return ") "))]
                 [(get w [:prop-font-variant :alt 3 :plus 0 :alt 8] 100)
@@ -9346,7 +9404,8 @@
                 [(get w [:prop-mask-composite :alt 1 :cat 1 :star 0] 100)
                   (igen/vector+
                     (gen/tuple
-                      (gen/return ", ")
+                      (gen/return ",")
+                      (gen/return " ")
                       (:nonprop-compositing-operator g)))]]))]])
         g (assoc g :prop-mask-composite gen-prop-mask-composite)]
     g))
@@ -9614,1327 +9673,2320 @@
         (igen/freq [
           [(get w [:css-known-standard :alt 0] 100)
             (gen/tuple
-              (gen/return "align-content : ")
+              (gen/return "align-content")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-align-content g))]
           [(get w [:css-known-standard :alt 1] 100)
             (gen/tuple
-              (gen/return "align-items : ")
+              (gen/return "align-items")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-align-items g))]
           [(get w [:css-known-standard :alt 2] 100)
             (gen/tuple
-              (gen/return "align-self : ")
+              (gen/return "align-self")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-align-self g))]
           [(get w [:css-known-standard :alt 3] 100)
             (gen/tuple
-              (gen/return "all : ")
+              (gen/return "all")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-all g))]
           [(get w [:css-known-standard :alt 4] 100)
             (gen/tuple
-              (gen/return "animation : ")
+              (gen/return "animation")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-animation g))]
           [(get w [:css-known-standard :alt 5] 100)
             (gen/tuple
-              (gen/return "animation-delay : ")
+              (gen/return "animation-delay")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-animation-delay g))]
           [(get w [:css-known-standard :alt 6] 100)
             (gen/tuple
-              (gen/return "animation-direction : ")
+              (gen/return "animation-direction")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-animation-direction g))]
           [(get w [:css-known-standard :alt 7] 100)
             (gen/tuple
-              (gen/return "animation-duration : ")
+              (gen/return "animation-duration")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-animation-duration g))]
           [(get w [:css-known-standard :alt 8] 100)
             (gen/tuple
-              (gen/return "animation-fill-mode : ")
+              (gen/return "animation-fill-mode")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-animation-fill-mode g))]
           [(get w [:css-known-standard :alt 9] 100)
             (gen/tuple
-              (gen/return "animation-iteration-count : ")
+              (gen/return "animation-iteration-count")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-animation-iteration-count g))]
           [(get w [:css-known-standard :alt 10] 100)
             (gen/tuple
-              (gen/return "animation-name : ")
+              (gen/return "animation-name")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-animation-name g))]
           [(get w [:css-known-standard :alt 11] 100)
             (gen/tuple
-              (gen/return "animation-play-state : ")
+              (gen/return "animation-play-state")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-animation-play-state g))]
           [(get w [:css-known-standard :alt 12] 100)
             (gen/tuple
-              (gen/return "animation-timing-function : ")
+              (gen/return "animation-timing-function")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-animation-timing-function g))]
           [(get w [:css-known-standard :alt 13] 100)
             (gen/tuple
-              (gen/return "backface-visibility : ")
+              (gen/return "backface-visibility")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-backface-visibility g))]
           [(get w [:css-known-standard :alt 14] 100)
             (gen/tuple
-              (gen/return "background : ")
+              (gen/return "background")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-background g))]
           [(get w [:css-known-standard :alt 15] 100)
             (gen/tuple
-              (gen/return "background-attachment : ")
+              (gen/return "background-attachment")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-background-attachment g))]
           [(get w [:css-known-standard :alt 16] 100)
             (gen/tuple
-              (gen/return "background-blend-mode : ")
+              (gen/return "background-blend-mode")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-background-blend-mode g))]
           [(get w [:css-known-standard :alt 17] 100)
             (gen/tuple
-              (gen/return "background-clip : ")
+              (gen/return "background-clip")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-background-clip g))]
           [(get w [:css-known-standard :alt 18] 100)
             (gen/tuple
-              (gen/return "background-color : ")
+              (gen/return "background-color")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-background-color g))]
           [(get w [:css-known-standard :alt 19] 100)
             (gen/tuple
-              (gen/return "background-image : ")
+              (gen/return "background-image")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-background-image g))]
           [(get w [:css-known-standard :alt 20] 100)
             (gen/tuple
-              (gen/return "background-origin : ")
+              (gen/return "background-origin")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-background-origin g))]
           [(get w [:css-known-standard :alt 21] 100)
             (gen/tuple
-              (gen/return "background-position : ")
+              (gen/return "background-position")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-background-position g))]
           [(get w [:css-known-standard :alt 22] 100)
             (gen/tuple
-              (gen/return "background-repeat : ")
+              (gen/return "background-repeat")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-background-repeat g))]
           [(get w [:css-known-standard :alt 23] 100)
             (gen/tuple
-              (gen/return "background-size : ")
+              (gen/return "background-size")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-background-size g))]
           [(get w [:css-known-standard :alt 24] 100)
             (gen/tuple
-              (gen/return "block-size : ")
+              (gen/return "block-size")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-block-size g))]
           [(get w [:css-known-standard :alt 25] 100)
             (gen/tuple
-              (gen/return "border : ")
+              (gen/return "border")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-border g))]
           [(get w [:css-known-standard :alt 26] 100)
             (gen/tuple
-              (gen/return "border-block : ")
+              (gen/return "border-block")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-border-block g))]
           [(get w [:css-known-standard :alt 27] 100)
             (gen/tuple
-              (gen/return "border-block-color : ")
+              (gen/return "border-block-color")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-border-block-color g))]
           [(get w [:css-known-standard :alt 28] 100)
             (gen/tuple
-              (gen/return "border-block-end : ")
+              (gen/return "border-block-end")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-border-block-end g))]
           [(get w [:css-known-standard :alt 29] 100)
             (gen/tuple
-              (gen/return "border-block-end-color : ")
+              (gen/return "border-block-end-color")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-border-block-end-color g))]
           [(get w [:css-known-standard :alt 30] 100)
             (gen/tuple
-              (gen/return "border-block-end-style : ")
+              (gen/return "border-block-end-style")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-border-block-end-style g))]
           [(get w [:css-known-standard :alt 31] 100)
             (gen/tuple
-              (gen/return "border-block-end-width : ")
+              (gen/return "border-block-end-width")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-border-block-end-width g))]
           [(get w [:css-known-standard :alt 32] 100)
             (gen/tuple
-              (gen/return "border-block-start : ")
+              (gen/return "border-block-start")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-border-block-start g))]
           [(get w [:css-known-standard :alt 33] 100)
             (gen/tuple
-              (gen/return "border-block-start-color : ")
+              (gen/return "border-block-start-color")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-border-block-start-color g))]
           [(get w [:css-known-standard :alt 34] 100)
             (gen/tuple
-              (gen/return "border-block-start-style : ")
+              (gen/return "border-block-start-style")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-border-block-start-style g))]
           [(get w [:css-known-standard :alt 35] 100)
             (gen/tuple
-              (gen/return "border-block-start-width : ")
+              (gen/return "border-block-start-width")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-border-block-start-width g))]
           [(get w [:css-known-standard :alt 36] 100)
             (gen/tuple
-              (gen/return "border-block-style : ")
+              (gen/return "border-block-style")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-border-block-style g))]
           [(get w [:css-known-standard :alt 37] 100)
             (gen/tuple
-              (gen/return "border-block-width : ")
+              (gen/return "border-block-width")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-border-block-width g))]
           [(get w [:css-known-standard :alt 38] 100)
             (gen/tuple
-              (gen/return "border-bottom : ")
+              (gen/return "border-bottom")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-border-bottom g))]
           [(get w [:css-known-standard :alt 39] 100)
             (gen/tuple
-              (gen/return "border-bottom-color : ")
+              (gen/return "border-bottom-color")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-border-bottom-color g))]
           [(get w [:css-known-standard :alt 40] 100)
             (gen/tuple
-              (gen/return "border-bottom-left-radius : ")
+              (gen/return "border-bottom-left-radius")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-border-bottom-left-radius g))]
           [(get w [:css-known-standard :alt 41] 100)
             (gen/tuple
-              (gen/return "border-bottom-right-radius : ")
+              (gen/return "border-bottom-right-radius")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-border-bottom-right-radius g))]
           [(get w [:css-known-standard :alt 42] 100)
             (gen/tuple
-              (gen/return "border-bottom-style : ")
+              (gen/return "border-bottom-style")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-border-bottom-style g))]
           [(get w [:css-known-standard :alt 43] 100)
             (gen/tuple
-              (gen/return "border-bottom-width : ")
+              (gen/return "border-bottom-width")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-border-bottom-width g))]
           [(get w [:css-known-standard :alt 44] 100)
             (gen/tuple
-              (gen/return "border-collapse : ")
+              (gen/return "border-collapse")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-border-collapse g))]
           [(get w [:css-known-standard :alt 45] 100)
             (gen/tuple
-              (gen/return "border-color : ")
+              (gen/return "border-color")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-border-color g))]
           [(get w [:css-known-standard :alt 46] 100)
             (gen/tuple
-              (gen/return "border-end-end-radius : ")
+              (gen/return "border-end-end-radius")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-border-end-end-radius g))]
           [(get w [:css-known-standard :alt 47] 100)
             (gen/tuple
-              (gen/return "border-end-start-radius : ")
+              (gen/return "border-end-start-radius")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-border-end-start-radius g))]
           [(get w [:css-known-standard :alt 48] 100)
             (gen/tuple
-              (gen/return "border-image : ")
+              (gen/return "border-image")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-border-image g))]
           [(get w [:css-known-standard :alt 49] 100)
             (gen/tuple
-              (gen/return "border-image-outset : ")
+              (gen/return "border-image-outset")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-border-image-outset g))]
           [(get w [:css-known-standard :alt 50] 100)
             (gen/tuple
-              (gen/return "border-image-repeat : ")
+              (gen/return "border-image-repeat")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-border-image-repeat g))]
           [(get w [:css-known-standard :alt 51] 100)
             (gen/tuple
-              (gen/return "border-image-slice : ")
+              (gen/return "border-image-slice")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-border-image-slice g))]
           [(get w [:css-known-standard :alt 52] 100)
             (gen/tuple
-              (gen/return "border-image-source : ")
+              (gen/return "border-image-source")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-border-image-source g))]
           [(get w [:css-known-standard :alt 53] 100)
             (gen/tuple
-              (gen/return "border-image-width : ")
+              (gen/return "border-image-width")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-border-image-width g))]
           [(get w [:css-known-standard :alt 54] 100)
             (gen/tuple
-              (gen/return "border-inline : ")
+              (gen/return "border-inline")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-border-inline g))]
           [(get w [:css-known-standard :alt 55] 100)
             (gen/tuple
-              (gen/return "border-inline-color : ")
+              (gen/return "border-inline-color")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-border-inline-color g))]
           [(get w [:css-known-standard :alt 56] 100)
             (gen/tuple
-              (gen/return "border-inline-end : ")
+              (gen/return "border-inline-end")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-border-inline-end g))]
           [(get w [:css-known-standard :alt 57] 100)
             (gen/tuple
-              (gen/return "border-inline-end-color : ")
+              (gen/return "border-inline-end-color")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-border-inline-end-color g))]
           [(get w [:css-known-standard :alt 58] 100)
             (gen/tuple
-              (gen/return "border-inline-end-style : ")
+              (gen/return "border-inline-end-style")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-border-inline-end-style g))]
           [(get w [:css-known-standard :alt 59] 100)
             (gen/tuple
-              (gen/return "border-inline-end-width : ")
+              (gen/return "border-inline-end-width")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-border-inline-end-width g))]
           [(get w [:css-known-standard :alt 60] 100)
             (gen/tuple
-              (gen/return "border-inline-start : ")
+              (gen/return "border-inline-start")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-border-inline-start g))]
           [(get w [:css-known-standard :alt 61] 100)
             (gen/tuple
-              (gen/return "border-inline-start-color : ")
+              (gen/return "border-inline-start-color")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-border-inline-start-color g))]
           [(get w [:css-known-standard :alt 62] 100)
             (gen/tuple
-              (gen/return "border-inline-start-style : ")
+              (gen/return "border-inline-start-style")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-border-inline-start-style g))]
           [(get w [:css-known-standard :alt 63] 100)
             (gen/tuple
-              (gen/return "border-inline-start-width : ")
+              (gen/return "border-inline-start-width")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-border-inline-start-width g))]
           [(get w [:css-known-standard :alt 64] 100)
             (gen/tuple
-              (gen/return "border-inline-style : ")
+              (gen/return "border-inline-style")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-border-inline-style g))]
           [(get w [:css-known-standard :alt 65] 100)
             (gen/tuple
-              (gen/return "border-inline-width : ")
+              (gen/return "border-inline-width")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-border-inline-width g))]
           [(get w [:css-known-standard :alt 66] 100)
             (gen/tuple
-              (gen/return "border-left : ")
+              (gen/return "border-left")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-border-left g))]
           [(get w [:css-known-standard :alt 67] 100)
             (gen/tuple
-              (gen/return "border-left-color : ")
+              (gen/return "border-left-color")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-border-left-color g))]
           [(get w [:css-known-standard :alt 68] 100)
             (gen/tuple
-              (gen/return "border-left-style : ")
+              (gen/return "border-left-style")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-border-left-style g))]
           [(get w [:css-known-standard :alt 69] 100)
             (gen/tuple
-              (gen/return "border-left-width : ")
+              (gen/return "border-left-width")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-border-left-width g))]
           [(get w [:css-known-standard :alt 70] 100)
             (gen/tuple
-              (gen/return "border-radius : ")
+              (gen/return "border-radius")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-border-radius g))]
           [(get w [:css-known-standard :alt 71] 100)
             (gen/tuple
-              (gen/return "border-right : ")
+              (gen/return "border-right")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-border-right g))]
           [(get w [:css-known-standard :alt 72] 100)
             (gen/tuple
-              (gen/return "border-right-color : ")
+              (gen/return "border-right-color")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-border-right-color g))]
           [(get w [:css-known-standard :alt 73] 100)
             (gen/tuple
-              (gen/return "border-right-style : ")
+              (gen/return "border-right-style")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-border-right-style g))]
           [(get w [:css-known-standard :alt 74] 100)
             (gen/tuple
-              (gen/return "border-right-width : ")
+              (gen/return "border-right-width")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-border-right-width g))]
           [(get w [:css-known-standard :alt 75] 100)
             (gen/tuple
-              (gen/return "border-spacing : ")
+              (gen/return "border-spacing")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-border-spacing g))]
           [(get w [:css-known-standard :alt 76] 100)
             (gen/tuple
-              (gen/return "border-start-end-radius : ")
+              (gen/return "border-start-end-radius")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-border-start-end-radius g))]
           [(get w [:css-known-standard :alt 77] 100)
             (gen/tuple
-              (gen/return "border-start-start-radius : ")
+              (gen/return "border-start-start-radius")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-border-start-start-radius g))]
           [(get w [:css-known-standard :alt 78] 100)
             (gen/tuple
-              (gen/return "border-style : ")
+              (gen/return "border-style")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-border-style g))]
           [(get w [:css-known-standard :alt 79] 100)
             (gen/tuple
-              (gen/return "border-top : ")
+              (gen/return "border-top")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-border-top g))]
           [(get w [:css-known-standard :alt 80] 100)
             (gen/tuple
-              (gen/return "border-top-color : ")
+              (gen/return "border-top-color")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-border-top-color g))]
           [(get w [:css-known-standard :alt 81] 100)
             (gen/tuple
-              (gen/return "border-top-left-radius : ")
+              (gen/return "border-top-left-radius")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-border-top-left-radius g))]
           [(get w [:css-known-standard :alt 82] 100)
             (gen/tuple
-              (gen/return "border-top-right-radius : ")
+              (gen/return "border-top-right-radius")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-border-top-right-radius g))]
           [(get w [:css-known-standard :alt 83] 100)
             (gen/tuple
-              (gen/return "border-top-style : ")
+              (gen/return "border-top-style")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-border-top-style g))]
           [(get w [:css-known-standard :alt 84] 100)
             (gen/tuple
-              (gen/return "border-top-width : ")
+              (gen/return "border-top-width")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-border-top-width g))]
           [(get w [:css-known-standard :alt 85] 100)
             (gen/tuple
-              (gen/return "border-width : ")
+              (gen/return "border-width")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-border-width g))]
           [(get w [:css-known-standard :alt 86] 100)
             (gen/tuple
-              (gen/return "bottom : ")
+              (gen/return "bottom")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-bottom g))]
           [(get w [:css-known-standard :alt 87] 100)
             (gen/tuple
-              (gen/return "box-decoration-break : ")
+              (gen/return "box-decoration-break")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-box-decoration-break g))]
           [(get w [:css-known-standard :alt 88] 100)
             (gen/tuple
-              (gen/return "box-shadow : ")
+              (gen/return "box-shadow")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-box-shadow g))]
           [(get w [:css-known-standard :alt 89] 100)
             (gen/tuple
-              (gen/return "box-sizing : ")
+              (gen/return "box-sizing")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-box-sizing g))]
           [(get w [:css-known-standard :alt 90] 100)
             (gen/tuple
-              (gen/return "break-after : ")
+              (gen/return "break-after")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-break-after g))]
           [(get w [:css-known-standard :alt 91] 100)
             (gen/tuple
-              (gen/return "break-before : ")
+              (gen/return "break-before")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-break-before g))]
           [(get w [:css-known-standard :alt 92] 100)
             (gen/tuple
-              (gen/return "break-inside : ")
+              (gen/return "break-inside")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-break-inside g))]
           [(get w [:css-known-standard :alt 93] 100)
             (gen/tuple
-              (gen/return "caption-side : ")
+              (gen/return "caption-side")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-caption-side g))]
           [(get w [:css-known-standard :alt 94] 100)
             (gen/tuple
-              (gen/return "caret-color : ")
+              (gen/return "caret-color")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-caret-color g))]
           [(get w [:css-known-standard :alt 95] 100)
             (gen/tuple
-              (gen/return "clear : ")
+              (gen/return "clear")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-clear g))]
           [(get w [:css-known-standard :alt 96] 100)
             (gen/tuple
-              (gen/return "clip : ")
+              (gen/return "clip")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-clip g))]
           [(get w [:css-known-standard :alt 97] 100)
             (gen/tuple
-              (gen/return "clip-path : ")
+              (gen/return "clip-path")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-clip-path g))]
           [(get w [:css-known-standard :alt 98] 100)
             (gen/tuple
-              (gen/return "color : ")
+              (gen/return "color")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-color g))]
           [(get w [:css-known-standard :alt 99] 100)
             (gen/tuple
-              (gen/return "color-adjust : ")
+              (gen/return "color-adjust")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-color-adjust g))]
           [(get w [:css-known-standard :alt 100] 100)
             (gen/tuple
-              (gen/return "column-count : ")
+              (gen/return "column-count")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-column-count g))]
           [(get w [:css-known-standard :alt 101] 100)
             (gen/tuple
-              (gen/return "column-fill : ")
+              (gen/return "column-fill")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-column-fill g))]
           [(get w [:css-known-standard :alt 102] 100)
             (gen/tuple
-              (gen/return "column-gap : ")
+              (gen/return "column-gap")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-column-gap g))]
           [(get w [:css-known-standard :alt 103] 100)
             (gen/tuple
-              (gen/return "column-rule : ")
+              (gen/return "column-rule")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-column-rule g))]
           [(get w [:css-known-standard :alt 104] 100)
             (gen/tuple
-              (gen/return "column-rule-color : ")
+              (gen/return "column-rule-color")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-column-rule-color g))]
           [(get w [:css-known-standard :alt 105] 100)
             (gen/tuple
-              (gen/return "column-rule-style : ")
+              (gen/return "column-rule-style")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-column-rule-style g))]
           [(get w [:css-known-standard :alt 106] 100)
             (gen/tuple
-              (gen/return "column-rule-width : ")
+              (gen/return "column-rule-width")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-column-rule-width g))]
           [(get w [:css-known-standard :alt 107] 100)
             (gen/tuple
-              (gen/return "column-span : ")
+              (gen/return "column-span")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-column-span g))]
           [(get w [:css-known-standard :alt 108] 100)
             (gen/tuple
-              (gen/return "column-width : ")
+              (gen/return "column-width")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-column-width g))]
           [(get w [:css-known-standard :alt 109] 100)
             (gen/tuple
-              (gen/return "columns : ")
+              (gen/return "columns")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-columns g))]
           [(get w [:css-known-standard :alt 110] 100)
             (gen/tuple
-              (gen/return "content : ")
+              (gen/return "content")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-content g))]
           [(get w [:css-known-standard :alt 111] 100)
             (gen/tuple
-              (gen/return "counter-increment : ")
+              (gen/return "counter-increment")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-counter-increment g))]
           [(get w [:css-known-standard :alt 112] 100)
             (gen/tuple
-              (gen/return "counter-reset : ")
+              (gen/return "counter-reset")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-counter-reset g))]
           [(get w [:css-known-standard :alt 113] 100)
             (gen/tuple
-              (gen/return "cursor : ")
+              (gen/return "cursor")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-cursor g))]
           [(get w [:css-known-standard :alt 114] 100)
             (gen/tuple
-              (gen/return "direction : ")
+              (gen/return "direction")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-direction g))]
           [(get w [:css-known-standard :alt 115] 100)
             (gen/tuple
-              (gen/return "display : ")
+              (gen/return "display")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-display g))]
           [(get w [:css-known-standard :alt 116] 100)
             (gen/tuple
-              (gen/return "empty-cells : ")
+              (gen/return "empty-cells")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-empty-cells g))]
           [(get w [:css-known-standard :alt 117] 100)
             (gen/tuple
-              (gen/return "filter : ")
+              (gen/return "filter")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-filter g))]
           [(get w [:css-known-standard :alt 118] 100)
             (gen/tuple
-              (gen/return "flex : ")
+              (gen/return "flex")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-flex g))]
           [(get w [:css-known-standard :alt 119] 100)
             (gen/tuple
-              (gen/return "flex-basis : ")
+              (gen/return "flex-basis")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-flex-basis g))]
           [(get w [:css-known-standard :alt 120] 100)
             (gen/tuple
-              (gen/return "flex-direction : ")
+              (gen/return "flex-direction")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-flex-direction g))]
           [(get w [:css-known-standard :alt 121] 100)
             (gen/tuple
-              (gen/return "flex-flow : ")
+              (gen/return "flex-flow")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-flex-flow g))]
           [(get w [:css-known-standard :alt 122] 100)
             (gen/tuple
-              (gen/return "flex-grow : ")
+              (gen/return "flex-grow")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-flex-grow g))]
           [(get w [:css-known-standard :alt 123] 100)
             (gen/tuple
-              (gen/return "flex-shrink : ")
+              (gen/return "flex-shrink")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-flex-shrink g))]
           [(get w [:css-known-standard :alt 124] 100)
             (gen/tuple
-              (gen/return "flex-wrap : ")
+              (gen/return "flex-wrap")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-flex-wrap g))]
           [(get w [:css-known-standard :alt 125] 100)
             (gen/tuple
-              (gen/return "float : ")
+              (gen/return "float")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-float g))]
           [(get w [:css-known-standard :alt 126] 100)
             (gen/tuple
-              (gen/return "font : ")
+              (gen/return "font")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-font g))]
           [(get w [:css-known-standard :alt 127] 100)
             (gen/tuple
-              (gen/return "font-family : ")
+              (gen/return "font-family")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-font-family g))]
           [(get w [:css-known-standard :alt 128] 100)
             (gen/tuple
-              (gen/return "font-feature-settings : ")
+              (gen/return "font-feature-settings")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-font-feature-settings g))]
           [(get w [:css-known-standard :alt 129] 100)
             (gen/tuple
-              (gen/return "font-kerning : ")
+              (gen/return "font-kerning")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-font-kerning g))]
           [(get w [:css-known-standard :alt 130] 100)
             (gen/tuple
-              (gen/return "font-language-override : ")
+              (gen/return "font-language-override")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-font-language-override g))]
           [(get w [:css-known-standard :alt 131] 100)
             (gen/tuple
-              (gen/return "font-optical-sizing : ")
+              (gen/return "font-optical-sizing")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-font-optical-sizing g))]
           [(get w [:css-known-standard :alt 132] 100)
             (gen/tuple
-              (gen/return "font-size : ")
+              (gen/return "font-size")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-font-size g))]
           [(get w [:css-known-standard :alt 133] 100)
             (gen/tuple
-              (gen/return "font-size-adjust : ")
+              (gen/return "font-size-adjust")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-font-size-adjust g))]
           [(get w [:css-known-standard :alt 134] 100)
             (gen/tuple
-              (gen/return "font-stretch : ")
+              (gen/return "font-stretch")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-font-stretch g))]
           [(get w [:css-known-standard :alt 135] 100)
             (gen/tuple
-              (gen/return "font-style : ")
+              (gen/return "font-style")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-font-style g))]
           [(get w [:css-known-standard :alt 136] 100)
             (gen/tuple
-              (gen/return "font-synthesis : ")
+              (gen/return "font-synthesis")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-font-synthesis g))]
           [(get w [:css-known-standard :alt 137] 100)
             (gen/tuple
-              (gen/return "font-variant : ")
+              (gen/return "font-variant")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-font-variant g))]
           [(get w [:css-known-standard :alt 138] 100)
             (gen/tuple
-              (gen/return "font-variant-alternates : ")
+              (gen/return "font-variant-alternates")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-font-variant-alternates g))]
           [(get w [:css-known-standard :alt 139] 100)
             (gen/tuple
-              (gen/return "font-variant-caps : ")
+              (gen/return "font-variant-caps")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-font-variant-caps g))]
           [(get w [:css-known-standard :alt 140] 100)
             (gen/tuple
-              (gen/return "font-variant-east-asian : ")
+              (gen/return "font-variant-east-asian")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-font-variant-east-asian g))]
           [(get w [:css-known-standard :alt 141] 100)
             (gen/tuple
-              (gen/return "font-variant-ligatures : ")
+              (gen/return "font-variant-ligatures")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-font-variant-ligatures g))]
           [(get w [:css-known-standard :alt 142] 100)
             (gen/tuple
-              (gen/return "font-variant-numeric : ")
+              (gen/return "font-variant-numeric")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-font-variant-numeric g))]
           [(get w [:css-known-standard :alt 143] 100)
             (gen/tuple
-              (gen/return "font-variant-position : ")
+              (gen/return "font-variant-position")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-font-variant-position g))]
           [(get w [:css-known-standard :alt 144] 100)
             (gen/tuple
-              (gen/return "font-weight : ")
+              (gen/return "font-weight")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-font-weight g))]
           [(get w [:css-known-standard :alt 145] 100)
             (gen/tuple
-              (gen/return "gap : ")
+              (gen/return "gap")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-gap g))]
           [(get w [:css-known-standard :alt 146] 100)
             (gen/tuple
-              (gen/return "grid : ")
+              (gen/return "grid")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-grid g))]
           [(get w [:css-known-standard :alt 147] 100)
             (gen/tuple
-              (gen/return "grid-area : ")
+              (gen/return "grid-area")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-grid-area g))]
           [(get w [:css-known-standard :alt 148] 100)
             (gen/tuple
-              (gen/return "grid-auto-columns : ")
+              (gen/return "grid-auto-columns")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-grid-auto-columns g))]
           [(get w [:css-known-standard :alt 149] 100)
             (gen/tuple
-              (gen/return "grid-auto-flow : ")
+              (gen/return "grid-auto-flow")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-grid-auto-flow g))]
           [(get w [:css-known-standard :alt 150] 100)
             (gen/tuple
-              (gen/return "grid-auto-rows : ")
+              (gen/return "grid-auto-rows")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-grid-auto-rows g))]
           [(get w [:css-known-standard :alt 151] 100)
             (gen/tuple
-              (gen/return "grid-column : ")
+              (gen/return "grid-column")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-grid-column g))]
           [(get w [:css-known-standard :alt 152] 100)
             (gen/tuple
-              (gen/return "grid-column-end : ")
+              (gen/return "grid-column-end")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-grid-column-end g))]
           [(get w [:css-known-standard :alt 153] 100)
             (gen/tuple
-              (gen/return "grid-column-start : ")
+              (gen/return "grid-column-start")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-grid-column-start g))]
           [(get w [:css-known-standard :alt 154] 100)
             (gen/tuple
-              (gen/return "grid-row : ")
+              (gen/return "grid-row")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-grid-row g))]
           [(get w [:css-known-standard :alt 155] 100)
             (gen/tuple
-              (gen/return "grid-row-end : ")
+              (gen/return "grid-row-end")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-grid-row-end g))]
           [(get w [:css-known-standard :alt 156] 100)
             (gen/tuple
-              (gen/return "grid-row-start : ")
+              (gen/return "grid-row-start")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-grid-row-start g))]
           [(get w [:css-known-standard :alt 157] 100)
             (gen/tuple
-              (gen/return "grid-template : ")
+              (gen/return "grid-template")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-grid-template g))]
           [(get w [:css-known-standard :alt 158] 100)
             (gen/tuple
-              (gen/return "grid-template-areas : ")
+              (gen/return "grid-template-areas")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-grid-template-areas g))]
           [(get w [:css-known-standard :alt 159] 100)
             (gen/tuple
-              (gen/return "grid-template-columns : ")
+              (gen/return "grid-template-columns")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-grid-template-columns g))]
           [(get w [:css-known-standard :alt 160] 100)
             (gen/tuple
-              (gen/return "grid-template-rows : ")
+              (gen/return "grid-template-rows")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-grid-template-rows g))]
           [(get w [:css-known-standard :alt 161] 100)
             (gen/tuple
-              (gen/return "hanging-punctuation : ")
+              (gen/return "hanging-punctuation")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-hanging-punctuation g))]
           [(get w [:css-known-standard :alt 162] 100)
             (gen/tuple
-              (gen/return "height : ")
+              (gen/return "height")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-height g))]
           [(get w [:css-known-standard :alt 163] 100)
             (gen/tuple
-              (gen/return "hyphens : ")
+              (gen/return "hyphens")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-hyphens g))]
           [(get w [:css-known-standard :alt 164] 100)
             (gen/tuple
-              (gen/return "image-orientation : ")
+              (gen/return "image-orientation")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-image-orientation g))]
           [(get w [:css-known-standard :alt 165] 100)
             (gen/tuple
-              (gen/return "image-rendering : ")
+              (gen/return "image-rendering")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-image-rendering g))]
           [(get w [:css-known-standard :alt 166] 100)
             (gen/tuple
-              (gen/return "inline-size : ")
+              (gen/return "inline-size")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-inline-size g))]
           [(get w [:css-known-standard :alt 167] 100)
             (gen/tuple
-              (gen/return "inset : ")
+              (gen/return "inset")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-inset g))]
           [(get w [:css-known-standard :alt 168] 100)
             (gen/tuple
-              (gen/return "inset-block : ")
+              (gen/return "inset-block")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-inset-block g))]
           [(get w [:css-known-standard :alt 169] 100)
             (gen/tuple
-              (gen/return "inset-block-end : ")
+              (gen/return "inset-block-end")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-inset-block-end g))]
           [(get w [:css-known-standard :alt 170] 100)
             (gen/tuple
-              (gen/return "inset-block-start : ")
+              (gen/return "inset-block-start")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-inset-block-start g))]
           [(get w [:css-known-standard :alt 171] 100)
             (gen/tuple
-              (gen/return "inset-inline : ")
+              (gen/return "inset-inline")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-inset-inline g))]
           [(get w [:css-known-standard :alt 172] 100)
             (gen/tuple
-              (gen/return "inset-inline-end : ")
+              (gen/return "inset-inline-end")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-inset-inline-end g))]
           [(get w [:css-known-standard :alt 173] 100)
             (gen/tuple
-              (gen/return "inset-inline-start : ")
+              (gen/return "inset-inline-start")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-inset-inline-start g))]
           [(get w [:css-known-standard :alt 174] 100)
             (gen/tuple
-              (gen/return "isolation : ")
+              (gen/return "isolation")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-isolation g))]
           [(get w [:css-known-standard :alt 175] 100)
             (gen/tuple
-              (gen/return "justify-content : ")
+              (gen/return "justify-content")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-justify-content g))]
           [(get w [:css-known-standard :alt 176] 100)
             (gen/tuple
-              (gen/return "justify-items : ")
+              (gen/return "justify-items")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-justify-items g))]
           [(get w [:css-known-standard :alt 177] 100)
             (gen/tuple
-              (gen/return "justify-self : ")
+              (gen/return "justify-self")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-justify-self g))]
           [(get w [:css-known-standard :alt 178] 100)
             (gen/tuple
-              (gen/return "left : ")
+              (gen/return "left")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-left g))]
           [(get w [:css-known-standard :alt 179] 100)
             (gen/tuple
-              (gen/return "letter-spacing : ")
+              (gen/return "letter-spacing")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-letter-spacing g))]
           [(get w [:css-known-standard :alt 180] 100)
             (gen/tuple
-              (gen/return "line-break : ")
+              (gen/return "line-break")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-line-break g))]
           [(get w [:css-known-standard :alt 181] 100)
             (gen/tuple
-              (gen/return "line-height : ")
+              (gen/return "line-height")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-line-height g))]
           [(get w [:css-known-standard :alt 182] 100)
             (gen/tuple
-              (gen/return "list-style : ")
+              (gen/return "list-style")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-list-style g))]
           [(get w [:css-known-standard :alt 183] 100)
             (gen/tuple
-              (gen/return "list-style-image : ")
+              (gen/return "list-style-image")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-list-style-image g))]
           [(get w [:css-known-standard :alt 184] 100)
             (gen/tuple
-              (gen/return "list-style-position : ")
+              (gen/return "list-style-position")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-list-style-position g))]
           [(get w [:css-known-standard :alt 185] 100)
             (gen/tuple
-              (gen/return "list-style-type : ")
+              (gen/return "list-style-type")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-list-style-type g))]
           [(get w [:css-known-standard :alt 186] 100)
             (gen/tuple
-              (gen/return "margin : ")
+              (gen/return "margin")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-margin g))]
           [(get w [:css-known-standard :alt 187] 100)
             (gen/tuple
-              (gen/return "margin-block : ")
+              (gen/return "margin-block")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-margin-block g))]
           [(get w [:css-known-standard :alt 188] 100)
             (gen/tuple
-              (gen/return "margin-block-end : ")
+              (gen/return "margin-block-end")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-margin-block-end g))]
           [(get w [:css-known-standard :alt 189] 100)
             (gen/tuple
-              (gen/return "margin-block-start : ")
+              (gen/return "margin-block-start")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-margin-block-start g))]
           [(get w [:css-known-standard :alt 190] 100)
             (gen/tuple
-              (gen/return "margin-bottom : ")
+              (gen/return "margin-bottom")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-margin-bottom g))]
           [(get w [:css-known-standard :alt 191] 100)
             (gen/tuple
-              (gen/return "margin-inline : ")
+              (gen/return "margin-inline")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-margin-inline g))]
           [(get w [:css-known-standard :alt 192] 100)
             (gen/tuple
-              (gen/return "margin-inline-end : ")
+              (gen/return "margin-inline-end")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-margin-inline-end g))]
           [(get w [:css-known-standard :alt 193] 100)
             (gen/tuple
-              (gen/return "margin-inline-start : ")
+              (gen/return "margin-inline-start")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-margin-inline-start g))]
           [(get w [:css-known-standard :alt 194] 100)
             (gen/tuple
-              (gen/return "margin-left : ")
+              (gen/return "margin-left")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-margin-left g))]
           [(get w [:css-known-standard :alt 195] 100)
             (gen/tuple
-              (gen/return "margin-right : ")
+              (gen/return "margin-right")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-margin-right g))]
           [(get w [:css-known-standard :alt 196] 100)
             (gen/tuple
-              (gen/return "margin-top : ")
+              (gen/return "margin-top")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-margin-top g))]
           [(get w [:css-known-standard :alt 197] 100)
             (gen/tuple
-              (gen/return "mask : ")
+              (gen/return "mask")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-mask g))]
           [(get w [:css-known-standard :alt 198] 100)
             (gen/tuple
-              (gen/return "mask-clip : ")
+              (gen/return "mask-clip")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-mask-clip g))]
           [(get w [:css-known-standard :alt 199] 100)
             (gen/tuple
-              (gen/return "mask-composite : ")
+              (gen/return "mask-composite")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-mask-composite g))]
           [(get w [:css-known-standard :alt 200] 100)
             (gen/tuple
-              (gen/return "mask-image : ")
+              (gen/return "mask-image")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-mask-image g))]
           [(get w [:css-known-standard :alt 201] 100)
             (gen/tuple
-              (gen/return "mask-mode : ")
+              (gen/return "mask-mode")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-mask-mode g))]
           [(get w [:css-known-standard :alt 202] 100)
             (gen/tuple
-              (gen/return "mask-origin : ")
+              (gen/return "mask-origin")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-mask-origin g))]
           [(get w [:css-known-standard :alt 203] 100)
             (gen/tuple
-              (gen/return "mask-position : ")
+              (gen/return "mask-position")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-mask-position g))]
           [(get w [:css-known-standard :alt 204] 100)
             (gen/tuple
-              (gen/return "mask-repeat : ")
+              (gen/return "mask-repeat")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-mask-repeat g))]
           [(get w [:css-known-standard :alt 205] 100)
             (gen/tuple
-              (gen/return "mask-size : ")
+              (gen/return "mask-size")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-mask-size g))]
           [(get w [:css-known-standard :alt 206] 100)
             (gen/tuple
-              (gen/return "mask-type : ")
+              (gen/return "mask-type")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-mask-type g))]
           [(get w [:css-known-standard :alt 207] 100)
             (gen/tuple
-              (gen/return "max-height : ")
+              (gen/return "max-height")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-max-height g))]
           [(get w [:css-known-standard :alt 208] 100)
             (gen/tuple
-              (gen/return "max-width : ")
+              (gen/return "max-width")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-max-width g))]
           [(get w [:css-known-standard :alt 209] 100)
             (gen/tuple
-              (gen/return "min-block-size : ")
+              (gen/return "min-block-size")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-min-block-size g))]
           [(get w [:css-known-standard :alt 210] 100)
             (gen/tuple
-              (gen/return "min-height : ")
+              (gen/return "min-height")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-min-height g))]
           [(get w [:css-known-standard :alt 211] 100)
             (gen/tuple
-              (gen/return "min-inline-size : ")
+              (gen/return "min-inline-size")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-min-inline-size g))]
           [(get w [:css-known-standard :alt 212] 100)
             (gen/tuple
-              (gen/return "min-width : ")
+              (gen/return "min-width")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-min-width g))]
           [(get w [:css-known-standard :alt 213] 100)
             (gen/tuple
-              (gen/return "mix-blend-mode : ")
+              (gen/return "mix-blend-mode")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-mix-blend-mode g))]
           [(get w [:css-known-standard :alt 214] 100)
             (gen/tuple
-              (gen/return "object-fit : ")
+              (gen/return "object-fit")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-object-fit g))]
           [(get w [:css-known-standard :alt 215] 100)
             (gen/tuple
-              (gen/return "object-position : ")
+              (gen/return "object-position")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-object-position g))]
           [(get w [:css-known-standard :alt 216] 100)
             (gen/tuple
-              (gen/return "opacity : ")
+              (gen/return "opacity")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-opacity g))]
           [(get w [:css-known-standard :alt 217] 100)
             (gen/tuple
-              (gen/return "order : ")
+              (gen/return "order")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-order g))]
           [(get w [:css-known-standard :alt 218] 100)
             (gen/tuple
-              (gen/return "orphans : ")
+              (gen/return "orphans")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-orphans g))]
           [(get w [:css-known-standard :alt 219] 100)
             (gen/tuple
-              (gen/return "outline : ")
+              (gen/return "outline")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-outline g))]
           [(get w [:css-known-standard :alt 220] 100)
             (gen/tuple
-              (gen/return "outline-color : ")
+              (gen/return "outline-color")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-outline-color g))]
           [(get w [:css-known-standard :alt 221] 100)
             (gen/tuple
-              (gen/return "outline-offset : ")
+              (gen/return "outline-offset")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-outline-offset g))]
           [(get w [:css-known-standard :alt 222] 100)
             (gen/tuple
-              (gen/return "outline-style : ")
+              (gen/return "outline-style")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-outline-style g))]
           [(get w [:css-known-standard :alt 223] 100)
             (gen/tuple
-              (gen/return "outline-width : ")
+              (gen/return "outline-width")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-outline-width g))]
           [(get w [:css-known-standard :alt 224] 100)
             (gen/tuple
-              (gen/return "overflow : ")
+              (gen/return "overflow")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-overflow g))]
           [(get w [:css-known-standard :alt 225] 100)
             (gen/tuple
-              (gen/return "overflow-wrap : ")
+              (gen/return "overflow-wrap")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-overflow-wrap g))]
           [(get w [:css-known-standard :alt 226] 100)
             (gen/tuple
-              (gen/return "overflow-x : ")
+              (gen/return "overflow-x")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-overflow-x g))]
           [(get w [:css-known-standard :alt 227] 100)
             (gen/tuple
-              (gen/return "overflow-y : ")
+              (gen/return "overflow-y")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-overflow-y g))]
           [(get w [:css-known-standard :alt 228] 100)
             (gen/tuple
-              (gen/return "padding : ")
+              (gen/return "padding")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-padding g))]
           [(get w [:css-known-standard :alt 229] 100)
             (gen/tuple
-              (gen/return "padding-block : ")
+              (gen/return "padding-block")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-padding-block g))]
           [(get w [:css-known-standard :alt 230] 100)
             (gen/tuple
-              (gen/return "padding-block-end : ")
+              (gen/return "padding-block-end")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-padding-block-end g))]
           [(get w [:css-known-standard :alt 231] 100)
             (gen/tuple
-              (gen/return "padding-block-start : ")
+              (gen/return "padding-block-start")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-padding-block-start g))]
           [(get w [:css-known-standard :alt 232] 100)
             (gen/tuple
-              (gen/return "padding-bottom : ")
+              (gen/return "padding-bottom")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-padding-bottom g))]
           [(get w [:css-known-standard :alt 233] 100)
             (gen/tuple
-              (gen/return "padding-inline : ")
+              (gen/return "padding-inline")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-padding-inline g))]
           [(get w [:css-known-standard :alt 234] 100)
             (gen/tuple
-              (gen/return "padding-inline-end : ")
+              (gen/return "padding-inline-end")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-padding-inline-end g))]
           [(get w [:css-known-standard :alt 235] 100)
             (gen/tuple
-              (gen/return "padding-inline-start : ")
+              (gen/return "padding-inline-start")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-padding-inline-start g))]
           [(get w [:css-known-standard :alt 236] 100)
             (gen/tuple
-              (gen/return "padding-left : ")
+              (gen/return "padding-left")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-padding-left g))]
           [(get w [:css-known-standard :alt 237] 100)
             (gen/tuple
-              (gen/return "padding-right : ")
+              (gen/return "padding-right")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-padding-right g))]
           [(get w [:css-known-standard :alt 238] 100)
             (gen/tuple
-              (gen/return "padding-top : ")
+              (gen/return "padding-top")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-padding-top g))]
           [(get w [:css-known-standard :alt 239] 100)
             (gen/tuple
-              (gen/return "page-break-after : ")
+              (gen/return "page-break-after")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-page-break-after g))]
           [(get w [:css-known-standard :alt 240] 100)
             (gen/tuple
-              (gen/return "page-break-before : ")
+              (gen/return "page-break-before")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-page-break-before g))]
           [(get w [:css-known-standard :alt 241] 100)
             (gen/tuple
-              (gen/return "page-break-inside : ")
+              (gen/return "page-break-inside")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-page-break-inside g))]
           [(get w [:css-known-standard :alt 242] 100)
             (gen/tuple
-              (gen/return "perspective : ")
+              (gen/return "perspective")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-perspective g))]
           [(get w [:css-known-standard :alt 243] 100)
             (gen/tuple
-              (gen/return "perspective-origin : ")
+              (gen/return "perspective-origin")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-perspective-origin g))]
           [(get w [:css-known-standard :alt 244] 100)
             (gen/tuple
-              (gen/return "place-content : ")
+              (gen/return "place-content")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-place-content g))]
           [(get w [:css-known-standard :alt 245] 100)
             (gen/tuple
-              (gen/return "place-items : ")
+              (gen/return "place-items")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-place-items g))]
           [(get w [:css-known-standard :alt 246] 100)
             (gen/tuple
-              (gen/return "place-self : ")
+              (gen/return "place-self")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-place-self g))]
           [(get w [:css-known-standard :alt 247] 100)
             (gen/tuple
-              (gen/return "pointer-events : ")
+              (gen/return "pointer-events")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-pointer-events g))]
           [(get w [:css-known-standard :alt 248] 100)
             (gen/tuple
-              (gen/return "position : ")
+              (gen/return "position")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-position g))]
           [(get w [:css-known-standard :alt 249] 100)
             (gen/tuple
-              (gen/return "quotes : ")
+              (gen/return "quotes")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-quotes g))]
           [(get w [:css-known-standard :alt 250] 100)
             (gen/tuple
-              (gen/return "resize : ")
+              (gen/return "resize")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-resize g))]
           [(get w [:css-known-standard :alt 251] 100)
             (gen/tuple
-              (gen/return "right : ")
+              (gen/return "right")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-right g))]
           [(get w [:css-known-standard :alt 252] 100)
             (gen/tuple
-              (gen/return "rotate : ")
+              (gen/return "rotate")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-rotate g))]
           [(get w [:css-known-standard :alt 253] 100)
             (gen/tuple
-              (gen/return "row-gap : ")
+              (gen/return "row-gap")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-row-gap g))]
           [(get w [:css-known-standard :alt 254] 100)
             (gen/tuple
-              (gen/return "scale : ")
+              (gen/return "scale")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-scale g))]
           [(get w [:css-known-standard :alt 255] 100)
             (gen/tuple
-              (gen/return "scroll-behavior : ")
+              (gen/return "scroll-behavior")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-scroll-behavior g))]
           [(get w [:css-known-standard :alt 256] 100)
             (gen/tuple
-              (gen/return "scroll-margin : ")
+              (gen/return "scroll-margin")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-scroll-margin g))]
           [(get w [:css-known-standard :alt 257] 100)
             (gen/tuple
-              (gen/return "scroll-margin-block : ")
+              (gen/return "scroll-margin-block")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-scroll-margin-block g))]
           [(get w [:css-known-standard :alt 258] 100)
             (gen/tuple
-              (gen/return "scroll-margin-block-end : ")
+              (gen/return "scroll-margin-block-end")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-scroll-margin-block-end g))]
           [(get w [:css-known-standard :alt 259] 100)
             (gen/tuple
-              (gen/return "scroll-margin-block-start : ")
+              (gen/return "scroll-margin-block-start")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-scroll-margin-block-start g))]
           [(get w [:css-known-standard :alt 260] 100)
             (gen/tuple
-              (gen/return "scroll-margin-bottom : ")
+              (gen/return "scroll-margin-bottom")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-scroll-margin-bottom g))]
           [(get w [:css-known-standard :alt 261] 100)
             (gen/tuple
-              (gen/return "scroll-margin-inline : ")
+              (gen/return "scroll-margin-inline")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-scroll-margin-inline g))]
           [(get w [:css-known-standard :alt 262] 100)
             (gen/tuple
-              (gen/return "scroll-margin-inline-end : ")
+              (gen/return "scroll-margin-inline-end")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-scroll-margin-inline-end g))]
           [(get w [:css-known-standard :alt 263] 100)
             (gen/tuple
-              (gen/return "scroll-margin-inline-start : ")
+              (gen/return "scroll-margin-inline-start")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-scroll-margin-inline-start g))]
           [(get w [:css-known-standard :alt 264] 100)
             (gen/tuple
-              (gen/return "scroll-margin-left : ")
+              (gen/return "scroll-margin-left")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-scroll-margin-left g))]
           [(get w [:css-known-standard :alt 265] 100)
             (gen/tuple
-              (gen/return "scroll-margin-right : ")
+              (gen/return "scroll-margin-right")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-scroll-margin-right g))]
           [(get w [:css-known-standard :alt 266] 100)
             (gen/tuple
-              (gen/return "scroll-margin-top : ")
+              (gen/return "scroll-margin-top")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-scroll-margin-top g))]
           [(get w [:css-known-standard :alt 267] 100)
             (gen/tuple
-              (gen/return "scroll-padding : ")
+              (gen/return "scroll-padding")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-scroll-padding g))]
           [(get w [:css-known-standard :alt 268] 100)
             (gen/tuple
-              (gen/return "scroll-padding-block : ")
+              (gen/return "scroll-padding-block")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-scroll-padding-block g))]
           [(get w [:css-known-standard :alt 269] 100)
             (gen/tuple
-              (gen/return "scroll-padding-block-end : ")
+              (gen/return "scroll-padding-block-end")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-scroll-padding-block-end g))]
           [(get w [:css-known-standard :alt 270] 100)
             (gen/tuple
-              (gen/return "scroll-padding-block-start : ")
+              (gen/return "scroll-padding-block-start")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-scroll-padding-block-start g))]
           [(get w [:css-known-standard :alt 271] 100)
             (gen/tuple
-              (gen/return "scroll-padding-bottom : ")
+              (gen/return "scroll-padding-bottom")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-scroll-padding-bottom g))]
           [(get w [:css-known-standard :alt 272] 100)
             (gen/tuple
-              (gen/return "scroll-padding-inline : ")
+              (gen/return "scroll-padding-inline")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-scroll-padding-inline g))]
           [(get w [:css-known-standard :alt 273] 100)
             (gen/tuple
-              (gen/return "scroll-padding-inline-end : ")
+              (gen/return "scroll-padding-inline-end")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-scroll-padding-inline-end g))]
           [(get w [:css-known-standard :alt 274] 100)
             (gen/tuple
-              (gen/return "scroll-padding-inline-start : ")
+              (gen/return "scroll-padding-inline-start")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-scroll-padding-inline-start g))]
           [(get w [:css-known-standard :alt 275] 100)
             (gen/tuple
-              (gen/return "scroll-padding-left : ")
+              (gen/return "scroll-padding-left")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-scroll-padding-left g))]
           [(get w [:css-known-standard :alt 276] 100)
             (gen/tuple
-              (gen/return "scroll-padding-right : ")
+              (gen/return "scroll-padding-right")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-scroll-padding-right g))]
           [(get w [:css-known-standard :alt 277] 100)
             (gen/tuple
-              (gen/return "scroll-padding-top : ")
+              (gen/return "scroll-padding-top")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-scroll-padding-top g))]
           [(get w [:css-known-standard :alt 278] 100)
             (gen/tuple
-              (gen/return "scroll-snap-align : ")
+              (gen/return "scroll-snap-align")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-scroll-snap-align g))]
           [(get w [:css-known-standard :alt 279] 100)
             (gen/tuple
-              (gen/return "scroll-snap-stop : ")
+              (gen/return "scroll-snap-stop")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-scroll-snap-stop g))]
           [(get w [:css-known-standard :alt 280] 100)
             (gen/tuple
-              (gen/return "scroll-snap-type : ")
+              (gen/return "scroll-snap-type")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-scroll-snap-type g))]
           [(get w [:css-known-standard :alt 281] 100)
             (gen/tuple
-              (gen/return "scrollbar-color : ")
+              (gen/return "scrollbar-color")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-scrollbar-color g))]
           [(get w [:css-known-standard :alt 282] 100)
             (gen/tuple
-              (gen/return "scrollbar-width : ")
+              (gen/return "scrollbar-width")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-scrollbar-width g))]
           [(get w [:css-known-standard :alt 283] 100)
             (gen/tuple
-              (gen/return "shape-image-threshold : ")
+              (gen/return "shape-image-threshold")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-shape-image-threshold g))]
           [(get w [:css-known-standard :alt 284] 100)
             (gen/tuple
-              (gen/return "shape-margin : ")
+              (gen/return "shape-margin")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-shape-margin g))]
           [(get w [:css-known-standard :alt 285] 100)
             (gen/tuple
-              (gen/return "shape-outside : ")
+              (gen/return "shape-outside")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-shape-outside g))]
           [(get w [:css-known-standard :alt 286] 100)
             (gen/tuple
-              (gen/return "tab-size : ")
+              (gen/return "tab-size")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-tab-size g))]
           [(get w [:css-known-standard :alt 287] 100)
             (gen/tuple
-              (gen/return "table-layout : ")
+              (gen/return "table-layout")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-table-layout g))]
           [(get w [:css-known-standard :alt 288] 100)
             (gen/tuple
-              (gen/return "text-align : ")
+              (gen/return "text-align")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-text-align g))]
           [(get w [:css-known-standard :alt 289] 100)
             (gen/tuple
-              (gen/return "text-align-last : ")
+              (gen/return "text-align-last")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-text-align-last g))]
           [(get w [:css-known-standard :alt 290] 100)
             (gen/tuple
-              (gen/return "text-combine-upright : ")
+              (gen/return "text-combine-upright")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-text-combine-upright g))]
           [(get w [:css-known-standard :alt 291] 100)
             (gen/tuple
-              (gen/return "text-decoration : ")
+              (gen/return "text-decoration")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-text-decoration g))]
           [(get w [:css-known-standard :alt 292] 100)
             (gen/tuple
-              (gen/return "text-decoration-color : ")
+              (gen/return "text-decoration-color")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-text-decoration-color g))]
           [(get w [:css-known-standard :alt 293] 100)
             (gen/tuple
-              (gen/return "text-decoration-line : ")
+              (gen/return "text-decoration-line")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-text-decoration-line g))]
           [(get w [:css-known-standard :alt 294] 100)
             (gen/tuple
-              (gen/return "text-decoration-style : ")
+              (gen/return "text-decoration-style")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-text-decoration-style g))]
           [(get w [:css-known-standard :alt 295] 100)
             (gen/tuple
-              (gen/return "text-emphasis : ")
+              (gen/return "text-emphasis")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-text-emphasis g))]
           [(get w [:css-known-standard :alt 296] 100)
             (gen/tuple
-              (gen/return "text-emphasis-color : ")
+              (gen/return "text-emphasis-color")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-text-emphasis-color g))]
           [(get w [:css-known-standard :alt 297] 100)
             (gen/tuple
-              (gen/return "text-emphasis-position : ")
+              (gen/return "text-emphasis-position")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-text-emphasis-position g))]
           [(get w [:css-known-standard :alt 298] 100)
             (gen/tuple
-              (gen/return "text-emphasis-style : ")
+              (gen/return "text-emphasis-style")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-text-emphasis-style g))]
           [(get w [:css-known-standard :alt 299] 100)
             (gen/tuple
-              (gen/return "text-indent : ")
+              (gen/return "text-indent")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-text-indent g))]
           [(get w [:css-known-standard :alt 300] 100)
             (gen/tuple
-              (gen/return "text-justify : ")
+              (gen/return "text-justify")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-text-justify g))]
           [(get w [:css-known-standard :alt 301] 100)
             (gen/tuple
-              (gen/return "text-orientation : ")
+              (gen/return "text-orientation")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-text-orientation g))]
           [(get w [:css-known-standard :alt 302] 100)
             (gen/tuple
-              (gen/return "text-overflow : ")
+              (gen/return "text-overflow")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-text-overflow g))]
           [(get w [:css-known-standard :alt 303] 100)
             (gen/tuple
-              (gen/return "text-rendering : ")
+              (gen/return "text-rendering")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-text-rendering g))]
           [(get w [:css-known-standard :alt 304] 100)
             (gen/tuple
-              (gen/return "text-shadow : ")
+              (gen/return "text-shadow")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-text-shadow g))]
           [(get w [:css-known-standard :alt 305] 100)
             (gen/tuple
-              (gen/return "text-transform : ")
+              (gen/return "text-transform")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-text-transform g))]
           [(get w [:css-known-standard :alt 306] 100)
             (gen/tuple
-              (gen/return "text-underline-position : ")
+              (gen/return "text-underline-position")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-text-underline-position g))]
           [(get w [:css-known-standard :alt 307] 100)
             (gen/tuple
-              (gen/return "top : ")
+              (gen/return "top")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-top g))]
           [(get w [:css-known-standard :alt 308] 100)
             (gen/tuple
-              (gen/return "touch-action : ")
+              (gen/return "touch-action")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-touch-action g))]
           [(get w [:css-known-standard :alt 309] 100)
             (gen/tuple
-              (gen/return "transform : ")
+              (gen/return "transform")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-transform g))]
           [(get w [:css-known-standard :alt 310] 100)
             (gen/tuple
-              (gen/return "transform-box : ")
+              (gen/return "transform-box")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-transform-box g))]
           [(get w [:css-known-standard :alt 311] 100)
             (gen/tuple
-              (gen/return "transform-origin : ")
+              (gen/return "transform-origin")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-transform-origin g))]
           [(get w [:css-known-standard :alt 312] 100)
             (gen/tuple
-              (gen/return "transform-style : ")
+              (gen/return "transform-style")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-transform-style g))]
           [(get w [:css-known-standard :alt 313] 100)
             (gen/tuple
-              (gen/return "transition : ")
+              (gen/return "transition")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-transition g))]
           [(get w [:css-known-standard :alt 314] 100)
             (gen/tuple
-              (gen/return "transition-delay : ")
+              (gen/return "transition-delay")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-transition-delay g))]
           [(get w [:css-known-standard :alt 315] 100)
             (gen/tuple
-              (gen/return "transition-duration : ")
+              (gen/return "transition-duration")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-transition-duration g))]
           [(get w [:css-known-standard :alt 316] 100)
             (gen/tuple
-              (gen/return "transition-property : ")
+              (gen/return "transition-property")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-transition-property g))]
           [(get w [:css-known-standard :alt 317] 100)
             (gen/tuple
-              (gen/return "transition-timing-function : ")
+              (gen/return "transition-timing-function")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-transition-timing-function g))]
           [(get w [:css-known-standard :alt 318] 100)
             (gen/tuple
-              (gen/return "translate : ")
+              (gen/return "translate")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-translate g))]
           [(get w [:css-known-standard :alt 319] 100)
             (gen/tuple
-              (gen/return "unicode-bidi : ")
+              (gen/return "unicode-bidi")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-unicode-bidi g))]
           [(get w [:css-known-standard :alt 320] 100)
             (gen/tuple
-              (gen/return "vertical-align : ")
+              (gen/return "vertical-align")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-vertical-align g))]
           [(get w [:css-known-standard :alt 321] 100)
             (gen/tuple
-              (gen/return "visibility : ")
+              (gen/return "visibility")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-visibility g))]
           [(get w [:css-known-standard :alt 322] 100)
             (gen/tuple
-              (gen/return "white-space : ")
+              (gen/return "white-space")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-white-space g))]
           [(get w [:css-known-standard :alt 323] 100)
             (gen/tuple
-              (gen/return "widows : ")
+              (gen/return "widows")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-widows g))]
           [(get w [:css-known-standard :alt 324] 100)
             (gen/tuple
-              (gen/return "width : ")
+              (gen/return "width")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-width g))]
           [(get w [:css-known-standard :alt 325] 100)
             (gen/tuple
-              (gen/return "will-change : ")
+              (gen/return "will-change")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-will-change g))]
           [(get w [:css-known-standard :alt 326] 100)
             (gen/tuple
-              (gen/return "word-break : ")
+              (gen/return "word-break")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-word-break g))]
           [(get w [:css-known-standard :alt 327] 100)
             (gen/tuple
-              (gen/return "word-spacing : ")
+              (gen/return "word-spacing")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-word-spacing g))]
           [(get w [:css-known-standard :alt 328] 100)
             (gen/tuple
-              (gen/return "word-wrap : ")
+              (gen/return "word-wrap")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-word-wrap g))]
           [(get w [:css-known-standard :alt 329] 100)
             (gen/tuple
-              (gen/return "writing-mode : ")
+              (gen/return "writing-mode")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-writing-mode g))]
           [(get w [:css-known-standard :alt 330] 100)
             (gen/tuple
-              (gen/return "z-index : ")
+              (gen/return "z-index")
+              (gen/return " ")
+              (gen/return ":")
+              (gen/return " ")
               (:prop-z-index g))]])
         g (assoc g :css-known-standard gen-css-known-standard)
 
@@ -11251,7 +12303,8 @@
             [(get w [:nonprop-relative-selector-list :cat 1 :star 0] 100)
               (igen/vector+
                 (gen/tuple
-                  (gen/return ", ")
+                  (gen/return ",")
+                  (gen/return " ")
                   (:nonprop-relative-selector g)))]]))
         g (assoc g :nonprop-relative-selector-list gen-nonprop-relative-selector-list)
 
@@ -11365,13 +12418,14 @@
             [(get w [:nonprop-angular-color-stop-list :cat 1 :star 0] 100)
               (igen/vector+
                 (gen/tuple
-                  (gen/return ", ")
+                  (gen/return ",")
+                  (gen/return " ")
                   (gen/tuple
                     (:nonprop-angular-color-stop g)
                     (igen/freq [
-                      [(get w [:nonprop-angular-color-stop-list :cat 1 :star 0 :cat 1 :cat 1 :opt nil] 100)
+                      [(get w [:nonprop-angular-color-stop-list :cat 1 :star 0 :cat 2 :cat 1 :opt nil] 100)
                         (gen/return "")]
-                      [(get w [:nonprop-angular-color-stop-list :cat 1 :star 0 :cat 1 :cat 1 :opt 0] 100)
+                      [(get w [:nonprop-angular-color-stop-list :cat 1 :star 0 :cat 2 :cat 1 :opt 0] 100)
                         (gen/tuple
                           (gen/return ", ")
                           (:nonprop-angular-color-hint g))]]))))]])
@@ -11423,7 +12477,8 @@
               (gen/tuple
                 (gen/return "at ")
                 (:nonprop-position g))]])
-          (gen/return ", ")
+          (gen/return ",")
+          (gen/return " ")
           (:nonprop-angular-color-stop-list g)
           (gen/return ") "))
         g (assoc g :func-conic-gradient gen-func-conic-gradient)]
@@ -11687,7 +12742,8 @@
                 [(get w [:nonprop-page-selector-list :cat 1 :opt 0 :star 0] 100)
                   (igen/vector+
                     (gen/tuple
-                      (gen/return ", ")
+                      (gen/return ",")
+                      (gen/return " ")
                       (:nonprop-page-selector g)))]])]]))
         g (assoc g :nonprop-page-selector-list gen-nonprop-page-selector-list)
 
@@ -11699,7 +12755,8 @@
         (gen/tuple
           (gen/return "@page ")
           (:nonprop-page-selector-list g)
-          (gen/return "{ ")
+          (gen/return "{")
+          (gen/return " ")
           (:nonprop-page-body g)
           (gen/return "} "))
         g (assoc g :prop-AT-page gen-prop-AT-page)
@@ -11913,7 +12970,8 @@
             [(get w [:nonprop-media-query-list :cat 1 :star 0] 100)
               (igen/vector+
                 (gen/tuple
-                  (gen/return ", ")
+                  (gen/return ",")
+                  (gen/return " ")
                   (:nonprop-media-query g)))]]))
         g (assoc g :nonprop-media-query-list gen-nonprop-media-query-list)
 
@@ -11969,9 +13027,11 @@
             [(get w [:prop-AT-font-feature-values :cat 2 :star 0] 100)
               (igen/vector+
                 (gen/tuple
-                  (gen/return ", ")
+                  (gen/return ",")
+                  (gen/return " ")
                   (:nonprop-family-name g)))]])
-          (gen/return "{ ")
+          (gen/return "{")
+          (gen/return " ")
           (:nonprop-feature-value-block-list g)
           (gen/return "} "))
         g (assoc g :prop-AT-font-feature-values gen-prop-AT-font-feature-values)
@@ -11985,9 +13045,11 @@
             [(get w [:nonprop-keyframe-block :cat 1 :star 0] 100)
               (igen/vector+
                 (gen/tuple
-                  (gen/return ", ")
+                  (gen/return ",")
+                  (gen/return " ")
                   (:nonprop-keyframe-selector g)))]])
-          (gen/return "{ ")
+          (gen/return "{")
+          (gen/return " ")
           (:nonprop-declaration-list g)
           (gen/return "} "))
         g (assoc g :nonprop-keyframe-block gen-nonprop-keyframe-block)
@@ -12008,7 +13070,8 @@
                 [(get w [:nonprop-unicode-range :cat 1 :star 0] 100)
                   (igen/vector+
                     (gen/tuple
-                      (gen/return ", ")
+                      (gen/return ",")
+                      (gen/return " ")
                       inner))]])))
           (gen/tuple
             (chuck/string-from-regex #"U[+](?:[0-9A-Fa-f]{1,4}-[0-9A-Fa-f]{1,4}|[0-9A-Fa-f?]{1,4})")
@@ -12035,7 +13098,8 @@
                         [(get w [:nonprop-src :cat 0 :alt 0 :cat 1 :opt 0 :cat 3 :star 0] 100)
                           (igen/vector+
                             (gen/tuple
-                              (gen/return ", ")
+                              (gen/return ",")
+                              (gen/return " ")
                               (:nonprop-string g)))]])
                       (gen/return ") "))]]))]
             [(get w [:nonprop-src :cat 0 :alt 1] 100)
@@ -12050,29 +13114,31 @@
             [(get w [:nonprop-src :cat 1 :star 0] 100)
               (igen/vector+
                 (gen/tuple
-                  (gen/return ", ")
+                  (gen/return ",")
+                  (gen/return " ")
                   (igen/freq [
-                    [(get w [:nonprop-src :cat 1 :star 0 :cat 1 :alt 0] 100)
+                    [(get w [:nonprop-src :cat 1 :star 0 :cat 2 :alt 0] 100)
                       (gen/tuple
                         (:nonprop-url g)
                         (igen/freq [
-                          [(get w [:nonprop-src :cat 1 :star 0 :cat 1 :alt 0 :cat 1 :opt nil] 100)
+                          [(get w [:nonprop-src :cat 1 :star 0 :cat 2 :alt 0 :cat 1 :opt nil] 100)
                             (gen/return "")]
-                          [(get w [:nonprop-src :cat 1 :star 0 :cat 1 :alt 0 :cat 1 :opt 0] 100)
+                          [(get w [:nonprop-src :cat 1 :star 0 :cat 2 :alt 0 :cat 1 :opt 0] 100)
                             (gen/tuple
                               (gen/return "format ")
                               (gen/return "( ")
                               (:nonprop-string g)
                               (igen/freq [
-                                [(get w [:nonprop-src :cat 1 :star 0 :cat 1 :alt 0 :cat 1 :opt 0 :cat 3 :star nil] 100)
+                                [(get w [:nonprop-src :cat 1 :star 0 :cat 2 :alt 0 :cat 1 :opt 0 :cat 3 :star nil] 100)
                                   (gen/return "")]
-                                [(get w [:nonprop-src :cat 1 :star 0 :cat 1 :alt 0 :cat 1 :opt 0 :cat 3 :star 0] 100)
+                                [(get w [:nonprop-src :cat 1 :star 0 :cat 2 :alt 0 :cat 1 :opt 0 :cat 3 :star 0] 100)
                                   (igen/vector+
                                     (gen/tuple
-                                      (gen/return ", ")
+                                      (gen/return ",")
+                                      (gen/return " ")
                                       (:nonprop-string g)))]])
                               (gen/return ") "))]]))]
-                    [(get w [:nonprop-src :cat 1 :star 0 :cat 1 :alt 1] 100)
+                    [(get w [:nonprop-src :cat 1 :star 0 :cat 2 :alt 1] 100)
                       (gen/tuple
                         (gen/return "local ")
                         (gen/return "( ")
@@ -12105,55 +13171,56 @@
         gen-prop-AT-font-face
         (gen/tuple
           (gen/return "@font-face ")
-          (gen/return "{ ")
+          (gen/return "{")
+          (gen/return " ")
           (igen/vector+
             (igen/freq [
-              [(get w [:prop-AT-font-face :cat 2 :plus 0 :alt 0] 100)
+              [(get w [:prop-AT-font-face :cat 3 :plus 0 :alt 0] 100)
                 (gen/tuple
                   (gen/return "font-family: ")
                   (:nonprop-family-name g)
                   (gen/return "; "))]
-              [(get w [:prop-AT-font-face :cat 2 :plus 0 :alt 1] 100)
+              [(get w [:prop-AT-font-face :cat 3 :plus 0 :alt 1] 100)
                 (gen/tuple
                   (gen/return "src: ")
                   (:nonprop-src g)
                   (gen/return "; "))]
-              [(get w [:prop-AT-font-face :cat 2 :plus 0 :alt 2] 100)
+              [(get w [:prop-AT-font-face :cat 3 :plus 0 :alt 2] 100)
                 (gen/tuple
                   (gen/return "unicode-range: ")
                   (:nonprop-unicode-range g)
                   (gen/return "; "))]
-              [(get w [:prop-AT-font-face :cat 2 :plus 0 :alt 3] 100)
+              [(get w [:prop-AT-font-face :cat 3 :plus 0 :alt 3] 100)
                 (gen/tuple
                   (gen/return "font-variant: ")
                   (:nonprop-font-variant g)
                   (gen/return "; "))]
-              [(get w [:prop-AT-font-face :cat 2 :plus 0 :alt 4] 100)
+              [(get w [:prop-AT-font-face :cat 3 :plus 0 :alt 4] 100)
                 (gen/tuple
                   (gen/return "font-feature-settings: ")
                   (:nonprop-font-feature-settings g)
                   (gen/return "; "))]
-              [(get w [:prop-AT-font-face :cat 2 :plus 0 :alt 5] 100)
+              [(get w [:prop-AT-font-face :cat 3 :plus 0 :alt 5] 100)
                 (gen/tuple
                   (gen/return "font-variation-settings: ")
                   (:nonprop-font-variation-settings g)
                   (gen/return "; "))]
-              [(get w [:prop-AT-font-face :cat 2 :plus 0 :alt 6] 100)
+              [(get w [:prop-AT-font-face :cat 3 :plus 0 :alt 6] 100)
                 (gen/tuple
                   (gen/return "font-stretch: ")
                   (:nonprop-font-stretch g)
                   (gen/return "; "))]
-              [(get w [:prop-AT-font-face :cat 2 :plus 0 :alt 7] 100)
+              [(get w [:prop-AT-font-face :cat 3 :plus 0 :alt 7] 100)
                 (gen/tuple
                   (gen/return "font-weight: ")
                   (:nonprop-font-weight g)
                   (gen/return "; "))]
-              [(get w [:prop-AT-font-face :cat 2 :plus 0 :alt 8] 100)
+              [(get w [:prop-AT-font-face :cat 3 :plus 0 :alt 8] 100)
                 (gen/tuple
                   (gen/return "font-style: ")
                   (:nonprop-font-style g)
                   (gen/return "; "))]
-              [(get w [:prop-AT-font-face :cat 2 :plus 0 :alt 9] 100)
+              [(get w [:prop-AT-font-face :cat 3 :plus 0 :alt 9] 100)
                 (gen/tuple
                   (gen/return "font-display: ")
                   (:nonprop-font-display g)
@@ -12165,7 +13232,8 @@
         (gen/tuple
           (gen/return "@keyframes ")
           (:nonprop-keyframes-name g)
-          (gen/return "{ ")
+          (gen/return "{")
+          (gen/return " ")
           (:nonprop-keyframe-block-list g)
           (gen/return "} "))
         g (assoc g :prop-AT-keyframes gen-prop-AT-keyframes)
@@ -12190,7 +13258,8 @@
         (gen/tuple
           (gen/return "@supports ")
           (:nonprop-supports-condition g)
-          (gen/return "{ ")
+          (gen/return "{")
+          (gen/return " ")
           (:nonprop-group-rule-body g)
           (gen/return "} "))
         g (assoc g :prop-AT-supports gen-prop-AT-supports)
@@ -12211,7 +13280,8 @@
         gen-prop-AT-viewport
         (gen/tuple
           (gen/return "@viewport ")
-          (gen/return "{ ")
+          (gen/return "{")
+          (gen/return " ")
           (:nonprop-group-rule-body g)
           (gen/return "} "))
         g (assoc g :prop-AT-viewport gen-prop-AT-viewport)
@@ -12220,55 +13290,56 @@
         (gen/tuple
           (gen/return "@counter-style ")
           (:nonprop-counter-style-name g)
-          (gen/return "{ ")
+          (gen/return "{")
+          (gen/return " ")
           (igen/vector+
             (igen/freq [
-              [(get w [:prop-AT-counter-style :cat 3 :plus 0 :alt 0] 100)
+              [(get w [:prop-AT-counter-style :cat 4 :plus 0 :alt 0] 100)
                 (gen/tuple
                   (gen/return "system: ")
                   (:nonprop-counter-system g)
                   (gen/return "; "))]
-              [(get w [:prop-AT-counter-style :cat 3 :plus 0 :alt 1] 100)
+              [(get w [:prop-AT-counter-style :cat 4 :plus 0 :alt 1] 100)
                 (gen/tuple
                   (gen/return "symbols: ")
                   (:nonprop-counter-symbols g)
                   (gen/return "; "))]
-              [(get w [:prop-AT-counter-style :cat 3 :plus 0 :alt 2] 100)
+              [(get w [:prop-AT-counter-style :cat 4 :plus 0 :alt 2] 100)
                 (gen/tuple
                   (gen/return "additive-symbols: ")
                   (:nonprop-additive-symbols g)
                   (gen/return "; "))]
-              [(get w [:prop-AT-counter-style :cat 3 :plus 0 :alt 3] 100)
+              [(get w [:prop-AT-counter-style :cat 4 :plus 0 :alt 3] 100)
                 (gen/tuple
                   (gen/return "negative: ")
                   (:nonprop-negative-symbol g)
                   (gen/return "; "))]
-              [(get w [:prop-AT-counter-style :cat 3 :plus 0 :alt 4] 100)
+              [(get w [:prop-AT-counter-style :cat 4 :plus 0 :alt 4] 100)
                 (gen/tuple
                   (gen/return "prefix: ")
                   (:nonprop-prefix g)
                   (gen/return "; "))]
-              [(get w [:prop-AT-counter-style :cat 3 :plus 0 :alt 5] 100)
+              [(get w [:prop-AT-counter-style :cat 4 :plus 0 :alt 5] 100)
                 (gen/tuple
                   (gen/return "suffix: ")
                   (:nonprop-suffix g)
                   (gen/return "; "))]
-              [(get w [:prop-AT-counter-style :cat 3 :plus 0 :alt 6] 100)
+              [(get w [:prop-AT-counter-style :cat 4 :plus 0 :alt 6] 100)
                 (gen/tuple
                   (gen/return "range: ")
                   (:nonprop-range g)
                   (gen/return "; "))]
-              [(get w [:prop-AT-counter-style :cat 3 :plus 0 :alt 7] 100)
+              [(get w [:prop-AT-counter-style :cat 4 :plus 0 :alt 7] 100)
                 (gen/tuple
                   (gen/return "pad: ")
                   (:nonprop-padding g)
                   (gen/return "; "))]
-              [(get w [:prop-AT-counter-style :cat 3 :plus 0 :alt 8] 100)
+              [(get w [:prop-AT-counter-style :cat 4 :plus 0 :alt 8] 100)
                 (gen/tuple
                   (gen/return "speak-as: ")
                   (:nonprop-speak-as g)
                   (gen/return "; "))]
-              [(get w [:prop-AT-counter-style :cat 3 :plus 0 :alt 9] 100)
+              [(get w [:prop-AT-counter-style :cat 4 :plus 0 :alt 9] 100)
                 (gen/tuple
                   (gen/return "fallback: ")
                   (:nonprop-counter-style-name g)
@@ -12280,7 +13351,8 @@
         (gen/tuple
           (gen/return "@media ")
           (:nonprop-media-query-list g)
-          (gen/return "{ ")
+          (gen/return "{")
+          (gen/return " ")
           (:nonprop-group-rule-body g)
           (gen/return "} "))
         g (assoc g :prop-AT-media gen-prop-AT-media)
@@ -12406,7 +13478,8 @@
                 [(get w [:css-assignments :alt 1 :cat 2 :star 0] 100)
                   (igen/vector+
                     (gen/tuple
-                      (gen/return "; ")
+                      (gen/return ";")
+                      (gen/return " ")
                       (:css-declaration g)
                       (gen/return " ")))]])
               (igen/freq [
@@ -12430,9 +13503,11 @@
                     (gen/return "")]
                   [(get w [:css-ruleset :cat 1 :star 0 :opt 0] 100)
                     (gen/tuple
-                      (gen/return ", ")
+                      (gen/return ",")
+                      (gen/return " ")
                       (:css-selector g))]]))]])
-          (gen/return "{ ")
+          (gen/return "{")
+          (gen/return " ")
           (:css-assignments g)
           (gen/return "} "))
         g (assoc g :css-ruleset gen-css-ruleset)
@@ -12475,7 +13550,8 @@
             [(get w [:nonprop-compound-selector-list :cat 1 :star 0] 100)
               (igen/vector+
                 (gen/tuple
-                  (gen/return ", ")
+                  (gen/return ",")
+                  (gen/return " ")
                   (:nonprop-compound-selector g)))]]))
         g (assoc g :nonprop-compound-selector-list gen-nonprop-compound-selector-list)
 
@@ -12494,7 +13570,8 @@
             [(get w [:func-max :cat 3 :star 0] 100)
               (igen/vector+
                 (gen/tuple
-                  (gen/return ", ")
+                  (gen/return ",")
+                  (gen/return " ")
                   (:nonprop-calc-sum g)))]])
           (gen/return ") "))
         g (assoc g :func-max gen-func-max)
@@ -12572,7 +13649,8 @@
             [(get w [:func-image-set :cat 3 :star 0] 100)
               (igen/vector+
                 (gen/tuple
-                  (gen/return ", ")
+                  (gen/return ",")
+                  (gen/return " ")
                   (:nonprop-image-set-option g)))]])
           (gen/return ") "))
         g (assoc g :func-image-set gen-func-image-set)
@@ -12583,9 +13661,11 @@
           (gen/return "( ")
           (gen/tuple
             (:nonprop-calc-sum g)
-            (gen/return ", ")
+            (gen/return ",")
+            (gen/return " ")
             (:nonprop-calc-sum g)
-            (gen/return ", ")
+            (gen/return ",")
+            (gen/return " ")
             (:nonprop-calc-sum g))
           (gen/return ") "))
         g (assoc g :func-clamp gen-func-clamp)
@@ -12623,7 +13703,8 @@
             [(get w [:nonprop-complex-selector-list :cat 1 :star 0] 100)
               (igen/vector+
                 (gen/tuple
-                  (gen/return ", ")
+                  (gen/return ",")
+                  (gen/return " ")
                   (:nonprop-complex-selector g)))]]))
         g (assoc g :nonprop-complex-selector-list gen-nonprop-complex-selector-list)
 
@@ -12716,7 +13797,8 @@
             [(get w [:func-min :cat 3 :star 0] 100)
               (igen/vector+
                 (gen/tuple
-                  (gen/return ", ")
+                  (gen/return ",")
+                  (gen/return " ")
                   (:nonprop-calc-sum g)))]])
           (gen/return ") "))
         g (assoc g :func-min gen-func-min)
@@ -12819,7 +13901,8 @@
                 [(get w [:css-assignments-test :alt 0 :cat 1 :star 0] 100)
                   (igen/vector+
                     (gen/tuple
-                      (gen/return "; ")
+                      (gen/return ";")
+                      (gen/return " ")
                       (:css-declaration g)))]]))]
           [(get w [:css-assignments-test :alt 1] 100)
             (gen/return "")]])
@@ -12892,15 +13975,16 @@
           (:nonprop-custom-ident g)
           (gen/return ", ")
           (:nonprop-string g)
-          (gen/return ", ")
+          (gen/return ",")
+          (gen/return " ")
           (igen/freq [
-            [(get w [:func-counters :cat 6 :opt nil] 100)
+            [(get w [:func-counters :cat 7 :opt nil] 100)
               (gen/return "")]
-            [(get w [:func-counters :cat 6 :opt 0] 100)
+            [(get w [:func-counters :cat 7 :opt 0] 100)
               (igen/freq [
-                [(get w [:func-counters :cat 6 :opt 0 :alt 0] 100)
+                [(get w [:func-counters :cat 7 :opt 0 :alt 0] 100)
                   (:nonprop-counter-style g)]
-                [(get w [:func-counters :cat 6 :opt 0 :alt 1] 100)
+                [(get w [:func-counters :cat 7 :opt 0 :alt 1] 100)
                   (gen/return "none ")]])]])
           (gen/return ") "))
         g (assoc g :func-counters gen-func-counters)]

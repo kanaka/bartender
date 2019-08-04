@@ -5,6 +5,10 @@ Automated testing of browser rendering engines using Clojure,
 generative (property-based) testing, formal grammars (EBNF), and
 a consensus test oracle.
 
+Also refer to [Instacheck](https://github.com/kanaka/instacheck) which
+is leveraged for the core weighted grammar and property-based testing
+engine.
+
 ## Prerequisites
 
 * Install libopencv-dev:

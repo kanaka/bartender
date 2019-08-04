@@ -9,18 +9,19 @@
 
             [flatland.ordered.set :refer [ordered-set]]
             [com.rpl.specter :refer [setval transform ALL LAST MAP-VALS]]
-            [hiccup.core]
             [clj-time.core :as ctime]
             [differ.core :as differ]
 
-            [instacheck.core :as instacheck]
+            [instacheck.core :as icore]
+            [instacheck.reduce :as ireduce]
 
             [rend.util :as util]
             [rend.generator]
             [rend.image :as image]
             [rend.server]
             [rend.webdriver :as webdriver]
-            [wend.core :as wend]
+            ;;[wend.core :as wend]
+            [wend.html-mangle :as html-mangle]
             [mend.parse]))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -137,6 +138,7 @@
   [state & [new-state]]
   (printable-state
     (swap! state #(let [wfixed (-> % :cfg :weights :fixed)
+                        cur-weights (:weights %)
                         new-weights (:weights new-state)
                         next-seed (:current-seed new-state)
                         new-sessions (:sessions new-state)]
@@ -144,7 +146,7 @@
                       %
                       new-state
                       ;; Fixed weights always override
-                      {:weights (merge new-weights wfixed)}
+                      {:weights (merge cur-weights new-weights wfixed)}
                       ;; If a seed value is specified we
                       ;; decrement so that the next seed is the
                       ;; one specified
@@ -193,8 +195,12 @@
     (when (not (empty? cur-ws-clients))
       (let [data (differ/diff (serializable-state old-state)
                               (serializable-state new-state))]
-      (rend.server/ws-broadcast
-        cur-ws-clients {:msgType :patch :data data})))))
+        ;; If the serializable states differ (they may not since
+        ;; changes may have been ELIDED), broadcast the delta to all
+        ;; connected clients.
+        (when (not= [{} {}] data)
+          (rend.server/ws-broadcast
+            cur-ws-clients {:msgType :patch :data data}))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Lower level testing functions (no state changes)
@@ -202,7 +208,7 @@
 
 (defn check-page*
   "Utility function for check-page. See check-page."
-  [sessions comp-method comp-thresh test-dir test-url iteration html]
+  [sessions comp-method comp-thresh test-dir test-url iteration html-text]
   (let [path-prefix (str test-dir "/" iteration)
         url-prefix (str test-url "/" iteration)
         h-path (str path-prefix ".html")
@@ -210,12 +216,9 @@
         comp-alg (get-in image/compare-methods [comp-method :alg])
         comp-op  (get-in image/compare-methods [comp-method :op])
         comp-fn (fn [x] (comp-op comp-thresh x))
-        d-path (str path-prefix "_diffs.edn")
-        html-text (hiccup.core/html html)]
+        d-path (str path-prefix "_diffs.edn")]
     (try
       (println "------")
-      ;; (println "Test case:" html-text)
-      ;; (println "Writing to " path)
       (spit h-path html-text)
       (spit (str h-path ".txt") html-text)
 
@@ -312,32 +315,70 @@
 
 ;; Weight functions
 
-;; TODO: use instacheck reduce instead
-(def reducible-regex #"^\[:element :alt [0-9]+\]$|^\[[\S-]*-attribute :alt [0-9]+\]$|^\[:css-known-standard :alt [0-9]+\]$")
+(defn reduce-path-pick? [fixed-weights path]
+  (if (or (contains? fixed-weights path)
+          (#{:S :html :head :body
+             :css-assignments :css-declaration} (first path))
+          (and (= :element (first path))
+               (>= (count path) 5)
+               (= [:cat 3] (subvec path 2 4))))
+    false
+    true))
 
-(defn reducible-path?
-  "Is the path in base-weights and a path that we actually want to
-  reduce (based on reducible-regex). Ignores the weight (for now)."
-  [base-weights path weight]
-  (and (get base-weights path)
-       (re-seq reducible-regex (str path))))
+(defn wrap-reduce-wtrek
+  "Parse the path weights based on the test case. A path is randomly
+  chosen and reduce by half in the overall wtrek. The :weight-dist
+  algorithm picks a path using a weighted random selection with the
+  weighted probability based on the wtrek weight for the path
+  multiplied by the distance into the grammar of the path from the
+  root/start node. reduce-wtrek is called to propagate the reduction
+  if needed.  Returns a wtrek subset of the weights that changed."
+  [parser wtrek text mode pick-pred]
+  (let [grammar (icore/parser->grammar parser)
+        parsed-weights (:wtrek (icore/parse-wtrek parser text mode))
+        final-wtrek (ireduce/reduce-wtrek-with-weights
+                      grammar wtrek parsed-weights
+                      {:pick-mode :weight
+                       ;;:reduce-mode :max-child
+                       :reduce-mode :reducer
+                       :reducer-fn ireduce/reducer-half
+                       :pick-pred pick-pred})]
+    {:parsed-weights parsed-weights
+     :final-wtrek final-wtrek}))
 
-(defn reducer-half [w] (int (/ w 2)))
-
-(defn wrap-adjust-weights
-  "Call wend/adjust-weights to a get a new set of weights reduced by
-  the reducer function."
-  [html-parser css-parser full-wtrek html]
-  (prn :html html)
-  (let [html-only (wend/extract-html html)
+(defn parse-and-reduce
+  "Does wrap-reduce-wtrek for both HTML and CSS part of the HTML test
+  case.  Returns a wtrek subset of the weights that changed."
+  [html-parser css-parser full-wtrek html pick-pred]
+  (let [html-only (html-mangle/extract-html html)
         _ (prn :html-only html-only)
-        css-only (wend/extract-inline-css html)
+        css-only (html-mangle/extract-inline-css html)
         _ (prn :css-only css-only)
-        html-wtrek (instacheck/parse-weights html-parser html-only)
-        css-wtrek (instacheck/parse-weights css-parser css-only)
-        adjust-wtrek (merge-with + html-wtrek css-wtrek)]
-    (wend/adjust-weights reducible-path? reducer-half
-                         full-wtrek adjust-wtrek)))
+        red1 (wrap-reduce-wtrek html-parser full-wtrek
+                                html-only :html pick-pred)
+        red2 (wrap-reduce-wtrek css-parser (:final-wtrek red1)
+                                css-only :css pick-pred)
+        weight-adjusts (into {} (set/difference
+                                  (set (:final-wtrek red2))
+                                  (set full-wtrek)))]
+    {:html-only html-only
+     :css-only css-only
+     :html-parsed-weights (:parsed-weights red1)
+     :css-parsed-weights (:parsed-weights red2)
+     :weight-adjusts weight-adjusts}))
+
+(comment
+
+(def hp (mend.parse/load-parser-from-grammar :html))
+(def cp (mend.parse/load-parser-from-grammar :css))
+(def hw (icore/wtrek (icore/parser->grammar hp)))
+(def cw (icore/wtrek (icore/parser->grammar cp)))
+(def w (merge hw cw))
+
+(time (def new-w (parse-and-reduce hp cp w "<html><body>x<header>xx</header></body></html>")))
+
+)
+
 
 (defn summarize-weights
   "Return a summary of the tags, attributes, and properties that are
@@ -355,7 +396,7 @@
                                  [css-grammar  :props])
             string (when grammar
                      (->> p
-                          (instacheck/get-in-grammar grammar)
+                          (icore/get-in-grammar grammar)
                           :parsers
                           first
                           :string))
@@ -368,7 +409,7 @@
     {:tags  #{}
      :attrs #{}
      :props #{}}
-    weights))
+    (filter #(> (val %) 0) weights)))
 
 
 ;; TODO: do we really want base weights? It should be implicit in the
@@ -391,8 +432,8 @@
   (let [{:keys [cfg log weights html-parser css-parser iteration]} @state
         get-smallest #(or (get-in % [:shrunk :smallest 0])
                           (get-in % [:shrinking :smallest 0]))
-        html-grammar (:grammar html-parser)
-        css-grammar (:grammar css-parser)
+        html-grammar (icore/parser->grammar html-parser)
+        css-grammar (icore/parser->grammar css-parser)
         prev-html (get-smallest (get log test-slug))
         cur-html (get-smallest report)
         ;; Remove property object
@@ -401,24 +442,37 @@
         ;; smallest test case and add weight adjustment info
         r (if (not= prev-html cur-html)
             (let [weights-full (merge (-> cfg :weights :base) weights)
-                  adjusts (wrap-adjust-weights html-parser
-                                               css-parser
-                                               weights-full
-                                               cur-html)
+                  weights-fixed (-> cfg :weights :fixed)
+                  red (parse-and-reduce html-parser
+                                        css-parser
+                                        weights-full
+                                        cur-html
+                                        (partial reduce-path-pick?
+                                                 weights-fixed))
+                  parsed-weights (merge-with +
+                                             (:html-parsed-weights red)
+                                             (:css-parsed-weights red))
                   summary (summarize-weights html-grammar
                                              css-grammar
-                                             adjusts)]
-              (when (:verbose cfg)
-                (prn :weight-adjusts adjusts)
-                (prn :weight-adjust-summary summary))
+                                             parsed-weights)]
+              (when (> (:verbose cfg) 0)
+                (println "parse-and-reduce :html-only"
+                         (pr-str (:html-only red)))
+                (println "parse-and-reduce :css-only"
+                         (pr-str (:css-only red)))
+                (println "qc-report :weight-adjusts"
+                         (pr-str (:weight-adjusts red)))
+                (println "qc-report :TAP-summary"
+                         (pr-str :TAP-summary summary)))
               (merge r {:smallest-iter iteration
-                        :weight-adjusts adjusts
-                        :weight-adjusts-summary summary}))
+                        :weight-adjusts (:weight-adjusts red)
+                        :TAP-summary summary}))
             r)]
     ;; Print status report
     (println "Report type:" (name (:type r)))
-    (when (:verbose cfg)
-      (prn :report (assoc r :args :ELIDED)))
+    (when (> (:verbose cfg) 1)
+      (println "qc-report :report"
+               (pr-str (assoc r :args :ELIDED :fail :ELIDED))))
     ;; Save the latest report
     (log! state :run r)))
 
@@ -483,7 +537,7 @@
     (println "Test State:")
     (pprint (assoc (printable-state @test-state) :cfg :ELIDED))
 
-    (instacheck/save-weights (str test-dir "/weights-start.edn") weights)
+    (icore/save-weights (str test-dir "/weights-start.edn") weights)
 
     (let [;; Config and state specific versions of the
           ;; functions/generators used for the actual check process
@@ -493,11 +547,11 @@
 
           start-time (ctime/now)
           ;; ****** QuickCheck ******
-          qc-res (instacheck/quick-check (merge (:quick-check cfg)
-                                                {:seed current-seed})
-                                         gen-html-fn
-                                         check-fn
-                                         report-fn)
+          qc-res (icore/instacheck check-fn
+                                   gen-html-fn
+                                   (merge (:quick-check cfg)
+                                          {:seed current-seed
+                                           :report-fn report-fn}))
           end-time (ctime/now)
           qc-res (merge qc-res
                         {:current-seed current-seed
@@ -510,14 +564,20 @@
 
       ;; If requested, adjust weights for next run
       (when (= "reduce-weights" (-> cfg :test :mode))
-        (let [new-weights (merge weights (:weight-adjusts @test-state))]
+        (when (> (:verbose cfg) 0)
+            (println "Final weight-adjusts"
+                     (pr-str (get-in @test-state
+                                     [:log test-slug :weight-adjusts]))))
+        (let [new-weights (merge weights
+                                 (get-in @test-state
+                                         [:log test-slug :weight-adjusts]))]
           (update-state! test-state {:weights new-weights})))
       (println "------")
       (println (str "Quick check results:"))
       (pprint qc-res)
       (println "------")
-      (instacheck/save-weights (str test-dir "/weights-end.edn")
-                         (:weights @test-state))
+      (icore/save-weights (str test-dir "/weights-end.edn")
+                          (:weights @test-state))
       (let [test-id-path (str (-> cfg :web :dir) "/" test-id ".edn")]
         (println (str "Final test state: " test-id-path))
         ;; Convert ordered set to regular set (which can be loaded
@@ -538,7 +598,8 @@
     ;;(update-state! test-state {:run -1})
     ;; Do the test runs and report
     (doseq [run-idx (range (-> cfg :test :runs))]
-      (println (str "--- Run index " (inc run-idx) " -----------------"))
+      (println "-------------------------------------------------------------")
+      (println (str "------ Run index " (inc run-idx) " --------------------"))
       (run-iterations test-state extra-cfg))))
 
 ;; ---
@@ -593,12 +654,12 @@
                    (partial #'remove-ws-client! test-state)))
 
         ;; We use the full parse versions of the grammar because we
-        ;; pass the HTML through hiccup which can modify it in
+        ;; pass the HTML through hickory which can modify it in
         ;; someways that make the gen parser unhappy.
         _ (println "Loading HTML parser")
-        html-parser (mend.parse/load-parser-from-grammar :html)
+        html-parser (mend.parse/load-parser-from-grammar :html :parse)
         _ (println "Loading CSS parser")
-        css-parser (mend.parse/load-parser-from-grammar :css)
+        css-parser (mend.parse/load-parser-from-grammar :css :parse-inline)
 
         ;; get the smallest possible test case
         test-start-value (rend.generator/html-start-value
@@ -640,9 +701,9 @@
 (comment
 
 (require '[clojure.test.check.generators :as gen])
-(def weights-map (load-weights ["data/html5-weights-output.edn"
-                                "data/css3-weights-output.edn"]
-                               "data/fixed-weights.edn" nil))
+(def weights-map (load-weights ["resources/html5-weights.edn"
+                                "resources/css3-weights.edn"]
+                               "resources/fixed-weights.edn" nil))
 
 (def gen-html-fn (rend.generator/get-html-generator
                    (merge (:start weights-map) (:fixed weights-map))))
@@ -658,9 +719,9 @@
 (require '[clj-yaml.core :as yaml])
 (def file-cfg (yaml/parse-string (slurp "config-dev.yaml")))
 
-(time (def test-state (init-tester file-cfg {:verbose true})))
+(time (def test-state (init-tester file-cfg {:verbose 1})))
 
-(def res (run-tests test-state {:test {:runs 1} :quick-check {:iterations 3}}))
+(time (def res (run-tests test-state {:test {:runs 2} :quick-check {:iterations 10}})))
   ;; OR
 (def res (run-iterations test-state {:quick-check {:iterations 3}}))
   ;; OR
@@ -675,31 +736,49 @@
 
 (comment
 
-(def adj-test (partial #'wrap-adjust-weights
-                       (-> @test-state :html-parser)
-                       (-> @test-state :css-parser)
-                       (merge (-> @test-state :cfg :weights :base)
-                              (-> @test-state :weights))))
+;; TODO: make this callable in wend
+(require '[instacheck.reduce :as r] '[instacheck.grammar :as g])
+(def hp (mend.parse/load-parser-from-grammar :html))
+(def hg (g/parser->grammar hp))
+(def cp (mend.parse/load-parser-from-grammar :css))
+(def cg (g/parser->grammar cp))
+(def w (read-string (slurp "tmp/smedberg.edn")))
 
-(adj-test "<html><head><link rel=\"stylesheet\" href=\"/static/normalize.css\"><link rel=\"stylesheet\" href=\"/static/rend.css\"><title></title></head><body>x</body></html>")
+(spit "/tmp/hg.grammar" (g/grammar->ebnf (sort-by (comp str key) hg)))
+(def hg2 (r/prune-grammar hg {:wtrek w}))
+(spit "/tmp/hg2.grammar" (g/grammar->ebnf (sort-by (comp str key) hg2)))
 
-(adj-test "<html><head><link rel=\"stylesheet\" href=\"/static/normalize.css\"><link rel=\"stylesheet\" href=\"/static/rend.css\"><title></title></head><body>x<div style=\"background-color: red\">X</div></body></html>")
+(spit "/tmp/cg.grammar" (g/grammar->ebnf (sort-by (comp str key) cg)))
+(def cg2 (r/prune-grammar cg {:wtrek w}))
+(spit "/tmp/cg2.grammar" (g/grammar->ebnf (sort-by (comp str key) cg2)))
+
+;;(def weights-map (load-weights ["resources/html5-weights.edn" "resources/css3-weights.edn"] "resources/fixed-weights.edn" "tmp/smedberg.edn"))
+;;(def w (merge (:start weights-map) (:fixed weights-map)))
+;;(time (def ctx (r/reduce-weights hg (merge (g/wtrek hg 0) w))))
+;;(def hg3 (r/prune-grammar hg {:wtrek (:wtrek ctx) :removed (:removed ctx)}))
+;;(spit "/tmp/hg3.grammar" (g/grammar->ebnf (sort-by (comp str key) hg3)))
 
 )
 
 (comment
 
-(->> [:element :alt 1] (instacheck/get-in-grammar (:grammar hp)) :parsers first :string)
-; "<abbr"
+(defn get-summary [state kind]
+  (reduce
+    (fn [res [item data]]
+      (if (contains? res item)
+        (assoc res item (conj (get res item) data))
+        (assoc res item [data])))
+    {}
+    (for [[slug data] (:log state)
+          item (get-in data [:TAP-summary kind])]
+      [item {:slug slug 
+             :smallest-iter (:smallest-iter data)
+             :smallest (-> data :shrunk :smallest)}])))
 
-(->> [:abbr-attribute :alt 1] (instacheck/get-in-grammar (:grammar hp)) :parsers first :string)
-; nil
-
-(->> [:global-attribute :alt 13] (instacheck/get-in-grammar (:grammar hp)) :parsers first :string)
-; "title=\""
-
-(->> [:css-known-standard :alt 18] (instacheck/get-in-grammar (:grammar cp)) :parsers first :string)
-; "background-color"
-
+(defn get-new-weights [state]
+  (let [w (:weights state)
+        wf (-> state :cfg :weights :fixed)]
+    (select-keys w (set/difference (set (keys w)) (set (keys wf))))))
 
 )
+

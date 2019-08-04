@@ -20,7 +20,6 @@
                  [org.clojure/data.json "0.2.6"]
                  [org.clojure/data.codec "0.1.0"]
                  [org.clojure/math.combinatorics "0.1.5"]
-                 [hiccup "1.0.5"]
                  [hickory "0.7.0"]
 
                  ;; rend specific
@@ -41,7 +40,7 @@
 
                  [org.clojure/test.check "0.10.0-alpha3"]
 
-                 [kanaka/instacheck "0.8.0"]
+                 [kanaka/instacheck "0.8.2"]
                  [kanaka/html5-css3-ebnf "0.5.7"]
 
                  ;; send

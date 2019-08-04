@@ -1,5 +1,6 @@
-(ns mend.gen
+(ns mend.grammar
   (:require [clojure.walk :refer [postwalk]]
+            [clojure.string :as string]
             [instacheck.grammar :as grammar]))
 
 ;; Find each path in a grammar and replace it with :value
@@ -51,24 +52,24 @@
     {:tag :string :string (str " ")}
     x))
 
-(defn reduce-strings*
-  [a p2]
-  (let [p1 (last a)]
-    (if (and (= :string (:tag p1)) (= :string (:tag p2)))
-      ;; Two strings, concatenate
-      (conj (pop a) {:tag :string :string (str (:string p1) (:string p2))})
-      (conj a p2))))
 
 (defn reduce-strings
   "Combine strings and spaces that immediately follow each other in
   a concatenation."
   [x]
   (if (and (= :cat (:tag x))
-           (:parsers x))
-    (assoc x :parsers (reduce reduce-strings* [] (:parsers x)))
+           (:parsers x)
+           (-> x :parsers last :tag (= :string)))
+    (let [rps (reverse (:parsers x))
+          strs (reverse (take-while #(= :string (:tag %)) rps))
+          new-ps (reverse (conj (drop (count strs) rps)
+                                {:tag :string
+                                 :string (string/join "" (map :string strs))}))]
+;;       (prn :ps (:parsers x) :new-ps new-ps)
+      (assoc x :parsers new-ps))
     x))
 
-(defn grammar-update
+(defn gen-grammar-update
   [grammar mode]
   (as-> grammar g
     (grammar/apply-grammar-update g common-grammar-updates)
@@ -76,4 +77,9 @@
                                       :html html5-grammar-updates
                                       :css css3-grammar-updates))
     (postwalk replace-spaces g)
+    (postwalk reduce-strings g)))
+
+(defn parse-grammar-update
+  [grammar mode]
+  (as-> grammar g
     (postwalk reduce-strings g)))

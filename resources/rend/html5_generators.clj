@@ -3889,20 +3889,21 @@
             [(get w [:srcset :cat 2 :star 0] 100)
               (igen/vector+
                 (gen/tuple
-                  (gen/return ", ")
+                  (gen/return ",")
+                  (gen/return " ")
                   (:url g)
                   (igen/freq [
-                    [(get w [:srcset :cat 2 :star 0 :cat 2 :opt nil] 100)
+                    [(get w [:srcset :cat 2 :star 0 :cat 3 :opt nil] 100)
                       (gen/return "")]
-                    [(get w [:srcset :cat 2 :star 0 :cat 2 :opt 0] 100)
+                    [(get w [:srcset :cat 2 :star 0 :cat 3 :opt 0] 100)
                       (gen/tuple
                         (gen/return " ")
                         (gen/tuple
                           (:any-number g)
                           (igen/freq [
-                            [(get w [:srcset :cat 2 :star 0 :cat 2 :opt 0 :cat 1 :cat 1 :alt 0] 100)
+                            [(get w [:srcset :cat 2 :star 0 :cat 3 :opt 0 :cat 1 :cat 1 :alt 0] 100)
                               (gen/return "w")]
-                            [(get w [:srcset :cat 2 :star 0 :cat 2 :opt 0 :cat 1 :cat 1 :alt 1] 100)
+                            [(get w [:srcset :cat 2 :star 0 :cat 3 :opt 0 :cat 1 :cat 1 :alt 1] 100)
                               (gen/return "x")]])))]])))]]))
         g (assoc g :srcset gen-srcset)
 
@@ -8727,11 +8728,12 @@
 
         gen-head
         (gen/tuple
-          (gen/return "<head> ")
+          (gen/return "<head>")
+          (gen/return " ")
           (igen/freq [
-            [(get w [:head :cat 1 :star nil] 100)
+            [(get w [:head :cat 2 :star nil] 100)
               (gen/return "")]
-            [(get w [:head :cat 1 :star 0] 100)
+            [(get w [:head :cat 2 :star 0] 100)
               (igen/vector+
                 (:head-elements g))]])
           (gen/return "</head> "))
@@ -8759,11 +8761,12 @@
                 (gen/tuple
                   (gen/return " ")
                   (:html-attribute g)))]])
-          (gen/return "> ")
+          (gen/return ">")
+          (gen/return " ")
           (igen/freq [
-            [(get w [:html :cat 5 :opt nil] 100)
+            [(get w [:html :cat 6 :opt nil] 100)
               (gen/return "")]
-            [(get w [:html :cat 5 :opt 0] 100)
+            [(get w [:html :cat 6 :opt 0] 100)
               (:head g)]])
           (:body g)
           (gen/return "</html> "))
@@ -8820,16 +8823,17 @@
                 (gen/tuple
                   (gen/return " ")
                   (:body-attribute g)))]])
-          (gen/return ">x")
+          (gen/return ">")
+          (gen/return "x")
           (igen/freq [
-            [(get w [:body-test :cat 3 :star nil] 100)
+            [(get w [:body-test :cat 4 :star nil] 100)
               (gen/return "")]
-            [(get w [:body-test :cat 3 :star 0] 100)
+            [(get w [:body-test :cat 4 :star 0] 100)
               (igen/vector+
                 (igen/freq [
-                  [(get w [:body-test :cat 3 :star 0 :alt 0] 100)
+                  [(get w [:body-test :cat 4 :star 0 :alt 0] 100)
                     (:element g)]
-                  [(get w [:body-test :cat 3 :star 0 :alt 1] 100)
+                  [(get w [:body-test :cat 4 :star 0 :alt 1] 100)
                     (:content g)]]))]])
           (gen/return "</body>"))
         g (assoc g :body-test gen-body-test)

@@ -1,12 +1,14 @@
 (ns wend.core
   (:require [clojure.java.io :as io]
-            [clojure.string :as string]
+            [clojure.string :as S]
             [clojure.pprint :refer [pprint]]
             [clojure.set :as set]
             [hickory.core]
             [hickory.render]
             [hickory.select :as s]
-            [instacheck.grammar :as grammar]))
+            [flatland.ordered.map :refer [ordered-map]] 
+            [mend.parse]
+            [instacheck.core :as icore]))
 
 (def PRUNE-TAGS
   #{:style
@@ -114,7 +116,7 @@
               (assoc n :attrs
                      (into {} (for [[k v] (-> n :attrs)]
                                 [k
-                                 (if (string? v) (string/trim v) v)])))
+                                 (if (string? v) (S/trim v) v)])))
               n))
     h))
 
@@ -127,7 +129,7 @@
   [html]
   (-> html
       ;; Remove unicode characters
-      (string/replace #"[^\x00-\x7f]" "")
+      (S/replace #"[^\x00-\x7f]" "")
       hickory.core/parse
       hickory.core/as-hickory
       prune-tags
@@ -138,21 +140,21 @@
       hickory.render/hickory-to-html
       ;; Translate \xc9 unicode character back to char reference so it
       ;; can be parsed by our parser.
-      (string/replace #"[\xc9]" "&#x00c9;")))
+      (S/replace #"[\xc9]" "&#x00c9;")))
 
 (defn cleanup-css
   [css]
   (-> css
       ;; Remove unicode characters
-      (string/replace #"[^\x00-\x7f]" "")
+      (S/replace #"[^\x00-\x7f]" "")
       ;; Remove non-unix newlines
-      (string/replace #"[\r]" "\n")
+      (S/replace #"[\r]" "\n")
       ;; remove vendor prefixes
-      (string/replace #"([^A-Za-z0-9])(?:-webkit-|-moz-|-ms-)" "$1")
+      (S/replace #"([^A-Za-z0-9])(?:-webkit-|-moz-|-ms-)" "$1")
       ;; Remove apple specific CSS property
-      (string/replace #"x-content: *\"[^\"]*\"" "")
+      (S/replace #"x-content: *\"[^\"]*\"" "")
       ;; Some at-rule syntax require semicolons before closing curly
-      (string/replace #"(@font-face *[{][^}]*[^;])[}]" "$1;}")
+      (S/replace #"(@font-face *[{][^}]*[^;])[}]" "$1;}")
       ))
 
 ;;        ;; remove vendor prefixes (from at-rules)
@@ -172,12 +174,12 @@
         styles (map #(->> % :attrs :style)
                     (s/select (s/child (s/attr :style)) h))
         ;; Remove trailing semis, then join with single semi+newline
-        style (string/join
+        style (S/join
                 ";\n"
                 (filter (complement empty?)
-                        (map #(string/replace % #";\s*$" "")
+                        (map #(S/replace % #";\s*$" "")
                              styles)))]
-    style))
+    (str "* {\n" style "\n}")))
 
 (defn extract-css-map
   "Return a map of CSS texts with the following keys:
@@ -197,7 +199,7 @@
                     (s/select (s/child (s/attr :style)) h))
         inline-style (str
                        "* {\n    "
-                       (string/join "\n    " styles)
+                       (S/join "\n    " styles)
                        "\n}")
         ;; Extract inline stylesheets
         inline-sheets (map #(->> % :content (apply str))
@@ -224,36 +226,11 @@
 (comment
 
 (def css-map (extract-css-map (slurp "test/html/example.com-20190422.html") "test/html"))
-(print (string/join "\n\n" (vals css-map)))
+(print (S/join "\n\n" (vals css-map)))
 
 )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Grammar weight functions
-
-;; TODO: these generic functions should move to instacheck
-
-
-(defn adjust-weights
-  "Returns a subset of base-wtrek with weight values adjusted by the
-  adjuster function. For a weight to be adjusted, it must satisfy the
-  following criteria:
-  - the path must present in both path-log-wtrek and base-wtrek
-  - the path must end with a weighted node (:alt, :ord, :star, :opt)
-  - the weight in path-log-wtrek must be greater than 0
-  - the path must satisfy the adjustable? function
-  If the criteria are satisfied then the path is added to the returned
-  map with the weight value from base-weights adjusted by the adjuster
-  function.
-  "
-  [adjustable? adjuster base-wtrek path-log-wtrek]
-  (let [adjusted (for [[p w] path-log-wtrek
-                       :when (and (> (get path-log-wtrek p) 0)
-                                  (adjustable? base-wtrek p w))]
-                   [p (adjuster (get base-wtrek p))])]
-    (into {} adjusted)))
-
-
 
 (comment
 
@@ -268,7 +245,8 @@
 (def html    (extract-html text))
 (def css-map (extract-css-map text "test/html"))
 
-(time (def hw (grammar/filter-trek-weighted (parse-weights hp html))))
-(time (def cw (grammar/filter-trek-weighted (parse-weights cp (vals css-map)))))
+(time (def hw (instacheck.grammar/filter-trek-weighted (parse-weights hp html))))
+(time (def cw (instacheck.grammar/filter-trek-weighted (parse-weights cp (vals css-map)))))
 
 )
+
