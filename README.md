@@ -88,7 +88,80 @@ lein run config.yaml
 ```
 
 Monitor results at `http://localhost:3000` (3000 is the :web :port
-specified in config.yaml.
+specified in config.yaml).
+
+
+## Extract/parse weights from an existing web page (wend)
+
+```
+time lein with-profile wend run --weights-output data/my-page.edn my-page.html
+```
+
+This can then be used to generate and test with similarly weighted
+pages by updating the config yaml:
+
+```yaml
+...
+weights:
+    start: data/my-pages.edn
+...
+```
+
+```
+lein run config.yaml
+```
+
+You can then connect to `http://localhost:3000` (config file default)
+to view a report/log of the tests as they run.
+
+
+## How it works
+
+This needs to be greatly expand but here is a very rough outline:
+
+- [kanaka/html5-css3-ebnf](https://github.com/kanaka/html5-css3-ebnf)
+  provides EBNF grammars for both HTML5 and CSS3.
+- **mend**: The `mend` module (described below) only needs to be
+  executed directly when the HTML5 or CSS3 grammars are updated. It
+  performs the following:
+  - The HTML5 and CSS3 EBNF grammars are translated to
+    Clojure [test.check](https://github.com/clojure/test.check)
+    generator code using
+    [Instacheck](https://github.com/kanaka/instacheck).
+  - [instaparse](https://github.com/Engelberg/instaparse) grammars
+    for parsing are also cached to `resources/html5.grammar` and
+    `resources/css3.grammar`.
+- **rend**: The `rend` module does the following:
+  - Load yaml config file specified on the command line
+  - Start a web server (for page loading and report UI) 
+  - Connect to each configured browser (via webdriver)
+  - Run 1 or more test runs. Each run uses quick-check (via
+    Instacheck) to do the following:
+    - Generate random test cases (HTML5 and CSS3 web pages) of
+      increasing size.
+    - Load each test case on all browsers, screenshot the results and
+      compare.
+    - If a difference above the configured threshold is detected then
+      the shrinking process begins.
+    - New test cases are generated and loaded/compared to try
+      and find progressively smaller test cases that still cause
+      a rendering difference.
+    - If a reduction mode is specified, then after the shrinking
+      process is complete, the shrunk test case is parsed to extract
+      weights for the case and these weights are used to run
+      a reduction algorithm on the weights in preparation for the next
+      test run. This reduction step is to try and reduce the
+      likelihood of finding the same test again in the next run.
+- **send**: Bartender provides a web application that reports on the
+  state while running. The report app keeps its state in sync with the
+  server by connecting with WebSockets and receiving state delta
+  messages.  This state is then rendered with in the app using
+  [reagent](https://reagent-project.github.io) (built on React).
+- **wend**: The `wend` module (described above) allows existing test
+  cases to be parsed to extract their grammar weight values. The
+  extract weights can then be used to try and produce test cases that
+  have similar characteristics to the existing test case. Specifically
+  this is designed to enable shrinking of existing test cases.
 
 
 ## Update HTML5 and CSS3 Generators (mend)
@@ -117,29 +190,6 @@ lein repl
 (in-ns 'rend.generator)
 (clojure.pprint/pprint (gen/sample (get-html-generator) 5))
 ```
-
-## Extract/parse weights from an existing web page (wend)
-
-```
-time lein with-profile wend run --weights-output data/my-page.edn my-page.html
-```
-
-This can then be used to generate and test with similarly weighted
-pages by updating the config yaml:
-
-```yaml
-...
-weights:
-    start: data/my-pages.edn
-...
-```
-
-```
-lein run config.yaml
-```
-
-You can then connect to `http://localhost:3000` (config file default)
-to view a report/log of the tests as they run.
 
 ## Browser Configuration
 
