@@ -151,11 +151,11 @@ This needs to be greatly expand but here is a very rough outline:
       a reduction algorithm on the weights in preparation for the next
       test run. This reduction step is to try and reduce the
       likelihood of finding the same test again in the next run.
-- **send**: Bartender provides a web application that reports on the
-  state while running. The report app keeps its state in sync with the
-  server by connecting with WebSockets and receiving state delta
-  messages.  This state is then rendered with in the app using
-  [reagent](https://reagent-project.github.io) (built on React).
+- **send**: The `send` module is
+  a [reagent](https://reagent-project.github.io)/React web application
+  that dynamically reports on the state of server testing. The app
+  keeps its state in sync with the server by connecting with
+  WebSockets and receiving state delta messages.
 - **wend**: The `wend` module (described above) allows existing test
   cases to be parsed to extract their grammar weight values. The
   extract weights can then be used to try and produce test cases that
