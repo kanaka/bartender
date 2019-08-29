@@ -23,18 +23,20 @@
     (when (:smallest shrink)
       (let [start-value (get-in @core/state [:test-state :test-start-value])
             base-size (count start-value)
-            fail-size (count (get-in slug-log [:fail 0]))
-            shrunk-size (count (get-in shrink [:smallest 0]))]
+            fail (get-in slug-log [:fail 0])
+            fail-size (count fail)
+            shrunk (get-in shrink [:smallest 0])
+            shrunk-size (count shrunk)]
         ;;(prn :base-size base-size :base-value start-value)
         ;;(prn :fail-size fail-size :fail-value (get-in slug-log [:fail 0]))
         ;;(prn :shrunk-size shrunk-size :shrunk-value (get-in shrink [:smallest 0]))
         [", Shrink: "
          [:a {:href (str "/gen/" slug "/" (:failing-size slug-log) ".html.txt")
-              :title (str (get-in slug-log [:fail 0]))}
+              :title (str fail)}
           (- fail-size base-size)]
          " \u2192 " ;; &rarr;
          [:a {:href (str "/gen/" slug "/" (:smallest-iter slug-log) ".html.txt")
-              :title (str (get-in shrink [:smallest 0]))}
+              :title (str shrunk)}
           (- shrunk-size base-size)]
          " bytes"
          [:div
@@ -63,7 +65,12 @@
 
 (defn report-summary-row [slug-log]
   (let [slug (:test-slug slug-log)
-        iteration (-> slug-log :iter-log keys sort last)]
+        iteration (-> slug-log :iter-log keys sort last)
+        show-iter (if (:shrunk slug-log)
+                    (:smallest-iter slug-log)
+                    iteration)
+        url-fn (fn [& suffix]
+                 (apply str "/gen/" slug "/" show-iter suffix))]
     [:tr
      [:td
       [:button
@@ -78,6 +85,9 @@
      [:td (inc iteration)]
      [:td {:style (mode-bg-style (:type slug-log))}
       (name (or (:type slug-log) :init))]
+     [:td {:style {:vertical-align "top"}}
+      [:a {:href (url-fn "_davg.png")}
+       [:img.thumb {:src (url-fn "_davg_thumb.png")}]]]
      (apply
        conj
        [:td
@@ -93,11 +103,11 @@
      ^{:key browser}
      [:th browser])
    [:th "\u00a0"] ;; &nbsp;
-   [:th "Average"]
-   [:th "\u00a0"] ;; &nbsp;
    (for [[ba bb] (combinations browsers 2)]
      ^{:key (str ba bb)}
-     [:th (str ba "\u0394" bb)])]) ;; &Delta;
+     [:th (str ba "\u0394" bb)]) ;; &Delta;
+   [:th "\u00a0"] ;; &nbsp;
+   [:th "\u0394Average"]])
 
 (defn report-table-row [idx slug browsers log thumbs?]
   (let [url-fn (fn [& suffix]
@@ -140,13 +150,6 @@
                       :src (url-fn "_" browser
                                    "_thumb.png")}]]])
      [:td "\u00a0"] ;; &nbsp;
-     [:td {:style {:vertical-align "top"}}
-      [:a {:href (url-fn "_avg.png")}
-       (when (not thumbs?)
-         [:span.tlink "png"])
-       [:img.thumb {:style {:display thumb-display}
-                    :src (url-fn "_avg_thumb.png")}]]]
-     [:td "\u00a0"] ;; &nbsp;
      (for [[ba bb] (combinations browsers 2)
            :let [odiff (get-in diffs [ba bb])]]
        ^{:key (str ba bb)}
@@ -164,7 +167,15 @@
                       :src (url-fn "_diff_" ba
                                    "_" bb "_thumb.png")}]
          [:br.thumb {:style {:display thumb-display}}]
-         (.toFixed odiff 6)]])]))
+         (.toFixed odiff 6)]])
+     [:td "\u00a0"] ;; &nbsp;
+     [:td {:style {:vertical-align "top"}}
+      [:a {:href (url-fn "_davg.png")}
+       (when (not thumbs?)
+         [:span.tlink "png"])
+       [:img.thumb {:style {:display thumb-display}
+                    :src (url-fn "_davg_thumb.png")}]]]
+     ]))
 
 (defn report-table [slug browsers iter-log thumbs?]
   [:table {:id "results" #_ #_ :border "1px" :style {:border-spacing "4px 0px"}}
@@ -202,6 +213,7 @@
       [:th "Test"]
       [:th "Iterations"]
       [:th "Mode"]
+      [:th "\u0394Average"]
       [:th "Info"]]
      (for [[idx slug] indexed-slugs
            :let [slug-log (-> log (get slug))]]

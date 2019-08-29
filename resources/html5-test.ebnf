@@ -3,7 +3,7 @@ Definitions used for created generators and parsing HTML generated
 by those generators.
 *)
 
-html-test = '<html>' head-test body-test '</html>'
+html-test = '<!DOCTYPE html><html>' head-test body-test '</html>'
 
 head-test = '<head>' normalize-css rend-css title-test? '</head>'
 

@@ -40,14 +40,15 @@
 
                  [org.clojure/test.check "0.10.0-alpha3"]
 
-                 [kanaka/instacheck "0.8.2"]
-                 [kanaka/html5-css3-ebnf "0.5.7"]
+                 [kanaka/instacheck "0.8.4"]
+                 [kanaka/html5-css3-ebnf "0.5.8"]
 
-                 ;; send
+                 ;; send/vend
                  [org.clojure/clojurescript "1.10.520"]
                  [org.clojure/core.async "0.4.500"]
                  [com.cemerick/url "0.1.1"]
                  [reagent "0.8.1"]
+                 [antizer "0.3.1"]
                  [cljs-http "0.1.46"]
                  [com.cognitect/transit-clj "0.8.313"]
                  [com.cognitect/transit-cljs "0.8.256"]
@@ -57,17 +58,16 @@
              :mend      {:main mend.cli}
              :wend      {:main wend.cli}
              :rend.core {:main rend.core}
-             :wend.core {:main wend.core}
              :send.core {:main send.core}}
 
   :cljsbuild
-  {:builds {:app
+  {:builds {:send
             {:source-paths ["src/cljs"]
              :compiler
              {:main          "send.init"
-              :asset-path    "/static/build/js/out"
-              :output-to     "static/build/js/app.js"
-              :output-dir    "static/build/js/out"
+              :asset-path    "/static/build/send/out"
+              :output-to     "static/build/send/app.js"
+              :output-dir    "static/build/send/out"
               :source-map    true
               :optimizations :none
               :pretty-print  true}}}}

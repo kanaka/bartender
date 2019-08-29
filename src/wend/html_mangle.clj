@@ -10,7 +10,8 @@
 (def PRUNE-TAGS
   #{"style"
     "script"
-    "svg"})
+    "svg"
+    "font"})
 
 (def PRUNE-TAGS-BY-ATTRIBUTE
   ;; [tag attribute]
@@ -22,6 +23,7 @@
 
 (def PRUNE-ATTRIBUTES
   #{"style"
+    "align"
     "x-ms-format-detection"
     "data-viewport-emitter-state"
     "windowdimensionstracker"})
@@ -34,6 +36,8 @@
    "iframe" ["frameborder" "scrolling"]
    "div" ["type"]
    "span" ["for" "fahrenheit"]
+   "td" ["width"]
+   "table" ["cellspacing" "cellpadding" "frame" "width"]
 
    ;; TODO: these are HTML 5+ and shouldn't be removed when parsing
    ;; that.
@@ -42,7 +46,9 @@
 
 (def REWRITE-TAG-ATTRIBUTE-VALUES
   ;; {[tag attribute value] new-value}
-  {["select" "required" "required"] "true"})
+  {["link" "rel" "styleSheet"] "stylesheet"
+   ["select" "required" "required"] "true"
+   ["table" "border" "0"] ""})
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Tags and Attrs Method
@@ -150,7 +156,7 @@
     (if (or
           ;; Prune by :prune-tags
           (contains? (set prune-tags) tag)
-          ;; TODO: these miss end-elemm in the start-elem case
+          ;; TODO: these miss end-elem in the start-elem case
           ;; Prune by :prune-tags-by-attr
           (seq (set/intersection prune-tags-by-attr ta-set))
           ;; Prune by :prune-tags-by-attr-val
@@ -180,8 +186,8 @@
 
 (defn- elem-depths
   [elem cur-depth]
-  (let [kind (first (second elem))]
-    (cond 
+  (let [kind (if (string? elem) :string (first (second elem)))]
+    (cond
       (and (= kind :start-elem)
            (#{"meta" "link"} (nth (second elem) 2)))
       [cur-depth cur-depth]
@@ -207,7 +213,7 @@
     :prune-tag-attrs        - tag attributes to omit by [tag, attr]
     :rewrite-tag-attr-vals  - change attribute value by [tag, attr, val]
   "
-  [TnA & [{:keys [trim-spaces? reindent?] :as opts}]]
+  [TnA & [{:keys [trim-spaces? reindent? prune-tags] :as opts}]]
   (assert (= :html (first TnA))
           "Not a valid parsed HTML grammar")
   (let [trim-spaces? (or reindent? trim-spaces?)
@@ -233,8 +239,15 @@
               (string? elem)
               (conj res (maybe-trim elem))
 
-              (#{:end-elem :content} (first (second elem)))
+              (= :content (first (second elem)))
               (apply conj res (map maybe-trim (rest (second elem))))
+
+              (= :end-elem (first (second elem)))
+              (if (contains? (set prune-tags) (nth (second elem) 2))
+                ;; Drop end tag for prune-tags. Matching start tag is
+                ;; handled in elem-to-text.
+                (apply conj res (map maybe-trim (drop 4 (second elem))))
+                (apply conj res (map maybe-trim (rest (second elem)))))
 
               :else
               (apply conj res (elem-to-text (second elem) opts)))
@@ -279,12 +292,28 @@
                             sattrs))]
     (str (S/join ";\n" styles))))
 
+(defn cleanup-css
+  [css-text]
+  (-> css-text
+      ;; Remove unicode characters
+      (S/replace #"[^\x00-\x7f]" "")
+      ;; Remove non-unix newlines
+      (S/replace #"[\r]" "\n")
+      ;; remove vendor prefixes
+      (S/replace #"([^A-Za-z0-9])(?:-webkit-|-moz-|-ms-)" "$1")
+      ;; Remove apple specific CSS property
+      (S/replace #"x-content: *\"[^\"]*\"" "")
+      ;; Some at-rule syntax require semicolons before closing curly
+      (S/replace #"(@font-face *[{][^}]*[^;])[}]" "$1;}")))
+
+
 (defn extract-inline-css
   "Return text of all inline styles. Specifically it extracts the
   content from style attributes and merges it into a single CSS block
   that is surrounded by a wildcard selector."
   [html]
-  (extract-inline-css-from-TnA (TnA-parse html)))
+  (cleanup-css
+    (extract-inline-css-from-TnA (TnA-parse html))))
 
 (defn extract-css-map
   "Return a map of CSS texts with the following keys:
@@ -299,7 +328,11 @@
   (let [get-file (or get-file slurp)
         TnA (TnA-parse html)
         ;; inline via style attribute
-        inline-styles (extract-inline-css-from-TnA TnA)
+        inline-styles (str
+                        "* {\n"
+                        (cleanup-css
+                          (extract-inline-css-from-TnA TnA))
+                        "\n}")
         ;; inline via style tag
         style-elems (filter #(and (vector? %)
                                   (= :style-elem (-> % second first)))
@@ -312,10 +345,12 @@
                            TnA)
         link-attrs (map #(-> % second (nth 3) attr-map) link-elems)
         sheet-attrs (filter #(-> % (get "rel") :avals
-                                 first (= "stylesheet"))
+                                 first S/lower-case (= "stylesheet"))
                             link-attrs)
         sheet-hrefs (map #(-> % (get "href") :avals first) sheet-attrs)
-        loaded-sheets (map #(str "/* from: " % " */\n" (get-file %))
+        loaded-sheets (map #(str "/* from: " % " */\n"
+                                 (cleanup-css
+                                   (get-file %)))
                            sheet-hrefs)]
     (merge {:inline-styles inline-styles}
            (zipmap (map (comp keyword str)
@@ -328,8 +363,8 @@
 
 (comment
 
-(def hp (mend.parse/load-parser-from-grammar :html))
-(def cp (mend.parse/load-parser-from-grammar :css))
+(def hp (mend.parse/load-parser-from-grammar :html :parse))
+(def cp (mend.parse/load-parser-from-grammar :css :parse))
 
 (def text (slurp "test/html/basics.html"))
 (def text (slurp "test/html/example.com-20190422.html"))
@@ -345,14 +380,19 @@
 ;; 14 seconds to extract-html, HTML: success but 15 seconds, CSS: url with no quoting
 (def text (slurp "test/html/cnn.com-20190422.html"))
 
+(def text (slurp "test/html/ssllabs.com-20190816.html"))
+(def text (slurp "test/html/7311_clear.html"))
+
 (time (def html    (extract-html text)))
 (time (def css-map (extract-css-map text #(slurp (io/file "test/html" %)))))
 
 (time (def hw (icore/parse-wtrek hp html)))
 (time (def cw (icore/parse-wtreks cp (zipmap (vals css-map) (keys css-map)))))
 
-(count (:wtrek hw))
-(count (:full-wtrek cw))
+(pprint (filter #(> (second %) 0) (:wtrek hw)))
+(pprint (filter #(> (second %) 0) (:full-wtrek cw)))
+
+(print (wend.cli/parser-wtrek->ebnf hp (:wtrek hw)))
+(print (wend.cli/parser-wtrek->ebnf cp (:full-wtrek cw)))
 
 )
-

@@ -45,7 +45,8 @@ lein cljsbuild once app
   ```
   git clone https://github.com/servo/servo
   cd servo
-  ./mach build --release
+  #./mach build --release
+  time RUSTFLAGS='-L ./support/linux/gstreamer/gst/lib' ./mach build --release
   ```
   * If using BrowserStack you will need to download the local testing
     proxy that allows BrowserStack to load test pages from the local

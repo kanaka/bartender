@@ -12,7 +12,7 @@
         w weights
 
         gen-nonprop-single-animation-direction
-        (igen/freq [
+        (igen/freq :nonprop-single-animation-direction [
           [(get w [:nonprop-single-animation-direction :alt 0] 100)
             (gen/return "normal ")]
           [(get w [:nonprop-single-animation-direction :alt 1] 100)
@@ -28,11 +28,11 @@
         g (assoc g :integer gen-integer)
 
         gen-floating-point-number
-        gen/double
+        rgen/floating-point-number
         g (assoc g :floating-point-number gen-floating-point-number)
 
         gen-any-number
-        (igen/freq [
+        (igen/freq :any-number [
           [(get w [:any-number :alt 0] 100)
             (:integer g)]
           [(get w [:any-number :alt 1] 100)
@@ -42,7 +42,7 @@
         gen-nonprop-angle
         (gen/tuple
           (:any-number g)
-          (igen/freq [
+          (igen/freq :nonprop-angle [
             [(get w [:nonprop-angle :cat 1 :alt 0] 100)
               (gen/return "deg")]
             [(get w [:nonprop-angle :cat 1 :alt 1] 100)
@@ -58,7 +58,7 @@
           (gen/return "skew ")
           (gen/return "( ")
           (:nonprop-angle g)
-          (igen/freq [
+          (igen/freq :func-skew [
             [(get w [:func-skew :cat 3 :opt nil] 100)
               (gen/return "")]
             [(get w [:func-skew :cat 3 :opt 0] 100)
@@ -69,7 +69,7 @@
         g (assoc g :func-skew gen-func-skew)
 
         gen-nonprop-combinator
-        (igen/freq [
+        (igen/freq :nonprop-combinator [
           [(get w [:nonprop-combinator :alt 0] 100)
             (gen/return "> ")]
           [(get w [:nonprop-combinator :alt 1] 100)
@@ -81,7 +81,7 @@
         g (assoc g :nonprop-combinator gen-nonprop-combinator)
 
         gen-length-unit
-        (igen/freq [
+        (igen/freq :length-unit [
           [(get w [:length-unit :alt 0] 100)
             (gen/return "em")]
           [(get w [:length-unit :alt 1] 100)
@@ -127,7 +127,7 @@
         g (assoc g :length-unit gen-length-unit)
 
         gen-nonprop-length
-        (igen/freq [
+        (igen/freq :nonprop-length [
           [(get w [:nonprop-length :alt 0] 100)
             (gen/tuple
               (:any-number g)
@@ -144,7 +144,7 @@
         g (assoc g :nonprop-percentage gen-nonprop-percentage)
 
         gen-nonprop-length-percentage
-        (igen/freq [
+        (igen/freq :nonprop-length-percentage [
           [(get w [:nonprop-length-percentage :alt 0] 100)
             (:nonprop-length g)]
           [(get w [:nonprop-length-percentage :alt 1] 100)
@@ -152,9 +152,9 @@
         g (assoc g :nonprop-length-percentage gen-nonprop-length-percentage)
 
         gen-nonprop-bg-position
-        (igen/freq [
+        (igen/freq :nonprop-bg-position [
           [(get w [:nonprop-bg-position :alt 0] 100)
-            (igen/freq [
+            (igen/freq :nonprop-bg-position [
               [(get w [:nonprop-bg-position :alt 0 :alt 0] 100)
                 (gen/return "left ")]
               [(get w [:nonprop-bg-position :alt 0 :alt 1] 100)
@@ -169,7 +169,7 @@
                 (:nonprop-length-percentage g)]])]
           [(get w [:nonprop-bg-position :alt 1] 100)
             (gen/tuple
-              (igen/freq [
+              (igen/freq :nonprop-bg-position [
                 [(get w [:nonprop-bg-position :alt 1 :cat 0 :alt 0] 100)
                   (gen/return "left ")]
                 [(get w [:nonprop-bg-position :alt 1 :cat 0 :alt 1] 100)
@@ -178,7 +178,7 @@
                   (gen/return "right ")]
                 [(get w [:nonprop-bg-position :alt 1 :cat 0 :alt 3] 100)
                   (:nonprop-length-percentage g)]])
-              (igen/freq [
+              (igen/freq :nonprop-bg-position [
                 [(get w [:nonprop-bg-position :alt 1 :cat 1 :alt 0] 100)
                   (gen/return "top ")]
                 [(get w [:nonprop-bg-position :alt 1 :cat 1 :alt 1] 100)
@@ -189,32 +189,32 @@
                   (:nonprop-length-percentage g)]]))]
           [(get w [:nonprop-bg-position :alt 2] 100)
             (gen/tuple
-              (igen/freq [
+              (igen/freq :nonprop-bg-position [
                 [(get w [:nonprop-bg-position :alt 2 :cat 0 :alt 0] 100)
                   (gen/return "center ")]
                 [(get w [:nonprop-bg-position :alt 2 :cat 0 :alt 1] 100)
                   (gen/tuple
-                    (igen/freq [
+                    (igen/freq :nonprop-bg-position [
                       [(get w [:nonprop-bg-position :alt 2 :cat 0 :alt 1 :cat 0 :alt 0] 100)
                         (gen/return "left ")]
                       [(get w [:nonprop-bg-position :alt 2 :cat 0 :alt 1 :cat 0 :alt 1] 100)
                         (gen/return "right ")]])
-                    (igen/freq [
+                    (igen/freq :nonprop-bg-position [
                       [(get w [:nonprop-bg-position :alt 2 :cat 0 :alt 1 :cat 1 :opt nil] 100)
                         (gen/return "")]
                       [(get w [:nonprop-bg-position :alt 2 :cat 0 :alt 1 :cat 1 :opt 0] 100)
                         (:nonprop-length-percentage g)]]))]])
-              (igen/freq [
+              (igen/freq :nonprop-bg-position [
                 [(get w [:nonprop-bg-position :alt 2 :cat 1 :alt 0] 100)
                   (gen/return "center ")]
                 [(get w [:nonprop-bg-position :alt 2 :cat 1 :alt 1] 100)
                   (gen/tuple
-                    (igen/freq [
+                    (igen/freq :nonprop-bg-position [
                       [(get w [:nonprop-bg-position :alt 2 :cat 1 :alt 1 :cat 0 :alt 0] 100)
                         (gen/return "top ")]
                       [(get w [:nonprop-bg-position :alt 2 :cat 1 :alt 1 :cat 0 :alt 1] 100)
                         (gen/return "bottom ")]])
-                    (igen/freq [
+                    (igen/freq :nonprop-bg-position [
                       [(get w [:nonprop-bg-position :alt 2 :cat 1 :alt 1 :cat 1 :opt nil] 100)
                         (gen/return "")]
                       [(get w [:nonprop-bg-position :alt 2 :cat 1 :alt 1 :cat 1 :opt 0] 100)
@@ -226,7 +226,7 @@
         g (assoc g :nonprop-suffix gen-nonprop-suffix)
 
         gen-prop-all
-        (igen/freq [
+        (igen/freq :prop-all [
           [(get w [:prop-all :alt 0] 100)
             (gen/return "initial ")]
           [(get w [:prop-all :alt 1] 100)
@@ -242,7 +242,7 @@
         g (assoc g :nonprop-all gen-nonprop-all)
 
         gen-prop-padding-left
-        (igen/freq [
+        (igen/freq :prop-padding-left [
           [(get w [:prop-padding-left :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-padding-left :alt 1] 100)
@@ -256,7 +256,7 @@
         g (assoc g :nonprop-padding-left gen-nonprop-padding-left)
 
         gen-prop-padding-block-start
-        (igen/freq [
+        (igen/freq :prop-padding-block-start [
           [(get w [:prop-padding-block-start :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-padding-block-start :alt 1] 100)
@@ -264,7 +264,7 @@
         g (assoc g :prop-padding-block-start gen-prop-padding-block-start)
 
         gen-prop-image-rendering
-        (igen/freq [
+        (igen/freq :prop-image-rendering [
           [(get w [:prop-image-rendering :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-image-rendering :alt 1] 100)
@@ -276,7 +276,7 @@
         g (assoc g :prop-image-rendering gen-prop-image-rendering)
 
         gen-prop-right
-        (igen/freq [
+        (igen/freq :prop-right [
           [(get w [:prop-right :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-right :alt 1] 100)
@@ -288,7 +288,7 @@
         g (assoc g :prop-right gen-prop-right)
 
         gen-prop-bottom
-        (igen/freq [
+        (igen/freq :prop-bottom [
           [(get w [:prop-bottom :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-bottom :alt 1] 100)
@@ -304,7 +304,7 @@
         g (assoc g :nonprop-bottom gen-nonprop-bottom)
 
         gen-prop-left
-        (igen/freq [
+        (igen/freq :prop-left [
           [(get w [:prop-left :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-left :alt 1] 100)
@@ -316,7 +316,7 @@
         g (assoc g :prop-left gen-prop-left)
 
         gen-prop-top
-        (igen/freq [
+        (igen/freq :prop-top [
           [(get w [:prop-top :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-top :alt 1] 100)
@@ -340,18 +340,18 @@
         g (assoc g :nonprop-right gen-nonprop-right)
 
         gen-nonprop-shape
-        (igen/freq [
+        (igen/freq :nonprop-shape [
           [(get w [:nonprop-shape :alt 0] 100)
             (gen/tuple
               (gen/return "rect ")
               (gen/return "( ")
               (:nonprop-top g)
-              (gen/return ", ")
+              (gen/return ",")
+              (gen/return " ")
               (:nonprop-right g)
               (gen/return ", ")
               (:nonprop-bottom g)
-              (gen/return ",")
-              (gen/return " ")
+              (gen/return ", ")
               (:nonprop-left g)
               (gen/return ") "))]
           [(get w [:nonprop-shape :alt 1] 100)
@@ -366,7 +366,7 @@
         g (assoc g :nonprop-shape gen-nonprop-shape)
 
         gen-prop-clip
-        (igen/freq [
+        (igen/freq :prop-clip [
           [(get w [:prop-clip :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-clip :alt 1] 100)
@@ -382,7 +382,7 @@
         g (assoc g :nonprop-number gen-nonprop-number)
 
         gen-nonprop-alpha-value
-        (igen/freq [
+        (igen/freq :nonprop-alpha-value [
           [(get w [:nonprop-alpha-value :alt 0] 100)
             (:nonprop-number g)]
           [(get w [:nonprop-alpha-value :alt 1] 100)
@@ -390,7 +390,7 @@
         g (assoc g :nonprop-alpha-value gen-nonprop-alpha-value)
 
         gen-nonprop-hue
-        (igen/freq [
+        (igen/freq :nonprop-hue [
           [(get w [:nonprop-hue :alt 0] 100)
             (:nonprop-number g)]
           [(get w [:nonprop-hue :alt 1] 100)
@@ -398,7 +398,7 @@
         g (assoc g :nonprop-hue gen-nonprop-hue)
 
         gen-func-hsl
-        (igen/freq [
+        (igen/freq :func-hsl [
           [(get w [:func-hsl :alt 0] 100)
             (gen/tuple
               (gen/return "hsl ")
@@ -406,7 +406,7 @@
               (:nonprop-hue g)
               (:nonprop-percentage g)
               (:nonprop-percentage g)
-              (igen/freq [
+              (igen/freq :func-hsl [
                 [(get w [:func-hsl :alt 0 :cat 5 :opt nil] 100)
                   (gen/return "")]
                 [(get w [:func-hsl :alt 0 :cat 5 :opt 0] 100)
@@ -424,7 +424,7 @@
               (gen/return ", ")
               (:nonprop-percentage g)
               (gen/return ", ")
-              (igen/freq [
+              (igen/freq :func-hsl [
                 [(get w [:func-hsl :alt 1 :cat 8 :opt nil] 100)
                   (gen/return "")]
                 [(get w [:func-hsl :alt 1 :cat 8 :opt 0] 100)
@@ -433,7 +433,7 @@
         g (assoc g :func-hsl gen-func-hsl)
 
         gen-nonprop-deprecated-system-color
-        (igen/freq [
+        (igen/freq :nonprop-deprecated-system-color [
           [(get w [:nonprop-deprecated-system-color :alt 0] 100)
             (gen/return "ActiveBorder ")]
           [(get w [:nonprop-deprecated-system-color :alt 1] 100)
@@ -493,7 +493,7 @@
         g (assoc g :nonprop-deprecated-system-color gen-nonprop-deprecated-system-color)
 
         gen-func-rgb
-        (igen/freq [
+        (igen/freq :func-rgb [
           [(get w [:func-rgb :alt 0] 100)
             (gen/tuple
               (gen/return "rgb ")
@@ -504,7 +504,7 @@
                 (:nonprop-percentage g)
                 (gen/return " ")
                 (:nonprop-percentage g))
-              (igen/freq [
+              (igen/freq :func-rgb [
                 [(get w [:func-rgb :alt 0 :cat 3 :opt nil] 100)
                   (gen/return "")]
                 [(get w [:func-rgb :alt 0 :cat 3 :opt 0] 100)
@@ -522,7 +522,7 @@
                 (:nonprop-number g)
                 (gen/return " ")
                 (:nonprop-number g))
-              (igen/freq [
+              (igen/freq :func-rgb [
                 [(get w [:func-rgb :alt 1 :cat 3 :opt nil] 100)
                   (gen/return "")]
                 [(get w [:func-rgb :alt 1 :cat 3 :opt 0] 100)
@@ -542,12 +542,13 @@
                 (gen/return ",")
                 (gen/return " ")
                 (:nonprop-percentage g))
-              (gen/return ", ")
-              (igen/freq [
-                [(get w [:func-rgb :alt 2 :cat 4 :opt nil] 100)
+              (igen/freq :func-rgb [
+                [(get w [:func-rgb :alt 2 :cat 3 :opt nil] 100)
                   (gen/return "")]
-                [(get w [:func-rgb :alt 2 :cat 4 :opt 0] 100)
-                  (:nonprop-alpha-value g)]])
+                [(get w [:func-rgb :alt 2 :cat 3 :opt 0] 100)
+                  (gen/tuple
+                    (gen/return ", ")
+                    (:nonprop-alpha-value g))]])
               (gen/return ") "))]
           [(get w [:func-rgb :alt 3] 100)
             (gen/tuple
@@ -561,17 +562,18 @@
                 (gen/return ",")
                 (gen/return " ")
                 (:nonprop-number g))
-              (gen/return ", ")
-              (igen/freq [
-                [(get w [:func-rgb :alt 3 :cat 4 :opt nil] 100)
+              (igen/freq :func-rgb [
+                [(get w [:func-rgb :alt 3 :cat 3 :opt nil] 100)
                   (gen/return "")]
-                [(get w [:func-rgb :alt 3 :cat 4 :opt 0] 100)
-                  (:nonprop-alpha-value g)]])
+                [(get w [:func-rgb :alt 3 :cat 3 :opt 0] 100)
+                  (gen/tuple
+                    (gen/return ", ")
+                    (:nonprop-alpha-value g))]])
               (gen/return ") "))]])
         g (assoc g :func-rgb gen-func-rgb)
 
         gen-nonprop-named-color
-        (igen/freq [
+        (igen/freq :nonprop-named-color [
           [(get w [:nonprop-named-color :alt 0] 100)
             (gen/return "transparent ")]
           [(get w [:nonprop-named-color :alt 1] 100)
@@ -873,7 +875,7 @@
         g (assoc g :nonprop-named-color gen-nonprop-named-color)
 
         gen-nonprop-hex-color
-        (igen/freq [
+        (igen/freq :nonprop-hex-color [
           [(get w [:nonprop-hex-color :alt 0] 100)
             (gen/tuple
               (chuck/string-from-regex #"#[0-9A-Fa-f]{3}")
@@ -885,7 +887,7 @@
         g (assoc g :nonprop-hex-color gen-nonprop-hex-color)
 
         gen-func-hsla
-        (igen/freq [
+        (igen/freq :func-hsla [
           [(get w [:func-hsla :alt 0] 100)
             (gen/tuple
               (gen/return "hsla ")
@@ -893,7 +895,7 @@
               (:nonprop-hue g)
               (:nonprop-percentage g)
               (:nonprop-percentage g)
-              (igen/freq [
+              (igen/freq :func-hsla [
                 [(get w [:func-hsla :alt 0 :cat 5 :opt nil] 100)
                   (gen/return "")]
                 [(get w [:func-hsla :alt 0 :cat 5 :opt 0] 100)
@@ -912,7 +914,7 @@
               (:nonprop-percentage g)
               (gen/return ",")
               (gen/return " ")
-              (igen/freq [
+              (igen/freq :func-hsla [
                 [(get w [:func-hsla :alt 1 :cat 9 :opt nil] 100)
                   (gen/return "")]
                 [(get w [:func-hsla :alt 1 :cat 9 :opt 0] 100)
@@ -921,7 +923,7 @@
         g (assoc g :func-hsla gen-func-hsla)
 
         gen-func-rgba
-        (igen/freq [
+        (igen/freq :func-rgba [
           [(get w [:func-rgba :alt 0] 100)
             (gen/tuple
               (gen/return "rgba ")
@@ -932,7 +934,7 @@
                 (:nonprop-percentage g)
                 (gen/return " ")
                 (:nonprop-percentage g))
-              (igen/freq [
+              (igen/freq :func-rgba [
                 [(get w [:func-rgba :alt 0 :cat 3 :opt nil] 100)
                   (gen/return "")]
                 [(get w [:func-rgba :alt 0 :cat 3 :opt 0] 100)
@@ -950,7 +952,7 @@
                 (:nonprop-number g)
                 (gen/return " ")
                 (:nonprop-number g))
-              (igen/freq [
+              (igen/freq :func-rgba [
                 [(get w [:func-rgba :alt 1 :cat 3 :opt nil] 100)
                   (gen/return "")]
                 [(get w [:func-rgba :alt 1 :cat 3 :opt 0] 100)
@@ -970,12 +972,13 @@
                 (gen/return ",")
                 (gen/return " ")
                 (:nonprop-percentage g))
-              (gen/return ", ")
-              (igen/freq [
-                [(get w [:func-rgba :alt 2 :cat 4 :opt nil] 100)
+              (igen/freq :func-rgba [
+                [(get w [:func-rgba :alt 2 :cat 3 :opt nil] 100)
                   (gen/return "")]
-                [(get w [:func-rgba :alt 2 :cat 4 :opt 0] 100)
-                  (:nonprop-alpha-value g)]])
+                [(get w [:func-rgba :alt 2 :cat 3 :opt 0] 100)
+                  (gen/tuple
+                    (gen/return ", ")
+                    (:nonprop-alpha-value g))]])
               (gen/return ") "))]
           [(get w [:func-rgba :alt 3] 100)
             (gen/tuple
@@ -989,17 +992,18 @@
                 (gen/return ",")
                 (gen/return " ")
                 (:nonprop-number g))
-              (gen/return ", ")
-              (igen/freq [
-                [(get w [:func-rgba :alt 3 :cat 4 :opt nil] 100)
+              (igen/freq :func-rgba [
+                [(get w [:func-rgba :alt 3 :cat 3 :opt nil] 100)
                   (gen/return "")]
-                [(get w [:func-rgba :alt 3 :cat 4 :opt 0] 100)
-                  (:nonprop-alpha-value g)]])
+                [(get w [:func-rgba :alt 3 :cat 3 :opt 0] 100)
+                  (gen/tuple
+                    (gen/return ", ")
+                    (:nonprop-alpha-value g))]])
               (gen/return ") "))]])
         g (assoc g :func-rgba gen-func-rgba)
 
         gen-nonprop-color
-        (igen/freq [
+        (igen/freq :nonprop-color [
           [(get w [:nonprop-color :alt 0] 100)
             (:func-rgb g)]
           [(get w [:nonprop-color :alt 1] 100)
@@ -1020,12 +1024,12 @@
 
         gen-nonprop-shadow
         (gen/tuple
-          (igen/freq [
+          (igen/freq :nonprop-shadow [
             [(get w [:nonprop-shadow :cat 0 :opt nil] 100)
               (gen/return "")]
             [(get w [:nonprop-shadow :cat 0 :opt 0] 100)
               (gen/return "inset ")]])
-          (igen/freq [
+          (igen/freq :nonprop-shadow [
             [(get w [:nonprop-shadow :cat 1 :alt 0] 100)
               (gen/tuple
                 (:nonprop-length g)
@@ -1047,7 +1051,7 @@
                 (:nonprop-length g)
                 (gen/return " ")
                 (:nonprop-length g))]])
-          (igen/freq [
+          (igen/freq :nonprop-shadow [
             [(get w [:nonprop-shadow :cat 2 :opt nil] 100)
               (gen/return "")]
             [(get w [:nonprop-shadow :cat 2 :opt 0] 100)
@@ -1055,7 +1059,7 @@
         g (assoc g :nonprop-shadow gen-nonprop-shadow)
 
         gen-prop-box-shadow
-        (igen/freq [
+        (igen/freq :prop-box-shadow [
           [(get w [:prop-box-shadow :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-box-shadow :alt 1] 100)
@@ -1063,7 +1067,7 @@
           [(get w [:prop-box-shadow :alt 2] 100)
             (gen/tuple
               (:nonprop-shadow g)
-              (igen/freq [
+              (igen/freq :prop-box-shadow [
                 [(get w [:prop-box-shadow :alt 2 :cat 1 :star nil] 100)
                   (gen/return "")]
                 [(get w [:prop-box-shadow :alt 2 :cat 1 :star 0] 100)
@@ -1081,7 +1085,7 @@
         g (assoc g :nonprop-flex gen-nonprop-flex)
 
         gen-nonprop-track-breadth
-        (igen/freq [
+        (igen/freq :nonprop-track-breadth [
           [(get w [:nonprop-track-breadth :alt 0] 100)
             (:nonprop-length-percentage g)]
           [(get w [:nonprop-track-breadth :alt 1] 100)
@@ -1099,7 +1103,7 @@
         g (assoc g :nonprop-fixed-breadth gen-nonprop-fixed-breadth)
 
         gen-nonprop-inflexible-breadth
-        (igen/freq [
+        (igen/freq :nonprop-inflexible-breadth [
           [(get w [:nonprop-inflexible-breadth :alt 0] 100)
             (:nonprop-length g)]
           [(get w [:nonprop-inflexible-breadth :alt 1] 100)
@@ -1113,7 +1117,7 @@
         g (assoc g :nonprop-inflexible-breadth gen-nonprop-inflexible-breadth)
 
         gen-nonprop-fixed-size
-        (igen/freq [
+        (igen/freq :nonprop-fixed-size [
           [(get w [:nonprop-fixed-size :alt 0] 100)
             (:nonprop-fixed-breadth g)]
           [(get w [:nonprop-fixed-size :alt 1] 100)
@@ -1156,7 +1160,7 @@
         gen-nonprop-line-names
         (gen/tuple
           (gen/return "[ ")
-          (igen/freq [
+          (igen/freq :nonprop-line-names [
             [(get w [:nonprop-line-names :cat 1 :star nil] 100)
               (gen/return "")]
             [(get w [:nonprop-line-names :cat 1 :star 0] 100)
@@ -1166,7 +1170,7 @@
         g (assoc g :nonprop-line-names gen-nonprop-line-names)
 
         gen-nonprop-track-size
-        (igen/freq [
+        (igen/freq :nonprop-track-size [
           [(get w [:nonprop-track-size :alt 0] 100)
             (:nonprop-track-breadth g)]
           [(get w [:nonprop-track-size :alt 1] 100)
@@ -1181,7 +1185,7 @@
             (gen/tuple
               (gen/return "fit-content ")
               (gen/return "( ")
-              (igen/freq [
+              (igen/freq :nonprop-track-size [
                 [(get w [:nonprop-track-size :alt 2 :cat 2 :alt 0] 100)
                   (:nonprop-length g)]
                 [(get w [:nonprop-track-size :alt 2 :cat 2 :alt 1] 100)
@@ -1197,13 +1201,13 @@
           (gen/return ", ")
           (igen/vector+
             (gen/tuple
-              (igen/freq [
+              (igen/freq :nonprop-track-repeat [
                 [(get w [:nonprop-track-repeat :cat 4 :plus 0 :cat 0 :opt nil] 100)
                   (gen/return "")]
                 [(get w [:nonprop-track-repeat :cat 4 :plus 0 :cat 0 :opt 0] 100)
                   (:nonprop-line-names g)]])
               (:nonprop-track-size g)))
-          (igen/freq [
+          (igen/freq :nonprop-track-repeat [
             [(get w [:nonprop-track-repeat :cat 5 :opt nil] 100)
               (gen/return "")]
             [(get w [:nonprop-track-repeat :cat 5 :opt 0] 100)
@@ -1215,17 +1219,17 @@
         (gen/tuple
           (igen/vector+
             (gen/tuple
-              (igen/freq [
+              (igen/freq :nonprop-track-list [
                 [(get w [:nonprop-track-list :cat 0 :plus 0 :cat 0 :opt nil] 100)
                   (gen/return "")]
                 [(get w [:nonprop-track-list :cat 0 :plus 0 :cat 0 :opt 0] 100)
                   (:nonprop-line-names g)]])
-              (igen/freq [
+              (igen/freq :nonprop-track-list [
                 [(get w [:nonprop-track-list :cat 0 :plus 0 :cat 1 :alt 0] 100)
                   (:nonprop-track-size g)]
                 [(get w [:nonprop-track-list :cat 0 :plus 0 :cat 1 :alt 1] 100)
                   (:nonprop-track-repeat g)]])))
-          (igen/freq [
+          (igen/freq :nonprop-track-list [
             [(get w [:nonprop-track-list :cat 1 :opt nil] 100)
               (gen/return "")]
             [(get w [:nonprop-track-list :cat 1 :opt 0] 100)
@@ -1240,13 +1244,13 @@
           (gen/return ", ")
           (igen/vector+
             (gen/tuple
-              (igen/freq [
+              (igen/freq :nonprop-fixed-repeat [
                 [(get w [:nonprop-fixed-repeat :cat 4 :plus 0 :cat 0 :opt nil] 100)
                   (gen/return "")]
                 [(get w [:nonprop-fixed-repeat :cat 4 :plus 0 :cat 0 :opt 0] 100)
                   (:nonprop-line-names g)]])
               (:nonprop-fixed-size g)))
-          (igen/freq [
+          (igen/freq :nonprop-fixed-repeat [
             [(get w [:nonprop-fixed-repeat :cat 5 :opt nil] 100)
               (gen/return "")]
             [(get w [:nonprop-fixed-repeat :cat 5 :opt 0] 100)
@@ -1258,7 +1262,7 @@
         (gen/tuple
           (gen/return "repeat ")
           (gen/return "( ")
-          (igen/freq [
+          (igen/freq :nonprop-auto-repeat [
             [(get w [:nonprop-auto-repeat :cat 2 :alt 0] 100)
               (gen/return "auto-fill ")]
             [(get w [:nonprop-auto-repeat :cat 2 :alt 1] 100)
@@ -1266,13 +1270,13 @@
           (gen/return ", ")
           (igen/vector+
             (gen/tuple
-              (igen/freq [
+              (igen/freq :nonprop-auto-repeat [
                 [(get w [:nonprop-auto-repeat :cat 4 :plus 0 :cat 0 :opt nil] 100)
                   (gen/return "")]
                 [(get w [:nonprop-auto-repeat :cat 4 :plus 0 :cat 0 :opt 0] 100)
                   (:nonprop-line-names g)]])
               (:nonprop-fixed-size g)))
-          (igen/freq [
+          (igen/freq :nonprop-auto-repeat [
             [(get w [:nonprop-auto-repeat :cat 5 :opt nil] 100)
               (gen/return "")]
             [(get w [:nonprop-auto-repeat :cat 5 :opt 0] 100)
@@ -1282,45 +1286,45 @@
 
         gen-nonprop-auto-track-list
         (gen/tuple
-          (igen/freq [
+          (igen/freq :nonprop-auto-track-list [
             [(get w [:nonprop-auto-track-list :cat 0 :star nil] 100)
               (gen/return "")]
             [(get w [:nonprop-auto-track-list :cat 0 :star 0] 100)
               (igen/vector+
                 (gen/tuple
-                  (igen/freq [
+                  (igen/freq :nonprop-auto-track-list [
                     [(get w [:nonprop-auto-track-list :cat 0 :star 0 :cat 0 :opt nil] 100)
                       (gen/return "")]
                     [(get w [:nonprop-auto-track-list :cat 0 :star 0 :cat 0 :opt 0] 100)
                       (:nonprop-line-names g)]])
-                  (igen/freq [
+                  (igen/freq :nonprop-auto-track-list [
                     [(get w [:nonprop-auto-track-list :cat 0 :star 0 :cat 1 :alt 0] 100)
                       (:nonprop-fixed-size g)]
                     [(get w [:nonprop-auto-track-list :cat 0 :star 0 :cat 1 :alt 1] 100)
                       (:nonprop-fixed-repeat g)]])))]])
-          (igen/freq [
+          (igen/freq :nonprop-auto-track-list [
             [(get w [:nonprop-auto-track-list :cat 1 :opt nil] 100)
               (gen/return "")]
             [(get w [:nonprop-auto-track-list :cat 1 :opt 0] 100)
               (:nonprop-line-names g)]])
           (:nonprop-auto-repeat g)
-          (igen/freq [
+          (igen/freq :nonprop-auto-track-list [
             [(get w [:nonprop-auto-track-list :cat 3 :star nil] 100)
               (gen/return "")]
             [(get w [:nonprop-auto-track-list :cat 3 :star 0] 100)
               (igen/vector+
                 (gen/tuple
-                  (igen/freq [
+                  (igen/freq :nonprop-auto-track-list [
                     [(get w [:nonprop-auto-track-list :cat 3 :star 0 :cat 0 :opt nil] 100)
                       (gen/return "")]
                     [(get w [:nonprop-auto-track-list :cat 3 :star 0 :cat 0 :opt 0] 100)
                       (:nonprop-line-names g)]])
-                  (igen/freq [
+                  (igen/freq :nonprop-auto-track-list [
                     [(get w [:nonprop-auto-track-list :cat 3 :star 0 :cat 1 :alt 0] 100)
                       (:nonprop-fixed-size g)]
                     [(get w [:nonprop-auto-track-list :cat 3 :star 0 :cat 1 :alt 1] 100)
                       (:nonprop-fixed-repeat g)]])))]])
-          (igen/freq [
+          (igen/freq :nonprop-auto-track-list [
             [(get w [:nonprop-auto-track-list :cat 4 :opt nil] 100)
               (gen/return "")]
             [(get w [:nonprop-auto-track-list :cat 4 :opt 0] 100)
@@ -1328,7 +1332,7 @@
         g (assoc g :nonprop-auto-track-list gen-nonprop-auto-track-list)
 
         gen-prop-grid-template-columns
-        (igen/freq [
+        (igen/freq :prop-grid-template-columns [
           [(get w [:prop-grid-template-columns :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-grid-template-columns :alt 1] 100)
@@ -1344,7 +1348,7 @@
         g (assoc g :nonprop-grid-template-columns gen-nonprop-grid-template-columns)
 
         gen-prop-resize
-        (igen/freq [
+        (igen/freq :prop-resize [
           [(get w [:prop-resize :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-resize :alt 1] 100)
@@ -1362,7 +1366,7 @@
         g (assoc g :prop-resize gen-prop-resize)
 
         gen-prop-border-top-color
-        (igen/freq [
+        (igen/freq :prop-border-top-color [
           [(get w [:prop-border-top-color :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-border-top-color :alt 1] 100)
@@ -1374,11 +1378,11 @@
         g (assoc g :nonprop-border-top-color gen-nonprop-border-top-color)
 
         gen-prop-border-inline-color
-        (igen/freq [
+        (igen/freq :prop-border-inline-color [
           [(get w [:prop-border-inline-color :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-border-inline-color :alt 1] 100)
-            (igen/freq [
+            (igen/freq :prop-border-inline-color [
               [(get w [:prop-border-inline-color :alt 1 :alt 0] 100)
                 (:nonprop-border-top-color g)]
               [(get w [:prop-border-inline-color :alt 1 :alt 1] 100)
@@ -1389,7 +1393,7 @@
         g (assoc g :prop-border-inline-color gen-prop-border-inline-color)
 
         gen-prop-column-width
-        (igen/freq [
+        (igen/freq :prop-column-width [
           [(get w [:prop-column-width :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-column-width :alt 1] 100)
@@ -1407,7 +1411,7 @@
         g (assoc g :nonprop-integer gen-nonprop-integer)
 
         gen-prop-column-count
-        (igen/freq [
+        (igen/freq :prop-column-count [
           [(get w [:prop-column-count :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-column-count :alt 1] 100)
@@ -1421,12 +1425,12 @@
         g (assoc g :nonprop-column-count gen-nonprop-column-count)
 
         gen-prop-columns
-        (igen/freq [
+        (igen/freq :prop-columns [
           [(get w [:prop-columns :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-columns :alt 1] 100)
             (igen/vector+
-              (igen/freq [
+              (igen/freq :prop-columns [
                 [(get w [:prop-columns :alt 1 :plus 0 :alt 0] 100)
                   (:nonprop-column-width g)]
                 [(get w [:prop-columns :alt 1 :plus 0 :alt 1] 100)
@@ -1434,7 +1438,7 @@
         g (assoc g :prop-columns gen-prop-columns)
 
         gen-nonprop-font-stretch-absolute
-        (igen/freq [
+        (igen/freq :nonprop-font-stretch-absolute [
           [(get w [:nonprop-font-stretch-absolute :alt 0] 100)
             (gen/return "normal ")]
           [(get w [:nonprop-font-stretch-absolute :alt 1] 100)
@@ -1458,7 +1462,7 @@
         g (assoc g :nonprop-font-stretch-absolute gen-nonprop-font-stretch-absolute)
 
         gen-prop-list-style-position
-        (igen/freq [
+        (igen/freq :prop-list-style-position [
           [(get w [:prop-list-style-position :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-list-style-position :alt 1] 100)
@@ -1472,7 +1476,7 @@
         g (assoc g :nonprop-list-style-position gen-nonprop-list-style-position)
 
         gen-nonprop-display-outside
-        (igen/freq [
+        (igen/freq :nonprop-display-outside [
           [(get w [:nonprop-display-outside :alt 0] 100)
             (gen/return "block ")]
           [(get w [:nonprop-display-outside :alt 1] 100)
@@ -1483,16 +1487,16 @@
 
         gen-nonprop-display-listitem
         (gen/tuple
-          (igen/freq [
+          (igen/freq :nonprop-display-listitem [
             [(get w [:nonprop-display-listitem :cat 0 :opt nil] 100)
               (gen/return "")]
             [(get w [:nonprop-display-listitem :cat 0 :opt 0] 100)
               (:nonprop-display-outside g)]])
-          (igen/freq [
+          (igen/freq :nonprop-display-listitem [
             [(get w [:nonprop-display-listitem :cat 1 :opt nil] 100)
               (gen/return "")]
             [(get w [:nonprop-display-listitem :cat 1 :opt 0] 100)
-              (igen/freq [
+              (igen/freq :nonprop-display-listitem [
                 [(get w [:nonprop-display-listitem :cat 1 :opt 0 :alt 0] 100)
                   (gen/return "flow ")]
                 [(get w [:nonprop-display-listitem :cat 1 :opt 0 :alt 1] 100)
@@ -1501,7 +1505,7 @@
         g (assoc g :nonprop-display-listitem gen-nonprop-display-listitem)
 
         gen-prop-text-decoration-style
-        (igen/freq [
+        (igen/freq :prop-text-decoration-style [
           [(get w [:prop-text-decoration-style :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-text-decoration-style :alt 1] 100)
@@ -1517,7 +1521,7 @@
         g (assoc g :prop-text-decoration-style gen-prop-text-decoration-style)
 
         gen-prop-text-decoration-color
-        (igen/freq [
+        (igen/freq :prop-text-decoration-color [
           [(get w [:prop-text-decoration-color :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-text-decoration-color :alt 1] 100)
@@ -1529,14 +1533,14 @@
         g (assoc g :nonprop-text-decoration-style gen-nonprop-text-decoration-style)
 
         gen-prop-text-decoration-line
-        (igen/freq [
+        (igen/freq :prop-text-decoration-line [
           [(get w [:prop-text-decoration-line :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-text-decoration-line :alt 1] 100)
             (gen/return "none ")]
           [(get w [:prop-text-decoration-line :alt 2] 100)
             (igen/vector+
-              (igen/freq [
+              (igen/freq :prop-text-decoration-line [
                 [(get w [:prop-text-decoration-line :alt 2 :plus 0 :alt 0] 100)
                   (gen/return "underline ")]
                 [(get w [:prop-text-decoration-line :alt 2 :plus 0 :alt 1] 100)
@@ -1556,12 +1560,12 @@
         g (assoc g :nonprop-text-decoration-color gen-nonprop-text-decoration-color)
 
         gen-prop-text-decoration
-        (igen/freq [
+        (igen/freq :prop-text-decoration [
           [(get w [:prop-text-decoration :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-text-decoration :alt 1] 100)
             (igen/vector+
-              (igen/freq [
+              (igen/freq :prop-text-decoration [
                 [(get w [:prop-text-decoration :alt 1 :plus 0 :alt 0] 100)
                   (:nonprop-text-decoration-line g)]
                 [(get w [:prop-text-decoration :alt 1 :plus 0 :alt 1] 100)
@@ -1577,7 +1581,7 @@
         gen-nonprop-resolution
         (gen/tuple
           (:any-number g)
-          (igen/freq [
+          (igen/freq :nonprop-resolution [
             [(get w [:nonprop-resolution :cat 1 :alt 0] 100)
               (gen/return "dpi")]
             [(get w [:nonprop-resolution :cat 1 :alt 1] 100)
@@ -1606,7 +1610,7 @@
 
         gen-nonprop-image-set-option
         (gen/tuple
-          (igen/freq [
+          (igen/freq :nonprop-image-set-option [
             [(get w [:nonprop-image-set-option :cat 0 :alt 0] 100)
               (:nonprop-image g)]
             [(get w [:nonprop-image-set-option :cat 0 :alt 1] 100)
@@ -1615,7 +1619,7 @@
         g (assoc g :nonprop-image-set-option gen-nonprop-image-set-option)
 
         gen-nonprop-line-width
-        (igen/freq [
+        (igen/freq :nonprop-line-width [
           [(get w [:nonprop-line-width :alt 0] 100)
             (:nonprop-length g)]
           [(get w [:nonprop-line-width :alt 1] 100)
@@ -1627,7 +1631,7 @@
         g (assoc g :nonprop-line-width gen-nonprop-line-width)
 
         gen-nonprop-line-style
-        (igen/freq [
+        (igen/freq :nonprop-line-style [
           [(get w [:nonprop-line-style :alt 0] 100)
             (gen/return "none ")]
           [(get w [:nonprop-line-style :alt 1] 100)
@@ -1651,12 +1655,12 @@
         g (assoc g :nonprop-line-style gen-nonprop-line-style)
 
         gen-prop-border
-        (igen/freq [
+        (igen/freq :prop-border [
           [(get w [:prop-border :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-border :alt 1] 100)
             (igen/vector+
-              (igen/freq [
+              (igen/freq :prop-border [
                 [(get w [:prop-border :alt 1 :plus 0 :alt 0] 100)
                   (:nonprop-line-width g)]
                 [(get w [:prop-border :alt 1 :plus 0 :alt 1] 100)
@@ -1666,7 +1670,7 @@
         g (assoc g :prop-border gen-prop-border)
 
         gen-prop-font-variant-caps
-        (igen/freq [
+        (igen/freq :prop-font-variant-caps [
           [(get w [:prop-font-variant-caps :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-font-variant-caps :alt 1] 100)
@@ -1698,11 +1702,11 @@
         g (assoc g :prop-group-rule-body gen-prop-group-rule-body)
 
         gen-prop-inset
-        (igen/freq [
+        (igen/freq :prop-inset [
           [(get w [:prop-inset :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-inset :alt 1] 100)
-            (igen/freq [
+            (igen/freq :prop-inset [
               [(get w [:prop-inset :alt 1 :alt 0] 100)
                 (:nonprop-top g)]
               [(get w [:prop-inset :alt 1 :alt 1] 100)
@@ -1731,7 +1735,7 @@
         gen-nonprop-time
         (gen/tuple
           (:any-number g)
-          (igen/freq [
+          (igen/freq :nonprop-time [
             [(get w [:nonprop-time :cat 1 :alt 0] 100)
               (gen/return "s")]
             [(get w [:nonprop-time :cat 1 :alt 1] 100)
@@ -1740,13 +1744,13 @@
         g (assoc g :nonprop-time gen-nonprop-time)
 
         gen-prop-transition-duration
-        (igen/freq [
+        (igen/freq :prop-transition-duration [
           [(get w [:prop-transition-duration :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-transition-duration :alt 1] 100)
             (gen/tuple
               (:nonprop-time g)
-              (igen/freq [
+              (igen/freq :prop-transition-duration [
                 [(get w [:prop-transition-duration :alt 1 :cat 1 :star nil] 100)
                   (gen/return "")]
                 [(get w [:prop-transition-duration :alt 1 :cat 1 :star 0] 100)
@@ -1758,7 +1762,7 @@
         g (assoc g :prop-transition-duration gen-prop-transition-duration)
 
         gen-nonprop-ending-shape
-        (igen/freq [
+        (igen/freq :nonprop-ending-shape [
           [(get w [:nonprop-ending-shape :alt 0] 100)
             (gen/return "circle ")]
           [(get w [:nonprop-ending-shape :alt 1] 100)
@@ -1766,7 +1770,7 @@
         g (assoc g :nonprop-ending-shape gen-nonprop-ending-shape)
 
         gen-nonprop-color-stop-length
-        (igen/freq [
+        (igen/freq :nonprop-color-stop-length [
           [(get w [:nonprop-color-stop-length :alt 0] 100)
             (:nonprop-length-percentage g)]
           [(get w [:nonprop-color-stop-length :alt 1] 100)
@@ -1792,12 +1796,12 @@
         g (assoc g :nonprop-linear-color-hint gen-nonprop-linear-color-hint)
 
         gen-nonprop-position
-        (igen/freq [
+        (igen/freq :nonprop-position [
           [(get w [:nonprop-position :alt 0] 100)
             (igen/vector+
-              (igen/freq [
+              (igen/freq :nonprop-position [
                 [(get w [:nonprop-position :alt 0 :plus 0 :alt 0] 100)
-                  (igen/freq [
+                  (igen/freq :nonprop-position [
                     [(get w [:nonprop-position :alt 0 :plus 0 :alt 0 :alt 0] 100)
                       (gen/return "left ")]
                     [(get w [:nonprop-position :alt 0 :plus 0 :alt 0 :alt 1] 100)
@@ -1805,7 +1809,7 @@
                     [(get w [:nonprop-position :alt 0 :plus 0 :alt 0 :alt 2] 100)
                       (gen/return "right ")]])]
                 [(get w [:nonprop-position :alt 0 :plus 0 :alt 1] 100)
-                  (igen/freq [
+                  (igen/freq :nonprop-position [
                     [(get w [:nonprop-position :alt 0 :plus 0 :alt 1 :alt 0] 100)
                       (gen/return "top ")]
                     [(get w [:nonprop-position :alt 0 :plus 0 :alt 1 :alt 1] 100)
@@ -1814,7 +1818,7 @@
                       (gen/return "bottom ")]])]]))]
           [(get w [:nonprop-position :alt 1] 100)
             (gen/tuple
-              (igen/freq [
+              (igen/freq :nonprop-position [
                 [(get w [:nonprop-position :alt 1 :cat 0 :alt 0] 100)
                   (gen/return "left ")]
                 [(get w [:nonprop-position :alt 1 :cat 0 :alt 1] 100)
@@ -1823,11 +1827,11 @@
                   (gen/return "right ")]
                 [(get w [:nonprop-position :alt 1 :cat 0 :alt 3] 100)
                   (:nonprop-length-percentage g)]])
-              (igen/freq [
+              (igen/freq :nonprop-position [
                 [(get w [:nonprop-position :alt 1 :cat 1 :opt nil] 100)
                   (gen/return "")]
                 [(get w [:nonprop-position :alt 1 :cat 1 :opt 0] 100)
-                  (igen/freq [
+                  (igen/freq :nonprop-position [
                     [(get w [:nonprop-position :alt 1 :cat 1 :opt 0 :alt 0] 100)
                       (gen/return "top ")]
                     [(get w [:nonprop-position :alt 1 :cat 1 :opt 0 :alt 1] 100)
@@ -1839,14 +1843,14 @@
           [(get w [:nonprop-position :alt 2] 100)
             (gen/tuple
               (gen/tuple
-                (igen/freq [
+                (igen/freq :nonprop-position [
                   [(get w [:nonprop-position :alt 2 :cat 0 :cat 0 :alt 0] 100)
                     (gen/return "left ")]
                   [(get w [:nonprop-position :alt 2 :cat 0 :cat 0 :alt 1] 100)
                     (gen/return "right ")]])
                 (:nonprop-length-percentage g))
               (gen/tuple
-                (igen/freq [
+                (igen/freq :nonprop-position [
                   [(get w [:nonprop-position :alt 2 :cat 1 :cat 0 :alt 0] 100)
                     (gen/return "top ")]
                   [(get w [:nonprop-position :alt 2 :cat 1 :cat 0 :alt 1] 100)
@@ -1855,7 +1859,7 @@
         g (assoc g :nonprop-position gen-nonprop-position)
 
         gen-nonprop-size
-        (igen/freq [
+        (igen/freq :nonprop-size [
           [(get w [:nonprop-size :alt 0] 100)
             (gen/return "closest-side ")]
           [(get w [:nonprop-size :alt 1] 100)
@@ -1877,14 +1881,14 @@
         (gen/tuple
           (gen/tuple
             (:nonprop-linear-color-stop g)
-            (igen/freq [
+            (igen/freq :nonprop-color-stop-list [
               [(get w [:nonprop-color-stop-list :cat 0 :cat 1 :opt nil] 100)
                 (gen/return "")]
               [(get w [:nonprop-color-stop-list :cat 0 :cat 1 :opt 0] 100)
                 (gen/tuple
                   (gen/return ", ")
                   (:nonprop-linear-color-hint g))]]))
-          (igen/freq [
+          (igen/freq :nonprop-color-stop-list [
             [(get w [:nonprop-color-stop-list :cat 1 :star nil] 100)
               (gen/return "")]
             [(get w [:nonprop-color-stop-list :cat 1 :star 0] 100)
@@ -1894,7 +1898,7 @@
                   (gen/return " ")
                   (gen/tuple
                     (:nonprop-linear-color-stop g)
-                    (igen/freq [
+                    (igen/freq :nonprop-color-stop-list [
                       [(get w [:nonprop-color-stop-list :cat 1 :star 0 :cat 2 :cat 1 :opt nil] 100)
                         (gen/return "")]
                       [(get w [:nonprop-color-stop-list :cat 1 :star 0 :cat 2 :cat 1 :opt 0] 100)
@@ -1909,17 +1913,17 @@
         (gen/tuple
           (gen/return "repeating-radial-gradient ")
           (gen/return "( ")
-          (igen/freq [
+          (igen/freq :func-repeating-radial-gradient [
             [(get w [:func-repeating-radial-gradient :cat 2 :opt nil] 100)
               (gen/return "")]
             [(get w [:func-repeating-radial-gradient :cat 2 :opt 0] 100)
               (igen/vector+
-                (igen/freq [
+                (igen/freq :func-repeating-radial-gradient [
                   [(get w [:func-repeating-radial-gradient :cat 2 :opt 0 :plus 0 :alt 0] 100)
                     (:nonprop-ending-shape g)]
                   [(get w [:func-repeating-radial-gradient :cat 2 :opt 0 :plus 0 :alt 1] 100)
                     (:nonprop-size g)]]))]])
-          (igen/freq [
+          (igen/freq :func-repeating-radial-gradient [
             [(get w [:func-repeating-radial-gradient :cat 3 :opt nil] 100)
               (gen/return "")]
             [(get w [:func-repeating-radial-gradient :cat 3 :opt 0] 100)
@@ -1932,7 +1936,7 @@
         g (assoc g :func-repeating-radial-gradient gen-func-repeating-radial-gradient)
 
         gen-prop-overflow-x
-        (igen/freq [
+        (igen/freq :prop-overflow-x [
           [(get w [:prop-overflow-x :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-overflow-x :alt 1] 100)
@@ -1948,7 +1952,7 @@
         g (assoc g :prop-overflow-x gen-prop-overflow-x)
 
         gen-nonprop-angle-percentage
-        (igen/freq [
+        (igen/freq :nonprop-angle-percentage [
           [(get w [:nonprop-angle-percentage :alt 0] 100)
             (:nonprop-angle g)]
           [(get w [:nonprop-angle-percentage :alt 1] 100)
@@ -1956,7 +1960,7 @@
         g (assoc g :nonprop-angle-percentage gen-nonprop-angle-percentage)
 
         gen-nonprop-shape-radius
-        (igen/freq [
+        (igen/freq :nonprop-shape-radius [
           [(get w [:nonprop-shape-radius :alt 0] 100)
             (:nonprop-length-percentage g)]
           [(get w [:nonprop-shape-radius :alt 1] 100)
@@ -1969,12 +1973,12 @@
         (gen/tuple
           (gen/return "circle ")
           (gen/return "( ")
-          (igen/freq [
+          (igen/freq :func-circle [
             [(get w [:func-circle :cat 2 :opt nil] 100)
               (gen/return "")]
             [(get w [:func-circle :cat 2 :opt 0] 100)
               (:nonprop-shape-radius g)]])
-          (igen/freq [
+          (igen/freq :func-circle [
             [(get w [:func-circle :cat 3 :opt nil] 100)
               (gen/return "")]
             [(get w [:func-circle :cat 3 :opt 0] 100)
@@ -1985,7 +1989,7 @@
         g (assoc g :func-circle gen-func-circle)
 
         gen-prop-vertical-align
-        (igen/freq [
+        (igen/freq :prop-vertical-align [
           [(get w [:prop-vertical-align :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-vertical-align :alt 1] 100)
@@ -2011,13 +2015,13 @@
         g (assoc g :prop-vertical-align gen-prop-vertical-align)
 
         gen-prop-animation-delay
-        (igen/freq [
+        (igen/freq :prop-animation-delay [
           [(get w [:prop-animation-delay :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-animation-delay :alt 1] 100)
             (gen/tuple
               (:nonprop-time g)
-              (igen/freq [
+              (igen/freq :prop-animation-delay [
                 [(get w [:prop-animation-delay :alt 1 :cat 1 :star nil] 100)
                   (gen/return "")]
                 [(get w [:prop-animation-delay :alt 1 :cat 1 :star 0] 100)
@@ -2029,7 +2033,7 @@
         g (assoc g :prop-animation-delay gen-prop-animation-delay)
 
         gen-nonprop-step-position
-        (igen/freq [
+        (igen/freq :nonprop-step-position [
           [(get w [:nonprop-step-position :alt 0] 100)
             (gen/return "jump-start ")]
           [(get w [:nonprop-step-position :alt 1] 100)
@@ -2045,7 +2049,7 @@
         g (assoc g :nonprop-step-position gen-nonprop-step-position)
 
         gen-nonprop-step-timing-function
-        (igen/freq [
+        (igen/freq :nonprop-step-timing-function [
           [(get w [:nonprop-step-timing-function :alt 0] 100)
             (gen/return "step-start ")]
           [(get w [:nonprop-step-timing-function :alt 1] 100)
@@ -2055,7 +2059,7 @@
               (gen/return "steps ")
               (gen/return "( ")
               (:nonprop-integer g)
-              (igen/freq [
+              (igen/freq :nonprop-step-timing-function [
                 [(get w [:nonprop-step-timing-function :alt 2 :cat 3 :opt nil] 100)
                   (gen/return "")]
                 [(get w [:nonprop-step-timing-function :alt 2 :cat 3 :opt 0] 100)
@@ -2066,7 +2070,7 @@
         g (assoc g :nonprop-step-timing-function gen-nonprop-step-timing-function)
 
         gen-nonprop-cubic-bezier-timing-function
-        (igen/freq [
+        (igen/freq :nonprop-cubic-bezier-timing-function [
           [(get w [:nonprop-cubic-bezier-timing-function :alt 0] 100)
             (gen/return "ease ")]
           [(get w [:nonprop-cubic-bezier-timing-function :alt 1] 100)
@@ -2092,7 +2096,7 @@
         g (assoc g :nonprop-cubic-bezier-timing-function gen-nonprop-cubic-bezier-timing-function)
 
         gen-nonprop-timing-function
-        (igen/freq [
+        (igen/freq :nonprop-timing-function [
           [(get w [:nonprop-timing-function :alt 0] 100)
             (gen/return "linear ")]
           [(get w [:nonprop-timing-function :alt 1] 100)
@@ -2106,7 +2110,7 @@
         g (assoc g :nonprop-counter-style-name gen-nonprop-counter-style-name)
 
         gen-nonprop-counter-style
-        (igen/freq [
+        (igen/freq :nonprop-counter-style [
           [(get w [:nonprop-counter-style :alt 0] 100)
             (:nonprop-counter-style-name g)]
           [(get w [:nonprop-counter-style :alt 1] 100)
@@ -2117,7 +2121,7 @@
         g (assoc g :nonprop-counter-style gen-nonprop-counter-style)
 
         gen-prop-list-style-type
-        (igen/freq [
+        (igen/freq :prop-list-style-type [
           [(get w [:prop-list-style-type :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-list-style-type :alt 1] 100)
@@ -2133,7 +2137,7 @@
         g (assoc g :nonprop-list-style-type gen-nonprop-list-style-type)
 
         gen-prop-caption-side
-        (igen/freq [
+        (igen/freq :prop-caption-side [
           [(get w [:prop-caption-side :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-caption-side :alt 1] 100)
@@ -2151,7 +2155,7 @@
         g (assoc g :prop-caption-side gen-prop-caption-side)
 
         gen-prop-text-transform
-        (igen/freq [
+        (igen/freq :prop-text-transform [
           [(get w [:prop-text-transform :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-text-transform :alt 1] 100)
@@ -2169,7 +2173,7 @@
         g (assoc g :prop-text-transform gen-prop-text-transform)
 
         gen-prop-rotate
-        (igen/freq [
+        (igen/freq :prop-rotate [
           [(get w [:prop-rotate :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-rotate :alt 1] 100)
@@ -2178,7 +2182,7 @@
             (:nonprop-angle g)]
           [(get w [:prop-rotate :alt 3] 100)
             (gen/tuple
-              (igen/freq [
+              (igen/freq :prop-rotate [
                 [(get w [:prop-rotate :alt 3 :cat 0 :alt 0] 100)
                   (gen/return "x ")]
                 [(get w [:prop-rotate :alt 3 :cat 0 :alt 1] 100)
@@ -2199,7 +2203,7 @@
         (gen/tuple
           (gen/return "minmax ")
           (gen/return "( ")
-          (igen/freq [
+          (igen/freq :func-minmax [
             [(get w [:func-minmax :cat 2 :alt 0] 100)
               (:nonprop-length g)]
             [(get w [:func-minmax :cat 2 :alt 1] 100)
@@ -2213,7 +2217,7 @@
             [(get w [:func-minmax :cat 2 :alt 5] 100)
               (gen/return "auto ")]])
           (gen/return ", ")
-          (igen/freq [
+          (igen/freq :func-minmax [
             [(get w [:func-minmax :cat 4 :alt 0] 100)
               (:nonprop-length g)]
             [(get w [:func-minmax :cat 4 :alt 1] 100)
@@ -2236,12 +2240,12 @@
         gen-nonprop-calc-product
         (gen/tuple
           (:nonprop-calc-value g)
-          (igen/freq [
+          (igen/freq :nonprop-calc-product [
             [(get w [:nonprop-calc-product :cat 1 :star nil] 100)
               (gen/return "")]
             [(get w [:nonprop-calc-product :cat 1 :star 0] 100)
               (igen/vector+
-                (igen/freq [
+                (igen/freq :nonprop-calc-product [
                   [(get w [:nonprop-calc-product :cat 1 :star 0 :alt 0] 100)
                     (gen/tuple
                       (gen/return "* ")
@@ -2255,13 +2259,13 @@
         gen-nonprop-calc-sum
         (gen/tuple
           (:nonprop-calc-product g)
-          (igen/freq [
+          (igen/freq :nonprop-calc-sum [
             [(get w [:nonprop-calc-sum :cat 1 :star nil] 100)
               (gen/return "")]
             [(get w [:nonprop-calc-sum :cat 1 :star 0] 100)
               (igen/vector+
                 (gen/tuple
-                  (igen/freq [
+                  (igen/freq :nonprop-calc-sum [
                     [(get w [:nonprop-calc-sum :cat 1 :star 0 :cat 0 :alt 0] 100)
                       (gen/return "+ ")]
                     [(get w [:nonprop-calc-sum :cat 1 :star 0 :cat 0 :alt 1] 100)
@@ -2280,12 +2284,12 @@
         gen-prop-unknown
         (gen/tuple
           (gen/return " ")
-          (igen/freq [
+          (igen/freq :prop-unknown [
             [(get w [:prop-unknown :cat 1 :star nil] 100)
               (gen/return "")]
             [(get w [:prop-unknown :cat 1 :star 0] 100)
               (igen/vector+
-                (igen/freq [
+                (igen/freq :prop-unknown [
                   [(get w [:prop-unknown :cat 1 :star 0 :alt 0] 100)
                     (:nonprop-custom-ident g)]
                   [(get w [:prop-unknown :cat 1 :star 0 :alt 1] 100)
@@ -2314,7 +2318,7 @@
           (gen/return " ")
           (gen/return ":")
           (gen/return " ")
-          (igen/freq [
+          (igen/freq :css-unknown [
             [(get w [:css-unknown :cat 4 :alt 0] 100)
               (:prop-all g)]
             [(get w [:css-unknown :cat 4 :alt 1] 100)
@@ -2322,15 +2326,15 @@
         g (assoc g :css-unknown gen-css-unknown)
 
         gen-nonprop-repeat-style
-        (igen/freq [
+        (igen/freq :nonprop-repeat-style [
           [(get w [:nonprop-repeat-style :alt 0] 100)
             (gen/return "repeat-x ")]
           [(get w [:nonprop-repeat-style :alt 1] 100)
             (gen/return "repeat-y ")]
           [(get w [:nonprop-repeat-style :alt 2] 100)
-            (igen/freq [
+            (igen/freq :nonprop-repeat-style [
               [(get w [:nonprop-repeat-style :alt 2 :alt 0] 100)
-                (igen/freq [
+                (igen/freq :nonprop-repeat-style [
                   [(get w [:nonprop-repeat-style :alt 2 :alt 0 :alt 0] 100)
                     (gen/return "repeat ")]
                   [(get w [:nonprop-repeat-style :alt 2 :alt 0 :alt 1] 100)
@@ -2341,7 +2345,7 @@
                     (gen/return "no-repeat ")]])]
               [(get w [:nonprop-repeat-style :alt 2 :alt 1] 100)
                 (gen/tuple
-                  (igen/freq [
+                  (igen/freq :nonprop-repeat-style [
                     [(get w [:nonprop-repeat-style :alt 2 :alt 1 :cat 0 :alt 0] 100)
                       (gen/return "repeat ")]
                     [(get w [:nonprop-repeat-style :alt 2 :alt 1 :cat 0 :alt 1] 100)
@@ -2351,7 +2355,7 @@
                     [(get w [:nonprop-repeat-style :alt 2 :alt 1 :cat 0 :alt 3] 100)
                       (gen/return "no-repeat ")]])
                   (gen/return " ")
-                  (igen/freq [
+                  (igen/freq :nonprop-repeat-style [
                     [(get w [:nonprop-repeat-style :alt 2 :alt 1 :cat 2 :alt 0] 100)
                       (gen/return "repeat ")]
                     [(get w [:nonprop-repeat-style :alt 2 :alt 1 :cat 2 :alt 1] 100)
@@ -2363,14 +2367,14 @@
         g (assoc g :nonprop-repeat-style gen-nonprop-repeat-style)
 
         gen-prop-font-synthesis
-        (igen/freq [
+        (igen/freq :prop-font-synthesis [
           [(get w [:prop-font-synthesis :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-font-synthesis :alt 1] 100)
             (gen/return "none ")]
           [(get w [:prop-font-synthesis :alt 2] 100)
             (igen/vector+
-              (igen/freq [
+              (igen/freq :prop-font-synthesis [
                 [(get w [:prop-font-synthesis :alt 2 :plus 0 :alt 0] 100)
                   (gen/return "weight ")]
                 [(get w [:prop-font-synthesis :alt 2 :plus 0 :alt 1] 100)
@@ -2378,7 +2382,7 @@
         g (assoc g :prop-font-synthesis gen-prop-font-synthesis)
 
         gen-prop-min-height
-        (igen/freq [
+        (igen/freq :prop-min-height [
           [(get w [:prop-min-height :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-min-height :alt 1] 100)
@@ -2402,7 +2406,7 @@
         g (assoc g :nonprop-range gen-nonprop-range)
 
         gen-nonprop-keyframe-selector
-        (igen/freq [
+        (igen/freq :nonprop-keyframe-selector [
           [(get w [:nonprop-keyframe-selector :alt 0] 100)
             (gen/return "from ")]
           [(get w [:nonprop-keyframe-selector :alt 1] 100)
@@ -2412,7 +2416,7 @@
         g (assoc g :nonprop-keyframe-selector gen-nonprop-keyframe-selector)
 
         gen-prop-scroll-margin-inline-end
-        (igen/freq [
+        (igen/freq :prop-scroll-margin-inline-end [
           [(get w [:prop-scroll-margin-inline-end :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-scroll-margin-inline-end :alt 1] 100)
@@ -2422,7 +2426,7 @@
         g (assoc g :prop-scroll-margin-inline-end gen-prop-scroll-margin-inline-end)
 
         gen-prop-border-right-style
-        (igen/freq [
+        (igen/freq :prop-border-right-style [
           [(get w [:prop-border-right-style :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-border-right-style :alt 1] 100)
@@ -2430,11 +2434,11 @@
         g (assoc g :prop-border-right-style gen-prop-border-right-style)
 
         gen-prop-transform-origin
-        (igen/freq [
+        (igen/freq :prop-transform-origin [
           [(get w [:prop-transform-origin :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-transform-origin :alt 1] 100)
-            (igen/freq [
+            (igen/freq :prop-transform-origin [
               [(get w [:prop-transform-origin :alt 1 :alt 0] 100)
                 (:nonprop-length-percentage g)]
               [(get w [:prop-transform-origin :alt 1 :alt 1] 100)
@@ -2450,7 +2454,7 @@
           [(get w [:prop-transform-origin :alt 2] 100)
             (gen/tuple
               (gen/tuple
-                (igen/freq [
+                (igen/freq :prop-transform-origin [
                   [(get w [:prop-transform-origin :alt 2 :cat 0 :cat 0 :alt 0] 100)
                     (:nonprop-length-percentage g)]
                   [(get w [:prop-transform-origin :alt 2 :cat 0 :cat 0 :alt 1] 100)
@@ -2459,7 +2463,7 @@
                     (gen/return "center ")]
                   [(get w [:prop-transform-origin :alt 2 :cat 0 :cat 0 :alt 3] 100)
                     (gen/return "right ")]])
-                (igen/freq [
+                (igen/freq :prop-transform-origin [
                   [(get w [:prop-transform-origin :alt 2 :cat 0 :cat 1 :alt 0] 100)
                     (:nonprop-length-percentage g)]
                   [(get w [:prop-transform-origin :alt 2 :cat 0 :cat 1 :alt 1] 100)
@@ -2468,7 +2472,7 @@
                     (gen/return "center ")]
                   [(get w [:prop-transform-origin :alt 2 :cat 0 :cat 1 :alt 3] 100)
                     (gen/return "bottom ")]]))
-              (igen/freq [
+              (igen/freq :prop-transform-origin [
                 [(get w [:prop-transform-origin :alt 2 :cat 1 :opt nil] 100)
                   (gen/return "")]
                 [(get w [:prop-transform-origin :alt 2 :cat 1 :opt 0] 100)
@@ -2476,7 +2480,7 @@
         g (assoc g :prop-transform-origin gen-prop-transform-origin)
 
         gen-prop-font-size-adjust
-        (igen/freq [
+        (igen/freq :prop-font-size-adjust [
           [(get w [:prop-font-size-adjust :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-font-size-adjust :alt 1] 100)
@@ -2486,7 +2490,7 @@
         g (assoc g :prop-font-size-adjust gen-prop-font-size-adjust)
 
         gen-prop-grid-auto-rows
-        (igen/freq [
+        (igen/freq :prop-grid-auto-rows [
           [(get w [:prop-grid-auto-rows :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-grid-auto-rows :alt 1] 100)
@@ -2510,7 +2514,7 @@
         g (assoc g :nonprop-dimension gen-nonprop-dimension)
 
         gen-nonprop-mf-value
-        (igen/freq [
+        (igen/freq :nonprop-mf-value [
           [(get w [:nonprop-mf-value :alt 0] 100)
             (:nonprop-number g)]
           [(get w [:nonprop-mf-value :alt 1] 100)
@@ -2526,20 +2530,20 @@
         g (assoc g :nonprop-mf-name gen-nonprop-mf-name)
 
         gen-nonprop-mf-range
-        (igen/freq [
+        (igen/freq :nonprop-mf-range [
           [(get w [:nonprop-mf-range :alt 0] 100)
             (gen/tuple
               (:nonprop-mf-name g)
-              (igen/freq [
+              (igen/freq :nonprop-mf-range [
                 [(get w [:nonprop-mf-range :alt 0 :cat 1 :opt nil] 100)
                   (gen/return "")]
                 [(get w [:nonprop-mf-range :alt 0 :cat 1 :opt 0] 100)
-                  (igen/freq [
+                  (igen/freq :nonprop-mf-range [
                     [(get w [:nonprop-mf-range :alt 0 :cat 1 :opt 0 :alt 0] 100)
                       (gen/return "< ")]
                     [(get w [:nonprop-mf-range :alt 0 :cat 1 :opt 0 :alt 1] 100)
                       (gen/return "> ")]])]])
-              (igen/freq [
+              (igen/freq :nonprop-mf-range [
                 [(get w [:nonprop-mf-range :alt 0 :cat 2 :opt nil] 100)
                   (gen/return "")]
                 [(get w [:nonprop-mf-range :alt 0 :cat 2 :opt 0] 100)
@@ -2548,16 +2552,16 @@
           [(get w [:nonprop-mf-range :alt 1] 100)
             (gen/tuple
               (:nonprop-mf-value g)
-              (igen/freq [
+              (igen/freq :nonprop-mf-range [
                 [(get w [:nonprop-mf-range :alt 1 :cat 1 :opt nil] 100)
                   (gen/return "")]
                 [(get w [:nonprop-mf-range :alt 1 :cat 1 :opt 0] 100)
-                  (igen/freq [
+                  (igen/freq :nonprop-mf-range [
                     [(get w [:nonprop-mf-range :alt 1 :cat 1 :opt 0 :alt 0] 100)
                       (gen/return "< ")]
                     [(get w [:nonprop-mf-range :alt 1 :cat 1 :opt 0 :alt 1] 100)
                       (gen/return "> ")]])]])
-              (igen/freq [
+              (igen/freq :nonprop-mf-range [
                 [(get w [:nonprop-mf-range :alt 1 :cat 2 :opt nil] 100)
                   (gen/return "")]
                 [(get w [:nonprop-mf-range :alt 1 :cat 2 :opt 0] 100)
@@ -2567,14 +2571,14 @@
             (gen/tuple
               (:nonprop-mf-value g)
               (gen/return "< ")
-              (igen/freq [
+              (igen/freq :nonprop-mf-range [
                 [(get w [:nonprop-mf-range :alt 2 :cat 2 :opt nil] 100)
                   (gen/return "")]
                 [(get w [:nonprop-mf-range :alt 2 :cat 2 :opt 0] 100)
                   (gen/return "= ")]])
               (:nonprop-mf-name g)
               (gen/return "< ")
-              (igen/freq [
+              (igen/freq :nonprop-mf-range [
                 [(get w [:nonprop-mf-range :alt 2 :cat 5 :opt nil] 100)
                   (gen/return "")]
                 [(get w [:nonprop-mf-range :alt 2 :cat 5 :opt 0] 100)
@@ -2584,14 +2588,14 @@
             (gen/tuple
               (:nonprop-mf-value g)
               (gen/return "> ")
-              (igen/freq [
+              (igen/freq :nonprop-mf-range [
                 [(get w [:nonprop-mf-range :alt 3 :cat 2 :opt nil] 100)
                   (gen/return "")]
                 [(get w [:nonprop-mf-range :alt 3 :cat 2 :opt 0] 100)
                   (gen/return "= ")]])
               (:nonprop-mf-name g)
               (gen/return "> ")
-              (igen/freq [
+              (igen/freq :nonprop-mf-range [
                 [(get w [:nonprop-mf-range :alt 3 :cat 5 :opt nil] 100)
                   (gen/return "")]
                 [(get w [:nonprop-mf-range :alt 3 :cat 5 :opt 0] 100)
@@ -2613,7 +2617,7 @@
         gen-nonprop-media-feature
         (gen/tuple
           (gen/return "( ")
-          (igen/freq [
+          (igen/freq :nonprop-media-feature [
             [(get w [:nonprop-media-feature :cat 1 :alt 0] 100)
               (:nonprop-mf-plain g)]
             [(get w [:nonprop-media-feature :cat 1 :alt 1] 100)
@@ -2640,15 +2644,15 @@
 
         gen-css-ns-pre
         (gen/tuple
-          (igen/freq [
+          (igen/freq :css-ns-pre [
             [(get w [:css-ns-pre :cat 0 :opt nil] 100)
               (gen/return "")]
             [(get w [:css-ns-pre :cat 0 :opt 0] 100)
-              (igen/freq [
+              (igen/freq :css-ns-pre [
                 [(get w [:css-ns-pre :cat 0 :opt 0 :opt nil] 100)
                   (gen/return "")]
                 [(get w [:css-ns-pre :cat 0 :opt 0 :opt 0] 100)
-                  (igen/freq [
+                  (igen/freq :css-ns-pre [
                     [(get w [:css-ns-pre :cat 0 :opt 0 :opt 0 :alt 0] 100)
                       (:IDENT g)]
                     [(get w [:css-ns-pre :cat 0 :opt 0 :opt 0 :alt 1] 100)
@@ -2664,31 +2668,31 @@
         (gen/tuple
           (gen/return "[")
           (gen/return " ")
-          (igen/freq [
+          (igen/freq :css-attr [
             [(get w [:css-attr :cat 2 :opt nil] 100)
               (gen/return "")]
             [(get w [:css-attr :cat 2 :opt 0] 100)
-              (igen/freq [
+              (igen/freq :css-attr [
                 [(get w [:css-attr :cat 2 :opt 0 :opt nil] 100)
                   (gen/return "")]
                 [(get w [:css-attr :cat 2 :opt 0 :opt 0] 100)
                   (:css-ns-pre g)]])]])
           (:IDENT g)
           (gen/return " ")
-          (igen/freq [
+          (igen/freq :css-attr [
             [(get w [:css-attr :cat 5 :opt nil] 100)
               (gen/return "")]
             [(get w [:css-attr :cat 5 :opt 0] 100)
-              (igen/freq [
+              (igen/freq :css-attr [
                 [(get w [:css-attr :cat 5 :opt 0 :opt nil] 100)
                   (gen/return "")]
                 [(get w [:css-attr :cat 5 :opt 0 :opt 0] 100)
                   (gen/tuple
-                    (igen/freq [
+                    (igen/freq :css-attr [
                       [(get w [:css-attr :cat 5 :opt 0 :opt 0 :cat 0 :opt nil] 100)
                         (gen/return "")]
                       [(get w [:css-attr :cat 5 :opt 0 :opt 0 :cat 0 :opt 0] 100)
-                        (igen/freq [
+                        (igen/freq :css-attr [
                           [(get w [:css-attr :cat 5 :opt 0 :opt 0 :cat 0 :opt 0 :alt 0] 100)
                             (gen/return "^=")]
                           [(get w [:css-attr :cat 5 :opt 0 :opt 0 :cat 0 :opt 0 :alt 1] 100)
@@ -2702,11 +2706,11 @@
                           [(get w [:css-attr :cat 5 :opt 0 :opt 0 :cat 0 :opt 0 :alt 5] 100)
                             (gen/return "|=")]])]])
                     (gen/return " ")
-                    (igen/freq [
+                    (igen/freq :css-attr [
                       [(get w [:css-attr :cat 5 :opt 0 :opt 0 :cat 2 :opt nil] 100)
                         (gen/return "")]
                       [(get w [:css-attr :cat 5 :opt 0 :opt 0 :cat 2 :opt 0] 100)
-                        (igen/freq [
+                        (igen/freq :css-attr [
                           [(get w [:css-attr :cat 5 :opt 0 :opt 0 :cat 2 :opt 0 :alt 0] 100)
                             (:IDENT g)]
                           [(get w [:css-attr :cat 5 :opt 0 :opt 0 :cat 2 :opt 0 :alt 1] 100)
@@ -2721,16 +2725,16 @@
 
         gen-css-expr
         (igen/vector+
-          (igen/freq [
+          (igen/freq :css-expr [
             [(get w [:css-expr :plus 0 :opt nil] 100)
               (gen/return "")]
             [(get w [:css-expr :plus 0 :opt 0] 100)
               (gen/tuple
-                (igen/freq [
+                (igen/freq :css-expr [
                   [(get w [:css-expr :plus 0 :opt 0 :cat 0 :opt nil] 100)
                     (gen/return "")]
                   [(get w [:css-expr :plus 0 :opt 0 :cat 0 :opt 0] 100)
-                    (igen/freq [
+                    (igen/freq :css-expr [
                       [(get w [:css-expr :plus 0 :opt 0 :cat 0 :opt 0 :alt 0] 100)
                         (gen/return "+")]
                       [(get w [:css-expr :plus 0 :opt 0 :cat 0 :opt 0 :alt 1] 100)
@@ -2760,16 +2764,16 @@
         gen-css-psuedo
         (gen/tuple
           (gen/return ":")
-          (igen/freq [
+          (igen/freq :css-psuedo [
             [(get w [:css-psuedo :cat 1 :opt nil] 100)
               (gen/return "")]
             [(get w [:css-psuedo :cat 1 :opt 0] 100)
               (gen/return ":")]])
-          (igen/freq [
+          (igen/freq :css-psuedo [
             [(get w [:css-psuedo :cat 2 :opt nil] 100)
               (gen/return "")]
             [(get w [:css-psuedo :cat 2 :opt 0] 100)
-              (igen/freq [
+              (igen/freq :css-psuedo [
                 [(get w [:css-psuedo :cat 2 :opt 0 :alt 0] 100)
                   (:IDENT g)]
                 [(get w [:css-psuedo :cat 2 :opt 0 :alt 1] 100)
@@ -2784,11 +2788,11 @@
 
         gen-css-type
         (gen/tuple
-          (igen/freq [
+          (igen/freq :css-type [
             [(get w [:css-type :cat 0 :opt nil] 100)
               (gen/return "")]
             [(get w [:css-type :cat 0 :opt 0] 100)
-              (igen/freq [
+              (igen/freq :css-type [
                 [(get w [:css-type :cat 0 :opt 0 :opt nil] 100)
                   (gen/return "")]
                 [(get w [:css-type :cat 0 :opt 0 :opt 0] 100)
@@ -2798,11 +2802,11 @@
 
         gen-css-univ
         (gen/tuple
-          (igen/freq [
+          (igen/freq :css-univ [
             [(get w [:css-univ :cat 0 :opt nil] 100)
               (gen/return "")]
             [(get w [:css-univ :cat 0 :opt 0] 100)
-              (igen/freq [
+              (igen/freq :css-univ [
                 [(get w [:css-univ :cat 0 :opt 0 :opt nil] 100)
                   (gen/return "")]
                 [(get w [:css-univ :cat 0 :opt 0 :opt 0] 100)
@@ -2814,11 +2818,11 @@
         (gen/tuple
           (gen/return ":not(")
           (gen/return " ")
-          (igen/freq [
+          (igen/freq :css-negate [
             [(get w [:css-negate :cat 2 :opt nil] 100)
               (gen/return "")]
             [(get w [:css-negate :cat 2 :opt 0] 100)
-              (igen/freq [
+              (igen/freq :css-negate [
                 [(get w [:css-negate :cat 2 :opt 0 :alt 0] 100)
                   (:css-type g)]
                 [(get w [:css-negate :cat 2 :opt 0 :alt 1] 100)
@@ -2835,7 +2839,7 @@
         g (assoc g :css-negate gen-css-negate)
 
         gen-nonprop-self-position
-        (igen/freq [
+        (igen/freq :nonprop-self-position [
           [(get w [:nonprop-self-position :alt 0] 100)
             (gen/return "center ")]
           [(get w [:nonprop-self-position :alt 1] 100)
@@ -2854,11 +2858,11 @@
 
         gen-nonprop-baseline-position
         (gen/tuple
-          (igen/freq [
+          (igen/freq :nonprop-baseline-position [
             [(get w [:nonprop-baseline-position :cat 0 :opt nil] 100)
               (gen/return "")]
             [(get w [:nonprop-baseline-position :cat 0 :opt 0] 100)
-              (igen/freq [
+              (igen/freq :nonprop-baseline-position [
                 [(get w [:nonprop-baseline-position :cat 0 :opt 0 :alt 0] 100)
                   (gen/return "first ")]
                 [(get w [:nonprop-baseline-position :cat 0 :opt 0 :alt 1] 100)
@@ -2867,7 +2871,7 @@
         g (assoc g :nonprop-baseline-position gen-nonprop-baseline-position)
 
         gen-nonprop-overflow-position
-        (igen/freq [
+        (igen/freq :nonprop-overflow-position [
           [(get w [:nonprop-overflow-position :alt 0] 100)
             (gen/return "unsafe ")]
           [(get w [:nonprop-overflow-position :alt 1] 100)
@@ -2875,7 +2879,7 @@
         g (assoc g :nonprop-overflow-position gen-nonprop-overflow-position)
 
         gen-prop-align-items
-        (igen/freq [
+        (igen/freq :prop-align-items [
           [(get w [:prop-align-items :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-align-items :alt 1] 100)
@@ -2886,7 +2890,7 @@
             (:nonprop-baseline-position g)]
           [(get w [:prop-align-items :alt 4] 100)
             (gen/tuple
-              (igen/freq [
+              (igen/freq :prop-align-items [
                 [(get w [:prop-align-items :alt 4 :cat 0 :opt nil] 100)
                   (gen/return "")]
                 [(get w [:prop-align-items :alt 4 :cat 0 :opt 0] 100)
@@ -2895,12 +2899,12 @@
         g (assoc g :prop-align-items gen-prop-align-items)
 
         gen-prop-border-right
-        (igen/freq [
+        (igen/freq :prop-border-right [
           [(get w [:prop-border-right :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-border-right :alt 1] 100)
             (igen/vector+
-              (igen/freq [
+              (igen/freq :prop-border-right [
                 [(get w [:prop-border-right :alt 1 :plus 0 :alt 0] 100)
                   (:nonprop-line-width g)]
                 [(get w [:prop-border-right :alt 1 :plus 0 :alt 1] 100)
@@ -2910,7 +2914,7 @@
         g (assoc g :prop-border-right gen-prop-border-right)
 
         gen-nonprop-image-src
-        (igen/freq [
+        (igen/freq :nonprop-image-src [
           [(get w [:nonprop-image-src :alt 0] 100)
             (:nonprop-url g)]
           [(get w [:nonprop-image-src :alt 1] 100)
@@ -2918,7 +2922,7 @@
         g (assoc g :nonprop-image-src gen-nonprop-image-src)
 
         gen-prop-font-optical-sizing
-        (igen/freq [
+        (igen/freq :prop-font-optical-sizing [
           [(get w [:prop-font-optical-sizing :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-font-optical-sizing :alt 1] 100)
@@ -2928,7 +2932,7 @@
         g (assoc g :prop-font-optical-sizing gen-prop-font-optical-sizing)
 
         gen-prop-margin-left
-        (igen/freq [
+        (igen/freq :prop-margin-left [
           [(get w [:prop-margin-left :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-margin-left :alt 1] 100)
@@ -2944,11 +2948,11 @@
         g (assoc g :nonprop-margin-left gen-nonprop-margin-left)
 
         gen-prop-margin-block
-        (igen/freq [
+        (igen/freq :prop-margin-block [
           [(get w [:prop-margin-block :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-margin-block :alt 1] 100)
-            (igen/freq [
+            (igen/freq :prop-margin-block [
               [(get w [:prop-margin-block :alt 1 :alt 0] 100)
                 (:nonprop-margin-left g)]
               [(get w [:prop-margin-block :alt 1 :alt 1] 100)
@@ -2965,12 +2969,12 @@
         gen-prop-AT-namespace
         (gen/tuple
           (gen/return "@namespace ")
-          (igen/freq [
+          (igen/freq :prop-AT-namespace [
             [(get w [:prop-AT-namespace :cat 1 :opt nil] 100)
               (gen/return "")]
             [(get w [:prop-AT-namespace :cat 1 :opt 0] 100)
               (:nonprop-namespace-prefix g)]])
-          (igen/freq [
+          (igen/freq :prop-AT-namespace [
             [(get w [:prop-AT-namespace :cat 2 :alt 0] 100)
               (:nonprop-string g)]
             [(get w [:prop-AT-namespace :cat 2 :alt 1] 100)
@@ -2979,7 +2983,7 @@
         g (assoc g :prop-AT-namespace gen-prop-AT-namespace)
 
         gen-nonprop-box
-        (igen/freq [
+        (igen/freq :nonprop-box [
           [(get w [:nonprop-box :alt 0] 100)
             (gen/return "border-box ")]
           [(get w [:nonprop-box :alt 1] 100)
@@ -2989,7 +2993,7 @@
         g (assoc g :nonprop-box gen-nonprop-box)
 
         gen-nonprop-shape-box
-        (igen/freq [
+        (igen/freq :nonprop-shape-box [
           [(get w [:nonprop-shape-box :alt 0] 100)
             (:nonprop-box g)]
           [(get w [:nonprop-shape-box :alt 1] 100)
@@ -2997,7 +3001,7 @@
         g (assoc g :nonprop-shape-box gen-nonprop-shape-box)
 
         gen-nonprop-geometry-box
-        (igen/freq [
+        (igen/freq :nonprop-geometry-box [
           [(get w [:nonprop-geometry-box :alt 0] 100)
             (:nonprop-shape-box g)]
           [(get w [:nonprop-geometry-box :alt 1] 100)
@@ -3009,7 +3013,7 @@
         g (assoc g :nonprop-geometry-box gen-nonprop-geometry-box)
 
         gen-prop-column-fill
-        (igen/freq [
+        (igen/freq :prop-column-fill [
           [(get w [:prop-column-fill :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-column-fill :alt 1] 100)
@@ -3029,11 +3033,11 @@
         g (assoc g :func-rotate gen-func-rotate)
 
         gen-prop-border-style
-        (igen/freq [
+        (igen/freq :prop-border-style [
           [(get w [:prop-border-style :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-border-style :alt 1] 100)
-            (igen/freq [
+            (igen/freq :prop-border-style [
               [(get w [:prop-border-style :alt 1 :alt 0] 100)
                 (:nonprop-line-style g)]
               [(get w [:prop-border-style :alt 1 :alt 1] 100)
@@ -3064,7 +3068,7 @@
         g (assoc g :nonprop-border-style gen-nonprop-border-style)
 
         gen-prop-column-rule-style
-        (igen/freq [
+        (igen/freq :prop-column-rule-style [
           [(get w [:prop-column-rule-style :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-column-rule-style :alt 1] 100)
@@ -3072,7 +3076,7 @@
         g (assoc g :prop-column-rule-style gen-prop-column-rule-style)
 
         gen-nonprop-single-transition-property
-        (igen/freq [
+        (igen/freq :nonprop-single-transition-property [
           [(get w [:nonprop-single-transition-property :alt 0] 100)
             (gen/return "all ")]
           [(get w [:nonprop-single-transition-property :alt 1] 100)
@@ -3081,15 +3085,15 @@
 
         gen-nonprop-side-or-corner
         (igen/vector+
-          (igen/freq [
+          (igen/freq :nonprop-side-or-corner [
             [(get w [:nonprop-side-or-corner :plus 0 :alt 0] 100)
-              (igen/freq [
+              (igen/freq :nonprop-side-or-corner [
                 [(get w [:nonprop-side-or-corner :plus 0 :alt 0 :alt 0] 100)
                   (gen/return "left ")]
                 [(get w [:nonprop-side-or-corner :plus 0 :alt 0 :alt 1] 100)
                   (gen/return "right ")]])]
             [(get w [:nonprop-side-or-corner :plus 0 :alt 1] 100)
-              (igen/freq [
+              (igen/freq :nonprop-side-or-corner [
                 [(get w [:nonprop-side-or-corner :plus 0 :alt 1 :alt 0] 100)
                   (gen/return "top ")]
                 [(get w [:nonprop-side-or-corner :plus 0 :alt 1 :alt 1] 100)
@@ -3100,11 +3104,11 @@
         (gen/tuple
           (gen/return "linear-gradient ")
           (gen/return "( ")
-          (igen/freq [
+          (igen/freq :func-linear-gradient [
             [(get w [:func-linear-gradient :cat 2 :opt nil] 100)
               (gen/return "")]
             [(get w [:func-linear-gradient :cat 2 :opt 0] 100)
-              (igen/freq [
+              (igen/freq :func-linear-gradient [
                 [(get w [:func-linear-gradient :cat 2 :opt 0 :alt 0] 100)
                   (:nonprop-angle g)]
                 [(get w [:func-linear-gradient :cat 2 :opt 0 :alt 1] 100)
@@ -3117,7 +3121,7 @@
         g (assoc g :func-linear-gradient gen-func-linear-gradient)
 
         gen-nonprop-numeric-figure-values
-        (igen/freq [
+        (igen/freq :nonprop-numeric-figure-values [
           [(get w [:nonprop-numeric-figure-values :alt 0] 100)
             (gen/return "lining-nums ")]
           [(get w [:nonprop-numeric-figure-values :alt 1] 100)
@@ -3125,7 +3129,7 @@
         g (assoc g :nonprop-numeric-figure-values gen-nonprop-numeric-figure-values)
 
         gen-nonprop-numeric-spacing-values
-        (igen/freq [
+        (igen/freq :nonprop-numeric-spacing-values [
           [(get w [:nonprop-numeric-spacing-values :alt 0] 100)
             (gen/return "proportional-nums ")]
           [(get w [:nonprop-numeric-spacing-values :alt 1] 100)
@@ -3133,7 +3137,7 @@
         g (assoc g :nonprop-numeric-spacing-values gen-nonprop-numeric-spacing-values)
 
         gen-nonprop-numeric-fraction-values
-        (igen/freq [
+        (igen/freq :nonprop-numeric-fraction-values [
           [(get w [:nonprop-numeric-fraction-values :alt 0] 100)
             (gen/return "diagonal-fractions ")]
           [(get w [:nonprop-numeric-fraction-values :alt 1] 100)
@@ -3141,14 +3145,14 @@
         g (assoc g :nonprop-numeric-fraction-values gen-nonprop-numeric-fraction-values)
 
         gen-prop-font-variant-numeric
-        (igen/freq [
+        (igen/freq :prop-font-variant-numeric [
           [(get w [:prop-font-variant-numeric :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-font-variant-numeric :alt 1] 100)
             (gen/return "normal ")]
           [(get w [:prop-font-variant-numeric :alt 2] 100)
             (igen/vector+
-              (igen/freq [
+              (igen/freq :prop-font-variant-numeric [
                 [(get w [:prop-font-variant-numeric :alt 2 :plus 0 :alt 0] 100)
                   (:nonprop-numeric-figure-values g)]
                 [(get w [:prop-font-variant-numeric :alt 2 :plus 0 :alt 1] 100)
@@ -3162,22 +3166,22 @@
         g (assoc g :prop-font-variant-numeric gen-prop-font-variant-numeric)
 
         gen-prop-text-emphasis-style
-        (igen/freq [
+        (igen/freq :prop-text-emphasis-style [
           [(get w [:prop-text-emphasis-style :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-text-emphasis-style :alt 1] 100)
             (gen/return "none ")]
           [(get w [:prop-text-emphasis-style :alt 2] 100)
             (igen/vector+
-              (igen/freq [
+              (igen/freq :prop-text-emphasis-style [
                 [(get w [:prop-text-emphasis-style :alt 2 :plus 0 :alt 0] 100)
-                  (igen/freq [
+                  (igen/freq :prop-text-emphasis-style [
                     [(get w [:prop-text-emphasis-style :alt 2 :plus 0 :alt 0 :alt 0] 100)
                       (gen/return "filled ")]
                     [(get w [:prop-text-emphasis-style :alt 2 :plus 0 :alt 0 :alt 1] 100)
                       (gen/return "open ")]])]
                 [(get w [:prop-text-emphasis-style :alt 2 :plus 0 :alt 1] 100)
-                  (igen/freq [
+                  (igen/freq :prop-text-emphasis-style [
                     [(get w [:prop-text-emphasis-style :alt 2 :plus 0 :alt 1 :alt 0] 100)
                       (gen/return "dot ")]
                     [(get w [:prop-text-emphasis-style :alt 2 :plus 0 :alt 1 :alt 1] 100)
@@ -3201,7 +3205,7 @@
         g (assoc g :NAME gen-NAME)
 
         gen-nonprop-leader-type
-        (igen/freq [
+        (igen/freq :nonprop-leader-type [
           [(get w [:nonprop-leader-type :alt 0] 100)
             (gen/return "dotted ")]
           [(get w [:nonprop-leader-type :alt 1] 100)
@@ -3221,7 +3225,7 @@
         g (assoc g :func-leader gen-func-leader)
 
         gen-nonprop-grid-line
-        (igen/freq [
+        (igen/freq :nonprop-grid-line [
           [(get w [:nonprop-grid-line :alt 0] 100)
             (gen/return "auto ")]
           [(get w [:nonprop-grid-line :alt 1] 100)
@@ -3229,7 +3233,7 @@
           [(get w [:nonprop-grid-line :alt 2] 100)
             (gen/tuple
               (:nonprop-integer g)
-              (igen/freq [
+              (igen/freq :nonprop-grid-line [
                 [(get w [:nonprop-grid-line :alt 2 :cat 1 :opt nil] 100)
                   (gen/return "")]
                 [(get w [:nonprop-grid-line :alt 2 :cat 1 :opt 0] 100)
@@ -3238,7 +3242,7 @@
             (gen/tuple
               (gen/return "span ")
               (igen/vector+
-                (igen/freq [
+                (igen/freq :nonprop-grid-line [
                   [(get w [:nonprop-grid-line :alt 3 :cat 1 :plus 0 :alt 0] 100)
                     (:nonprop-integer g)]
                   [(get w [:nonprop-grid-line :alt 3 :cat 1 :plus 0 :alt 1] 100)
@@ -3246,7 +3250,7 @@
         g (assoc g :nonprop-grid-line gen-nonprop-grid-line)
 
         gen-prop-grid-row-end
-        (igen/freq [
+        (igen/freq :prop-grid-row-end [
           [(get w [:prop-grid-row-end :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-grid-row-end :alt 1] 100)
@@ -3254,7 +3258,7 @@
         g (assoc g :prop-grid-row-end gen-prop-grid-row-end)
 
         gen-prop-line-height
-        (igen/freq [
+        (igen/freq :prop-line-height [
           [(get w [:prop-line-height :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-line-height :alt 1] 100)
@@ -3272,7 +3276,7 @@
         g (assoc g :nonprop-line-height gen-nonprop-line-height)
 
         gen-charset
-        (igen/freq [
+        (igen/freq :charset [
           [(get w [:charset :alt 0] 100)
             (gen/return "UTF-8")]
           [(get w [:charset :alt 1] 100)
@@ -3300,7 +3304,7 @@
         w weights
 
         gen-prop-inset-block-end
-        (igen/freq [
+        (igen/freq :prop-inset-block-end [
           [(get w [:prop-inset-block-end :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-inset-block-end :alt 1] 100)
@@ -3308,7 +3312,7 @@
         g (assoc g :prop-inset-block-end gen-prop-inset-block-end)
 
         gen-prop-align-self
-        (igen/freq [
+        (igen/freq :prop-align-self [
           [(get w [:prop-align-self :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-align-self :alt 1] 100)
@@ -3321,7 +3325,7 @@
             (:nonprop-baseline-position g)]
           [(get w [:prop-align-self :alt 5] 100)
             (gen/tuple
-              (igen/freq [
+              (igen/freq :prop-align-self [
                 [(get w [:prop-align-self :alt 5 :cat 0 :opt nil] 100)
                   (gen/return "")]
                 [(get w [:prop-align-self :alt 5 :cat 0 :opt 0] 100)
@@ -3334,13 +3338,13 @@
         g (assoc g :nonprop-align-self gen-nonprop-align-self)
 
         gen-prop-scroll-padding-block
-        (igen/freq [
+        (igen/freq :prop-scroll-padding-block [
           [(get w [:prop-scroll-padding-block :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-scroll-padding-block :alt 1] 100)
-            (igen/freq [
+            (igen/freq :prop-scroll-padding-block [
               [(get w [:prop-scroll-padding-block :alt 1 :alt 0] 100)
-                (igen/freq [
+                (igen/freq :prop-scroll-padding-block [
                   [(get w [:prop-scroll-padding-block :alt 1 :alt 0 :alt 0] 100)
                     (gen/return "auto ")]
                   [(get w [:prop-scroll-padding-block :alt 1 :alt 0 :alt 1] 100)
@@ -3349,7 +3353,7 @@
                     (:nonprop-percentage g)]])]
               [(get w [:prop-scroll-padding-block :alt 1 :alt 1] 100)
                 (gen/tuple
-                  (igen/freq [
+                  (igen/freq :prop-scroll-padding-block [
                     [(get w [:prop-scroll-padding-block :alt 1 :alt 1 :cat 0 :alt 0] 100)
                       (gen/return "auto ")]
                     [(get w [:prop-scroll-padding-block :alt 1 :alt 1 :cat 0 :alt 1] 100)
@@ -3357,7 +3361,7 @@
                     [(get w [:prop-scroll-padding-block :alt 1 :alt 1 :cat 0 :alt 2] 100)
                       (:nonprop-percentage g)]])
                   (gen/return " ")
-                  (igen/freq [
+                  (igen/freq :prop-scroll-padding-block [
                     [(get w [:prop-scroll-padding-block :alt 1 :alt 1 :cat 2 :alt 0] 100)
                       (gen/return "auto ")]
                     [(get w [:prop-scroll-padding-block :alt 1 :alt 1 :cat 2 :alt 1] 100)
@@ -3367,7 +3371,7 @@
         g (assoc g :prop-scroll-padding-block gen-prop-scroll-padding-block)
 
         gen-prop-clear
-        (igen/freq [
+        (igen/freq :prop-clear [
           [(get w [:prop-clear :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-clear :alt 1] 100)
@@ -3385,7 +3389,7 @@
         g (assoc g :prop-clear gen-prop-clear)
 
         gen-nonprop-east-asian-variant-values
-        (igen/freq [
+        (igen/freq :nonprop-east-asian-variant-values [
           [(get w [:nonprop-east-asian-variant-values :alt 0] 100)
             (gen/return "jis78 ")]
           [(get w [:nonprop-east-asian-variant-values :alt 1] 100)
@@ -3401,7 +3405,7 @@
         g (assoc g :nonprop-east-asian-variant-values gen-nonprop-east-asian-variant-values)
 
         gen-prop-outline-offset
-        (igen/freq [
+        (igen/freq :prop-outline-offset [
           [(get w [:prop-outline-offset :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-outline-offset :alt 1] 100)
@@ -3409,7 +3413,7 @@
         g (assoc g :prop-outline-offset gen-prop-outline-offset)
 
         gen-nonprop-viewport-length
-        (igen/freq [
+        (igen/freq :nonprop-viewport-length [
           [(get w [:nonprop-viewport-length :alt 0] 100)
             (gen/return "auto ")]
           [(get w [:nonprop-viewport-length :alt 1] 100)
@@ -3417,11 +3421,11 @@
         g (assoc g :nonprop-viewport-length gen-nonprop-viewport-length)
 
         gen-prop-border-width
-        (igen/freq [
+        (igen/freq :prop-border-width [
           [(get w [:prop-border-width :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-border-width :alt 1] 100)
-            (igen/freq [
+            (igen/freq :prop-border-width [
               [(get w [:prop-border-width :alt 1 :alt 0] 100)
                 (:nonprop-line-width g)]
               [(get w [:prop-border-width :alt 1 :alt 1] 100)
@@ -3452,7 +3456,7 @@
         g (assoc g :nonprop-border-width gen-nonprop-border-width)
 
         gen-prop-column-rule-width
-        (igen/freq [
+        (igen/freq :prop-column-rule-width [
           [(get w [:prop-column-rule-width :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-column-rule-width :alt 1] 100)
@@ -3464,7 +3468,7 @@
         g (assoc g :nonprop-column-rule-width gen-nonprop-column-rule-width)
 
         gen-prop-column-rule-color
-        (igen/freq [
+        (igen/freq :prop-column-rule-color [
           [(get w [:prop-column-rule-color :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-column-rule-color :alt 1] 100)
@@ -3480,12 +3484,12 @@
         g (assoc g :nonprop-column-rule-style gen-nonprop-column-rule-style)
 
         gen-prop-column-rule
-        (igen/freq [
+        (igen/freq :prop-column-rule [
           [(get w [:prop-column-rule :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-column-rule :alt 1] 100)
             (igen/vector+
-              (igen/freq [
+              (igen/freq :prop-column-rule [
                 [(get w [:prop-column-rule :alt 1 :plus 0 :alt 0] 100)
                   (:nonprop-column-rule-width g)]
                 [(get w [:prop-column-rule :alt 1 :plus 0 :alt 1] 100)
@@ -3495,7 +3499,7 @@
         g (assoc g :prop-column-rule gen-prop-column-rule)
 
         gen-nonprop-bg-image
-        (igen/freq [
+        (igen/freq :nonprop-bg-image [
           [(get w [:nonprop-bg-image :alt 0] 100)
             (gen/return "none ")]
           [(get w [:nonprop-bg-image :alt 1] 100)
@@ -3511,7 +3515,7 @@
         g (assoc g :func-skewY gen-func-skewY)
 
         gen-prop-orphans
-        (igen/freq [
+        (igen/freq :prop-orphans [
           [(get w [:prop-orphans :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-orphans :alt 1] 100)
@@ -3519,7 +3523,7 @@
         g (assoc g :prop-orphans gen-prop-orphans)
 
         gen-S
-        (igen/freq [
+        (igen/freq :S [
           [(get w [:S :star nil] 100)
             (gen/return "")]
           [(get w [:S :star 0] 100)
@@ -3528,7 +3532,7 @@
         g (assoc g :S gen-S)
 
         gen-prop-shape-image-threshold
-        (igen/freq [
+        (igen/freq :prop-shape-image-threshold [
           [(get w [:prop-shape-image-threshold :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-shape-image-threshold :alt 1] 100)
@@ -3544,7 +3548,7 @@
         g (assoc g :func-scaleY gen-func-scaleY)
 
         gen-nonprop-discretionary-lig-values
-        (igen/freq [
+        (igen/freq :nonprop-discretionary-lig-values [
           [(get w [:nonprop-discretionary-lig-values :alt 0] 100)
             (gen/return "discretionary-ligatures ")]
           [(get w [:nonprop-discretionary-lig-values :alt 1] 100)
@@ -3552,7 +3556,7 @@
         g (assoc g :nonprop-discretionary-lig-values gen-nonprop-discretionary-lig-values)
 
         gen-prop-border-top-style
-        (igen/freq [
+        (igen/freq :prop-border-top-style [
           [(get w [:prop-border-top-style :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-border-top-style :alt 1] 100)
@@ -3564,7 +3568,7 @@
         g (assoc g :nonprop-border-top-style gen-nonprop-border-top-style)
 
         gen-prop-border-block-start-style
-        (igen/freq [
+        (igen/freq :prop-border-block-start-style [
           [(get w [:prop-border-block-start-style :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-border-block-start-style :alt 1] 100)
@@ -3572,7 +3576,7 @@
         g (assoc g :prop-border-block-start-style gen-prop-border-block-start-style)
 
         gen-nonprop-blend-mode
-        (igen/freq [
+        (igen/freq :nonprop-blend-mode [
           [(get w [:nonprop-blend-mode :alt 0] 100)
             (gen/return "normal ")]
           [(get w [:nonprop-blend-mode :alt 1] 100)
@@ -3608,13 +3612,13 @@
         g (assoc g :nonprop-blend-mode gen-nonprop-blend-mode)
 
         gen-prop-background-blend-mode
-        (igen/freq [
+        (igen/freq :prop-background-blend-mode [
           [(get w [:prop-background-blend-mode :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-background-blend-mode :alt 1] 100)
             (gen/tuple
               (:nonprop-blend-mode g)
-              (igen/freq [
+              (igen/freq :prop-background-blend-mode [
                 [(get w [:prop-background-blend-mode :alt 1 :cat 1 :star nil] 100)
                   (gen/return "")]
                 [(get w [:prop-background-blend-mode :alt 1 :cat 1 :star 0] 100)
@@ -3626,11 +3630,11 @@
         g (assoc g :prop-background-blend-mode gen-prop-background-blend-mode)
 
         gen-prop-border-start-end-radius
-        (igen/freq [
+        (igen/freq :prop-border-start-end-radius [
           [(get w [:prop-border-start-end-radius :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-border-start-end-radius :alt 1] 100)
-            (igen/freq [
+            (igen/freq :prop-border-start-end-radius [
               [(get w [:prop-border-start-end-radius :alt 1 :alt 0] 100)
                 (:nonprop-length-percentage g)]
               [(get w [:prop-border-start-end-radius :alt 1 :alt 1] 100)
@@ -3641,11 +3645,11 @@
         g (assoc g :prop-border-start-end-radius gen-prop-border-start-end-radius)
 
         gen-prop-border-start-start-radius
-        (igen/freq [
+        (igen/freq :prop-border-start-start-radius [
           [(get w [:prop-border-start-start-radius :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-border-start-start-radius :alt 1] 100)
-            (igen/freq [
+            (igen/freq :prop-border-start-start-radius [
               [(get w [:prop-border-start-start-radius :alt 1 :alt 0] 100)
                 (:nonprop-length-percentage g)]
               [(get w [:prop-border-start-start-radius :alt 1 :alt 1] 100)
@@ -3656,7 +3660,7 @@
         g (assoc g :prop-border-start-start-radius gen-prop-border-start-start-radius)
 
         gen-prop-border-top-width
-        (igen/freq [
+        (igen/freq :prop-border-top-width [
           [(get w [:prop-border-top-width :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-border-top-width :alt 1] 100)
@@ -3668,7 +3672,7 @@
         g (assoc g :nonprop-border-top-width gen-nonprop-border-top-width)
 
         gen-prop-border-inline-end-width
-        (igen/freq [
+        (igen/freq :prop-border-inline-end-width [
           [(get w [:prop-border-inline-end-width :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-border-inline-end-width :alt 1] 100)
@@ -3689,7 +3693,7 @@
           (gen/return "( ")
           (:nonprop-custom-property-name g)
           (gen/return ", ")
-          (igen/freq [
+          (igen/freq :func-var [
             [(get w [:func-var :cat 4 :opt nil] 100)
               (gen/return "")]
             [(get w [:func-var :cat 4 :opt 0] 100)
@@ -3702,7 +3706,7 @@
         g (assoc g :nonprop-negative-symbol gen-nonprop-negative-symbol)
 
         gen-prop-border-image-source
-        (igen/freq [
+        (igen/freq :prop-border-image-source [
           [(get w [:prop-border-image-source :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-border-image-source :alt 1] 100)
@@ -3712,7 +3716,7 @@
         g (assoc g :prop-border-image-source gen-prop-border-image-source)
 
         gen-prop-font-language-override
-        (igen/freq [
+        (igen/freq :prop-font-language-override [
           [(get w [:prop-font-language-override :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-font-language-override :alt 1] 100)
@@ -3726,7 +3730,7 @@
         g (assoc g :nonprop-align-items gen-nonprop-align-items)
 
         gen-prop-justify-items
-        (igen/freq [
+        (igen/freq :prop-justify-items [
           [(get w [:prop-justify-items :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-justify-items :alt 1] 100)
@@ -3737,12 +3741,12 @@
             (:nonprop-baseline-position g)]
           [(get w [:prop-justify-items :alt 4] 100)
             (gen/tuple
-              (igen/freq [
+              (igen/freq :prop-justify-items [
                 [(get w [:prop-justify-items :alt 4 :cat 0 :opt nil] 100)
                   (gen/return "")]
                 [(get w [:prop-justify-items :alt 4 :cat 0 :opt 0] 100)
                   (:nonprop-overflow-position g)]])
-              (igen/freq [
+              (igen/freq :prop-justify-items [
                 [(get w [:prop-justify-items :alt 4 :cat 1 :alt 0] 100)
                   (:nonprop-self-position g)]
                 [(get w [:prop-justify-items :alt 4 :cat 1 :alt 1] 100)
@@ -3754,7 +3758,7 @@
           [(get w [:prop-justify-items :alt 6] 100)
             (gen/tuple
               (gen/return "legacy ")
-              (igen/freq [
+              (igen/freq :prop-justify-items [
                 [(get w [:prop-justify-items :alt 6 :cat 1 :alt 0] 100)
                   (gen/return "left ")]
                 [(get w [:prop-justify-items :alt 6 :cat 1 :alt 1] 100)
@@ -3768,13 +3772,13 @@
         g (assoc g :nonprop-justify-items gen-nonprop-justify-items)
 
         gen-prop-place-items
-        (igen/freq [
+        (igen/freq :prop-place-items [
           [(get w [:prop-place-items :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-place-items :alt 1] 100)
             (gen/tuple
               (:nonprop-align-items g)
-              (igen/freq [
+              (igen/freq :prop-place-items [
                 [(get w [:prop-place-items :alt 1 :cat 1 :opt nil] 100)
                   (gen/return "")]
                 [(get w [:prop-place-items :alt 1 :cat 1 :opt 0] 100)
@@ -3782,7 +3786,7 @@
         g (assoc g :prop-place-items gen-prop-place-items)
 
         gen-prop-word-spacing
-        (igen/freq [
+        (igen/freq :prop-word-spacing [
           [(get w [:prop-word-spacing :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-word-spacing :alt 1] 100)
@@ -3792,7 +3796,7 @@
         g (assoc g :prop-word-spacing gen-prop-word-spacing)
 
         gen-prop-opacity
-        (igen/freq [
+        (igen/freq :prop-opacity [
           [(get w [:prop-opacity :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-opacity :alt 1] 100)
@@ -3800,7 +3804,7 @@
         g (assoc g :prop-opacity gen-prop-opacity)
 
         gen-nonprop-attachment
-        (igen/freq [
+        (igen/freq :nonprop-attachment [
           [(get w [:nonprop-attachment :alt 0] 100)
             (gen/return "scroll ")]
           [(get w [:nonprop-attachment :alt 1] 100)
@@ -3810,7 +3814,7 @@
         g (assoc g :nonprop-attachment gen-nonprop-attachment)
 
         gen-nonprop-single-animation-fill-mode
-        (igen/freq [
+        (igen/freq :nonprop-single-animation-fill-mode [
           [(get w [:nonprop-single-animation-fill-mode :alt 0] 100)
             (gen/return "none ")]
           [(get w [:nonprop-single-animation-fill-mode :alt 1] 100)
@@ -3822,21 +3826,21 @@
         g (assoc g :nonprop-single-animation-fill-mode gen-nonprop-single-animation-fill-mode)
 
         gen-prop-width
-        (igen/freq [
+        (igen/freq :prop-width [
           [(get w [:prop-width :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-width :alt 1] 100)
             (gen/tuple
-              (igen/freq [
+              (igen/freq :prop-width [
                 [(get w [:prop-width :alt 1 :cat 0 :alt 0] 100)
                   (:nonprop-length g)]
                 [(get w [:prop-width :alt 1 :cat 0 :alt 1] 100)
                   (:nonprop-percentage g)]])
-              (igen/freq [
+              (igen/freq :prop-width [
                 [(get w [:prop-width :alt 1 :cat 1 :opt nil] 100)
                   (gen/return "")]
                 [(get w [:prop-width :alt 1 :cat 1 :opt 0] 100)
-                  (igen/freq [
+                  (igen/freq :prop-width [
                     [(get w [:prop-width :alt 1 :cat 1 :opt 0 :alt 0] 100)
                       (gen/return "border-box ")]
                     [(get w [:prop-width :alt 1 :cat 1 :opt 0 :alt 1] 100)
@@ -3858,7 +3862,7 @@
         g (assoc g :nonprop-width gen-nonprop-width)
 
         gen-prop-inline-size
-        (igen/freq [
+        (igen/freq :prop-inline-size [
           [(get w [:prop-inline-size :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-inline-size :alt 1] 100)
@@ -3871,7 +3875,7 @@
         w weights
 
         gen-prop-grid-template-rows
-        (igen/freq [
+        (igen/freq :prop-grid-template-rows [
           [(get w [:prop-grid-template-rows :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-grid-template-rows :alt 1] 100)
@@ -3890,13 +3894,13 @@
         (gen/tuple
           (igen/vector+
             (gen/tuple
-              (igen/freq [
+              (igen/freq :nonprop-explicit-track-list [
                 [(get w [:nonprop-explicit-track-list :cat 0 :plus 0 :cat 0 :opt nil] 100)
                   (gen/return "")]
                 [(get w [:nonprop-explicit-track-list :cat 0 :plus 0 :cat 0 :opt 0] 100)
                   (:nonprop-line-names g)]])
               (:nonprop-track-size g)))
-          (igen/freq [
+          (igen/freq :nonprop-explicit-track-list [
             [(get w [:nonprop-explicit-track-list :cat 1 :opt nil] 100)
               (gen/return "")]
             [(get w [:nonprop-explicit-track-list :cat 1 :opt 0] 100)
@@ -3904,7 +3908,7 @@
         g (assoc g :nonprop-explicit-track-list gen-nonprop-explicit-track-list)
 
         gen-prop-grid-template
-        (igen/freq [
+        (igen/freq :prop-grid-template [
           [(get w [:prop-grid-template :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-grid-template :alt 1] 100)
@@ -3918,23 +3922,23 @@
             (gen/tuple
               (igen/vector+
                 (gen/tuple
-                  (igen/freq [
+                  (igen/freq :prop-grid-template [
                     [(get w [:prop-grid-template :alt 3 :cat 0 :plus 0 :cat 0 :opt nil] 100)
                       (gen/return "")]
                     [(get w [:prop-grid-template :alt 3 :cat 0 :plus 0 :cat 0 :opt 0] 100)
                       (:nonprop-line-names g)]])
                   (:nonprop-string g)
-                  (igen/freq [
+                  (igen/freq :prop-grid-template [
                     [(get w [:prop-grid-template :alt 3 :cat 0 :plus 0 :cat 2 :opt nil] 100)
                       (gen/return "")]
                     [(get w [:prop-grid-template :alt 3 :cat 0 :plus 0 :cat 2 :opt 0] 100)
                       (:nonprop-track-size g)]])
-                  (igen/freq [
+                  (igen/freq :prop-grid-template [
                     [(get w [:prop-grid-template :alt 3 :cat 0 :plus 0 :cat 3 :opt nil] 100)
                       (gen/return "")]
                     [(get w [:prop-grid-template :alt 3 :cat 0 :plus 0 :cat 3 :opt 0] 100)
                       (:nonprop-line-names g)]])))
-              (igen/freq [
+              (igen/freq :prop-grid-template [
                 [(get w [:prop-grid-template :alt 3 :cat 1 :opt nil] 100)
                   (gen/return "")]
                 [(get w [:prop-grid-template :alt 3 :cat 1 :opt 0] 100)
@@ -3944,7 +3948,7 @@
         g (assoc g :prop-grid-template gen-prop-grid-template)
 
         gen-prop-outline-color
-        (igen/freq [
+        (igen/freq :prop-outline-color [
           [(get w [:prop-outline-color :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-outline-color :alt 1] 100)
@@ -3958,7 +3962,7 @@
         g (assoc g :nonprop-outline-color gen-nonprop-outline-color)
 
         gen-prop-border-left-style
-        (igen/freq [
+        (igen/freq :prop-border-left-style [
           [(get w [:prop-border-left-style :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-border-left-style :alt 1] 100)
@@ -3966,7 +3970,7 @@
         g (assoc g :prop-border-left-style gen-prop-border-left-style)
 
         gen-prop-widows
-        (igen/freq [
+        (igen/freq :prop-widows [
           [(get w [:prop-widows :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-widows :alt 1] 100)
@@ -3974,7 +3978,7 @@
         g (assoc g :prop-widows gen-prop-widows)
 
         gen-prop-break-inside
-        (igen/freq [
+        (igen/freq :prop-break-inside [
           [(get w [:prop-break-inside :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-break-inside :alt 1] 100)
@@ -3990,7 +3994,7 @@
         g (assoc g :prop-break-inside gen-prop-break-inside)
 
         gen-nonprop-content-position
-        (igen/freq [
+        (igen/freq :nonprop-content-position [
           [(get w [:nonprop-content-position :alt 0] 100)
             (gen/return "center ")]
           [(get w [:nonprop-content-position :alt 1] 100)
@@ -4004,7 +4008,7 @@
         g (assoc g :nonprop-content-position gen-nonprop-content-position)
 
         gen-nonprop-content-distribution
-        (igen/freq [
+        (igen/freq :nonprop-content-distribution [
           [(get w [:nonprop-content-distribution :alt 0] 100)
             (gen/return "space-between ")]
           [(get w [:nonprop-content-distribution :alt 1] 100)
@@ -4016,7 +4020,7 @@
         g (assoc g :nonprop-content-distribution gen-nonprop-content-distribution)
 
         gen-prop-align-content
-        (igen/freq [
+        (igen/freq :prop-align-content [
           [(get w [:prop-align-content :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-align-content :alt 1] 100)
@@ -4027,7 +4031,7 @@
             (:nonprop-content-distribution g)]
           [(get w [:prop-align-content :alt 4] 100)
             (gen/tuple
-              (igen/freq [
+              (igen/freq :prop-align-content [
                 [(get w [:prop-align-content :alt 4 :cat 0 :opt nil] 100)
                   (gen/return "")]
                 [(get w [:prop-align-content :alt 4 :cat 0 :opt 0] 100)
@@ -4040,7 +4044,7 @@
         g (assoc g :nonprop-align-content gen-nonprop-align-content)
 
         gen-prop-justify-content
-        (igen/freq [
+        (igen/freq :prop-justify-content [
           [(get w [:prop-justify-content :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-justify-content :alt 1] 100)
@@ -4049,12 +4053,12 @@
             (:nonprop-content-distribution g)]
           [(get w [:prop-justify-content :alt 3] 100)
             (gen/tuple
-              (igen/freq [
+              (igen/freq :prop-justify-content [
                 [(get w [:prop-justify-content :alt 3 :cat 0 :opt nil] 100)
                   (gen/return "")]
                 [(get w [:prop-justify-content :alt 3 :cat 0 :opt 0] 100)
                   (:nonprop-overflow-position g)]])
-              (igen/freq [
+              (igen/freq :prop-justify-content [
                 [(get w [:prop-justify-content :alt 3 :cat 1 :alt 0] 100)
                   (:nonprop-content-position g)]
                 [(get w [:prop-justify-content :alt 3 :cat 1 :alt 1] 100)
@@ -4068,13 +4072,13 @@
         g (assoc g :nonprop-justify-content gen-nonprop-justify-content)
 
         gen-prop-place-content
-        (igen/freq [
+        (igen/freq :prop-place-content [
           [(get w [:prop-place-content :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-place-content :alt 1] 100)
             (gen/tuple
               (:nonprop-align-content g)
-              (igen/freq [
+              (igen/freq :prop-place-content [
                 [(get w [:prop-place-content :alt 1 :cat 1 :opt nil] 100)
                   (gen/return "")]
                 [(get w [:prop-place-content :alt 1 :cat 1 :opt 0] 100)
@@ -4082,7 +4086,7 @@
         g (assoc g :prop-place-content gen-prop-place-content)
 
         gen-nonprop-keyframes-name
-        (igen/freq [
+        (igen/freq :nonprop-keyframes-name [
           [(get w [:nonprop-keyframes-name :alt 0] 100)
             (:nonprop-custom-ident g)]
           [(get w [:nonprop-keyframes-name :alt 1] 100)
@@ -4090,17 +4094,17 @@
         g (assoc g :nonprop-keyframes-name gen-nonprop-keyframes-name)
 
         gen-prop-animation-name
-        (igen/freq [
+        (igen/freq :prop-animation-name [
           [(get w [:prop-animation-name :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-animation-name :alt 1] 100)
             (gen/tuple
-              (igen/freq [
+              (igen/freq :prop-animation-name [
                 [(get w [:prop-animation-name :alt 1 :cat 0 :alt 0] 100)
                   (gen/return "none ")]
                 [(get w [:prop-animation-name :alt 1 :cat 0 :alt 1] 100)
                   (:nonprop-keyframes-name g)]])
-              (igen/freq [
+              (igen/freq :prop-animation-name [
                 [(get w [:prop-animation-name :alt 1 :cat 1 :star nil] 100)
                   (gen/return "")]
                 [(get w [:prop-animation-name :alt 1 :cat 1 :star 0] 100)
@@ -4108,7 +4112,7 @@
                     (gen/tuple
                       (gen/return ",")
                       (gen/return " ")
-                      (igen/freq [
+                      (igen/freq :prop-animation-name [
                         [(get w [:prop-animation-name :alt 1 :cat 1 :star 0 :cat 2 :alt 0] 100)
                           (gen/return "none ")]
                         [(get w [:prop-animation-name :alt 1 :cat 1 :star 0 :cat 2 :alt 1] 100)
@@ -4116,7 +4120,7 @@
         g (assoc g :prop-animation-name gen-prop-animation-name)
 
         gen-prop-flex-grow
-        (igen/freq [
+        (igen/freq :prop-flex-grow [
           [(get w [:prop-flex-grow :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-flex-grow :alt 1] 100)
@@ -4124,7 +4128,7 @@
         g (assoc g :prop-flex-grow gen-prop-flex-grow)
 
         gen-prop-padding-block-end
-        (igen/freq [
+        (igen/freq :prop-padding-block-end [
           [(get w [:prop-padding-block-end :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-padding-block-end :alt 1] 100)
@@ -4135,7 +4139,7 @@
         (gen/tuple
           (gen/return "target-counters ")
           (gen/return "( ")
-          (igen/freq [
+          (igen/freq :func-target-counters [
             [(get w [:func-target-counters :cat 2 :alt 0] 100)
               (:nonprop-string g)]
             [(get w [:func-target-counters :cat 2 :alt 1] 100)
@@ -4145,7 +4149,7 @@
           (gen/return ", ")
           (:nonprop-string g)
           (gen/return ", ")
-          (igen/freq [
+          (igen/freq :func-target-counters [
             [(get w [:func-target-counters :cat 8 :opt nil] 100)
               (gen/return "")]
             [(get w [:func-target-counters :cat 8 :opt 0] 100)
@@ -4157,17 +4161,17 @@
         (gen/tuple
           (gen/return "target-text ")
           (gen/return "( ")
-          (igen/freq [
+          (igen/freq :func-target-text [
             [(get w [:func-target-text :cat 2 :alt 0] 100)
               (:nonprop-string g)]
             [(get w [:func-target-text :cat 2 :alt 1] 100)
               (:nonprop-url g)]])
           (gen/return ", ")
-          (igen/freq [
+          (igen/freq :func-target-text [
             [(get w [:func-target-text :cat 4 :opt nil] 100)
               (gen/return "")]
             [(get w [:func-target-text :cat 4 :opt 0] 100)
-              (igen/freq [
+              (igen/freq :func-target-text [
                 [(get w [:func-target-text :cat 4 :opt 0 :alt 0] 100)
                   (gen/return "content ")]
                 [(get w [:func-target-text :cat 4 :opt 0 :alt 1] 100)
@@ -4183,7 +4187,7 @@
         (gen/tuple
           (gen/return "target-counter ")
           (gen/return "( ")
-          (igen/freq [
+          (igen/freq :func-target-counter [
             [(get w [:func-target-counter :cat 2 :alt 0] 100)
               (:nonprop-string g)]
             [(get w [:func-target-counter :cat 2 :alt 1] 100)
@@ -4191,7 +4195,7 @@
           (gen/return ", ")
           (:nonprop-custom-ident g)
           (gen/return ", ")
-          (igen/freq [
+          (igen/freq :func-target-counter [
             [(get w [:func-target-counter :cat 6 :opt nil] 100)
               (gen/return "")]
             [(get w [:func-target-counter :cat 6 :opt 0] 100)
@@ -4200,7 +4204,7 @@
         g (assoc g :func-target-counter gen-func-target-counter)
 
         gen-nonprop-target
-        (igen/freq [
+        (igen/freq :nonprop-target [
           [(get w [:nonprop-target :alt 0] 100)
             (:func-target-counter g)]
           [(get w [:nonprop-target :alt 1] 100)
@@ -4218,7 +4222,7 @@
         g (assoc g :func-rotateY gen-func-rotateY)
 
         gen-prop-flex-wrap
-        (igen/freq [
+        (igen/freq :prop-flex-wrap [
           [(get w [:prop-flex-wrap :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-flex-wrap :alt 1] 100)
@@ -4234,7 +4238,7 @@
         g (assoc g :nonprop-flex-wrap gen-nonprop-flex-wrap)
 
         gen-prop-outline-width
-        (igen/freq [
+        (igen/freq :prop-outline-width [
           [(get w [:prop-outline-width :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-outline-width :alt 1] 100)
@@ -4242,7 +4246,7 @@
         g (assoc g :prop-outline-width gen-prop-outline-width)
 
         gen-prop-grid-auto-columns
-        (igen/freq [
+        (igen/freq :prop-grid-auto-columns [
           [(get w [:prop-grid-auto-columns :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-grid-auto-columns :alt 1] 100)
@@ -4259,7 +4263,7 @@
         g (assoc g :nonprop-grid-auto-columns gen-nonprop-grid-auto-columns)
 
         gen-prop-grid
-        (igen/freq [
+        (igen/freq :prop-grid [
           [(get w [:prop-grid :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-grid :alt 1] 100)
@@ -4270,12 +4274,12 @@
               (gen/return "/ ")
               (gen/tuple
                 (gen/return "auto-flow ")
-                (igen/freq [
+                (igen/freq :prop-grid [
                   [(get w [:prop-grid :alt 2 :cat 2 :cat 1 :opt nil] 100)
                     (gen/return "")]
                   [(get w [:prop-grid :alt 2 :cat 2 :cat 1 :opt 0] 100)
                     (gen/return "dense ")]]))
-              (igen/freq [
+              (igen/freq :prop-grid [
                 [(get w [:prop-grid :alt 2 :cat 3 :opt nil] 100)
                   (gen/return "")]
                 [(get w [:prop-grid :alt 2 :cat 3 :opt 0] 100)
@@ -4284,12 +4288,12 @@
             (gen/tuple
               (gen/tuple
                 (gen/return "auto-flow ")
-                (igen/freq [
+                (igen/freq :prop-grid [
                   [(get w [:prop-grid :alt 3 :cat 0 :cat 1 :opt nil] 100)
                     (gen/return "")]
                   [(get w [:prop-grid :alt 3 :cat 0 :cat 1 :opt 0] 100)
                     (gen/return "dense ")]]))
-              (igen/freq [
+              (igen/freq :prop-grid [
                 [(get w [:prop-grid :alt 3 :cat 1 :opt nil] 100)
                   (gen/return "")]
                 [(get w [:prop-grid :alt 3 :cat 1 :opt 0] 100)
@@ -4299,7 +4303,7 @@
         g (assoc g :prop-grid gen-prop-grid)
 
         gen-prop-padding-inline-end
-        (igen/freq [
+        (igen/freq :prop-padding-inline-end [
           [(get w [:prop-padding-inline-end :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-padding-inline-end :alt 1] 100)
@@ -4307,14 +4311,14 @@
         g (assoc g :prop-padding-inline-end gen-prop-padding-inline-end)
 
         gen-prop-counter-reset
-        (igen/freq [
+        (igen/freq :prop-counter-reset [
           [(get w [:prop-counter-reset :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-counter-reset :alt 1] 100)
             (igen/vector+
               (gen/tuple
                 (:nonprop-custom-ident g)
-                (igen/freq [
+                (igen/freq :prop-counter-reset [
                   [(get w [:prop-counter-reset :alt 1 :plus 0 :cat 1 :opt nil] 100)
                     (gen/return "")]
                   [(get w [:prop-counter-reset :alt 1 :plus 0 :cat 1 :opt 0] 100)
@@ -4324,11 +4328,11 @@
         g (assoc g :prop-counter-reset gen-prop-counter-reset)
 
         gen-prop-border-end-end-radius
-        (igen/freq [
+        (igen/freq :prop-border-end-end-radius [
           [(get w [:prop-border-end-end-radius :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-border-end-end-radius :alt 1] 100)
-            (igen/freq [
+            (igen/freq :prop-border-end-end-radius [
               [(get w [:prop-border-end-end-radius :alt 1 :alt 0] 100)
                 (:nonprop-length-percentage g)]
               [(get w [:prop-border-end-end-radius :alt 1 :alt 1] 100)
@@ -4339,7 +4343,7 @@
         g (assoc g :prop-border-end-end-radius gen-prop-border-end-end-radius)
 
         gen-prop-text-align-last
-        (igen/freq [
+        (igen/freq :prop-text-align-last [
           [(get w [:prop-text-align-last :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-text-align-last :alt 1] 100)
@@ -4359,7 +4363,7 @@
         g (assoc g :prop-text-align-last gen-prop-text-align-last)
 
         gen-prop-border-inline-width
-        (igen/freq [
+        (igen/freq :prop-border-inline-width [
           [(get w [:prop-border-inline-width :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-border-inline-width :alt 1] 100)
@@ -4367,7 +4371,7 @@
         g (assoc g :prop-border-inline-width gen-prop-border-inline-width)
 
         gen-nonprop-display-inside
-        (igen/freq [
+        (igen/freq :nonprop-display-inside [
           [(get w [:nonprop-display-inside :alt 0] 100)
             (gen/return "flow ")]
           [(get w [:nonprop-display-inside :alt 1] 100)
@@ -4383,7 +4387,7 @@
         g (assoc g :nonprop-display-inside gen-nonprop-display-inside)
 
         gen-prop-color-adjust
-        (igen/freq [
+        (igen/freq :prop-color-adjust [
           [(get w [:prop-color-adjust :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-color-adjust :alt 1] 100)
@@ -4393,7 +4397,7 @@
         g (assoc g :prop-color-adjust gen-prop-color-adjust)
 
         gen-prop-inset-inline-start
-        (igen/freq [
+        (igen/freq :prop-inset-inline-start [
           [(get w [:prop-inset-inline-start :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-inset-inline-start :alt 1] 100)
@@ -4401,7 +4405,7 @@
         g (assoc g :prop-inset-inline-start gen-prop-inset-inline-start)
 
         gen-nonprop-number-percentage
-        (igen/freq [
+        (igen/freq :nonprop-number-percentage [
           [(get w [:nonprop-number-percentage :alt 0] 100)
             (:nonprop-number g)]
           [(get w [:nonprop-number-percentage :alt 1] 100)
@@ -4417,13 +4421,13 @@
         g (assoc g :func-contrast gen-func-contrast)
 
         gen-prop-animation-duration
-        (igen/freq [
+        (igen/freq :prop-animation-duration [
           [(get w [:prop-animation-duration :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-animation-duration :alt 1] 100)
             (gen/tuple
               (:nonprop-time g)
-              (igen/freq [
+              (igen/freq :prop-animation-duration [
                 [(get w [:prop-animation-duration :alt 1 :cat 1 :star nil] 100)
                   (gen/return "")]
                 [(get w [:prop-animation-duration :alt 1 :cat 1 :star 0] 100)
@@ -4435,12 +4439,12 @@
         g (assoc g :prop-animation-duration gen-prop-animation-duration)
 
         gen-prop-border-block
-        (igen/freq [
+        (igen/freq :prop-border-block [
           [(get w [:prop-border-block :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-border-block :alt 1] 100)
             (igen/vector+
-              (igen/freq [
+              (igen/freq :prop-border-block [
                 [(get w [:prop-border-block :alt 1 :plus 0 :alt 0] 100)
                   (:nonprop-border-top-width g)]
                 [(get w [:prop-border-block :alt 1 :plus 0 :alt 1] 100)
@@ -4450,26 +4454,26 @@
         g (assoc g :prop-border-block gen-prop-border-block)
 
         gen-prop-scroll-margin-inline
-        (igen/freq [
+        (igen/freq :prop-scroll-margin-inline [
           [(get w [:prop-scroll-margin-inline :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-scroll-margin-inline :alt 1] 100)
-            (igen/freq [
+            (igen/freq :prop-scroll-margin-inline [
               [(get w [:prop-scroll-margin-inline :alt 1 :alt 0] 100)
-                (igen/freq [
+                (igen/freq :prop-scroll-margin-inline [
                   [(get w [:prop-scroll-margin-inline :alt 1 :alt 0 :alt 0] 100)
                     (gen/return "auto ")]
                   [(get w [:prop-scroll-margin-inline :alt 1 :alt 0 :alt 1] 100)
                     (:nonprop-length g)]])]
               [(get w [:prop-scroll-margin-inline :alt 1 :alt 1] 100)
                 (gen/tuple
-                  (igen/freq [
+                  (igen/freq :prop-scroll-margin-inline [
                     [(get w [:prop-scroll-margin-inline :alt 1 :alt 1 :cat 0 :alt 0] 100)
                       (gen/return "auto ")]
                     [(get w [:prop-scroll-margin-inline :alt 1 :alt 1 :cat 0 :alt 1] 100)
                       (:nonprop-length g)]])
                   (gen/return " ")
-                  (igen/freq [
+                  (igen/freq :prop-scroll-margin-inline [
                     [(get w [:prop-scroll-margin-inline :alt 1 :alt 1 :cat 2 :alt 0] 100)
                       (gen/return "auto ")]
                     [(get w [:prop-scroll-margin-inline :alt 1 :alt 1 :cat 2 :alt 1] 100)
@@ -4477,7 +4481,7 @@
         g (assoc g :prop-scroll-margin-inline gen-prop-scroll-margin-inline)
 
         gen-prop-flex-basis
-        (igen/freq [
+        (igen/freq :prop-flex-basis [
           [(get w [:prop-flex-basis :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-flex-basis :alt 1] 100)
@@ -4491,7 +4495,7 @@
         g (assoc g :nonprop-flex-basis gen-nonprop-flex-basis)
 
         gen-prop-border-inline-style
-        (igen/freq [
+        (igen/freq :prop-border-inline-style [
           [(get w [:prop-border-inline-style :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-border-inline-style :alt 1] 100)
@@ -4499,12 +4503,12 @@
         g (assoc g :prop-border-inline-style gen-prop-border-inline-style)
 
         gen-prop-border-block-start
-        (igen/freq [
+        (igen/freq :prop-border-block-start [
           [(get w [:prop-border-block-start :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-border-block-start :alt 1] 100)
             (igen/vector+
-              (igen/freq [
+              (igen/freq :prop-border-block-start [
                 [(get w [:prop-border-block-start :alt 1 :plus 0 :alt 0] 100)
                   (:nonprop-border-top-width g)]
                 [(get w [:prop-border-block-start :alt 1 :plus 0 :alt 1] 100)
@@ -4515,7 +4519,7 @@
 
         gen-nonprop-shadow-t
         (gen/tuple
-          (igen/freq [
+          (igen/freq :nonprop-shadow-t [
             [(get w [:nonprop-shadow-t :cat 0 :alt 0] 100)
               (gen/tuple
                 (:nonprop-length g)
@@ -4528,7 +4532,7 @@
                 (:nonprop-length g)
                 (gen/return " ")
                 (:nonprop-length g))]])
-          (igen/freq [
+          (igen/freq :nonprop-shadow-t [
             [(get w [:nonprop-shadow-t :cat 1 :opt nil] 100)
               (gen/return "")]
             [(get w [:nonprop-shadow-t :cat 1 :opt 0] 100)
@@ -4541,7 +4545,7 @@
         w weights
 
         gen-prop-text-shadow
-        (igen/freq [
+        (igen/freq :prop-text-shadow [
           [(get w [:prop-text-shadow :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-text-shadow :alt 1] 100)
@@ -4549,7 +4553,7 @@
           [(get w [:prop-text-shadow :alt 2] 100)
             (gen/tuple
               (:nonprop-shadow-t g)
-              (igen/freq [
+              (igen/freq :prop-text-shadow [
                 [(get w [:prop-text-shadow :alt 2 :cat 1 :star nil] 100)
                   (gen/return "")]
                 [(get w [:prop-text-shadow :alt 2 :cat 1 :star 0] 100)
@@ -4565,7 +4569,7 @@
         g (assoc g :nonprop-feature-value-name gen-nonprop-feature-value-name)
 
         gen-prop-border-left-color
-        (igen/freq [
+        (igen/freq :prop-border-left-color [
           [(get w [:prop-border-left-color :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-border-left-color :alt 1] 100)
@@ -4573,7 +4577,7 @@
         g (assoc g :prop-border-left-color gen-prop-border-left-color)
 
         gen-prop-column-gap
-        (igen/freq [
+        (igen/freq :prop-column-gap [
           [(get w [:prop-column-gap :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-column-gap :alt 1] 100)
@@ -4587,7 +4591,7 @@
         g (assoc g :nonprop-column-gap gen-nonprop-column-gap)
 
         gen-prop-row-gap
-        (igen/freq [
+        (igen/freq :prop-row-gap [
           [(get w [:prop-row-gap :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-row-gap :alt 1] 100)
@@ -4601,13 +4605,13 @@
         g (assoc g :nonprop-row-gap gen-nonprop-row-gap)
 
         gen-prop-gap
-        (igen/freq [
+        (igen/freq :prop-gap [
           [(get w [:prop-gap :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-gap :alt 1] 100)
             (gen/tuple
               (:nonprop-row-gap g)
-              (igen/freq [
+              (igen/freq :prop-gap [
                 [(get w [:prop-gap :alt 1 :cat 1 :opt nil] 100)
                   (gen/return "")]
                 [(get w [:prop-gap :alt 1 :cat 1 :opt 0] 100)
@@ -4615,7 +4619,7 @@
         g (assoc g :prop-gap gen-prop-gap)
 
         gen-prop-direction
-        (igen/freq [
+        (igen/freq :prop-direction [
           [(get w [:prop-direction :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-direction :alt 1] 100)
@@ -4625,7 +4629,7 @@
         g (assoc g :prop-direction gen-prop-direction)
 
         gen-prop-min-width
-        (igen/freq [
+        (igen/freq :prop-min-width [
           [(get w [:prop-min-width :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-min-width :alt 1] 100)
@@ -4649,7 +4653,7 @@
         g (assoc g :nonprop-min-width gen-nonprop-min-width)
 
         gen-prop-min-block-size
-        (igen/freq [
+        (igen/freq :prop-min-block-size [
           [(get w [:prop-min-block-size :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-min-block-size :alt 1] 100)
@@ -4658,9 +4662,9 @@
 
         gen-nonprop-single-transition
         (igen/vector+
-          (igen/freq [
+          (igen/freq :nonprop-single-transition [
             [(get w [:nonprop-single-transition :plus 0 :alt 0] 100)
-              (igen/freq [
+              (igen/freq :nonprop-single-transition [
                 [(get w [:nonprop-single-transition :plus 0 :alt 0 :alt 0] 100)
                   (gen/return "none ")]
                 [(get w [:nonprop-single-transition :plus 0 :alt 0 :alt 1] 100)
@@ -4678,7 +4682,7 @@
         g (assoc g :nonprop-mask-source gen-nonprop-mask-source)
 
         gen-nonprop-mask-reference
-        (igen/freq [
+        (igen/freq :nonprop-mask-reference [
           [(get w [:nonprop-mask-reference :alt 0] 100)
             (gen/return "none ")]
           [(get w [:nonprop-mask-reference :alt 1] 100)
@@ -4688,7 +4692,7 @@
         g (assoc g :nonprop-mask-reference gen-nonprop-mask-reference)
 
         gen-prop-border-right-color
-        (igen/freq [
+        (igen/freq :prop-border-right-color [
           [(get w [:prop-border-right-color :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-border-right-color :alt 1] 100)
@@ -4708,7 +4712,7 @@
           (gen/return "scale ")
           (gen/return "( ")
           (:nonprop-number g)
-          (igen/freq [
+          (igen/freq :func-scale [
             [(get w [:func-scale :cat 3 :opt nil] 100)
               (gen/return "")]
             [(get w [:func-scale :cat 3 :opt 0] 100)
@@ -4753,7 +4757,7 @@
           (gen/return "matrix3d ")
           (gen/return "( ")
           (:nonprop-number g)
-          (igen/freq [
+          (igen/freq :func-matrix3d [
             [(get w [:func-matrix3d :cat 3 :alt 0] 100)
               (gen/tuple
                 (gen/return ", ")
@@ -4826,7 +4830,7 @@
           (gen/return "translate ")
           (gen/return "( ")
           (:nonprop-length-percentage g)
-          (igen/freq [
+          (igen/freq :func-translate [
             [(get w [:func-translate :cat 3 :opt nil] 100)
               (gen/return "")]
             [(get w [:func-translate :cat 3 :opt 0] 100)
@@ -4937,7 +4941,7 @@
         g (assoc g :func-translateZ gen-func-translateZ)
 
         gen-nonprop-transform-function
-        (igen/freq [
+        (igen/freq :nonprop-transform-function [
           [(get w [:nonprop-transform-function :alt 0] 100)
             (:func-matrix g)]
           [(get w [:nonprop-transform-function :alt 1] 100)
@@ -4988,7 +4992,7 @@
         g (assoc g :nonprop-transform-list gen-nonprop-transform-list)
 
         gen-prop-transform
-        (igen/freq [
+        (igen/freq :prop-transform [
           [(get w [:prop-transform :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-transform :alt 1] 100)
@@ -4998,11 +5002,11 @@
         g (assoc g :prop-transform gen-prop-transform)
 
         gen-prop-inset-inline
-        (igen/freq [
+        (igen/freq :prop-inset-inline [
           [(get w [:prop-inset-inline :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-inset-inline :alt 1] 100)
-            (igen/freq [
+            (igen/freq :prop-inset-inline [
               [(get w [:prop-inset-inline :alt 1 :alt 0] 100)
                 (:nonprop-top g)]
               [(get w [:prop-inset-inline :alt 1 :alt 1] 100)
@@ -5013,12 +5017,12 @@
         g (assoc g :prop-inset-inline gen-prop-inset-inline)
 
         gen-prop-border-inline-start
-        (igen/freq [
+        (igen/freq :prop-border-inline-start [
           [(get w [:prop-border-inline-start :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-border-inline-start :alt 1] 100)
             (igen/vector+
-              (igen/freq [
+              (igen/freq :prop-border-inline-start [
                 [(get w [:prop-border-inline-start :alt 1 :plus 0 :alt 0] 100)
                   (:nonprop-border-top-width g)]
                 [(get w [:prop-border-inline-start :alt 1 :plus 0 :alt 1] 100)
@@ -5028,7 +5032,7 @@
         g (assoc g :prop-border-inline-start gen-prop-border-inline-start)
 
         gen-prop-border-right-width
-        (igen/freq [
+        (igen/freq :prop-border-right-width [
           [(get w [:prop-border-right-width :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-border-right-width :alt 1] 100)
@@ -5036,7 +5040,7 @@
         g (assoc g :prop-border-right-width gen-prop-border-right-width)
 
         gen-nonprop-east-asian-width-values
-        (igen/freq [
+        (igen/freq :nonprop-east-asian-width-values [
           [(get w [:nonprop-east-asian-width-values :alt 0] 100)
             (gen/return "full-width ")]
           [(get w [:nonprop-east-asian-width-values :alt 1] 100)
@@ -5052,7 +5056,7 @@
         g (assoc g :func-brightness gen-func-brightness)
 
         gen-nonprop-display-legacy
-        (igen/freq [
+        (igen/freq :nonprop-display-legacy [
           [(get w [:nonprop-display-legacy :alt 0] 100)
             (gen/return "inline-block ")]
           [(get w [:nonprop-display-legacy :alt 1] 100)
@@ -5068,11 +5072,11 @@
         gen-nonprop-feature-tag-value
         (gen/tuple
           (:nonprop-string g)
-          (igen/freq [
+          (igen/freq :nonprop-feature-tag-value [
             [(get w [:nonprop-feature-tag-value :cat 1 :opt nil] 100)
               (gen/return "")]
             [(get w [:nonprop-feature-tag-value :cat 1 :opt 0] 100)
-              (igen/freq [
+              (igen/freq :nonprop-feature-tag-value [
                 [(get w [:nonprop-feature-tag-value :cat 1 :opt 0 :alt 0] 100)
                   (:nonprop-integer g)]
                 [(get w [:nonprop-feature-tag-value :cat 1 :opt 0 :alt 1] 100)
@@ -5082,7 +5086,7 @@
         g (assoc g :nonprop-feature-tag-value gen-nonprop-feature-tag-value)
 
         gen-prop-margin-bottom
-        (igen/freq [
+        (igen/freq :prop-margin-bottom [
           [(get w [:prop-margin-bottom :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-margin-bottom :alt 1] 100)
@@ -5094,7 +5098,7 @@
         g (assoc g :prop-margin-bottom gen-prop-margin-bottom)
 
         gen-prop-shape-margin
-        (igen/freq [
+        (igen/freq :prop-shape-margin [
           [(get w [:prop-shape-margin :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-shape-margin :alt 1] 100)
@@ -5102,17 +5106,17 @@
         g (assoc g :prop-shape-margin gen-prop-shape-margin)
 
         gen-prop-text-emphasis-position
-        (igen/freq [
+        (igen/freq :prop-text-emphasis-position [
           [(get w [:prop-text-emphasis-position :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-text-emphasis-position :alt 1] 100)
             (gen/tuple
-              (igen/freq [
+              (igen/freq :prop-text-emphasis-position [
                 [(get w [:prop-text-emphasis-position :alt 1 :cat 0 :alt 0] 100)
                   (gen/return "over ")]
                 [(get w [:prop-text-emphasis-position :alt 1 :cat 0 :alt 1] 100)
                   (gen/return "under ")]])
-              (igen/freq [
+              (igen/freq :prop-text-emphasis-position [
                 [(get w [:prop-text-emphasis-position :alt 1 :cat 1 :alt 0] 100)
                   (gen/return "right ")]
                 [(get w [:prop-text-emphasis-position :alt 1 :cat 1 :alt 1] 100)
@@ -5120,7 +5124,7 @@
         g (assoc g :prop-text-emphasis-position gen-prop-text-emphasis-position)
 
         gen-nonprop-display-internal
-        (igen/freq [
+        (igen/freq :nonprop-display-internal [
           [(get w [:nonprop-display-internal :alt 0] 100)
             (gen/return "table-row-group ")]
           [(get w [:nonprop-display-internal :alt 1] 100)
@@ -5148,7 +5152,7 @@
         g (assoc g :nonprop-display-internal gen-nonprop-display-internal)
 
         gen-prop-border-inline-start-width
-        (igen/freq [
+        (igen/freq :prop-border-inline-start-width [
           [(get w [:prop-border-inline-start-width :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-border-inline-start-width :alt 1] 100)
@@ -5156,7 +5160,7 @@
         g (assoc g :prop-border-inline-start-width gen-prop-border-inline-start-width)
 
         gen-prop-outline-style
-        (igen/freq [
+        (igen/freq :prop-outline-style [
           [(get w [:prop-outline-style :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-outline-style :alt 1] 100)
@@ -5170,7 +5174,7 @@
         g (assoc g :nonprop-outline-style gen-nonprop-outline-style)
 
         gen-prop-border-inline-end-style
-        (igen/freq [
+        (igen/freq :prop-border-inline-end-style [
           [(get w [:prop-border-inline-end-style :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-border-inline-end-style :alt 1] 100)
@@ -5183,7 +5187,7 @@
         w weights
 
         gen-prop-backface-visibility
-        (igen/freq [
+        (igen/freq :prop-backface-visibility [
           [(get w [:prop-backface-visibility :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-backface-visibility :alt 1] 100)
@@ -5193,12 +5197,12 @@
         g (assoc g :prop-backface-visibility gen-prop-backface-visibility)
 
         gen-prop-border-block-end
-        (igen/freq [
+        (igen/freq :prop-border-block-end [
           [(get w [:prop-border-block-end :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-border-block-end :alt 1] 100)
             (igen/vector+
-              (igen/freq [
+              (igen/freq :prop-border-block-end [
                 [(get w [:prop-border-block-end :alt 1 :plus 0 :alt 0] 100)
                   (:nonprop-border-top-width g)]
                 [(get w [:prop-border-block-end :alt 1 :plus 0 :alt 1] 100)
@@ -5208,13 +5212,13 @@
         g (assoc g :prop-border-block-end gen-prop-border-block-end)
 
         gen-prop-background-position
-        (igen/freq [
+        (igen/freq :prop-background-position [
           [(get w [:prop-background-position :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-background-position :alt 1] 100)
             (gen/tuple
               (:nonprop-bg-position g)
-              (igen/freq [
+              (igen/freq :prop-background-position [
                 [(get w [:prop-background-position :alt 1 :cat 1 :star nil] 100)
                   (gen/return "")]
                 [(get w [:prop-background-position :alt 1 :cat 1 :star 0] 100)
@@ -5226,7 +5230,7 @@
         g (assoc g :prop-background-position gen-prop-background-position)
 
         gen-prop-border-inline-start-style
-        (igen/freq [
+        (igen/freq :prop-border-inline-start-style [
           [(get w [:prop-border-inline-start-style :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-border-inline-start-style :alt 1] 100)
@@ -5234,7 +5238,7 @@
         g (assoc g :prop-border-inline-start-style gen-prop-border-inline-start-style)
 
         gen-prop-border-bottom-style
-        (igen/freq [
+        (igen/freq :prop-border-bottom-style [
           [(get w [:prop-border-bottom-style :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-border-bottom-style :alt 1] 100)
@@ -5242,13 +5246,13 @@
         g (assoc g :prop-border-bottom-style gen-prop-border-bottom-style)
 
         gen-prop-transition-delay
-        (igen/freq [
+        (igen/freq :prop-transition-delay [
           [(get w [:prop-transition-delay :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-transition-delay :alt 1] 100)
             (gen/tuple
               (:nonprop-time g)
-              (igen/freq [
+              (igen/freq :prop-transition-delay [
                 [(get w [:prop-transition-delay :alt 1 :cat 1 :star nil] 100)
                   (gen/return "")]
                 [(get w [:prop-transition-delay :alt 1 :cat 1 :star 0] 100)
@@ -5260,7 +5264,7 @@
         g (assoc g :prop-transition-delay gen-prop-transition-delay)
 
         gen-prop-flex-shrink
-        (igen/freq [
+        (igen/freq :prop-flex-shrink [
           [(get w [:prop-flex-shrink :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-flex-shrink :alt 1] 100)
@@ -5276,18 +5280,18 @@
         g (assoc g :nonprop-flex-grow gen-nonprop-flex-grow)
 
         gen-prop-flex
-        (igen/freq [
+        (igen/freq :prop-flex [
           [(get w [:prop-flex :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-flex :alt 1] 100)
             (gen/return "none ")]
           [(get w [:prop-flex :alt 2] 100)
             (igen/vector+
-              (igen/freq [
+              (igen/freq :prop-flex [
                 [(get w [:prop-flex :alt 2 :plus 0 :alt 0] 100)
                   (gen/tuple
                     (:nonprop-flex-grow g)
-                    (igen/freq [
+                    (igen/freq :prop-flex [
                       [(get w [:prop-flex :alt 2 :plus 0 :alt 0 :cat 1 :opt nil] 100)
                         (gen/return "")]
                       [(get w [:prop-flex :alt 2 :plus 0 :alt 0 :cat 1 :opt 0] 100)
@@ -5297,7 +5301,7 @@
         g (assoc g :prop-flex gen-prop-flex)
 
         gen-nonprop-animateable-feature
-        (igen/freq [
+        (igen/freq :nonprop-animateable-feature [
           [(get w [:nonprop-animateable-feature :alt 0] 100)
             (gen/return "scroll-position ")]
           [(get w [:nonprop-animateable-feature :alt 1] 100)
@@ -5307,7 +5311,7 @@
         g (assoc g :nonprop-animateable-feature gen-nonprop-animateable-feature)
 
         gen-prop-will-change
-        (igen/freq [
+        (igen/freq :prop-will-change [
           [(get w [:prop-will-change :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-will-change :alt 1] 100)
@@ -5315,7 +5319,7 @@
           [(get w [:prop-will-change :alt 2] 100)
             (gen/tuple
               (:nonprop-animateable-feature g)
-              (igen/freq [
+              (igen/freq :prop-will-change [
                 [(get w [:prop-will-change :alt 2 :cat 1 :star nil] 100)
                   (gen/return "")]
                 [(get w [:prop-will-change :alt 2 :cat 1 :star 0] 100)
@@ -5327,13 +5331,13 @@
         g (assoc g :prop-will-change gen-prop-will-change)
 
         gen-prop-overflow
-        (igen/freq [
+        (igen/freq :prop-overflow [
           [(get w [:prop-overflow :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-overflow :alt 1] 100)
-            (igen/freq [
+            (igen/freq :prop-overflow [
               [(get w [:prop-overflow :alt 1 :alt 0] 100)
-                (igen/freq [
+                (igen/freq :prop-overflow [
                   [(get w [:prop-overflow :alt 1 :alt 0 :alt 0] 100)
                     (gen/return "visible ")]
                   [(get w [:prop-overflow :alt 1 :alt 0 :alt 1] 100)
@@ -5346,7 +5350,7 @@
                     (gen/return "auto ")]])]
               [(get w [:prop-overflow :alt 1 :alt 1] 100)
                 (gen/tuple
-                  (igen/freq [
+                  (igen/freq :prop-overflow [
                     [(get w [:prop-overflow :alt 1 :alt 1 :cat 0 :alt 0] 100)
                       (gen/return "visible ")]
                     [(get w [:prop-overflow :alt 1 :alt 1 :cat 0 :alt 1] 100)
@@ -5358,7 +5362,7 @@
                     [(get w [:prop-overflow :alt 1 :alt 1 :cat 0 :alt 4] 100)
                       (gen/return "auto ")]])
                   (gen/return " ")
-                  (igen/freq [
+                  (igen/freq :prop-overflow [
                     [(get w [:prop-overflow :alt 1 :alt 1 :cat 2 :alt 0] 100)
                       (gen/return "visible ")]
                     [(get w [:prop-overflow :alt 1 :alt 1 :cat 2 :alt 1] 100)
@@ -5376,7 +5380,7 @@
         g (assoc g :nonprop-x gen-nonprop-x)
 
         gen-prop-visibility
-        (igen/freq [
+        (igen/freq :prop-visibility [
           [(get w [:prop-visibility :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-visibility :alt 1] 100)
@@ -5388,7 +5392,7 @@
         g (assoc g :prop-visibility gen-prop-visibility)
 
         gen-prop-text-orientation
-        (igen/freq [
+        (igen/freq :prop-text-orientation [
           [(get w [:prop-text-orientation :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-text-orientation :alt 1] 100)
@@ -5400,7 +5404,7 @@
         g (assoc g :prop-text-orientation gen-prop-text-orientation)
 
         gen-prop-scroll-padding-block-start
-        (igen/freq [
+        (igen/freq :prop-scroll-padding-block-start [
           [(get w [:prop-scroll-padding-block-start :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-scroll-padding-block-start :alt 1] 100)
@@ -5415,7 +5419,7 @@
         (gen/tuple
           (gen/return "drop-shadow ")
           (gen/return "( ")
-          (igen/freq [
+          (igen/freq :func-drop-shadow [
             [(get w [:func-drop-shadow :cat 2 :alt 0] 100)
               (gen/tuple
                 (:nonprop-length g)
@@ -5428,7 +5432,7 @@
                 (:nonprop-length g)
                 (gen/return " ")
                 (:nonprop-length g))]])
-          (igen/freq [
+          (igen/freq :func-drop-shadow [
             [(get w [:func-drop-shadow :cat 3 :opt nil] 100)
               (gen/return "")]
             [(get w [:func-drop-shadow :cat 3 :opt 0] 100)
@@ -5493,7 +5497,7 @@
         g (assoc g :func-invert gen-func-invert)
 
         gen-nonprop-filter-function
-        (igen/freq [
+        (igen/freq :nonprop-filter-function [
           [(get w [:nonprop-filter-function :alt 0] 100)
             (:func-blur g)]
           [(get w [:nonprop-filter-function :alt 1] 100)
@@ -5517,7 +5521,7 @@
         g (assoc g :nonprop-filter-function gen-nonprop-filter-function)
 
         gen-prop-margin-block-end
-        (igen/freq [
+        (igen/freq :prop-margin-block-end [
           [(get w [:prop-margin-block-end :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-margin-block-end :alt 1] 100)
@@ -5525,70 +5529,70 @@
         g (assoc g :prop-margin-block-end gen-prop-margin-block-end)
 
         gen-prop-scroll-margin
-        (igen/freq [
+        (igen/freq :prop-scroll-margin [
           [(get w [:prop-scroll-margin :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-scroll-margin :alt 1] 100)
-            (igen/freq [
+            (igen/freq :prop-scroll-margin [
               [(get w [:prop-scroll-margin :alt 1 :alt 0] 100)
-                (igen/freq [
+                (igen/freq :prop-scroll-margin [
                   [(get w [:prop-scroll-margin :alt 1 :alt 0 :alt 0] 100)
                     (gen/return "auto ")]
                   [(get w [:prop-scroll-margin :alt 1 :alt 0 :alt 1] 100)
                     (:nonprop-length g)]])]
               [(get w [:prop-scroll-margin :alt 1 :alt 1] 100)
                 (gen/tuple
-                  (igen/freq [
+                  (igen/freq :prop-scroll-margin [
                     [(get w [:prop-scroll-margin :alt 1 :alt 1 :cat 0 :alt 0] 100)
                       (gen/return "auto ")]
                     [(get w [:prop-scroll-margin :alt 1 :alt 1 :cat 0 :alt 1] 100)
                       (:nonprop-length g)]])
                   (gen/return " ")
-                  (igen/freq [
+                  (igen/freq :prop-scroll-margin [
                     [(get w [:prop-scroll-margin :alt 1 :alt 1 :cat 2 :alt 0] 100)
                       (gen/return "auto ")]
                     [(get w [:prop-scroll-margin :alt 1 :alt 1 :cat 2 :alt 1] 100)
                       (:nonprop-length g)]]))]
               [(get w [:prop-scroll-margin :alt 1 :alt 2] 100)
                 (gen/tuple
-                  (igen/freq [
+                  (igen/freq :prop-scroll-margin [
                     [(get w [:prop-scroll-margin :alt 1 :alt 2 :cat 0 :alt 0] 100)
                       (gen/return "auto ")]
                     [(get w [:prop-scroll-margin :alt 1 :alt 2 :cat 0 :alt 1] 100)
                       (:nonprop-length g)]])
                   (gen/return " ")
-                  (igen/freq [
+                  (igen/freq :prop-scroll-margin [
                     [(get w [:prop-scroll-margin :alt 1 :alt 2 :cat 2 :alt 0] 100)
                       (gen/return "auto ")]
                     [(get w [:prop-scroll-margin :alt 1 :alt 2 :cat 2 :alt 1] 100)
                       (:nonprop-length g)]])
                   (gen/return " ")
-                  (igen/freq [
+                  (igen/freq :prop-scroll-margin [
                     [(get w [:prop-scroll-margin :alt 1 :alt 2 :cat 4 :alt 0] 100)
                       (gen/return "auto ")]
                     [(get w [:prop-scroll-margin :alt 1 :alt 2 :cat 4 :alt 1] 100)
                       (:nonprop-length g)]]))]
               [(get w [:prop-scroll-margin :alt 1 :alt 3] 100)
                 (gen/tuple
-                  (igen/freq [
+                  (igen/freq :prop-scroll-margin [
                     [(get w [:prop-scroll-margin :alt 1 :alt 3 :cat 0 :alt 0] 100)
                       (gen/return "auto ")]
                     [(get w [:prop-scroll-margin :alt 1 :alt 3 :cat 0 :alt 1] 100)
                       (:nonprop-length g)]])
                   (gen/return " ")
-                  (igen/freq [
+                  (igen/freq :prop-scroll-margin [
                     [(get w [:prop-scroll-margin :alt 1 :alt 3 :cat 2 :alt 0] 100)
                       (gen/return "auto ")]
                     [(get w [:prop-scroll-margin :alt 1 :alt 3 :cat 2 :alt 1] 100)
                       (:nonprop-length g)]])
                   (gen/return " ")
-                  (igen/freq [
+                  (igen/freq :prop-scroll-margin [
                     [(get w [:prop-scroll-margin :alt 1 :alt 3 :cat 4 :alt 0] 100)
                       (gen/return "auto ")]
                     [(get w [:prop-scroll-margin :alt 1 :alt 3 :cat 4 :alt 1] 100)
                       (:nonprop-length g)]])
                   (gen/return " ")
-                  (igen/freq [
+                  (igen/freq :prop-scroll-margin [
                     [(get w [:prop-scroll-margin :alt 1 :alt 3 :cat 6 :alt 0] 100)
                       (gen/return "auto ")]
                     [(get w [:prop-scroll-margin :alt 1 :alt 3 :cat 6 :alt 1] 100)
@@ -5596,13 +5600,13 @@
         g (assoc g :prop-scroll-margin gen-prop-scroll-margin)
 
         gen-prop-background-image
-        (igen/freq [
+        (igen/freq :prop-background-image [
           [(get w [:prop-background-image :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-background-image :alt 1] 100)
             (gen/tuple
               (:nonprop-bg-image g)
-              (igen/freq [
+              (igen/freq :prop-background-image [
                 [(get w [:prop-background-image :alt 1 :cat 1 :star nil] 100)
                   (gen/return "")]
                 [(get w [:prop-background-image :alt 1 :cat 1 :star 0] 100)
@@ -5614,13 +5618,13 @@
         g (assoc g :prop-background-image gen-prop-background-image)
 
         gen-prop-border-spacing
-        (igen/freq [
+        (igen/freq :prop-border-spacing [
           [(get w [:prop-border-spacing :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-border-spacing :alt 1] 100)
             (gen/tuple
               (:nonprop-length g)
-              (igen/freq [
+              (igen/freq :prop-border-spacing [
                 [(get w [:prop-border-spacing :alt 1 :cat 1 :opt nil] 100)
                   (gen/return "")]
                 [(get w [:prop-border-spacing :alt 1 :cat 1 :opt 0] 100)
@@ -5628,18 +5632,18 @@
         g (assoc g :prop-border-spacing gen-prop-border-spacing)
 
         gen-prop-hanging-punctuation
-        (igen/freq [
+        (igen/freq :prop-hanging-punctuation [
           [(get w [:prop-hanging-punctuation :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-hanging-punctuation :alt 1] 100)
             (gen/return "none ")]
           [(get w [:prop-hanging-punctuation :alt 2] 100)
             (igen/vector+
-              (igen/freq [
+              (igen/freq :prop-hanging-punctuation [
                 [(get w [:prop-hanging-punctuation :alt 2 :plus 0 :alt 0] 100)
                   (gen/return "first ")]
                 [(get w [:prop-hanging-punctuation :alt 2 :plus 0 :alt 1] 100)
-                  (igen/freq [
+                  (igen/freq :prop-hanging-punctuation [
                     [(get w [:prop-hanging-punctuation :alt 2 :plus 0 :alt 1 :alt 0] 100)
                       (gen/return "force-end ")]
                     [(get w [:prop-hanging-punctuation :alt 2 :plus 0 :alt 1 :alt 1] 100)
@@ -5649,13 +5653,13 @@
         g (assoc g :prop-hanging-punctuation gen-prop-hanging-punctuation)
 
         gen-prop-grid-area
-        (igen/freq [
+        (igen/freq :prop-grid-area [
           [(get w [:prop-grid-area :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-grid-area :alt 1] 100)
             (gen/tuple
               (:nonprop-grid-line g)
-              (igen/freq [
+              (igen/freq :prop-grid-area [
                 [(get w [:prop-grid-area :alt 1 :cat 1 :alt 0] 100)
                   (gen/return "")]
                 [(get w [:prop-grid-area :alt 1 :cat 1 :alt 1] 100)
@@ -5687,7 +5691,7 @@
         g (assoc g :prop-grid-area gen-prop-grid-area)
 
         gen-nonprop-family-name
-        (igen/freq [
+        (igen/freq :nonprop-family-name [
           [(get w [:nonprop-family-name :alt 0] 100)
             (:nonprop-string g)]
           [(get w [:nonprop-family-name :alt 1] 100)
@@ -5696,7 +5700,7 @@
         g (assoc g :nonprop-family-name gen-nonprop-family-name)
 
         gen-nonprop-generic-family
-        (igen/freq [
+        (igen/freq :nonprop-generic-family [
           [(get w [:nonprop-generic-family :alt 0] 100)
             (gen/return "serif ")]
           [(get w [:nonprop-generic-family :alt 1] 100)
@@ -5710,17 +5714,17 @@
         g (assoc g :nonprop-generic-family gen-nonprop-generic-family)
 
         gen-prop-font-family
-        (igen/freq [
+        (igen/freq :prop-font-family [
           [(get w [:prop-font-family :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-font-family :alt 1] 100)
             (gen/tuple
-              (igen/freq [
+              (igen/freq :prop-font-family [
                 [(get w [:prop-font-family :alt 1 :cat 0 :alt 0] 100)
                   (:nonprop-family-name g)]
                 [(get w [:prop-font-family :alt 1 :cat 0 :alt 1] 100)
                   (:nonprop-generic-family g)]])
-              (igen/freq [
+              (igen/freq :prop-font-family [
                 [(get w [:prop-font-family :alt 1 :cat 1 :star nil] 100)
                   (gen/return "")]
                 [(get w [:prop-font-family :alt 1 :cat 1 :star 0] 100)
@@ -5728,7 +5732,7 @@
                     (gen/tuple
                       (gen/return ",")
                       (gen/return " ")
-                      (igen/freq [
+                      (igen/freq :prop-font-family [
                         [(get w [:prop-font-family :alt 1 :cat 1 :star 0 :cat 2 :alt 0] 100)
                           (:nonprop-family-name g)]
                         [(get w [:prop-font-family :alt 1 :cat 1 :star 0 :cat 2 :alt 1] 100)
@@ -5736,7 +5740,7 @@
         g (assoc g :prop-font-family gen-prop-font-family)
 
         gen-nonprop-single-animation-play-state
-        (igen/freq [
+        (igen/freq :nonprop-single-animation-play-state [
           [(get w [:nonprop-single-animation-play-state :alt 0] 100)
             (gen/return "running ")]
           [(get w [:nonprop-single-animation-play-state :alt 1] 100)
@@ -5744,13 +5748,13 @@
         g (assoc g :nonprop-single-animation-play-state gen-nonprop-single-animation-play-state)
 
         gen-prop-animation-play-state
-        (igen/freq [
+        (igen/freq :prop-animation-play-state [
           [(get w [:prop-animation-play-state :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-animation-play-state :alt 1] 100)
             (gen/tuple
               (:nonprop-single-animation-play-state g)
-              (igen/freq [
+              (igen/freq :prop-animation-play-state [
                 [(get w [:prop-animation-play-state :alt 1 :cat 1 :star nil] 100)
                   (gen/return "")]
                 [(get w [:prop-animation-play-state :alt 1 :cat 1 :star 0] 100)
@@ -5762,7 +5766,7 @@
         g (assoc g :prop-animation-play-state gen-prop-animation-play-state)
 
         gen-prop-tab-size
-        (igen/freq [
+        (igen/freq :prop-tab-size [
           [(get w [:prop-tab-size :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-tab-size :alt 1] 100)
@@ -5772,13 +5776,13 @@
         g (assoc g :prop-tab-size gen-prop-tab-size)
 
         gen-prop-grid-row
-        (igen/freq [
+        (igen/freq :prop-grid-row [
           [(get w [:prop-grid-row :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-grid-row :alt 1] 100)
             (gen/tuple
               (:nonprop-grid-line g)
-              (igen/freq [
+              (igen/freq :prop-grid-row [
                 [(get w [:prop-grid-row :alt 1 :cat 1 :opt nil] 100)
                   (gen/return "")]
                 [(get w [:prop-grid-row :alt 1 :cat 1 :opt 0] 100)
@@ -5788,7 +5792,7 @@
         g (assoc g :prop-grid-row gen-prop-grid-row)
 
         gen-prop-white-space
-        (igen/freq [
+        (igen/freq :prop-white-space [
           [(get w [:prop-white-space :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-white-space :alt 1] 100)
@@ -5804,13 +5808,13 @@
         g (assoc g :prop-white-space gen-prop-white-space)
 
         gen-prop-scale
-        (igen/freq [
+        (igen/freq :prop-scale [
           [(get w [:prop-scale :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-scale :alt 1] 100)
             (gen/return "none ")]
           [(get w [:prop-scale :alt 2] 100)
-            (igen/freq [
+            (igen/freq :prop-scale [
               [(get w [:prop-scale :alt 2 :alt 0] 100)
                 (:nonprop-number g)]
               [(get w [:prop-scale :alt 2 :alt 1] 100)
@@ -5832,7 +5836,7 @@
         g (assoc g :nonprop-font-family gen-nonprop-font-family)
 
         gen-nonprop-common-lig-values
-        (igen/freq [
+        (igen/freq :nonprop-common-lig-values [
           [(get w [:nonprop-common-lig-values :alt 0] 100)
             (gen/return "common-ligatures ")]
           [(get w [:nonprop-common-lig-values :alt 1] 100)
@@ -5840,7 +5844,7 @@
         g (assoc g :nonprop-common-lig-values gen-nonprop-common-lig-values)
 
         gen-nonprop-historical-lig-values
-        (igen/freq [
+        (igen/freq :nonprop-historical-lig-values [
           [(get w [:nonprop-historical-lig-values :alt 0] 100)
             (gen/return "historical-ligatures ")]
           [(get w [:nonprop-historical-lig-values :alt 1] 100)
@@ -5848,7 +5852,7 @@
         g (assoc g :nonprop-historical-lig-values gen-nonprop-historical-lig-values)
 
         gen-nonprop-contextual-alt-values
-        (igen/freq [
+        (igen/freq :nonprop-contextual-alt-values [
           [(get w [:nonprop-contextual-alt-values :alt 0] 100)
             (gen/return "contextual ")]
           [(get w [:nonprop-contextual-alt-values :alt 1] 100)
@@ -5856,7 +5860,7 @@
         g (assoc g :nonprop-contextual-alt-values gen-nonprop-contextual-alt-values)
 
         gen-prop-font-variant-ligatures
-        (igen/freq [
+        (igen/freq :prop-font-variant-ligatures [
           [(get w [:prop-font-variant-ligatures :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-font-variant-ligatures :alt 1] 100)
@@ -5865,7 +5869,7 @@
             (gen/return "none ")]
           [(get w [:prop-font-variant-ligatures :alt 3] 100)
             (igen/vector+
-              (igen/freq [
+              (igen/freq :prop-font-variant-ligatures [
                 [(get w [:prop-font-variant-ligatures :alt 3 :plus 0 :alt 0] 100)
                   (:nonprop-common-lig-values g)]
                 [(get w [:prop-font-variant-ligatures :alt 3 :plus 0 :alt 1] 100)
@@ -5877,17 +5881,17 @@
         g (assoc g :prop-font-variant-ligatures gen-prop-font-variant-ligatures)
 
         gen-prop-mask-clip
-        (igen/freq [
+        (igen/freq :prop-mask-clip [
           [(get w [:prop-mask-clip :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-mask-clip :alt 1] 100)
             (gen/tuple
-              (igen/freq [
+              (igen/freq :prop-mask-clip [
                 [(get w [:prop-mask-clip :alt 1 :cat 0 :alt 0] 100)
                   (:nonprop-geometry-box g)]
                 [(get w [:prop-mask-clip :alt 1 :cat 0 :alt 1] 100)
                   (gen/return "no-clip ")]])
-              (igen/freq [
+              (igen/freq :prop-mask-clip [
                 [(get w [:prop-mask-clip :alt 1 :cat 1 :star nil] 100)
                   (gen/return "")]
                 [(get w [:prop-mask-clip :alt 1 :cat 1 :star 0] 100)
@@ -5895,7 +5899,7 @@
                     (gen/tuple
                       (gen/return ",")
                       (gen/return " ")
-                      (igen/freq [
+                      (igen/freq :prop-mask-clip [
                         [(get w [:prop-mask-clip :alt 1 :cat 1 :star 0 :cat 2 :alt 0] 100)
                           (:nonprop-geometry-box g)]
                         [(get w [:prop-mask-clip :alt 1 :cat 1 :star 0 :cat 2 :alt 1] 100)
@@ -5903,7 +5907,7 @@
         g (assoc g :prop-mask-clip gen-prop-mask-clip)
 
         gen-prop-max-width
-        (igen/freq [
+        (igen/freq :prop-max-width [
           [(get w [:prop-max-width :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-max-width :alt 1] 100)
@@ -5923,7 +5927,7 @@
         g (assoc g :prop-max-width gen-prop-max-width)
 
         gen-prop-transform-box
-        (igen/freq [
+        (igen/freq :prop-transform-box [
           [(get w [:prop-transform-box :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-transform-box :alt 1] 100)
@@ -5935,7 +5939,7 @@
         g (assoc g :prop-transform-box gen-prop-transform-box)
 
         gen-prop-scroll-behavior
-        (igen/freq [
+        (igen/freq :prop-scroll-behavior [
           [(get w [:prop-scroll-behavior :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-scroll-behavior :alt 1] 100)
@@ -5950,7 +5954,7 @@
         w weights
 
         gen-prop-grid-template-areas
-        (igen/freq [
+        (igen/freq :prop-grid-template-areas [
           [(get w [:prop-grid-template-areas :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-grid-template-areas :alt 1] 100)
@@ -5962,7 +5966,7 @@
 
         gen-nonprop-filter-function-list
         (igen/vector+
-          (igen/freq [
+          (igen/freq :nonprop-filter-function-list [
             [(get w [:nonprop-filter-function-list :plus 0 :alt 0] 100)
               (:nonprop-filter-function g)]
             [(get w [:nonprop-filter-function-list :plus 0 :alt 1] 100)
@@ -5970,7 +5974,7 @@
         g (assoc g :nonprop-filter-function-list gen-nonprop-filter-function-list)
 
         gen-prop-filter
-        (igen/freq [
+        (igen/freq :prop-filter [
           [(get w [:prop-filter :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-filter :alt 1] 100)
@@ -5980,7 +5984,7 @@
         g (assoc g :prop-filter gen-prop-filter)
 
         gen-prop-text-justify
-        (igen/freq [
+        (igen/freq :prop-text-justify [
           [(get w [:prop-text-justify :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-text-justify :alt 1] 100)
@@ -5994,7 +5998,7 @@
         g (assoc g :prop-text-justify gen-prop-text-justify)
 
         gen-prop-flex-direction
-        (igen/freq [
+        (igen/freq :prop-flex-direction [
           [(get w [:prop-flex-direction :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-flex-direction :alt 1] 100)
@@ -6012,12 +6016,12 @@
         g (assoc g :nonprop-flex-direction gen-nonprop-flex-direction)
 
         gen-prop-flex-flow
-        (igen/freq [
+        (igen/freq :prop-flex-flow [
           [(get w [:prop-flex-flow :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-flex-flow :alt 1] 100)
             (igen/vector+
-              (igen/freq [
+              (igen/freq :prop-flex-flow [
                 [(get w [:prop-flex-flow :alt 1 :plus 0 :alt 0] 100)
                   (:nonprop-flex-direction g)]
                 [(get w [:prop-flex-flow :alt 1 :plus 0 :alt 1] 100)
@@ -6025,13 +6029,13 @@
         g (assoc g :prop-flex-flow gen-prop-flex-flow)
 
         gen-prop-background-repeat
-        (igen/freq [
+        (igen/freq :prop-background-repeat [
           [(get w [:prop-background-repeat :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-background-repeat :alt 1] 100)
             (gen/tuple
               (:nonprop-repeat-style g)
-              (igen/freq [
+              (igen/freq :prop-background-repeat [
                 [(get w [:prop-background-repeat :alt 1 :cat 1 :star nil] 100)
                   (gen/return "")]
                 [(get w [:prop-background-repeat :alt 1 :cat 1 :star 0] 100)
@@ -6043,7 +6047,7 @@
         g (assoc g :prop-background-repeat gen-prop-background-repeat)
 
         gen-nonprop-absolute-size
-        (igen/freq [
+        (igen/freq :nonprop-absolute-size [
           [(get w [:nonprop-absolute-size :alt 0] 100)
             (gen/return "xx-small ")]
           [(get w [:nonprop-absolute-size :alt 1] 100)
@@ -6061,7 +6065,7 @@
         g (assoc g :nonprop-absolute-size gen-nonprop-absolute-size)
 
         gen-nonprop-relative-size
-        (igen/freq [
+        (igen/freq :nonprop-relative-size [
           [(get w [:nonprop-relative-size :alt 0] 100)
             (gen/return "larger ")]
           [(get w [:nonprop-relative-size :alt 1] 100)
@@ -6069,7 +6073,7 @@
         g (assoc g :nonprop-relative-size gen-nonprop-relative-size)
 
         gen-prop-font-size
-        (igen/freq [
+        (igen/freq :prop-font-size [
           [(get w [:prop-font-size :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-font-size :alt 1] 100)
@@ -6081,12 +6085,12 @@
         g (assoc g :prop-font-size gen-prop-font-size)
 
         gen-prop-border-inline-end
-        (igen/freq [
+        (igen/freq :prop-border-inline-end [
           [(get w [:prop-border-inline-end :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-border-inline-end :alt 1] 100)
             (igen/vector+
-              (igen/freq [
+              (igen/freq :prop-border-inline-end [
                 [(get w [:prop-border-inline-end :alt 1 :plus 0 :alt 0] 100)
                   (:nonprop-border-top-width g)]
                 [(get w [:prop-border-inline-end :alt 1 :plus 0 :alt 1] 100)
@@ -6096,24 +6100,24 @@
         g (assoc g :prop-border-inline-end gen-prop-border-inline-end)
 
         gen-nonprop-bg-size
-        (igen/freq [
+        (igen/freq :nonprop-bg-size [
           [(get w [:nonprop-bg-size :alt 0] 100)
-            (igen/freq [
+            (igen/freq :nonprop-bg-size [
               [(get w [:nonprop-bg-size :alt 0 :alt 0] 100)
-                (igen/freq [
+                (igen/freq :nonprop-bg-size [
                   [(get w [:nonprop-bg-size :alt 0 :alt 0 :alt 0] 100)
                     (:nonprop-length-percentage g)]
                   [(get w [:nonprop-bg-size :alt 0 :alt 0 :alt 1] 100)
                     (gen/return "auto ")]])]
               [(get w [:nonprop-bg-size :alt 0 :alt 1] 100)
                 (gen/tuple
-                  (igen/freq [
+                  (igen/freq :nonprop-bg-size [
                     [(get w [:nonprop-bg-size :alt 0 :alt 1 :cat 0 :alt 0] 100)
                       (:nonprop-length-percentage g)]
                     [(get w [:nonprop-bg-size :alt 0 :alt 1 :cat 0 :alt 1] 100)
                       (gen/return "auto ")]])
                   (gen/return " ")
-                  (igen/freq [
+                  (igen/freq :nonprop-bg-size [
                     [(get w [:nonprop-bg-size :alt 0 :alt 1 :cat 2 :alt 0] 100)
                       (:nonprop-length-percentage g)]
                     [(get w [:nonprop-bg-size :alt 0 :alt 1 :cat 2 :alt 1] 100)
@@ -6125,13 +6129,13 @@
         g (assoc g :nonprop-bg-size gen-nonprop-bg-size)
 
         gen-prop-mask-size
-        (igen/freq [
+        (igen/freq :prop-mask-size [
           [(get w [:prop-mask-size :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-mask-size :alt 1] 100)
             (gen/tuple
               (:nonprop-bg-size g)
-              (igen/freq [
+              (igen/freq :prop-mask-size [
                 [(get w [:prop-mask-size :alt 1 :cat 1 :star nil] 100)
                   (gen/return "")]
                 [(get w [:prop-mask-size :alt 1 :cat 1 :star 0] 100)
@@ -6143,7 +6147,7 @@
         g (assoc g :prop-mask-size gen-prop-mask-size)
 
         gen-prop-float
-        (igen/freq [
+        (igen/freq :prop-float [
           [(get w [:prop-float :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-float :alt 1] 100)
@@ -6159,13 +6163,13 @@
         g (assoc g :prop-float gen-prop-float)
 
         gen-prop-scroll-padding-inline
-        (igen/freq [
+        (igen/freq :prop-scroll-padding-inline [
           [(get w [:prop-scroll-padding-inline :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-scroll-padding-inline :alt 1] 100)
-            (igen/freq [
+            (igen/freq :prop-scroll-padding-inline [
               [(get w [:prop-scroll-padding-inline :alt 1 :alt 0] 100)
-                (igen/freq [
+                (igen/freq :prop-scroll-padding-inline [
                   [(get w [:prop-scroll-padding-inline :alt 1 :alt 0 :alt 0] 100)
                     (gen/return "auto ")]
                   [(get w [:prop-scroll-padding-inline :alt 1 :alt 0 :alt 1] 100)
@@ -6174,7 +6178,7 @@
                     (:nonprop-percentage g)]])]
               [(get w [:prop-scroll-padding-inline :alt 1 :alt 1] 100)
                 (gen/tuple
-                  (igen/freq [
+                  (igen/freq :prop-scroll-padding-inline [
                     [(get w [:prop-scroll-padding-inline :alt 1 :alt 1 :cat 0 :alt 0] 100)
                       (gen/return "auto ")]
                     [(get w [:prop-scroll-padding-inline :alt 1 :alt 1 :cat 0 :alt 1] 100)
@@ -6182,7 +6186,7 @@
                     [(get w [:prop-scroll-padding-inline :alt 1 :alt 1 :cat 0 :alt 2] 100)
                       (:nonprop-percentage g)]])
                   (gen/return " ")
-                  (igen/freq [
+                  (igen/freq :prop-scroll-padding-inline [
                     [(get w [:prop-scroll-padding-inline :alt 1 :alt 1 :cat 2 :alt 0] 100)
                       (gen/return "auto ")]
                     [(get w [:prop-scroll-padding-inline :alt 1 :alt 1 :cat 2 :alt 1] 100)
@@ -6192,7 +6196,7 @@
         g (assoc g :prop-scroll-padding-inline gen-prop-scroll-padding-inline)
 
         gen-nonprop-masking-mode
-        (igen/freq [
+        (igen/freq :nonprop-masking-mode [
           [(get w [:nonprop-masking-mode :alt 0] 100)
             (gen/return "alpha ")]
           [(get w [:nonprop-masking-mode :alt 1] 100)
@@ -6202,13 +6206,13 @@
         g (assoc g :nonprop-masking-mode gen-nonprop-masking-mode)
 
         gen-prop-mask-mode
-        (igen/freq [
+        (igen/freq :prop-mask-mode [
           [(get w [:prop-mask-mode :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-mask-mode :alt 1] 100)
             (gen/tuple
               (:nonprop-masking-mode g)
-              (igen/freq [
+              (igen/freq :prop-mask-mode [
                 [(get w [:prop-mask-mode :alt 1 :cat 1 :star nil] 100)
                   (gen/return "")]
                 [(get w [:prop-mask-mode :alt 1 :cat 1 :star 0] 100)
@@ -6220,7 +6224,7 @@
         g (assoc g :prop-mask-mode gen-prop-mask-mode)
 
         gen-nonprop-quote
-        (igen/freq [
+        (igen/freq :nonprop-quote [
           [(get w [:nonprop-quote :alt 0] 100)
             (gen/return "open-quote ")]
           [(get w [:nonprop-quote :alt 1] 100)
@@ -6232,7 +6236,7 @@
         g (assoc g :nonprop-quote gen-nonprop-quote)
 
         gen-prop-scroll-snap-stop
-        (igen/freq [
+        (igen/freq :prop-scroll-snap-stop [
           [(get w [:prop-scroll-snap-stop :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-scroll-snap-stop :alt 1] 100)
@@ -6242,7 +6246,7 @@
         g (assoc g :prop-scroll-snap-stop gen-prop-scroll-snap-stop)
 
         gen-prop-letter-spacing
-        (igen/freq [
+        (igen/freq :prop-letter-spacing [
           [(get w [:prop-letter-spacing :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-letter-spacing :alt 1] 100)
@@ -6252,12 +6256,12 @@
         g (assoc g :prop-letter-spacing gen-prop-letter-spacing)
 
         gen-prop-border-top
-        (igen/freq [
+        (igen/freq :prop-border-top [
           [(get w [:prop-border-top :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-border-top :alt 1] 100)
             (igen/vector+
-              (igen/freq [
+              (igen/freq :prop-border-top [
                 [(get w [:prop-border-top :alt 1 :plus 0 :alt 0] 100)
                   (:nonprop-line-width g)]
                 [(get w [:prop-border-top :alt 1 :plus 0 :alt 1] 100)
@@ -6267,7 +6271,7 @@
         g (assoc g :prop-border-top gen-prop-border-top)
 
         gen-prop-text-combine-upright
-        (igen/freq [
+        (igen/freq :prop-text-combine-upright [
           [(get w [:prop-text-combine-upright :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-text-combine-upright :alt 1] 100)
@@ -6277,7 +6281,7 @@
           [(get w [:prop-text-combine-upright :alt 3] 100)
             (gen/tuple
               (gen/return "digits ")
-              (igen/freq [
+              (igen/freq :prop-text-combine-upright [
                 [(get w [:prop-text-combine-upright :alt 3 :cat 1 :opt nil] 100)
                   (gen/return "")]
                 [(get w [:prop-text-combine-upright :alt 3 :cat 1 :opt 0] 100)
@@ -6285,11 +6289,11 @@
         g (assoc g :prop-text-combine-upright gen-prop-text-combine-upright)
 
         gen-prop-border-bottom-right-radius
-        (igen/freq [
+        (igen/freq :prop-border-bottom-right-radius [
           [(get w [:prop-border-bottom-right-radius :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-border-bottom-right-radius :alt 1] 100)
-            (igen/freq [
+            (igen/freq :prop-border-bottom-right-radius [
               [(get w [:prop-border-bottom-right-radius :alt 1 :alt 0] 100)
                 (:nonprop-length-percentage g)]
               [(get w [:prop-border-bottom-right-radius :alt 1 :alt 1] 100)
@@ -6300,7 +6304,7 @@
         g (assoc g :prop-border-bottom-right-radius gen-prop-border-bottom-right-radius)
 
         gen-prop-page-break-after
-        (igen/freq [
+        (igen/freq :prop-page-break-after [
           [(get w [:prop-page-break-after :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-page-break-after :alt 1] 100)
@@ -6320,12 +6324,12 @@
         g (assoc g :prop-page-break-after gen-prop-page-break-after)
 
         gen-prop-border-image-slice
-        (igen/freq [
+        (igen/freq :prop-border-image-slice [
           [(get w [:prop-border-image-slice :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-border-image-slice :alt 1] 100)
             (gen/tuple
-              (igen/freq [
+              (igen/freq :prop-border-image-slice [
                 [(get w [:prop-border-image-slice :alt 1 :cat 0 :alt 0] 100)
                   (:nonprop-number-percentage g)]
                 [(get w [:prop-border-image-slice :alt 1 :cat 0 :alt 1] 100)
@@ -6349,7 +6353,7 @@
                     (:nonprop-number-percentage g)
                     (gen/return " ")
                     (:nonprop-number-percentage g))]])
-              (igen/freq [
+              (igen/freq :prop-border-image-slice [
                 [(get w [:prop-border-image-slice :alt 1 :cat 1 :opt nil] 100)
                   (gen/return "")]
                 [(get w [:prop-border-image-slice :alt 1 :cat 1 :opt 0] 100)
@@ -6361,7 +6365,7 @@
         g (assoc g :nonprop-border-image-slice gen-nonprop-border-image-slice)
 
         gen-prop-border-inline-start-color
-        (igen/freq [
+        (igen/freq :prop-border-inline-start-color [
           [(get w [:prop-border-inline-start-color :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-border-inline-start-color :alt 1] 100)
@@ -6369,13 +6373,13 @@
         g (assoc g :prop-border-inline-start-color gen-prop-border-inline-start-color)
 
         gen-prop-mask-image
-        (igen/freq [
+        (igen/freq :prop-mask-image [
           [(get w [:prop-mask-image :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-mask-image :alt 1] 100)
             (gen/tuple
               (:nonprop-mask-reference g)
-              (igen/freq [
+              (igen/freq :prop-mask-image [
                 [(get w [:prop-mask-image :alt 1 :cat 1 :star nil] 100)
                   (gen/return "")]
                 [(get w [:prop-mask-image :alt 1 :cat 1 :star 0] 100)
@@ -6387,13 +6391,13 @@
         g (assoc g :prop-mask-image gen-prop-mask-image)
 
         gen-prop-mask-position
-        (igen/freq [
+        (igen/freq :prop-mask-position [
           [(get w [:prop-mask-position :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-mask-position :alt 1] 100)
             (gen/tuple
               (:nonprop-position g)
-              (igen/freq [
+              (igen/freq :prop-mask-position [
                 [(get w [:prop-mask-position :alt 1 :cat 1 :star nil] 100)
                   (gen/return "")]
                 [(get w [:prop-mask-position :alt 1 :cat 1 :star 0] 100)
@@ -6405,7 +6409,7 @@
         g (assoc g :prop-mask-position gen-prop-mask-position)
 
         gen-prop-hyphens
-        (igen/freq [
+        (igen/freq :prop-hyphens [
           [(get w [:prop-hyphens :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-hyphens :alt 1] 100)
@@ -6417,13 +6421,13 @@
         g (assoc g :prop-hyphens gen-prop-hyphens)
 
         gen-prop-transition
-        (igen/freq [
+        (igen/freq :prop-transition [
           [(get w [:prop-transition :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-transition :alt 1] 100)
             (gen/tuple
               (:nonprop-single-transition g)
-              (igen/freq [
+              (igen/freq :prop-transition [
                 [(get w [:prop-transition :alt 1 :cat 1 :star nil] 100)
                   (gen/return "")]
                 [(get w [:prop-transition :alt 1 :cat 1 :star 0] 100)
@@ -6435,7 +6439,7 @@
         g (assoc g :prop-transition gen-prop-transition)
 
         gen-prop-caret-color
-        (igen/freq [
+        (igen/freq :prop-caret-color [
           [(get w [:prop-caret-color :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-caret-color :alt 1] 100)
@@ -6448,7 +6452,7 @@
         (gen/tuple
           (gen/return "ellipse ")
           (gen/return "( ")
-          (igen/freq [
+          (igen/freq :func-ellipse [
             [(get w [:func-ellipse :cat 2 :opt nil] 100)
               (gen/return "")]
             [(get w [:func-ellipse :cat 2 :opt 0] 100)
@@ -6456,7 +6460,7 @@
                 (:nonprop-shape-radius g)
                 (gen/return " ")
                 (:nonprop-shape-radius g))]])
-          (igen/freq [
+          (igen/freq :func-ellipse [
             [(get w [:func-ellipse :cat 3 :opt nil] 100)
               (gen/return "")]
             [(get w [:func-ellipse :cat 3 :opt 0] 100)
@@ -6467,7 +6471,7 @@
         g (assoc g :func-ellipse gen-func-ellipse)
 
         gen-prop-pointer-events
-        (igen/freq [
+        (igen/freq :prop-pointer-events [
           [(get w [:prop-pointer-events :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-pointer-events :alt 1] 100)
@@ -6495,13 +6499,13 @@
         g (assoc g :prop-pointer-events gen-prop-pointer-events)
 
         gen-prop-animation-fill-mode
-        (igen/freq [
+        (igen/freq :prop-animation-fill-mode [
           [(get w [:prop-animation-fill-mode :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-animation-fill-mode :alt 1] 100)
             (gen/tuple
               (:nonprop-single-animation-fill-mode g)
-              (igen/freq [
+              (igen/freq :prop-animation-fill-mode [
                 [(get w [:prop-animation-fill-mode :alt 1 :cat 1 :star nil] 100)
                   (gen/return "")]
                 [(get w [:prop-animation-fill-mode :alt 1 :cat 1 :star 0] 100)
@@ -6513,7 +6517,7 @@
         g (assoc g :prop-animation-fill-mode gen-prop-animation-fill-mode)
 
         gen-prop-margin-top
-        (igen/freq [
+        (igen/freq :prop-margin-top [
           [(get w [:prop-margin-top :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-margin-top :alt 1] 100)
@@ -6525,7 +6529,7 @@
         g (assoc g :prop-margin-top gen-prop-margin-top)
 
         gen-prop-touch-action
-        (igen/freq [
+        (igen/freq :prop-touch-action [
           [(get w [:prop-touch-action :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-touch-action :alt 1] 100)
@@ -6534,9 +6538,9 @@
             (gen/return "none ")]
           [(get w [:prop-touch-action :alt 3] 100)
             (igen/vector+
-              (igen/freq [
+              (igen/freq :prop-touch-action [
                 [(get w [:prop-touch-action :alt 3 :plus 0 :alt 0] 100)
-                  (igen/freq [
+                  (igen/freq :prop-touch-action [
                     [(get w [:prop-touch-action :alt 3 :plus 0 :alt 0 :alt 0] 100)
                       (gen/return "pan-x ")]
                     [(get w [:prop-touch-action :alt 3 :plus 0 :alt 0 :alt 1] 100)
@@ -6544,7 +6548,7 @@
                     [(get w [:prop-touch-action :alt 3 :plus 0 :alt 0 :alt 2] 100)
                       (gen/return "pan-right ")]])]
                 [(get w [:prop-touch-action :alt 3 :plus 0 :alt 1] 100)
-                  (igen/freq [
+                  (igen/freq :prop-touch-action [
                     [(get w [:prop-touch-action :alt 3 :plus 0 :alt 1 :alt 0] 100)
                       (gen/return "pan-y ")]
                     [(get w [:prop-touch-action :alt 3 :plus 0 :alt 1 :alt 1] 100)
@@ -6558,18 +6562,18 @@
         g (assoc g :prop-touch-action gen-prop-touch-action)
 
         gen-prop-text-underline-position
-        (igen/freq [
+        (igen/freq :prop-text-underline-position [
           [(get w [:prop-text-underline-position :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-text-underline-position :alt 1] 100)
             (gen/return "auto ")]
           [(get w [:prop-text-underline-position :alt 2] 100)
             (igen/vector+
-              (igen/freq [
+              (igen/freq :prop-text-underline-position [
                 [(get w [:prop-text-underline-position :alt 2 :plus 0 :alt 0] 100)
                   (gen/return "under ")]
                 [(get w [:prop-text-underline-position :alt 2 :plus 0 :alt 1] 100)
-                  (igen/freq [
+                  (igen/freq :prop-text-underline-position [
                     [(get w [:prop-text-underline-position :alt 2 :plus 0 :alt 1 :alt 0] 100)
                       (gen/return "left ")]
                     [(get w [:prop-text-underline-position :alt 2 :plus 0 :alt 1 :alt 1] 100)
@@ -6577,7 +6581,7 @@
         g (assoc g :prop-text-underline-position gen-prop-text-underline-position)
 
         gen-prop-line-break
-        (igen/freq [
+        (igen/freq :prop-line-break [
           [(get w [:prop-line-break :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-line-break :alt 1] 100)
@@ -6591,7 +6595,7 @@
         g (assoc g :prop-line-break gen-prop-line-break)
 
         gen-prop-scroll-margin-bottom
-        (igen/freq [
+        (igen/freq :prop-scroll-margin-bottom [
           [(get w [:prop-scroll-margin-bottom :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-scroll-margin-bottom :alt 1] 100)
@@ -6601,11 +6605,11 @@
         g (assoc g :prop-scroll-margin-bottom gen-prop-scroll-margin-bottom)
 
         gen-prop-border-end-start-radius
-        (igen/freq [
+        (igen/freq :prop-border-end-start-radius [
           [(get w [:prop-border-end-start-radius :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-border-end-start-radius :alt 1] 100)
-            (igen/freq [
+            (igen/freq :prop-border-end-start-radius [
               [(get w [:prop-border-end-start-radius :alt 1 :alt 0] 100)
                 (:nonprop-length-percentage g)]
               [(get w [:prop-border-end-start-radius :alt 1 :alt 1] 100)
@@ -6616,7 +6620,7 @@
         g (assoc g :prop-border-end-start-radius gen-prop-border-end-start-radius)
 
         gen-prop-padding-top
-        (igen/freq [
+        (igen/freq :prop-padding-top [
           [(get w [:prop-padding-top :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-padding-top :alt 1] 100)
@@ -6630,12 +6634,12 @@
         g (assoc g :nonprop-clip-source gen-nonprop-clip-source)
 
         gen-prop-border-radius
-        (igen/freq [
+        (igen/freq :prop-border-radius [
           [(get w [:prop-border-radius :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-border-radius :alt 1] 100)
             (gen/tuple
-              (igen/freq [
+              (igen/freq :prop-border-radius [
                 [(get w [:prop-border-radius :alt 1 :cat 0 :alt 0] 100)
                   (:nonprop-length-percentage g)]
                 [(get w [:prop-border-radius :alt 1 :cat 0 :alt 1] 100)
@@ -6659,13 +6663,13 @@
                     (:nonprop-length-percentage g)
                     (gen/return " ")
                     (:nonprop-length-percentage g))]])
-              (igen/freq [
+              (igen/freq :prop-border-radius [
                 [(get w [:prop-border-radius :alt 1 :cat 1 :opt nil] 100)
                   (gen/return "")]
                 [(get w [:prop-border-radius :alt 1 :cat 1 :opt 0] 100)
                   (gen/tuple
                     (gen/return "/ ")
-                    (igen/freq [
+                    (igen/freq :prop-border-radius [
                       [(get w [:prop-border-radius :alt 1 :cat 1 :opt 0 :cat 1 :alt 0] 100)
                         (:nonprop-length-percentage g)]
                       [(get w [:prop-border-radius :alt 1 :cat 1 :opt 0 :cat 1 :alt 1] 100)
@@ -6696,7 +6700,7 @@
         g (assoc g :nonprop-border-radius gen-nonprop-border-radius)
 
         gen-nonprop-fill-rule
-        (igen/freq [
+        (igen/freq :nonprop-fill-rule [
           [(get w [:nonprop-fill-rule :alt 0] 100)
             (gen/return "nonzero ")]
           [(get w [:nonprop-fill-rule :alt 1] 100)
@@ -6707,7 +6711,7 @@
         (gen/tuple
           (gen/return "polygon ")
           (gen/return "( ")
-          (igen/freq [
+          (igen/freq :func-polygon [
             [(get w [:func-polygon :cat 2 :opt nil] 100)
               (gen/return "")]
             [(get w [:func-polygon :cat 2 :opt 0] 100)
@@ -6716,7 +6720,7 @@
           (gen/tuple
             (:nonprop-length-percentage g)
             (:nonprop-length-percentage g))
-          (igen/freq [
+          (igen/freq :func-polygon [
             [(get w [:func-polygon :cat 5 :star nil] 100)
               (gen/return "")]
             [(get w [:func-polygon :cat 5 :star 0] 100)
@@ -6734,7 +6738,7 @@
         (gen/tuple
           (gen/return "inset ")
           (gen/return "( ")
-          (igen/freq [
+          (igen/freq :func-inset [
             [(get w [:func-inset :cat 2 :alt 0] 100)
               (:nonprop-length-percentage g)]
             [(get w [:func-inset :cat 2 :alt 1] 100)
@@ -6758,7 +6762,7 @@
                 (:nonprop-length-percentage g)
                 (gen/return " ")
                 (:nonprop-length-percentage g))]])
-          (igen/freq [
+          (igen/freq :func-inset [
             [(get w [:func-inset :cat 3 :opt nil] 100)
               (gen/return "")]
             [(get w [:func-inset :cat 3 :opt 0] 100)
@@ -6769,7 +6773,7 @@
         g (assoc g :func-inset gen-func-inset)
 
         gen-nonprop-basic-shape
-        (igen/freq [
+        (igen/freq :nonprop-basic-shape [
           [(get w [:nonprop-basic-shape :alt 0] 100)
             (:func-inset g)]
           [(get w [:nonprop-basic-shape :alt 1] 100)
@@ -6786,14 +6790,14 @@
         w weights
 
         gen-prop-shape-outside
-        (igen/freq [
+        (igen/freq :prop-shape-outside [
           [(get w [:prop-shape-outside :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-shape-outside :alt 1] 100)
             (gen/return "none ")]
           [(get w [:prop-shape-outside :alt 2] 100)
             (igen/vector+
-              (igen/freq [
+              (igen/freq :prop-shape-outside [
                 [(get w [:prop-shape-outside :alt 2 :plus 0 :alt 0] 100)
                   (:nonprop-shape-box g)]
                 [(get w [:prop-shape-outside :alt 2 :plus 0 :alt 1] 100)
@@ -6803,7 +6807,7 @@
         g (assoc g :prop-shape-outside gen-prop-shape-outside)
 
         gen-prop-block-size
-        (igen/freq [
+        (igen/freq :prop-block-size [
           [(get w [:prop-block-size :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-block-size :alt 1] 100)
@@ -6811,14 +6815,14 @@
         g (assoc g :prop-block-size gen-prop-block-size)
 
         gen-prop-clip-path
-        (igen/freq [
+        (igen/freq :prop-clip-path [
           [(get w [:prop-clip-path :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-clip-path :alt 1] 100)
             (:nonprop-clip-source g)]
           [(get w [:prop-clip-path :alt 2] 100)
             (igen/vector+
-              (igen/freq [
+              (igen/freq :prop-clip-path [
                 [(get w [:prop-clip-path :alt 2 :plus 0 :alt 0] 100)
                   (:nonprop-basic-shape g)]
                 [(get w [:prop-clip-path :alt 2 :plus 0 :alt 1] 100)
@@ -6832,7 +6836,7 @@
         g (assoc g :nonprop-y gen-nonprop-y)
 
         gen-prop-scroll-padding-left
-        (igen/freq [
+        (igen/freq :prop-scroll-padding-left [
           [(get w [:prop-scroll-padding-left :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-scroll-padding-left :alt 1] 100)
@@ -6844,7 +6848,7 @@
         g (assoc g :prop-scroll-padding-left gen-prop-scroll-padding-left)
 
         gen-prop-word-break
-        (igen/freq [
+        (igen/freq :prop-word-break [
           [(get w [:prop-word-break :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-word-break :alt 1] 100)
@@ -6858,7 +6862,7 @@
         g (assoc g :prop-word-break gen-prop-word-break)
 
         gen-prop-transition-property
-        (igen/freq [
+        (igen/freq :prop-transition-property [
           [(get w [:prop-transition-property :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-transition-property :alt 1] 100)
@@ -6866,7 +6870,7 @@
           [(get w [:prop-transition-property :alt 2] 100)
             (gen/tuple
               (:nonprop-single-transition-property g)
-              (igen/freq [
+              (igen/freq :prop-transition-property [
                 [(get w [:prop-transition-property :alt 2 :cat 1 :star nil] 100)
                   (gen/return "")]
                 [(get w [:prop-transition-property :alt 2 :cat 1 :star 0] 100)
@@ -6878,7 +6882,7 @@
         g (assoc g :prop-transition-property gen-prop-transition-property)
 
         gen-prop-list-style-image
-        (igen/freq [
+        (igen/freq :prop-list-style-image [
           [(get w [:prop-list-style-image :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-list-style-image :alt 1] 100)
@@ -6888,7 +6892,7 @@
         g (assoc g :prop-list-style-image gen-prop-list-style-image)
 
         gen-prop-border-bottom-color
-        (igen/freq [
+        (igen/freq :prop-border-bottom-color [
           [(get w [:prop-border-bottom-color :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-border-bottom-color :alt 1] 100)
@@ -6900,12 +6904,12 @@
         g (assoc g :nonprop-list-style-image gen-nonprop-list-style-image)
 
         gen-prop-list-style
-        (igen/freq [
+        (igen/freq :prop-list-style [
           [(get w [:prop-list-style :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-list-style :alt 1] 100)
             (igen/vector+
-              (igen/freq [
+              (igen/freq :prop-list-style [
                 [(get w [:prop-list-style :alt 1 :plus 0 :alt 0] 100)
                   (:nonprop-list-style-type g)]
                 [(get w [:prop-list-style :alt 1 :plus 0 :alt 1] 100)
@@ -6915,7 +6919,7 @@
         g (assoc g :prop-list-style gen-prop-list-style)
 
         gen-prop-border-collapse
-        (igen/freq [
+        (igen/freq :prop-border-collapse [
           [(get w [:prop-border-collapse :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-border-collapse :alt 1] 100)
@@ -6925,11 +6929,11 @@
         g (assoc g :prop-border-collapse gen-prop-border-collapse)
 
         gen-prop-border-block-color
-        (igen/freq [
+        (igen/freq :prop-border-block-color [
           [(get w [:prop-border-block-color :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-border-block-color :alt 1] 100)
-            (igen/freq [
+            (igen/freq :prop-border-block-color [
               [(get w [:prop-border-block-color :alt 1 :alt 0] 100)
                 (:nonprop-border-top-color g)]
               [(get w [:prop-border-block-color :alt 1 :alt 1] 100)
@@ -6940,7 +6944,7 @@
         g (assoc g :prop-border-block-color gen-prop-border-block-color)
 
         gen-prop-break-before
-        (igen/freq [
+        (igen/freq :prop-break-before [
           [(get w [:prop-break-before :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-break-before :alt 1] 100)
@@ -6974,7 +6978,7 @@
         g (assoc g :prop-break-before gen-prop-break-before)
 
         gen-prop-background-color
-        (igen/freq [
+        (igen/freq :prop-background-color [
           [(get w [:prop-background-color :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-background-color :alt 1] 100)
@@ -6982,13 +6986,13 @@
         g (assoc g :prop-background-color gen-prop-background-color)
 
         gen-prop-transition-timing-function
-        (igen/freq [
+        (igen/freq :prop-transition-timing-function [
           [(get w [:prop-transition-timing-function :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-transition-timing-function :alt 1] 100)
             (gen/tuple
               (:nonprop-timing-function g)
-              (igen/freq [
+              (igen/freq :prop-transition-timing-function [
                 [(get w [:prop-transition-timing-function :alt 1 :cat 1 :star nil] 100)
                   (gen/return "")]
                 [(get w [:prop-transition-timing-function :alt 1 :cat 1 :star 0] 100)
@@ -7000,13 +7004,13 @@
         g (assoc g :prop-transition-timing-function gen-prop-transition-timing-function)
 
         gen-prop-background-clip
-        (igen/freq [
+        (igen/freq :prop-background-clip [
           [(get w [:prop-background-clip :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-background-clip :alt 1] 100)
             (gen/tuple
               (:nonprop-box g)
-              (igen/freq [
+              (igen/freq :prop-background-clip [
                 [(get w [:prop-background-clip :alt 1 :cat 1 :star nil] 100)
                   (gen/return "")]
                 [(get w [:prop-background-clip :alt 1 :cat 1 :star 0] 100)
@@ -7018,7 +7022,7 @@
         g (assoc g :prop-background-clip gen-prop-background-clip)
 
         gen-prop-word-wrap
-        (igen/freq [
+        (igen/freq :prop-word-wrap [
           [(get w [:prop-word-wrap :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-word-wrap :alt 1] 100)
@@ -7028,7 +7032,7 @@
         g (assoc g :prop-word-wrap gen-prop-word-wrap)
 
         gen-prop-scroll-margin-inline-start
-        (igen/freq [
+        (igen/freq :prop-scroll-margin-inline-start [
           [(get w [:prop-scroll-margin-inline-start :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-scroll-margin-inline-start :alt 1] 100)
@@ -7038,14 +7042,14 @@
         g (assoc g :prop-scroll-margin-inline-start gen-prop-scroll-margin-inline-start)
 
         gen-prop-font-variant-alternates
-        (igen/freq [
+        (igen/freq :prop-font-variant-alternates [
           [(get w [:prop-font-variant-alternates :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-font-variant-alternates :alt 1] 100)
             (gen/return "normal ")]
           [(get w [:prop-font-variant-alternates :alt 2] 100)
             (igen/vector+
-              (igen/freq [
+              (igen/freq :prop-font-variant-alternates [
                 [(get w [:prop-font-variant-alternates :alt 2 :plus 0 :alt 0] 100)
                   (gen/tuple
                     (gen/return "stylistic ")
@@ -7059,7 +7063,7 @@
                     (gen/return "styleset ")
                     (gen/return "( ")
                     (:nonprop-feature-value-name g)
-                    (igen/freq [
+                    (igen/freq :prop-font-variant-alternates [
                       [(get w [:prop-font-variant-alternates :alt 2 :plus 0 :alt 2 :cat 3 :star nil] 100)
                         (gen/return "")]
                       [(get w [:prop-font-variant-alternates :alt 2 :plus 0 :alt 2 :cat 3 :star 0] 100)
@@ -7074,7 +7078,7 @@
                     (gen/return "character-variant ")
                     (gen/return "( ")
                     (:nonprop-feature-value-name g)
-                    (igen/freq [
+                    (igen/freq :prop-font-variant-alternates [
                       [(get w [:prop-font-variant-alternates :alt 2 :plus 0 :alt 3 :cat 3 :star nil] 100)
                         (gen/return "")]
                       [(get w [:prop-font-variant-alternates :alt 2 :plus 0 :alt 3 :cat 3 :star 0] 100)
@@ -7105,7 +7109,7 @@
         g (assoc g :prop-font-variant-alternates gen-prop-font-variant-alternates)
 
         gen-prop-image-orientation
-        (igen/freq [
+        (igen/freq :prop-image-orientation [
           [(get w [:prop-image-orientation :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-image-orientation :alt 1] 100)
@@ -7114,7 +7118,7 @@
             (:nonprop-angle g)]
           [(get w [:prop-image-orientation :alt 3] 100)
             (gen/tuple
-              (igen/freq [
+              (igen/freq :prop-image-orientation [
                 [(get w [:prop-image-orientation :alt 3 :cat 0 :opt nil] 100)
                   (gen/return "")]
                 [(get w [:prop-image-orientation :alt 3 :cat 0 :opt 0] 100)
@@ -7123,13 +7127,13 @@
         g (assoc g :prop-image-orientation gen-prop-image-orientation)
 
         gen-prop-grid-column
-        (igen/freq [
+        (igen/freq :prop-grid-column [
           [(get w [:prop-grid-column :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-grid-column :alt 1] 100)
             (gen/tuple
               (:nonprop-grid-line g)
-              (igen/freq [
+              (igen/freq :prop-grid-column [
                 [(get w [:prop-grid-column :alt 1 :cat 1 :opt nil] 100)
                   (gen/return "")]
                 [(get w [:prop-grid-column :alt 1 :cat 1 :opt 0] 100)
@@ -7139,7 +7143,7 @@
         g (assoc g :prop-grid-column gen-prop-grid-column)
 
         gen-prop-position
-        (igen/freq [
+        (igen/freq :prop-position [
           [(get w [:prop-position :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-position :alt 1] 100)
@@ -7155,7 +7159,7 @@
         g (assoc g :prop-position gen-prop-position)
 
         gen-prop-grid-row-start
-        (igen/freq [
+        (igen/freq :prop-grid-row-start [
           [(get w [:prop-grid-row-start :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-grid-row-start :alt 1] 100)
@@ -7163,7 +7167,7 @@
         g (assoc g :prop-grid-row-start gen-prop-grid-row-start)
 
         gen-prop-scroll-padding-inline-end
-        (igen/freq [
+        (igen/freq :prop-scroll-padding-inline-end [
           [(get w [:prop-scroll-padding-inline-end :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-scroll-padding-inline-end :alt 1] 100)
@@ -7175,11 +7179,11 @@
         g (assoc g :prop-scroll-padding-inline-end gen-prop-scroll-padding-inline-end)
 
         gen-prop-border-top-left-radius
-        (igen/freq [
+        (igen/freq :prop-border-top-left-radius [
           [(get w [:prop-border-top-left-radius :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-border-top-left-radius :alt 1] 100)
-            (igen/freq [
+            (igen/freq :prop-border-top-left-radius [
               [(get w [:prop-border-top-left-radius :alt 1 :alt 0] 100)
                 (:nonprop-length-percentage g)]
               [(get w [:prop-border-top-left-radius :alt 1 :alt 1] 100)
@@ -7190,7 +7194,7 @@
         g (assoc g :prop-border-top-left-radius gen-prop-border-top-left-radius)
 
         gen-prop-margin-inline-end
-        (igen/freq [
+        (igen/freq :prop-margin-inline-end [
           [(get w [:prop-margin-inline-end :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-margin-inline-end :alt 1] 100)
@@ -7198,7 +7202,7 @@
         g (assoc g :prop-margin-inline-end gen-prop-margin-inline-end)
 
         gen-prop-scroll-padding-bottom
-        (igen/freq [
+        (igen/freq :prop-scroll-padding-bottom [
           [(get w [:prop-scroll-padding-bottom :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-scroll-padding-bottom :alt 1] 100)
@@ -7210,13 +7214,13 @@
         g (assoc g :prop-scroll-padding-bottom gen-prop-scroll-padding-bottom)
 
         gen-prop-background-attachment
-        (igen/freq [
+        (igen/freq :prop-background-attachment [
           [(get w [:prop-background-attachment :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-background-attachment :alt 1] 100)
             (gen/tuple
               (:nonprop-attachment g)
-              (igen/freq [
+              (igen/freq :prop-background-attachment [
                 [(get w [:prop-background-attachment :alt 1 :cat 1 :star nil] 100)
                   (gen/return "")]
                 [(get w [:prop-background-attachment :alt 1 :cat 1 :star 0] 100)
@@ -7228,11 +7232,11 @@
         g (assoc g :prop-background-attachment gen-prop-background-attachment)
 
         gen-prop-padding-block
-        (igen/freq [
+        (igen/freq :prop-padding-block [
           [(get w [:prop-padding-block :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-padding-block :alt 1] 100)
-            (igen/freq [
+            (igen/freq :prop-padding-block [
               [(get w [:prop-padding-block :alt 1 :alt 0] 100)
                 (:nonprop-padding-left g)]
               [(get w [:prop-padding-block :alt 1 :alt 1] 100)
@@ -7243,7 +7247,7 @@
         g (assoc g :prop-padding-block gen-prop-padding-block)
 
         gen-prop-table-layout
-        (igen/freq [
+        (igen/freq :prop-table-layout [
           [(get w [:prop-table-layout :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-table-layout :alt 1] 100)
@@ -7253,7 +7257,7 @@
         g (assoc g :prop-table-layout gen-prop-table-layout)
 
         gen-prop-border-left-width
-        (igen/freq [
+        (igen/freq :prop-border-left-width [
           [(get w [:prop-border-left-width :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-border-left-width :alt 1] 100)
@@ -7261,7 +7265,7 @@
         g (assoc g :prop-border-left-width gen-prop-border-left-width)
 
         gen-nonprop-font-weight-absolute
-        (igen/freq [
+        (igen/freq :nonprop-font-weight-absolute [
           [(get w [:nonprop-font-weight-absolute :alt 0] 100)
             (gen/return "normal ")]
           [(get w [:nonprop-font-weight-absolute :alt 1] 100)
@@ -7271,7 +7275,7 @@
         g (assoc g :nonprop-font-weight-absolute gen-nonprop-font-weight-absolute)
 
         gen-prop-font-weight
-        (igen/freq [
+        (igen/freq :prop-font-weight [
           [(get w [:prop-font-weight :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-font-weight :alt 1] 100)
@@ -7283,7 +7287,7 @@
         g (assoc g :prop-font-weight gen-prop-font-weight)
 
         gen-prop-scroll-margin-block-end
-        (igen/freq [
+        (igen/freq :prop-scroll-margin-block-end [
           [(get w [:prop-scroll-margin-block-end :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-scroll-margin-block-end :alt 1] 100)
@@ -7293,13 +7297,13 @@
         g (assoc g :prop-scroll-margin-block-end gen-prop-scroll-margin-block-end)
 
         gen-prop-animation-timing-function
-        (igen/freq [
+        (igen/freq :prop-animation-timing-function [
           [(get w [:prop-animation-timing-function :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-animation-timing-function :alt 1] 100)
             (gen/tuple
               (:nonprop-timing-function g)
-              (igen/freq [
+              (igen/freq :prop-animation-timing-function [
                 [(get w [:prop-animation-timing-function :alt 1 :cat 1 :star nil] 100)
                   (gen/return "")]
                 [(get w [:prop-animation-timing-function :alt 1 :cat 1 :star 0] 100)
@@ -7311,7 +7315,7 @@
         g (assoc g :prop-animation-timing-function gen-prop-animation-timing-function)
 
         gen-prop-page-break-before
-        (igen/freq [
+        (igen/freq :prop-page-break-before [
           [(get w [:prop-page-break-before :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-page-break-before :alt 1] 100)
@@ -7331,7 +7335,7 @@
         g (assoc g :prop-page-break-before gen-prop-page-break-before)
 
         gen-nonprop-single-animation-iteration-count
-        (igen/freq [
+        (igen/freq :nonprop-single-animation-iteration-count [
           [(get w [:nonprop-single-animation-iteration-count :alt 0] 100)
             (gen/return "infinite ")]
           [(get w [:nonprop-single-animation-iteration-count :alt 1] 100)
@@ -7340,7 +7344,7 @@
 
         gen-nonprop-single-animation
         (igen/vector+
-          (igen/freq [
+          (igen/freq :nonprop-single-animation [
             [(get w [:nonprop-single-animation :plus 0 :alt 0] 100)
               (:nonprop-time g)]
             [(get w [:nonprop-single-animation :plus 0 :alt 1] 100)
@@ -7356,7 +7360,7 @@
             [(get w [:nonprop-single-animation :plus 0 :alt 6] 100)
               (:nonprop-single-animation-play-state g)]
             [(get w [:nonprop-single-animation :plus 0 :alt 7] 100)
-              (igen/freq [
+              (igen/freq :nonprop-single-animation [
                 [(get w [:nonprop-single-animation :plus 0 :alt 7 :alt 0] 100)
                   (gen/return "none ")]
                 [(get w [:nonprop-single-animation :plus 0 :alt 7 :alt 1] 100)
@@ -7364,7 +7368,7 @@
         g (assoc g :nonprop-single-animation gen-nonprop-single-animation)
 
         gen-prop-grid-column-start
-        (igen/freq [
+        (igen/freq :prop-grid-column-start [
           [(get w [:prop-grid-column-start :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-grid-column-start :alt 1] 100)
@@ -7372,11 +7376,11 @@
         g (assoc g :prop-grid-column-start gen-prop-grid-column-start)
 
         gen-prop-border-color
-        (igen/freq [
+        (igen/freq :prop-border-color [
           [(get w [:prop-border-color :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-border-color :alt 1] 100)
-            (igen/freq [
+            (igen/freq :prop-border-color [
               [(get w [:prop-border-color :alt 1 :alt 0] 100)
                 (:nonprop-color g)]
               [(get w [:prop-border-color :alt 1 :alt 1] 100)
@@ -7404,13 +7408,13 @@
 
         gen-nonprop-bg-layer
         (igen/vector+
-          (igen/freq [
+          (igen/freq :nonprop-bg-layer [
             [(get w [:nonprop-bg-layer :plus 0 :alt 0] 100)
               (:nonprop-bg-image g)]
             [(get w [:nonprop-bg-layer :plus 0 :alt 1] 100)
               (gen/tuple
                 (:nonprop-bg-position g)
-                (igen/freq [
+                (igen/freq :nonprop-bg-layer [
                   [(get w [:nonprop-bg-layer :plus 0 :alt 1 :cat 1 :opt nil] 100)
                     (gen/return "")]
                   [(get w [:nonprop-bg-layer :plus 0 :alt 1 :cat 1 :opt 0] 100)
@@ -7428,7 +7432,7 @@
         g (assoc g :nonprop-bg-layer gen-nonprop-bg-layer)
 
         gen-prop-font-variant-position
-        (igen/freq [
+        (igen/freq :prop-font-variant-position [
           [(get w [:prop-font-variant-position :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-font-variant-position :alt 1] 100)
@@ -7440,7 +7444,7 @@
         g (assoc g :prop-font-variant-position gen-prop-font-variant-position)
 
         gen-prop-grid-column-end
-        (igen/freq [
+        (igen/freq :prop-grid-column-end [
           [(get w [:prop-grid-column-end :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-grid-column-end :alt 1] 100)
@@ -7448,7 +7452,7 @@
         g (assoc g :prop-grid-column-end gen-prop-grid-column-end)
 
         gen-prop-text-emphasis-color
-        (igen/freq [
+        (igen/freq :prop-text-emphasis-color [
           [(get w [:prop-text-emphasis-color :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-text-emphasis-color :alt 1] 100)
@@ -7456,13 +7460,13 @@
         g (assoc g :prop-text-emphasis-color gen-prop-text-emphasis-color)
 
         gen-prop-background-size
-        (igen/freq [
+        (igen/freq :prop-background-size [
           [(get w [:prop-background-size :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-background-size :alt 1] 100)
             (gen/tuple
               (:nonprop-bg-size g)
-              (igen/freq [
+              (igen/freq :prop-background-size [
                 [(get w [:prop-background-size :alt 1 :cat 1 :star nil] 100)
                   (gen/return "")]
                 [(get w [:prop-background-size :alt 1 :cat 1 :star 0] 100)
@@ -7474,14 +7478,14 @@
         g (assoc g :prop-background-size gen-prop-background-size)
 
         gen-prop-font-variant-east-asian
-        (igen/freq [
+        (igen/freq :prop-font-variant-east-asian [
           [(get w [:prop-font-variant-east-asian :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-font-variant-east-asian :alt 1] 100)
             (gen/return "normal ")]
           [(get w [:prop-font-variant-east-asian :alt 2] 100)
             (igen/vector+
-              (igen/freq [
+              (igen/freq :prop-font-variant-east-asian [
                 [(get w [:prop-font-variant-east-asian :alt 2 :plus 0 :alt 0] 100)
                   (:nonprop-east-asian-variant-values g)]
                 [(get w [:prop-font-variant-east-asian :alt 2 :plus 0 :alt 1] 100)
@@ -7491,7 +7495,7 @@
         g (assoc g :prop-font-variant-east-asian gen-prop-font-variant-east-asian)
 
         gen-prop-perspective-origin
-        (igen/freq [
+        (igen/freq :prop-perspective-origin [
           [(get w [:prop-perspective-origin :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-perspective-origin :alt 1] 100)
@@ -7499,13 +7503,13 @@
         g (assoc g :prop-perspective-origin gen-prop-perspective-origin)
 
         gen-prop-animation
-        (igen/freq [
+        (igen/freq :prop-animation [
           [(get w [:prop-animation :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-animation :alt 1] 100)
             (gen/tuple
               (:nonprop-single-animation g)
-              (igen/freq [
+              (igen/freq :prop-animation [
                 [(get w [:prop-animation :alt 1 :cat 1 :star nil] 100)
                   (gen/return "")]
                 [(get w [:prop-animation :alt 1 :cat 1 :star 0] 100)
@@ -7517,7 +7521,7 @@
         g (assoc g :prop-animation gen-prop-animation)
 
         gen-prop-margin-block-start
-        (igen/freq [
+        (igen/freq :prop-margin-block-start [
           [(get w [:prop-margin-block-start :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-margin-block-start :alt 1] 100)
@@ -7530,7 +7534,7 @@
         w weights
 
         gen-prop-translate
-        (igen/freq [
+        (igen/freq :prop-translate [
           [(get w [:prop-translate :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-translate :alt 1] 100)
@@ -7538,13 +7542,13 @@
           [(get w [:prop-translate :alt 2] 100)
             (gen/tuple
               (:nonprop-length-percentage g)
-              (igen/freq [
+              (igen/freq :prop-translate [
                 [(get w [:prop-translate :alt 2 :cat 1 :opt nil] 100)
                   (gen/return "")]
                 [(get w [:prop-translate :alt 2 :cat 1 :opt 0] 100)
                   (gen/tuple
                     (:nonprop-length-percentage g)
-                    (igen/freq [
+                    (igen/freq :prop-translate [
                       [(get w [:prop-translate :alt 2 :cat 1 :opt 0 :cat 1 :opt nil] 100)
                         (gen/return "")]
                       [(get w [:prop-translate :alt 2 :cat 1 :opt 0 :cat 1 :opt 0] 100)
@@ -7552,7 +7556,7 @@
         g (assoc g :prop-translate gen-prop-translate)
 
         gen-prop-transform-style
-        (igen/freq [
+        (igen/freq :prop-transform-style [
           [(get w [:prop-transform-style :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-transform-style :alt 1] 100)
@@ -7566,13 +7570,13 @@
         g (assoc g :nonprop-content-replacement gen-nonprop-content-replacement)
 
         gen-prop-animation-direction
-        (igen/freq [
+        (igen/freq :prop-animation-direction [
           [(get w [:prop-animation-direction :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-animation-direction :alt 1] 100)
             (gen/tuple
               (:nonprop-single-animation-direction g)
-              (igen/freq [
+              (igen/freq :prop-animation-direction [
                 [(get w [:prop-animation-direction :alt 1 :cat 1 :star nil] 100)
                   (gen/return "")]
                 [(get w [:prop-animation-direction :alt 1 :cat 1 :star 0] 100)
@@ -7584,70 +7588,70 @@
         g (assoc g :prop-animation-direction gen-prop-animation-direction)
 
         gen-prop-border-image-outset
-        (igen/freq [
+        (igen/freq :prop-border-image-outset [
           [(get w [:prop-border-image-outset :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-border-image-outset :alt 1] 100)
-            (igen/freq [
+            (igen/freq :prop-border-image-outset [
               [(get w [:prop-border-image-outset :alt 1 :alt 0] 100)
-                (igen/freq [
+                (igen/freq :prop-border-image-outset [
                   [(get w [:prop-border-image-outset :alt 1 :alt 0 :alt 0] 100)
                     (:nonprop-length g)]
                   [(get w [:prop-border-image-outset :alt 1 :alt 0 :alt 1] 100)
                     (:nonprop-number g)]])]
               [(get w [:prop-border-image-outset :alt 1 :alt 1] 100)
                 (gen/tuple
-                  (igen/freq [
+                  (igen/freq :prop-border-image-outset [
                     [(get w [:prop-border-image-outset :alt 1 :alt 1 :cat 0 :alt 0] 100)
                       (:nonprop-length g)]
                     [(get w [:prop-border-image-outset :alt 1 :alt 1 :cat 0 :alt 1] 100)
                       (:nonprop-number g)]])
                   (gen/return " ")
-                  (igen/freq [
+                  (igen/freq :prop-border-image-outset [
                     [(get w [:prop-border-image-outset :alt 1 :alt 1 :cat 2 :alt 0] 100)
                       (:nonprop-length g)]
                     [(get w [:prop-border-image-outset :alt 1 :alt 1 :cat 2 :alt 1] 100)
                       (:nonprop-number g)]]))]
               [(get w [:prop-border-image-outset :alt 1 :alt 2] 100)
                 (gen/tuple
-                  (igen/freq [
+                  (igen/freq :prop-border-image-outset [
                     [(get w [:prop-border-image-outset :alt 1 :alt 2 :cat 0 :alt 0] 100)
                       (:nonprop-length g)]
                     [(get w [:prop-border-image-outset :alt 1 :alt 2 :cat 0 :alt 1] 100)
                       (:nonprop-number g)]])
                   (gen/return " ")
-                  (igen/freq [
+                  (igen/freq :prop-border-image-outset [
                     [(get w [:prop-border-image-outset :alt 1 :alt 2 :cat 2 :alt 0] 100)
                       (:nonprop-length g)]
                     [(get w [:prop-border-image-outset :alt 1 :alt 2 :cat 2 :alt 1] 100)
                       (:nonprop-number g)]])
                   (gen/return " ")
-                  (igen/freq [
+                  (igen/freq :prop-border-image-outset [
                     [(get w [:prop-border-image-outset :alt 1 :alt 2 :cat 4 :alt 0] 100)
                       (:nonprop-length g)]
                     [(get w [:prop-border-image-outset :alt 1 :alt 2 :cat 4 :alt 1] 100)
                       (:nonprop-number g)]]))]
               [(get w [:prop-border-image-outset :alt 1 :alt 3] 100)
                 (gen/tuple
-                  (igen/freq [
+                  (igen/freq :prop-border-image-outset [
                     [(get w [:prop-border-image-outset :alt 1 :alt 3 :cat 0 :alt 0] 100)
                       (:nonprop-length g)]
                     [(get w [:prop-border-image-outset :alt 1 :alt 3 :cat 0 :alt 1] 100)
                       (:nonprop-number g)]])
                   (gen/return " ")
-                  (igen/freq [
+                  (igen/freq :prop-border-image-outset [
                     [(get w [:prop-border-image-outset :alt 1 :alt 3 :cat 2 :alt 0] 100)
                       (:nonprop-length g)]
                     [(get w [:prop-border-image-outset :alt 1 :alt 3 :cat 2 :alt 1] 100)
                       (:nonprop-number g)]])
                   (gen/return " ")
-                  (igen/freq [
+                  (igen/freq :prop-border-image-outset [
                     [(get w [:prop-border-image-outset :alt 1 :alt 3 :cat 4 :alt 0] 100)
                       (:nonprop-length g)]
                     [(get w [:prop-border-image-outset :alt 1 :alt 3 :cat 4 :alt 1] 100)
                       (:nonprop-number g)]])
                   (gen/return " ")
-                  (igen/freq [
+                  (igen/freq :prop-border-image-outset [
                     [(get w [:prop-border-image-outset :alt 1 :alt 3 :cat 6 :alt 0] 100)
                       (:nonprop-length g)]
                     [(get w [:prop-border-image-outset :alt 1 :alt 3 :cat 6 :alt 1] 100)
@@ -7655,7 +7659,7 @@
         g (assoc g :prop-border-image-outset gen-prop-border-image-outset)
 
         gen-prop-margin-inline-start
-        (igen/freq [
+        (igen/freq :prop-margin-inline-start [
           [(get w [:prop-margin-inline-start :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-margin-inline-start :alt 1] 100)
@@ -7663,14 +7667,14 @@
         g (assoc g :prop-margin-inline-start gen-prop-margin-inline-start)
 
         gen-prop-scroll-snap-type
-        (igen/freq [
+        (igen/freq :prop-scroll-snap-type [
           [(get w [:prop-scroll-snap-type :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-scroll-snap-type :alt 1] 100)
             (gen/return "none ")]
           [(get w [:prop-scroll-snap-type :alt 2] 100)
             (gen/tuple
-              (igen/freq [
+              (igen/freq :prop-scroll-snap-type [
                 [(get w [:prop-scroll-snap-type :alt 2 :cat 0 :alt 0] 100)
                   (gen/return "x ")]
                 [(get w [:prop-scroll-snap-type :alt 2 :cat 0 :alt 1] 100)
@@ -7681,7 +7685,7 @@
                   (gen/return "inline ")]
                 [(get w [:prop-scroll-snap-type :alt 2 :cat 0 :alt 4] 100)
                   (gen/return "both ")]])
-              (igen/freq [
+              (igen/freq :prop-scroll-snap-type [
                 [(get w [:prop-scroll-snap-type :alt 2 :cat 1 :alt 0] 100)
                   (gen/return "mandatory ")]
                 [(get w [:prop-scroll-snap-type :alt 2 :cat 1 :alt 1] 100)
@@ -7689,7 +7693,7 @@
         g (assoc g :prop-scroll-snap-type gen-prop-scroll-snap-type)
 
         gen-prop-scroll-padding-top
-        (igen/freq [
+        (igen/freq :prop-scroll-padding-top [
           [(get w [:prop-scroll-padding-top :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-scroll-padding-top :alt 1] 100)
@@ -7701,7 +7705,7 @@
         g (assoc g :prop-scroll-padding-top gen-prop-scroll-padding-top)
 
         gen-prop-max-height
-        (igen/freq [
+        (igen/freq :prop-max-height [
           [(get w [:prop-max-height :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-max-height :alt 1] 100)
@@ -7721,7 +7725,7 @@
         g (assoc g :prop-max-height gen-prop-max-height)
 
         gen-prop-border-block-style
-        (igen/freq [
+        (igen/freq :prop-border-block-style [
           [(get w [:prop-border-block-style :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-border-block-style :alt 1] 100)
@@ -7729,13 +7733,13 @@
         g (assoc g :prop-border-block-style gen-prop-border-block-style)
 
         gen-prop-border-image-repeat
-        (igen/freq [
+        (igen/freq :prop-border-image-repeat [
           [(get w [:prop-border-image-repeat :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-border-image-repeat :alt 1] 100)
-            (igen/freq [
+            (igen/freq :prop-border-image-repeat [
               [(get w [:prop-border-image-repeat :alt 1 :alt 0] 100)
-                (igen/freq [
+                (igen/freq :prop-border-image-repeat [
                   [(get w [:prop-border-image-repeat :alt 1 :alt 0 :alt 0] 100)
                     (gen/return "stretch ")]
                   [(get w [:prop-border-image-repeat :alt 1 :alt 0 :alt 1] 100)
@@ -7746,7 +7750,7 @@
                     (gen/return "space ")]])]
               [(get w [:prop-border-image-repeat :alt 1 :alt 1] 100)
                 (gen/tuple
-                  (igen/freq [
+                  (igen/freq :prop-border-image-repeat [
                     [(get w [:prop-border-image-repeat :alt 1 :alt 1 :cat 0 :alt 0] 100)
                       (gen/return "stretch ")]
                     [(get w [:prop-border-image-repeat :alt 1 :alt 1 :cat 0 :alt 1] 100)
@@ -7756,7 +7760,7 @@
                     [(get w [:prop-border-image-repeat :alt 1 :alt 1 :cat 0 :alt 3] 100)
                       (gen/return "space ")]])
                   (gen/return " ")
-                  (igen/freq [
+                  (igen/freq :prop-border-image-repeat [
                     [(get w [:prop-border-image-repeat :alt 1 :alt 1 :cat 2 :alt 0] 100)
                       (gen/return "stretch ")]
                     [(get w [:prop-border-image-repeat :alt 1 :alt 1 :cat 2 :alt 1] 100)
@@ -7772,13 +7776,13 @@
         g (assoc g :nonprop-border-image-repeat gen-nonprop-border-image-repeat)
 
         gen-prop-border-image-width
-        (igen/freq [
+        (igen/freq :prop-border-image-width [
           [(get w [:prop-border-image-width :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-border-image-width :alt 1] 100)
-            (igen/freq [
+            (igen/freq :prop-border-image-width [
               [(get w [:prop-border-image-width :alt 1 :alt 0] 100)
-                (igen/freq [
+                (igen/freq :prop-border-image-width [
                   [(get w [:prop-border-image-width :alt 1 :alt 0 :alt 0] 100)
                     (:nonprop-length-percentage g)]
                   [(get w [:prop-border-image-width :alt 1 :alt 0 :alt 1] 100)
@@ -7787,7 +7791,7 @@
                     (gen/return "auto ")]])]
               [(get w [:prop-border-image-width :alt 1 :alt 1] 100)
                 (gen/tuple
-                  (igen/freq [
+                  (igen/freq :prop-border-image-width [
                     [(get w [:prop-border-image-width :alt 1 :alt 1 :cat 0 :alt 0] 100)
                       (:nonprop-length-percentage g)]
                     [(get w [:prop-border-image-width :alt 1 :alt 1 :cat 0 :alt 1] 100)
@@ -7795,7 +7799,7 @@
                     [(get w [:prop-border-image-width :alt 1 :alt 1 :cat 0 :alt 2] 100)
                       (gen/return "auto ")]])
                   (gen/return " ")
-                  (igen/freq [
+                  (igen/freq :prop-border-image-width [
                     [(get w [:prop-border-image-width :alt 1 :alt 1 :cat 2 :alt 0] 100)
                       (:nonprop-length-percentage g)]
                     [(get w [:prop-border-image-width :alt 1 :alt 1 :cat 2 :alt 1] 100)
@@ -7804,7 +7808,7 @@
                       (gen/return "auto ")]]))]
               [(get w [:prop-border-image-width :alt 1 :alt 2] 100)
                 (gen/tuple
-                  (igen/freq [
+                  (igen/freq :prop-border-image-width [
                     [(get w [:prop-border-image-width :alt 1 :alt 2 :cat 0 :alt 0] 100)
                       (:nonprop-length-percentage g)]
                     [(get w [:prop-border-image-width :alt 1 :alt 2 :cat 0 :alt 1] 100)
@@ -7812,7 +7816,7 @@
                     [(get w [:prop-border-image-width :alt 1 :alt 2 :cat 0 :alt 2] 100)
                       (gen/return "auto ")]])
                   (gen/return " ")
-                  (igen/freq [
+                  (igen/freq :prop-border-image-width [
                     [(get w [:prop-border-image-width :alt 1 :alt 2 :cat 2 :alt 0] 100)
                       (:nonprop-length-percentage g)]
                     [(get w [:prop-border-image-width :alt 1 :alt 2 :cat 2 :alt 1] 100)
@@ -7820,7 +7824,7 @@
                     [(get w [:prop-border-image-width :alt 1 :alt 2 :cat 2 :alt 2] 100)
                       (gen/return "auto ")]])
                   (gen/return " ")
-                  (igen/freq [
+                  (igen/freq :prop-border-image-width [
                     [(get w [:prop-border-image-width :alt 1 :alt 2 :cat 4 :alt 0] 100)
                       (:nonprop-length-percentage g)]
                     [(get w [:prop-border-image-width :alt 1 :alt 2 :cat 4 :alt 1] 100)
@@ -7829,7 +7833,7 @@
                       (gen/return "auto ")]]))]
               [(get w [:prop-border-image-width :alt 1 :alt 3] 100)
                 (gen/tuple
-                  (igen/freq [
+                  (igen/freq :prop-border-image-width [
                     [(get w [:prop-border-image-width :alt 1 :alt 3 :cat 0 :alt 0] 100)
                       (:nonprop-length-percentage g)]
                     [(get w [:prop-border-image-width :alt 1 :alt 3 :cat 0 :alt 1] 100)
@@ -7837,7 +7841,7 @@
                     [(get w [:prop-border-image-width :alt 1 :alt 3 :cat 0 :alt 2] 100)
                       (gen/return "auto ")]])
                   (gen/return " ")
-                  (igen/freq [
+                  (igen/freq :prop-border-image-width [
                     [(get w [:prop-border-image-width :alt 1 :alt 3 :cat 2 :alt 0] 100)
                       (:nonprop-length-percentage g)]
                     [(get w [:prop-border-image-width :alt 1 :alt 3 :cat 2 :alt 1] 100)
@@ -7845,7 +7849,7 @@
                     [(get w [:prop-border-image-width :alt 1 :alt 3 :cat 2 :alt 2] 100)
                       (gen/return "auto ")]])
                   (gen/return " ")
-                  (igen/freq [
+                  (igen/freq :prop-border-image-width [
                     [(get w [:prop-border-image-width :alt 1 :alt 3 :cat 4 :alt 0] 100)
                       (:nonprop-length-percentage g)]
                     [(get w [:prop-border-image-width :alt 1 :alt 3 :cat 4 :alt 1] 100)
@@ -7853,7 +7857,7 @@
                     [(get w [:prop-border-image-width :alt 1 :alt 3 :cat 4 :alt 2] 100)
                       (gen/return "auto ")]])
                   (gen/return " ")
-                  (igen/freq [
+                  (igen/freq :prop-border-image-width [
                     [(get w [:prop-border-image-width :alt 1 :alt 3 :cat 6 :alt 0] 100)
                       (:nonprop-length-percentage g)]
                     [(get w [:prop-border-image-width :alt 1 :alt 3 :cat 6 :alt 1] 100)
@@ -7875,22 +7879,22 @@
         g (assoc g :nonprop-border-image-source gen-nonprop-border-image-source)
 
         gen-prop-border-image
-        (igen/freq [
+        (igen/freq :prop-border-image [
           [(get w [:prop-border-image :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-border-image :alt 1] 100)
             (igen/vector+
-              (igen/freq [
+              (igen/freq :prop-border-image [
                 [(get w [:prop-border-image :alt 1 :plus 0 :alt 0] 100)
                   (:nonprop-border-image-source g)]
                 [(get w [:prop-border-image :alt 1 :plus 0 :alt 1] 100)
                   (gen/tuple
                     (:nonprop-border-image-slice g)
-                    (igen/freq [
+                    (igen/freq :prop-border-image [
                       [(get w [:prop-border-image :alt 1 :plus 0 :alt 1 :cat 1 :opt nil] 100)
                         (gen/return "")]
                       [(get w [:prop-border-image :alt 1 :plus 0 :alt 1 :cat 1 :opt 0] 100)
-                        (igen/freq [
+                        (igen/freq :prop-border-image [
                           [(get w [:prop-border-image :alt 1 :plus 0 :alt 1 :cat 1 :opt 0 :alt 0] 100)
                             (gen/tuple
                               (gen/return "/ ")
@@ -7898,7 +7902,7 @@
                           [(get w [:prop-border-image :alt 1 :plus 0 :alt 1 :cat 1 :opt 0 :alt 1] 100)
                             (gen/tuple
                               (gen/return "/ ")
-                              (igen/freq [
+                              (igen/freq :prop-border-image [
                                 [(get w [:prop-border-image :alt 1 :plus 0 :alt 1 :cat 1 :opt 0 :alt 1 :cat 1 :opt nil] 100)
                                   (gen/return "")]
                                 [(get w [:prop-border-image :alt 1 :plus 0 :alt 1 :cat 1 :opt 0 :alt 1 :cat 1 :opt 0] 100)
@@ -7910,7 +7914,7 @@
         g (assoc g :prop-border-image gen-prop-border-image)
 
         gen-prop-scroll-margin-right
-        (igen/freq [
+        (igen/freq :prop-scroll-margin-right [
           [(get w [:prop-scroll-margin-right :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-scroll-margin-right :alt 1] 100)
@@ -7924,13 +7928,13 @@
         g (assoc g :nonprop-font-weight gen-nonprop-font-weight)
 
         gen-prop-margin
-        (igen/freq [
+        (igen/freq :prop-margin [
           [(get w [:prop-margin :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-margin :alt 1] 100)
-            (igen/freq [
+            (igen/freq :prop-margin [
               [(get w [:prop-margin :alt 1 :alt 0] 100)
-                (igen/freq [
+                (igen/freq :prop-margin [
                   [(get w [:prop-margin :alt 1 :alt 0 :alt 0] 100)
                     (:nonprop-length g)]
                   [(get w [:prop-margin :alt 1 :alt 0 :alt 1] 100)
@@ -7939,7 +7943,7 @@
                     (gen/return "auto ")]])]
               [(get w [:prop-margin :alt 1 :alt 1] 100)
                 (gen/tuple
-                  (igen/freq [
+                  (igen/freq :prop-margin [
                     [(get w [:prop-margin :alt 1 :alt 1 :cat 0 :alt 0] 100)
                       (:nonprop-length g)]
                     [(get w [:prop-margin :alt 1 :alt 1 :cat 0 :alt 1] 100)
@@ -7947,7 +7951,7 @@
                     [(get w [:prop-margin :alt 1 :alt 1 :cat 0 :alt 2] 100)
                       (gen/return "auto ")]])
                   (gen/return " ")
-                  (igen/freq [
+                  (igen/freq :prop-margin [
                     [(get w [:prop-margin :alt 1 :alt 1 :cat 2 :alt 0] 100)
                       (:nonprop-length g)]
                     [(get w [:prop-margin :alt 1 :alt 1 :cat 2 :alt 1] 100)
@@ -7956,7 +7960,7 @@
                       (gen/return "auto ")]]))]
               [(get w [:prop-margin :alt 1 :alt 2] 100)
                 (gen/tuple
-                  (igen/freq [
+                  (igen/freq :prop-margin [
                     [(get w [:prop-margin :alt 1 :alt 2 :cat 0 :alt 0] 100)
                       (:nonprop-length g)]
                     [(get w [:prop-margin :alt 1 :alt 2 :cat 0 :alt 1] 100)
@@ -7964,7 +7968,7 @@
                     [(get w [:prop-margin :alt 1 :alt 2 :cat 0 :alt 2] 100)
                       (gen/return "auto ")]])
                   (gen/return " ")
-                  (igen/freq [
+                  (igen/freq :prop-margin [
                     [(get w [:prop-margin :alt 1 :alt 2 :cat 2 :alt 0] 100)
                       (:nonprop-length g)]
                     [(get w [:prop-margin :alt 1 :alt 2 :cat 2 :alt 1] 100)
@@ -7972,7 +7976,7 @@
                     [(get w [:prop-margin :alt 1 :alt 2 :cat 2 :alt 2] 100)
                       (gen/return "auto ")]])
                   (gen/return " ")
-                  (igen/freq [
+                  (igen/freq :prop-margin [
                     [(get w [:prop-margin :alt 1 :alt 2 :cat 4 :alt 0] 100)
                       (:nonprop-length g)]
                     [(get w [:prop-margin :alt 1 :alt 2 :cat 4 :alt 1] 100)
@@ -7981,7 +7985,7 @@
                       (gen/return "auto ")]]))]
               [(get w [:prop-margin :alt 1 :alt 3] 100)
                 (gen/tuple
-                  (igen/freq [
+                  (igen/freq :prop-margin [
                     [(get w [:prop-margin :alt 1 :alt 3 :cat 0 :alt 0] 100)
                       (:nonprop-length g)]
                     [(get w [:prop-margin :alt 1 :alt 3 :cat 0 :alt 1] 100)
@@ -7989,7 +7993,7 @@
                     [(get w [:prop-margin :alt 1 :alt 3 :cat 0 :alt 2] 100)
                       (gen/return "auto ")]])
                   (gen/return " ")
-                  (igen/freq [
+                  (igen/freq :prop-margin [
                     [(get w [:prop-margin :alt 1 :alt 3 :cat 2 :alt 0] 100)
                       (:nonprop-length g)]
                     [(get w [:prop-margin :alt 1 :alt 3 :cat 2 :alt 1] 100)
@@ -7997,7 +8001,7 @@
                     [(get w [:prop-margin :alt 1 :alt 3 :cat 2 :alt 2] 100)
                       (gen/return "auto ")]])
                   (gen/return " ")
-                  (igen/freq [
+                  (igen/freq :prop-margin [
                     [(get w [:prop-margin :alt 1 :alt 3 :cat 4 :alt 0] 100)
                       (:nonprop-length g)]
                     [(get w [:prop-margin :alt 1 :alt 3 :cat 4 :alt 1] 100)
@@ -8005,7 +8009,7 @@
                     [(get w [:prop-margin :alt 1 :alt 3 :cat 4 :alt 2] 100)
                       (gen/return "auto ")]])
                   (gen/return " ")
-                  (igen/freq [
+                  (igen/freq :prop-margin [
                     [(get w [:prop-margin :alt 1 :alt 3 :cat 6 :alt 0] 100)
                       (:nonprop-length g)]
                     [(get w [:prop-margin :alt 1 :alt 3 :cat 6 :alt 1] 100)
@@ -8015,7 +8019,7 @@
         g (assoc g :prop-margin gen-prop-margin)
 
         gen-nonprop-compositing-operator
-        (igen/freq [
+        (igen/freq :nonprop-compositing-operator [
           [(get w [:nonprop-compositing-operator :alt 0] 100)
             (gen/return "add ")]
           [(get w [:nonprop-compositing-operator :alt 1] 100)
@@ -8028,13 +8032,13 @@
 
         gen-nonprop-mask-layer
         (igen/vector+
-          (igen/freq [
+          (igen/freq :nonprop-mask-layer [
             [(get w [:nonprop-mask-layer :plus 0 :alt 0] 100)
               (:nonprop-mask-reference g)]
             [(get w [:nonprop-mask-layer :plus 0 :alt 1] 100)
               (gen/tuple
                 (:nonprop-position g)
-                (igen/freq [
+                (igen/freq :nonprop-mask-layer [
                   [(get w [:nonprop-mask-layer :plus 0 :alt 1 :cat 1 :opt nil] 100)
                     (gen/return "")]
                   [(get w [:nonprop-mask-layer :plus 0 :alt 1 :cat 1 :opt 0] 100)
@@ -8046,7 +8050,7 @@
             [(get w [:nonprop-mask-layer :plus 0 :alt 3] 100)
               (:nonprop-geometry-box g)]
             [(get w [:nonprop-mask-layer :plus 0 :alt 4] 100)
-              (igen/freq [
+              (igen/freq :nonprop-mask-layer [
                 [(get w [:nonprop-mask-layer :plus 0 :alt 4 :alt 0] 100)
                   (:nonprop-geometry-box g)]
                 [(get w [:nonprop-mask-layer :plus 0 :alt 4 :alt 1] 100)
@@ -8058,13 +8062,13 @@
         g (assoc g :nonprop-mask-layer gen-nonprop-mask-layer)
 
         gen-prop-mask-repeat
-        (igen/freq [
+        (igen/freq :prop-mask-repeat [
           [(get w [:prop-mask-repeat :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-mask-repeat :alt 1] 100)
             (gen/tuple
               (:nonprop-repeat-style g)
-              (igen/freq [
+              (igen/freq :prop-mask-repeat [
                 [(get w [:prop-mask-repeat :alt 1 :cat 1 :star nil] 100)
                   (gen/return "")]
                 [(get w [:prop-mask-repeat :alt 1 :cat 1 :star 0] 100)
@@ -8076,7 +8080,7 @@
         g (assoc g :prop-mask-repeat gen-prop-mask-repeat)
 
         gen-prop-overflow-wrap
-        (igen/freq [
+        (igen/freq :prop-overflow-wrap [
           [(get w [:prop-overflow-wrap :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-overflow-wrap :alt 1] 100)
@@ -8088,7 +8092,7 @@
         g (assoc g :prop-overflow-wrap gen-prop-overflow-wrap)
 
         gen-prop-border-inline-end-color
-        (igen/freq [
+        (igen/freq :prop-border-inline-end-color [
           [(get w [:prop-border-inline-end-color :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-border-inline-end-color :alt 1] 100)
@@ -8096,7 +8100,7 @@
         g (assoc g :prop-border-inline-end-color gen-prop-border-inline-end-color)
 
         gen-prop-font-kerning
-        (igen/freq [
+        (igen/freq :prop-font-kerning [
           [(get w [:prop-font-kerning :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-font-kerning :alt 1] 100)
@@ -8108,13 +8112,13 @@
         g (assoc g :prop-font-kerning gen-prop-font-kerning)
 
         gen-prop-text-overflow
-        (igen/freq [
+        (igen/freq :prop-text-overflow [
           [(get w [:prop-text-overflow :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-text-overflow :alt 1] 100)
-            (igen/freq [
+            (igen/freq :prop-text-overflow [
               [(get w [:prop-text-overflow :alt 1 :alt 0] 100)
-                (igen/freq [
+                (igen/freq :prop-text-overflow [
                   [(get w [:prop-text-overflow :alt 1 :alt 0 :alt 0] 100)
                     (gen/return "clip ")]
                   [(get w [:prop-text-overflow :alt 1 :alt 0 :alt 1] 100)
@@ -8123,7 +8127,7 @@
                     (:nonprop-string g)]])]
               [(get w [:prop-text-overflow :alt 1 :alt 1] 100)
                 (gen/tuple
-                  (igen/freq [
+                  (igen/freq :prop-text-overflow [
                     [(get w [:prop-text-overflow :alt 1 :alt 1 :cat 0 :alt 0] 100)
                       (gen/return "clip ")]
                     [(get w [:prop-text-overflow :alt 1 :alt 1 :cat 0 :alt 1] 100)
@@ -8131,7 +8135,7 @@
                     [(get w [:prop-text-overflow :alt 1 :alt 1 :cat 0 :alt 2] 100)
                       (:nonprop-string g)]])
                   (gen/return " ")
-                  (igen/freq [
+                  (igen/freq :prop-text-overflow [
                     [(get w [:prop-text-overflow :alt 1 :alt 1 :cat 2 :alt 0] 100)
                       (gen/return "clip ")]
                     [(get w [:prop-text-overflow :alt 1 :alt 1 :cat 2 :alt 1] 100)
@@ -8141,7 +8145,7 @@
         g (assoc g :prop-text-overflow gen-prop-text-overflow)
 
         gen-prop-order
-        (igen/freq [
+        (igen/freq :prop-order [
           [(get w [:prop-order :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-order :alt 1] 100)
@@ -8153,7 +8157,7 @@
         g (assoc g :nonprop-text-emphasis-color gen-nonprop-text-emphasis-color)
 
         gen-prop-object-position
-        (igen/freq [
+        (igen/freq :prop-object-position [
           [(get w [:prop-object-position :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-object-position :alt 1] 100)
@@ -8161,7 +8165,7 @@
         g (assoc g :prop-object-position gen-prop-object-position)
 
         gen-prop-writing-mode
-        (igen/freq [
+        (igen/freq :prop-writing-mode [
           [(get w [:prop-writing-mode :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-writing-mode :alt 1] 100)
@@ -8177,7 +8181,7 @@
         g (assoc g :prop-writing-mode gen-prop-writing-mode)
 
         gen-prop-overflow-y
-        (igen/freq [
+        (igen/freq :prop-overflow-y [
           [(get w [:prop-overflow-y :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-overflow-y :alt 1] 100)
@@ -8193,11 +8197,11 @@
         g (assoc g :prop-overflow-y gen-prop-overflow-y)
 
         gen-prop-inset-block
-        (igen/freq [
+        (igen/freq :prop-inset-block [
           [(get w [:prop-inset-block :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-inset-block :alt 1] 100)
-            (igen/freq [
+            (igen/freq :prop-inset-block [
               [(get w [:prop-inset-block :alt 1 :alt 0] 100)
                 (:nonprop-top g)]
               [(get w [:prop-inset-block :alt 1 :alt 1] 100)
@@ -8208,7 +8212,7 @@
         g (assoc g :prop-inset-block gen-prop-inset-block)
 
         gen-prop-border-block-end-style
-        (igen/freq [
+        (igen/freq :prop-border-block-end-style [
           [(get w [:prop-border-block-end-style :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-border-block-end-style :alt 1] 100)
@@ -8216,7 +8220,7 @@
         g (assoc g :prop-border-block-end-style gen-prop-border-block-end-style)
 
         gen-prop-border-bottom-width
-        (igen/freq [
+        (igen/freq :prop-border-bottom-width [
           [(get w [:prop-border-bottom-width :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-border-bottom-width :alt 1] 100)
@@ -8224,7 +8228,7 @@
         g (assoc g :prop-border-bottom-width gen-prop-border-bottom-width)
 
         gen-prop-border-block-end-color
-        (igen/freq [
+        (igen/freq :prop-border-block-end-color [
           [(get w [:prop-border-block-end-color :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-border-block-end-color :alt 1] 100)
@@ -8232,12 +8236,12 @@
         g (assoc g :prop-border-block-end-color gen-prop-border-block-end-color)
 
         gen-prop-border-bottom
-        (igen/freq [
+        (igen/freq :prop-border-bottom [
           [(get w [:prop-border-bottom :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-border-bottom :alt 1] 100)
             (igen/vector+
-              (igen/freq [
+              (igen/freq :prop-border-bottom [
                 [(get w [:prop-border-bottom :alt 1 :plus 0 :alt 0] 100)
                   (:nonprop-line-width g)]
                 [(get w [:prop-border-bottom :alt 1 :plus 0 :alt 1] 100)
@@ -8247,7 +8251,7 @@
         g (assoc g :prop-border-bottom gen-prop-border-bottom)
 
         gen-prop-page-break-inside
-        (igen/freq [
+        (igen/freq :prop-page-break-inside [
           [(get w [:prop-page-break-inside :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-page-break-inside :alt 1] 100)
@@ -8257,7 +8261,7 @@
         g (assoc g :prop-page-break-inside gen-prop-page-break-inside)
 
         gen-prop-font-stretch
-        (igen/freq [
+        (igen/freq :prop-font-stretch [
           [(get w [:prop-font-stretch :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-font-stretch :alt 1] 100)
@@ -8269,18 +8273,18 @@
         g (assoc g :nonprop-font-stretch gen-nonprop-font-stretch)
 
         gen-prop-text-indent
-        (igen/freq [
+        (igen/freq :prop-text-indent [
           [(get w [:prop-text-indent :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-text-indent :alt 1] 100)
             (gen/tuple
               (:nonprop-length-percentage g)
-              (igen/freq [
+              (igen/freq :prop-text-indent [
                 [(get w [:prop-text-indent :alt 1 :cat 1 :opt nil] 100)
                   (gen/return "")]
                 [(get w [:prop-text-indent :alt 1 :cat 1 :opt 0] 100)
                   (gen/return "hanging ")]])
-              (igen/freq [
+              (igen/freq :prop-text-indent [
                 [(get w [:prop-text-indent :alt 1 :cat 2 :opt nil] 100)
                   (gen/return "")]
                 [(get w [:prop-text-indent :alt 1 :cat 2 :opt 0] 100)
@@ -8288,7 +8292,7 @@
         g (assoc g :prop-text-indent gen-prop-text-indent)
 
         gen-prop-min-inline-size
-        (igen/freq [
+        (igen/freq :prop-min-inline-size [
           [(get w [:prop-min-inline-size :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-min-inline-size :alt 1] 100)
@@ -8296,7 +8300,7 @@
         g (assoc g :prop-min-inline-size gen-prop-min-inline-size)
 
         gen-prop-padding-inline-start
-        (igen/freq [
+        (igen/freq :prop-padding-inline-start [
           [(get w [:prop-padding-inline-start :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-padding-inline-start :alt 1] 100)
@@ -8304,7 +8308,7 @@
         g (assoc g :prop-padding-inline-start gen-prop-padding-inline-start)
 
         gen-prop-font-style
-        (igen/freq [
+        (igen/freq :prop-font-style [
           [(get w [:prop-font-style :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-font-style :alt 1] 100)
@@ -8314,7 +8318,7 @@
           [(get w [:prop-font-style :alt 3] 100)
             (gen/tuple
               (gen/return "oblique ")
-              (igen/freq [
+              (igen/freq :prop-font-style [
                 [(get w [:prop-font-style :alt 3 :cat 1 :opt nil] 100)
                   (gen/return "")]
                 [(get w [:prop-font-style :alt 3 :cat 1 :opt 0] 100)
@@ -8322,70 +8326,70 @@
         g (assoc g :prop-font-style gen-prop-font-style)
 
         gen-prop-padding
-        (igen/freq [
+        (igen/freq :prop-padding [
           [(get w [:prop-padding :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-padding :alt 1] 100)
-            (igen/freq [
+            (igen/freq :prop-padding [
               [(get w [:prop-padding :alt 1 :alt 0] 100)
-                (igen/freq [
+                (igen/freq :prop-padding [
                   [(get w [:prop-padding :alt 1 :alt 0 :alt 0] 100)
                     (:nonprop-length g)]
                   [(get w [:prop-padding :alt 1 :alt 0 :alt 1] 100)
                     (:nonprop-percentage g)]])]
               [(get w [:prop-padding :alt 1 :alt 1] 100)
                 (gen/tuple
-                  (igen/freq [
+                  (igen/freq :prop-padding [
                     [(get w [:prop-padding :alt 1 :alt 1 :cat 0 :alt 0] 100)
                       (:nonprop-length g)]
                     [(get w [:prop-padding :alt 1 :alt 1 :cat 0 :alt 1] 100)
                       (:nonprop-percentage g)]])
                   (gen/return " ")
-                  (igen/freq [
+                  (igen/freq :prop-padding [
                     [(get w [:prop-padding :alt 1 :alt 1 :cat 2 :alt 0] 100)
                       (:nonprop-length g)]
                     [(get w [:prop-padding :alt 1 :alt 1 :cat 2 :alt 1] 100)
                       (:nonprop-percentage g)]]))]
               [(get w [:prop-padding :alt 1 :alt 2] 100)
                 (gen/tuple
-                  (igen/freq [
+                  (igen/freq :prop-padding [
                     [(get w [:prop-padding :alt 1 :alt 2 :cat 0 :alt 0] 100)
                       (:nonprop-length g)]
                     [(get w [:prop-padding :alt 1 :alt 2 :cat 0 :alt 1] 100)
                       (:nonprop-percentage g)]])
                   (gen/return " ")
-                  (igen/freq [
+                  (igen/freq :prop-padding [
                     [(get w [:prop-padding :alt 1 :alt 2 :cat 2 :alt 0] 100)
                       (:nonprop-length g)]
                     [(get w [:prop-padding :alt 1 :alt 2 :cat 2 :alt 1] 100)
                       (:nonprop-percentage g)]])
                   (gen/return " ")
-                  (igen/freq [
+                  (igen/freq :prop-padding [
                     [(get w [:prop-padding :alt 1 :alt 2 :cat 4 :alt 0] 100)
                       (:nonprop-length g)]
                     [(get w [:prop-padding :alt 1 :alt 2 :cat 4 :alt 1] 100)
                       (:nonprop-percentage g)]]))]
               [(get w [:prop-padding :alt 1 :alt 3] 100)
                 (gen/tuple
-                  (igen/freq [
+                  (igen/freq :prop-padding [
                     [(get w [:prop-padding :alt 1 :alt 3 :cat 0 :alt 0] 100)
                       (:nonprop-length g)]
                     [(get w [:prop-padding :alt 1 :alt 3 :cat 0 :alt 1] 100)
                       (:nonprop-percentage g)]])
                   (gen/return " ")
-                  (igen/freq [
+                  (igen/freq :prop-padding [
                     [(get w [:prop-padding :alt 1 :alt 3 :cat 2 :alt 0] 100)
                       (:nonprop-length g)]
                     [(get w [:prop-padding :alt 1 :alt 3 :cat 2 :alt 1] 100)
                       (:nonprop-percentage g)]])
                   (gen/return " ")
-                  (igen/freq [
+                  (igen/freq :prop-padding [
                     [(get w [:prop-padding :alt 1 :alt 3 :cat 4 :alt 0] 100)
                       (:nonprop-length g)]
                     [(get w [:prop-padding :alt 1 :alt 3 :cat 4 :alt 1] 100)
                       (:nonprop-percentage g)]])
                   (gen/return " ")
-                  (igen/freq [
+                  (igen/freq :prop-padding [
                     [(get w [:prop-padding :alt 1 :alt 3 :cat 6 :alt 0] 100)
                       (:nonprop-length g)]
                     [(get w [:prop-padding :alt 1 :alt 3 :cat 6 :alt 1] 100)
@@ -8393,7 +8397,7 @@
         g (assoc g :prop-padding gen-prop-padding)
 
         gen-prop-padding-bottom
-        (igen/freq [
+        (igen/freq :prop-padding-bottom [
           [(get w [:prop-padding-bottom :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-padding-bottom :alt 1] 100)
@@ -8403,19 +8407,19 @@
         g (assoc g :prop-padding-bottom gen-prop-padding-bottom)
 
         gen-prop-cursor
-        (igen/freq [
+        (igen/freq :prop-cursor [
           [(get w [:prop-cursor :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-cursor :alt 1] 100)
             (gen/tuple
-              (igen/freq [
+              (igen/freq :prop-cursor [
                 [(get w [:prop-cursor :alt 1 :cat 0 :star nil] 100)
                   (gen/return "")]
                 [(get w [:prop-cursor :alt 1 :cat 0 :star 0] 100)
                   (igen/vector+
                     (gen/tuple
                       (:nonprop-url g)
-                      (igen/freq [
+                      (igen/freq :prop-cursor [
                         [(get w [:prop-cursor :alt 1 :cat 0 :star 0 :cat 1 :opt nil] 100)
                           (gen/return "")]
                         [(get w [:prop-cursor :alt 1 :cat 0 :star 0 :cat 1 :opt 0] 100)
@@ -8423,7 +8427,7 @@
                             (:nonprop-x g)
                             (:nonprop-y g))]])
                       (gen/return ", ")))]])
-              (igen/freq [
+              (igen/freq :prop-cursor [
                 [(get w [:prop-cursor :alt 1 :cat 1 :alt 0] 100)
                   (gen/return "auto ")]
                 [(get w [:prop-cursor :alt 1 :cat 1 :alt 1] 100)
@@ -8499,13 +8503,13 @@
         g (assoc g :prop-cursor gen-prop-cursor)
 
         gen-prop-scroll-padding
-        (igen/freq [
+        (igen/freq :prop-scroll-padding [
           [(get w [:prop-scroll-padding :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-scroll-padding :alt 1] 100)
-            (igen/freq [
+            (igen/freq :prop-scroll-padding [
               [(get w [:prop-scroll-padding :alt 1 :alt 0] 100)
-                (igen/freq [
+                (igen/freq :prop-scroll-padding [
                   [(get w [:prop-scroll-padding :alt 1 :alt 0 :alt 0] 100)
                     (gen/return "auto ")]
                   [(get w [:prop-scroll-padding :alt 1 :alt 0 :alt 1] 100)
@@ -8514,7 +8518,7 @@
                     (:nonprop-percentage g)]])]
               [(get w [:prop-scroll-padding :alt 1 :alt 1] 100)
                 (gen/tuple
-                  (igen/freq [
+                  (igen/freq :prop-scroll-padding [
                     [(get w [:prop-scroll-padding :alt 1 :alt 1 :cat 0 :alt 0] 100)
                       (gen/return "auto ")]
                     [(get w [:prop-scroll-padding :alt 1 :alt 1 :cat 0 :alt 1] 100)
@@ -8522,7 +8526,7 @@
                     [(get w [:prop-scroll-padding :alt 1 :alt 1 :cat 0 :alt 2] 100)
                       (:nonprop-percentage g)]])
                   (gen/return " ")
-                  (igen/freq [
+                  (igen/freq :prop-scroll-padding [
                     [(get w [:prop-scroll-padding :alt 1 :alt 1 :cat 2 :alt 0] 100)
                       (gen/return "auto ")]
                     [(get w [:prop-scroll-padding :alt 1 :alt 1 :cat 2 :alt 1] 100)
@@ -8531,7 +8535,7 @@
                       (:nonprop-percentage g)]]))]
               [(get w [:prop-scroll-padding :alt 1 :alt 2] 100)
                 (gen/tuple
-                  (igen/freq [
+                  (igen/freq :prop-scroll-padding [
                     [(get w [:prop-scroll-padding :alt 1 :alt 2 :cat 0 :alt 0] 100)
                       (gen/return "auto ")]
                     [(get w [:prop-scroll-padding :alt 1 :alt 2 :cat 0 :alt 1] 100)
@@ -8539,7 +8543,7 @@
                     [(get w [:prop-scroll-padding :alt 1 :alt 2 :cat 0 :alt 2] 100)
                       (:nonprop-percentage g)]])
                   (gen/return " ")
-                  (igen/freq [
+                  (igen/freq :prop-scroll-padding [
                     [(get w [:prop-scroll-padding :alt 1 :alt 2 :cat 2 :alt 0] 100)
                       (gen/return "auto ")]
                     [(get w [:prop-scroll-padding :alt 1 :alt 2 :cat 2 :alt 1] 100)
@@ -8547,7 +8551,7 @@
                     [(get w [:prop-scroll-padding :alt 1 :alt 2 :cat 2 :alt 2] 100)
                       (:nonprop-percentage g)]])
                   (gen/return " ")
-                  (igen/freq [
+                  (igen/freq :prop-scroll-padding [
                     [(get w [:prop-scroll-padding :alt 1 :alt 2 :cat 4 :alt 0] 100)
                       (gen/return "auto ")]
                     [(get w [:prop-scroll-padding :alt 1 :alt 2 :cat 4 :alt 1] 100)
@@ -8556,7 +8560,7 @@
                       (:nonprop-percentage g)]]))]
               [(get w [:prop-scroll-padding :alt 1 :alt 3] 100)
                 (gen/tuple
-                  (igen/freq [
+                  (igen/freq :prop-scroll-padding [
                     [(get w [:prop-scroll-padding :alt 1 :alt 3 :cat 0 :alt 0] 100)
                       (gen/return "auto ")]
                     [(get w [:prop-scroll-padding :alt 1 :alt 3 :cat 0 :alt 1] 100)
@@ -8564,7 +8568,7 @@
                     [(get w [:prop-scroll-padding :alt 1 :alt 3 :cat 0 :alt 2] 100)
                       (:nonprop-percentage g)]])
                   (gen/return " ")
-                  (igen/freq [
+                  (igen/freq :prop-scroll-padding [
                     [(get w [:prop-scroll-padding :alt 1 :alt 3 :cat 2 :alt 0] 100)
                       (gen/return "auto ")]
                     [(get w [:prop-scroll-padding :alt 1 :alt 3 :cat 2 :alt 1] 100)
@@ -8572,7 +8576,7 @@
                     [(get w [:prop-scroll-padding :alt 1 :alt 3 :cat 2 :alt 2] 100)
                       (:nonprop-percentage g)]])
                   (gen/return " ")
-                  (igen/freq [
+                  (igen/freq :prop-scroll-padding [
                     [(get w [:prop-scroll-padding :alt 1 :alt 3 :cat 4 :alt 0] 100)
                       (gen/return "auto ")]
                     [(get w [:prop-scroll-padding :alt 1 :alt 3 :cat 4 :alt 1] 100)
@@ -8580,7 +8584,7 @@
                     [(get w [:prop-scroll-padding :alt 1 :alt 3 :cat 4 :alt 2] 100)
                       (:nonprop-percentage g)]])
                   (gen/return " ")
-                  (igen/freq [
+                  (igen/freq :prop-scroll-padding [
                     [(get w [:prop-scroll-padding :alt 1 :alt 3 :cat 6 :alt 0] 100)
                       (gen/return "auto ")]
                     [(get w [:prop-scroll-padding :alt 1 :alt 3 :cat 6 :alt 1] 100)
@@ -8590,13 +8594,13 @@
         g (assoc g :prop-scroll-padding gen-prop-scroll-padding)
 
         gen-prop-animation-iteration-count
-        (igen/freq [
+        (igen/freq :prop-animation-iteration-count [
           [(get w [:prop-animation-iteration-count :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-animation-iteration-count :alt 1] 100)
             (gen/tuple
               (:nonprop-single-animation-iteration-count g)
-              (igen/freq [
+              (igen/freq :prop-animation-iteration-count [
                 [(get w [:prop-animation-iteration-count :alt 1 :cat 1 :star nil] 100)
                   (gen/return "")]
                 [(get w [:prop-animation-iteration-count :alt 1 :cat 1 :star 0] 100)
@@ -8608,11 +8612,11 @@
         g (assoc g :prop-animation-iteration-count gen-prop-animation-iteration-count)
 
         gen-prop-margin-inline
-        (igen/freq [
+        (igen/freq :prop-margin-inline [
           [(get w [:prop-margin-inline :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-margin-inline :alt 1] 100)
-            (igen/freq [
+            (igen/freq :prop-margin-inline [
               [(get w [:prop-margin-inline :alt 1 :alt 0] 100)
                 (:nonprop-margin-left g)]
               [(get w [:prop-margin-inline :alt 1 :alt 1] 100)
@@ -8628,7 +8632,7 @@
         w weights
 
         gen-prop-border-block-width
-        (igen/freq [
+        (igen/freq :prop-border-block-width [
           [(get w [:prop-border-block-width :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-border-block-width :alt 1] 100)
@@ -8636,7 +8640,7 @@
         g (assoc g :prop-border-block-width gen-prop-border-block-width)
 
         gen-prop-font-feature-settings
-        (igen/freq [
+        (igen/freq :prop-font-feature-settings [
           [(get w [:prop-font-feature-settings :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-font-feature-settings :alt 1] 100)
@@ -8644,7 +8648,7 @@
           [(get w [:prop-font-feature-settings :alt 2] 100)
             (gen/tuple
               (:nonprop-feature-tag-value g)
-              (igen/freq [
+              (igen/freq :prop-font-feature-settings [
                 [(get w [:prop-font-feature-settings :alt 2 :cat 1 :star nil] 100)
                   (gen/return "")]
                 [(get w [:prop-font-feature-settings :alt 2 :cat 1 :star 0] 100)
@@ -8656,7 +8660,7 @@
         g (assoc g :prop-font-feature-settings gen-prop-font-feature-settings)
 
         gen-prop-perspective
-        (igen/freq [
+        (igen/freq :prop-perspective [
           [(get w [:prop-perspective :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-perspective :alt 1] 100)
@@ -8666,7 +8670,7 @@
         g (assoc g :prop-perspective gen-prop-perspective)
 
         gen-prop-justify-self
-        (igen/freq [
+        (igen/freq :prop-justify-self [
           [(get w [:prop-justify-self :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-justify-self :alt 1] 100)
@@ -8679,12 +8683,12 @@
             (:nonprop-baseline-position g)]
           [(get w [:prop-justify-self :alt 5] 100)
             (gen/tuple
-              (igen/freq [
+              (igen/freq :prop-justify-self [
                 [(get w [:prop-justify-self :alt 5 :cat 0 :opt nil] 100)
                   (gen/return "")]
                 [(get w [:prop-justify-self :alt 5 :cat 0 :opt 0] 100)
                   (:nonprop-overflow-position g)]])
-              (igen/freq [
+              (igen/freq :prop-justify-self [
                 [(get w [:prop-justify-self :alt 5 :cat 1 :alt 0] 100)
                   (:nonprop-self-position g)]
                 [(get w [:prop-justify-self :alt 5 :cat 1 :alt 1] 100)
@@ -8698,11 +8702,11 @@
         g (assoc g :nonprop-justify-self gen-nonprop-justify-self)
 
         gen-prop-border-top-right-radius
-        (igen/freq [
+        (igen/freq :prop-border-top-right-radius [
           [(get w [:prop-border-top-right-radius :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-border-top-right-radius :alt 1] 100)
-            (igen/freq [
+            (igen/freq :prop-border-top-right-radius [
               [(get w [:prop-border-top-right-radius :alt 1 :alt 0] 100)
                 (:nonprop-length-percentage g)]
               [(get w [:prop-border-top-right-radius :alt 1 :alt 1] 100)
@@ -8722,7 +8726,7 @@
 
         gen-nonprop-final-bg-layer
         (igen/vector+
-          (igen/freq [
+          (igen/freq :nonprop-final-bg-layer [
             [(get w [:nonprop-final-bg-layer :plus 0 :alt 0] 100)
               (:nonprop-background-color g)]
             [(get w [:nonprop-final-bg-layer :plus 0 :alt 1] 100)
@@ -8730,7 +8734,7 @@
             [(get w [:nonprop-final-bg-layer :plus 0 :alt 2] 100)
               (gen/tuple
                 (:nonprop-bg-position g)
-                (igen/freq [
+                (igen/freq :nonprop-final-bg-layer [
                   [(get w [:nonprop-final-bg-layer :plus 0 :alt 2 :cat 1 :opt nil] 100)
                     (gen/return "")]
                   [(get w [:nonprop-final-bg-layer :plus 0 :alt 2 :cat 1 :opt 0] 100)
@@ -8748,7 +8752,7 @@
         g (assoc g :nonprop-final-bg-layer gen-nonprop-final-bg-layer)
 
         gen-prop-margin-right
-        (igen/freq [
+        (igen/freq :prop-margin-right [
           [(get w [:prop-margin-right :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-margin-right :alt 1] 100)
@@ -8764,12 +8768,12 @@
         g (assoc g :nonprop-outline-width gen-nonprop-outline-width)
 
         gen-prop-outline
-        (igen/freq [
+        (igen/freq :prop-outline [
           [(get w [:prop-outline :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-outline :alt 1] 100)
             (igen/vector+
-              (igen/freq [
+              (igen/freq :prop-outline [
                 [(get w [:prop-outline :alt 1 :plus 0 :alt 0] 100)
                   (:nonprop-outline-color g)]
                 [(get w [:prop-outline :alt 1 :plus 0 :alt 1] 100)
@@ -8779,7 +8783,7 @@
         g (assoc g :prop-outline gen-prop-outline)
 
         gen-prop-text-rendering
-        (igen/freq [
+        (igen/freq :prop-text-rendering [
           [(get w [:prop-text-rendering :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-text-rendering :alt 1] 100)
@@ -8793,7 +8797,7 @@
         g (assoc g :prop-text-rendering gen-prop-text-rendering)
 
         gen-prop-border-block-start-color
-        (igen/freq [
+        (igen/freq :prop-border-block-start-color [
           [(get w [:prop-border-block-start-color :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-border-block-start-color :alt 1] 100)
@@ -8801,13 +8805,13 @@
         g (assoc g :prop-border-block-start-color gen-prop-border-block-start-color)
 
         gen-prop-mask
-        (igen/freq [
+        (igen/freq :prop-mask [
           [(get w [:prop-mask :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-mask :alt 1] 100)
             (gen/tuple
               (:nonprop-mask-layer g)
-              (igen/freq [
+              (igen/freq :prop-mask [
                 [(get w [:prop-mask :alt 1 :cat 1 :star nil] 100)
                   (gen/return "")]
                 [(get w [:prop-mask :alt 1 :cat 1 :star 0] 100)
@@ -8819,7 +8823,7 @@
         g (assoc g :prop-mask gen-prop-mask)
 
         gen-prop-scroll-padding-inline-start
-        (igen/freq [
+        (igen/freq :prop-scroll-padding-inline-start [
           [(get w [:prop-scroll-padding-inline-start :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-scroll-padding-inline-start :alt 1] 100)
@@ -8831,7 +8835,7 @@
         g (assoc g :prop-scroll-padding-inline-start gen-prop-scroll-padding-inline-start)
 
         gen-prop-mix-blend-mode
-        (igen/freq [
+        (igen/freq :prop-mix-blend-mode [
           [(get w [:prop-mix-blend-mode :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-mix-blend-mode :alt 1] 100)
@@ -8839,13 +8843,13 @@
         g (assoc g :prop-mix-blend-mode gen-prop-mix-blend-mode)
 
         gen-prop-background-origin
-        (igen/freq [
+        (igen/freq :prop-background-origin [
           [(get w [:prop-background-origin :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-background-origin :alt 1] 100)
             (gen/tuple
               (:nonprop-box g)
-              (igen/freq [
+              (igen/freq :prop-background-origin [
                 [(get w [:prop-background-origin :alt 1 :cat 1 :star nil] 100)
                   (gen/return "")]
                 [(get w [:prop-background-origin :alt 1 :cat 1 :star 0] 100)
@@ -8857,7 +8861,7 @@
         g (assoc g :prop-background-origin gen-prop-background-origin)
 
         gen-prop-border-block-start-width
-        (igen/freq [
+        (igen/freq :prop-border-block-start-width [
           [(get w [:prop-border-block-start-width :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-border-block-start-width :alt 1] 100)
@@ -8869,26 +8873,26 @@
         g (assoc g :nonprop-font-style gen-nonprop-font-style)
 
         gen-prop-scroll-margin-block
-        (igen/freq [
+        (igen/freq :prop-scroll-margin-block [
           [(get w [:prop-scroll-margin-block :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-scroll-margin-block :alt 1] 100)
-            (igen/freq [
+            (igen/freq :prop-scroll-margin-block [
               [(get w [:prop-scroll-margin-block :alt 1 :alt 0] 100)
-                (igen/freq [
+                (igen/freq :prop-scroll-margin-block [
                   [(get w [:prop-scroll-margin-block :alt 1 :alt 0 :alt 0] 100)
                     (gen/return "auto ")]
                   [(get w [:prop-scroll-margin-block :alt 1 :alt 0 :alt 1] 100)
                     (:nonprop-length g)]])]
               [(get w [:prop-scroll-margin-block :alt 1 :alt 1] 100)
                 (gen/tuple
-                  (igen/freq [
+                  (igen/freq :prop-scroll-margin-block [
                     [(get w [:prop-scroll-margin-block :alt 1 :alt 1 :cat 0 :alt 0] 100)
                       (gen/return "auto ")]
                     [(get w [:prop-scroll-margin-block :alt 1 :alt 1 :cat 0 :alt 1] 100)
                       (:nonprop-length g)]])
                   (gen/return " ")
-                  (igen/freq [
+                  (igen/freq :prop-scroll-margin-block [
                     [(get w [:prop-scroll-margin-block :alt 1 :alt 1 :cat 2 :alt 0] 100)
                       (gen/return "auto ")]
                     [(get w [:prop-scroll-margin-block :alt 1 :alt 1 :cat 2 :alt 1] 100)
@@ -8896,7 +8900,7 @@
         g (assoc g :prop-scroll-margin-block gen-prop-scroll-margin-block)
 
         gen-nonprop-display-box
-        (igen/freq [
+        (igen/freq :nonprop-display-box [
           [(get w [:nonprop-display-box :alt 0] 100)
             (gen/return "contents ")]
           [(get w [:nonprop-display-box :alt 1] 100)
@@ -8904,12 +8908,12 @@
         g (assoc g :nonprop-display-box gen-nonprop-display-box)
 
         gen-prop-display
-        (igen/freq [
+        (igen/freq :prop-display [
           [(get w [:prop-display :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-display :alt 1] 100)
             (igen/vector+
-              (igen/freq [
+              (igen/freq :prop-display [
                 [(get w [:prop-display :alt 1 :plus 0 :alt 0] 100)
                   (:nonprop-display-outside g)]
                 [(get w [:prop-display :alt 1 :plus 0 :alt 1] 100)
@@ -8925,12 +8929,12 @@
         g (assoc g :prop-display gen-prop-display)
 
         gen-prop-border-inline
-        (igen/freq [
+        (igen/freq :prop-border-inline [
           [(get w [:prop-border-inline :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-border-inline :alt 1] 100)
             (igen/vector+
-              (igen/freq [
+              (igen/freq :prop-border-inline [
                 [(get w [:prop-border-inline :alt 1 :plus 0 :alt 0] 100)
                   (:nonprop-border-top-width g)]
                 [(get w [:prop-border-inline :alt 1 :plus 0 :alt 1] 100)
@@ -8940,11 +8944,11 @@
         g (assoc g :prop-border-inline gen-prop-border-inline)
 
         gen-prop-padding-inline
-        (igen/freq [
+        (igen/freq :prop-padding-inline [
           [(get w [:prop-padding-inline :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-padding-inline :alt 1] 100)
-            (igen/freq [
+            (igen/freq :prop-padding-inline [
               [(get w [:prop-padding-inline :alt 1 :alt 0] 100)
                 (:nonprop-padding-left g)]
               [(get w [:prop-padding-inline :alt 1 :alt 1] 100)
@@ -8955,7 +8959,7 @@
         g (assoc g :prop-padding-inline gen-prop-padding-inline)
 
         gen-prop-isolation
-        (igen/freq [
+        (igen/freq :prop-isolation [
           [(get w [:prop-isolation :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-isolation :alt 1] 100)
@@ -8966,7 +8970,7 @@
 
         gen-nonprop-content-list
         (igen/vector+
-          (igen/freq [
+          (igen/freq :nonprop-content-list [
             [(get w [:nonprop-content-list :plus 0 :alt 0] 100)
               (:nonprop-string g)]
             [(get w [:nonprop-content-list :plus 0 :alt 1] 100)
@@ -8982,7 +8986,7 @@
         g (assoc g :nonprop-content-list gen-nonprop-content-list)
 
         gen-prop-content
-        (igen/freq [
+        (igen/freq :prop-content [
           [(get w [:prop-content :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-content :alt 1] 100)
@@ -8991,12 +8995,12 @@
             (gen/return "none ")]
           [(get w [:prop-content :alt 3] 100)
             (gen/tuple
-              (igen/freq [
+              (igen/freq :prop-content [
                 [(get w [:prop-content :alt 3 :cat 0 :alt 0] 100)
                   (:nonprop-content-replacement g)]
                 [(get w [:prop-content :alt 3 :cat 0 :alt 1] 100)
                   (:nonprop-content-list g)]])
-              (igen/freq [
+              (igen/freq :prop-content [
                 [(get w [:prop-content :alt 3 :cat 1 :opt nil] 100)
                   (gen/return "")]
                 [(get w [:prop-content :alt 3 :cat 1 :opt 0] 100)
@@ -9006,7 +9010,7 @@
         g (assoc g :prop-content gen-prop-content)
 
         gen-prop-text-align
-        (igen/freq [
+        (igen/freq :prop-text-align [
           [(get w [:prop-text-align :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-text-align :alt 1] 100)
@@ -9026,7 +9030,7 @@
         g (assoc g :prop-text-align gen-prop-text-align)
 
         gen-prop-mask-type
-        (igen/freq [
+        (igen/freq :prop-mask-type [
           [(get w [:prop-mask-type :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-mask-type :alt 1] 100)
@@ -9036,14 +9040,14 @@
         g (assoc g :prop-mask-type gen-prop-mask-type)
 
         gen-prop-counter-increment
-        (igen/freq [
+        (igen/freq :prop-counter-increment [
           [(get w [:prop-counter-increment :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-counter-increment :alt 1] 100)
             (igen/vector+
               (gen/tuple
                 (:nonprop-custom-ident g)
-                (igen/freq [
+                (igen/freq :prop-counter-increment [
                   [(get w [:prop-counter-increment :alt 1 :plus 0 :cat 1 :opt nil] 100)
                     (gen/return "")]
                   [(get w [:prop-counter-increment :alt 1 :plus 0 :cat 1 :opt 0] 100)
@@ -9053,7 +9057,7 @@
         g (assoc g :prop-counter-increment gen-prop-counter-increment)
 
         gen-prop-scroll-margin-top
-        (igen/freq [
+        (igen/freq :prop-scroll-margin-top [
           [(get w [:prop-scroll-margin-top :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-scroll-margin-top :alt 1] 100)
@@ -9063,7 +9067,7 @@
         g (assoc g :prop-scroll-margin-top gen-prop-scroll-margin-top)
 
         gen-prop-scroll-padding-block-end
-        (igen/freq [
+        (igen/freq :prop-scroll-padding-block-end [
           [(get w [:prop-scroll-padding-block-end :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-scroll-padding-block-end :alt 1] 100)
@@ -9075,7 +9079,7 @@
         g (assoc g :prop-scroll-padding-block-end gen-prop-scroll-padding-block-end)
 
         gen-prop-color
-        (igen/freq [
+        (igen/freq :prop-color [
           [(get w [:prop-color :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-color :alt 1] 100)
@@ -9083,7 +9087,7 @@
         g (assoc g :prop-color gen-prop-color)
 
         gen-prop-scrollbar-width
-        (igen/freq [
+        (igen/freq :prop-scrollbar-width [
           [(get w [:prop-scrollbar-width :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-scrollbar-width :alt 1] 100)
@@ -9095,7 +9099,7 @@
         g (assoc g :prop-scrollbar-width gen-prop-scrollbar-width)
 
         gen-prop-inset-block-start
-        (igen/freq [
+        (igen/freq :prop-inset-block-start [
           [(get w [:prop-inset-block-start :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-inset-block-start :alt 1] 100)
@@ -9103,7 +9107,7 @@
         g (assoc g :prop-inset-block-start gen-prop-inset-block-start)
 
         gen-prop-scroll-padding-right
-        (igen/freq [
+        (igen/freq :prop-scroll-padding-right [
           [(get w [:prop-scroll-padding-right :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-scroll-padding-right :alt 1] 100)
@@ -9115,7 +9119,7 @@
         g (assoc g :prop-scroll-padding-right gen-prop-scroll-padding-right)
 
         gen-prop-quotes
-        (igen/freq [
+        (igen/freq :prop-quotes [
           [(get w [:prop-quotes :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-quotes :alt 1] 100)
@@ -9128,7 +9132,7 @@
         g (assoc g :prop-quotes gen-prop-quotes)
 
         gen-prop-unicode-bidi
-        (igen/freq [
+        (igen/freq :prop-unicode-bidi [
           [(get w [:prop-unicode-bidi :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-unicode-bidi :alt 1] 100)
@@ -9146,7 +9150,7 @@
         g (assoc g :prop-unicode-bidi gen-prop-unicode-bidi)
 
         gen-prop-inset-inline-end
-        (igen/freq [
+        (igen/freq :prop-inset-inline-end [
           [(get w [:prop-inset-inline-end :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-inset-inline-end :alt 1] 100)
@@ -9154,14 +9158,14 @@
         g (assoc g :prop-inset-inline-end gen-prop-inset-inline-end)
 
         gen-prop-grid-auto-flow
-        (igen/freq [
+        (igen/freq :prop-grid-auto-flow [
           [(get w [:prop-grid-auto-flow :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-grid-auto-flow :alt 1] 100)
             (igen/vector+
-              (igen/freq [
+              (igen/freq :prop-grid-auto-flow [
                 [(get w [:prop-grid-auto-flow :alt 1 :plus 0 :alt 0] 100)
-                  (igen/freq [
+                  (igen/freq :prop-grid-auto-flow [
                     [(get w [:prop-grid-auto-flow :alt 1 :plus 0 :alt 0 :alt 0] 100)
                       (gen/return "row ")]
                     [(get w [:prop-grid-auto-flow :alt 1 :plus 0 :alt 0 :alt 1] 100)
@@ -9171,13 +9175,13 @@
         g (assoc g :prop-grid-auto-flow gen-prop-grid-auto-flow)
 
         gen-prop-mask-origin
-        (igen/freq [
+        (igen/freq :prop-mask-origin [
           [(get w [:prop-mask-origin :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-mask-origin :alt 1] 100)
             (gen/tuple
               (:nonprop-geometry-box g)
-              (igen/freq [
+              (igen/freq :prop-mask-origin [
                 [(get w [:prop-mask-origin :alt 1 :cat 1 :star nil] 100)
                   (gen/return "")]
                 [(get w [:prop-mask-origin :alt 1 :cat 1 :star 0] 100)
@@ -9189,13 +9193,13 @@
         g (assoc g :prop-mask-origin gen-prop-mask-origin)
 
         gen-prop-place-self
-        (igen/freq [
+        (igen/freq :prop-place-self [
           [(get w [:prop-place-self :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-place-self :alt 1] 100)
             (gen/tuple
               (:nonprop-align-self g)
-              (igen/freq [
+              (igen/freq :prop-place-self [
                 [(get w [:prop-place-self :alt 1 :cat 1 :opt nil] 100)
                   (gen/return "")]
                 [(get w [:prop-place-self :alt 1 :cat 1 :opt 0] 100)
@@ -9203,11 +9207,11 @@
         g (assoc g :prop-place-self gen-prop-place-self)
 
         gen-prop-border-bottom-left-radius
-        (igen/freq [
+        (igen/freq :prop-border-bottom-left-radius [
           [(get w [:prop-border-bottom-left-radius :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-border-bottom-left-radius :alt 1] 100)
-            (igen/freq [
+            (igen/freq :prop-border-bottom-left-radius [
               [(get w [:prop-border-bottom-left-radius :alt 1 :alt 0] 100)
                 (:nonprop-length-percentage g)]
               [(get w [:prop-border-bottom-left-radius :alt 1 :alt 1] 100)
@@ -9218,7 +9222,7 @@
         g (assoc g :prop-border-bottom-left-radius gen-prop-border-bottom-left-radius)
 
         gen-prop-border-block-end-width
-        (igen/freq [
+        (igen/freq :prop-border-block-end-width [
           [(get w [:prop-border-block-end-width :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-border-block-end-width :alt 1] 100)
@@ -9226,12 +9230,12 @@
         g (assoc g :prop-border-block-end-width gen-prop-border-block-end-width)
 
         gen-prop-background
-        (igen/freq [
+        (igen/freq :prop-background [
           [(get w [:prop-background :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-background :alt 1] 100)
             (gen/tuple
-              (igen/freq [
+              (igen/freq :prop-background [
                 [(get w [:prop-background :alt 1 :cat 0 :star nil] 100)
                   (gen/return "")]
                 [(get w [:prop-background :alt 1 :cat 0 :star 0] 100)
@@ -9243,7 +9247,7 @@
         g (assoc g :prop-background gen-prop-background)
 
         gen-prop-z-index
-        (igen/freq [
+        (igen/freq :prop-z-index [
           [(get w [:prop-z-index :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-z-index :alt 1] 100)
@@ -9253,21 +9257,21 @@
         g (assoc g :prop-z-index gen-prop-z-index)
 
         gen-prop-height
-        (igen/freq [
+        (igen/freq :prop-height [
           [(get w [:prop-height :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-height :alt 1] 100)
             (gen/tuple
-              (igen/freq [
+              (igen/freq :prop-height [
                 [(get w [:prop-height :alt 1 :cat 0 :alt 0] 100)
                   (:nonprop-length g)]
                 [(get w [:prop-height :alt 1 :cat 0 :alt 1] 100)
                   (:nonprop-percentage g)]])
-              (igen/freq [
+              (igen/freq :prop-height [
                 [(get w [:prop-height :alt 1 :cat 1 :opt nil] 100)
                   (gen/return "")]
                 [(get w [:prop-height :alt 1 :cat 1 :opt 0] 100)
-                  (igen/freq [
+                  (igen/freq :prop-height [
                     [(get w [:prop-height :alt 1 :cat 1 :opt 0 :alt 0] 100)
                       (gen/return "border-box ")]
                     [(get w [:prop-height :alt 1 :cat 1 :opt 0 :alt 1] 100)
@@ -9285,7 +9289,7 @@
         g (assoc g :prop-height gen-prop-height)
 
         gen-prop-font-variant
-        (igen/freq [
+        (igen/freq :prop-font-variant [
           [(get w [:prop-font-variant :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-font-variant :alt 1] 100)
@@ -9294,7 +9298,7 @@
             (gen/return "none ")]
           [(get w [:prop-font-variant :alt 3] 100)
             (igen/vector+
-              (igen/freq [
+              (igen/freq :prop-font-variant [
                 [(get w [:prop-font-variant :alt 3 :plus 0 :alt 0] 100)
                   (:nonprop-common-lig-values g)]
                 [(get w [:prop-font-variant :alt 3 :plus 0 :alt 1] 100)
@@ -9316,7 +9320,7 @@
                     (gen/return "styleset ")
                     (gen/return "( ")
                     (:nonprop-feature-value-name g)
-                    (igen/freq [
+                    (igen/freq :prop-font-variant [
                       [(get w [:prop-font-variant :alt 3 :plus 0 :alt 6 :cat 3 :star nil] 100)
                         (gen/return "")]
                       [(get w [:prop-font-variant :alt 3 :plus 0 :alt 6 :cat 3 :star 0] 100)
@@ -9331,7 +9335,7 @@
                     (gen/return "character-variant ")
                     (gen/return "( ")
                     (:nonprop-feature-value-name g)
-                    (igen/freq [
+                    (igen/freq :prop-font-variant [
                       [(get w [:prop-font-variant :alt 3 :plus 0 :alt 7 :cat 3 :star nil] 100)
                         (gen/return "")]
                       [(get w [:prop-font-variant :alt 3 :plus 0 :alt 7 :cat 3 :star 0] 100)
@@ -9360,7 +9364,7 @@
                     (:nonprop-feature-value-name g)
                     (gen/return ") "))]
                 [(get w [:prop-font-variant :alt 3 :plus 0 :alt 11] 100)
-                  (igen/freq [
+                  (igen/freq :prop-font-variant [
                     [(get w [:prop-font-variant :alt 3 :plus 0 :alt 11 :alt 0] 100)
                       (gen/return "small-caps ")]
                     [(get w [:prop-font-variant :alt 3 :plus 0 :alt 11 :alt 1] 100)
@@ -9392,13 +9396,13 @@
         g (assoc g :prop-font-variant gen-prop-font-variant)
 
         gen-prop-mask-composite
-        (igen/freq [
+        (igen/freq :prop-mask-composite [
           [(get w [:prop-mask-composite :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-mask-composite :alt 1] 100)
             (gen/tuple
               (:nonprop-compositing-operator g)
-              (igen/freq [
+              (igen/freq :prop-mask-composite [
                 [(get w [:prop-mask-composite :alt 1 :cat 1 :star nil] 100)
                   (gen/return "")]
                 [(get w [:prop-mask-composite :alt 1 :cat 1 :star 0] 100)
@@ -9415,7 +9419,7 @@
         w weights
 
         gen-nonprop-font-variant-css21
-        (igen/freq [
+        (igen/freq :nonprop-font-variant-css21 [
           [(get w [:nonprop-font-variant-css21 :alt 0] 100)
             (gen/return "normal ")]
           [(get w [:nonprop-font-variant-css21 :alt 1] 100)
@@ -9423,17 +9427,17 @@
         g (assoc g :nonprop-font-variant-css21 gen-nonprop-font-variant-css21)
 
         gen-prop-font
-        (igen/freq [
+        (igen/freq :prop-font [
           [(get w [:prop-font :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-font :alt 1] 100)
             (gen/tuple
-              (igen/freq [
+              (igen/freq :prop-font [
                 [(get w [:prop-font :alt 1 :cat 0 :opt nil] 100)
                   (gen/return "")]
                 [(get w [:prop-font :alt 1 :cat 0 :opt 0] 100)
                   (igen/vector+
-                    (igen/freq [
+                    (igen/freq :prop-font [
                       [(get w [:prop-font :alt 1 :cat 0 :opt 0 :plus 0 :alt 0] 100)
                         (:nonprop-font-style g)]
                       [(get w [:prop-font :alt 1 :cat 0 :opt 0 :plus 0 :alt 1] 100)
@@ -9443,7 +9447,7 @@
                       [(get w [:prop-font :alt 1 :cat 0 :opt 0 :plus 0 :alt 3] 100)
                         (:nonprop-font-stretch g)]]))]])
               (:nonprop-font-size g)
-              (igen/freq [
+              (igen/freq :prop-font [
                 [(get w [:prop-font :alt 1 :cat 2 :opt nil] 100)
                   (gen/return "")]
                 [(get w [:prop-font :alt 1 :cat 2 :opt 0] 100)
@@ -9466,7 +9470,7 @@
         g (assoc g :prop-font gen-prop-font)
 
         gen-prop-empty-cells
-        (igen/freq [
+        (igen/freq :prop-empty-cells [
           [(get w [:prop-empty-cells :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-empty-cells :alt 1] 100)
@@ -9476,7 +9480,7 @@
         g (assoc g :prop-empty-cells gen-prop-empty-cells)
 
         gen-prop-scrollbar-color
-        (igen/freq [
+        (igen/freq :prop-scrollbar-color [
           [(get w [:prop-scrollbar-color :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-scrollbar-color :alt 1] 100)
@@ -9493,7 +9497,7 @@
         g (assoc g :prop-scrollbar-color gen-prop-scrollbar-color)
 
         gen-prop-box-decoration-break
-        (igen/freq [
+        (igen/freq :prop-box-decoration-break [
           [(get w [:prop-box-decoration-break :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-box-decoration-break :alt 1] 100)
@@ -9503,7 +9507,7 @@
         g (assoc g :prop-box-decoration-break gen-prop-box-decoration-break)
 
         gen-prop-column-span
-        (igen/freq [
+        (igen/freq :prop-column-span [
           [(get w [:prop-column-span :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-column-span :alt 1] 100)
@@ -9513,7 +9517,7 @@
         g (assoc g :prop-column-span gen-prop-column-span)
 
         gen-prop-padding-right
-        (igen/freq [
+        (igen/freq :prop-padding-right [
           [(get w [:prop-padding-right :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-padding-right :alt 1] 100)
@@ -9523,7 +9527,7 @@
         g (assoc g :prop-padding-right gen-prop-padding-right)
 
         gen-prop-break-after
-        (igen/freq [
+        (igen/freq :prop-break-after [
           [(get w [:prop-break-after :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-break-after :alt 1] 100)
@@ -9557,7 +9561,7 @@
         g (assoc g :prop-break-after gen-prop-break-after)
 
         gen-prop-scroll-margin-block-start
-        (igen/freq [
+        (igen/freq :prop-scroll-margin-block-start [
           [(get w [:prop-scroll-margin-block-start :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-scroll-margin-block-start :alt 1] 100)
@@ -9567,12 +9571,12 @@
         g (assoc g :prop-scroll-margin-block-start gen-prop-scroll-margin-block-start)
 
         gen-prop-text-emphasis
-        (igen/freq [
+        (igen/freq :prop-text-emphasis [
           [(get w [:prop-text-emphasis :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-text-emphasis :alt 1] 100)
             (igen/vector+
-              (igen/freq [
+              (igen/freq :prop-text-emphasis [
                 [(get w [:prop-text-emphasis :alt 1 :plus 0 :alt 0] 100)
                   (:nonprop-text-emphasis-style g)]
                 [(get w [:prop-text-emphasis :alt 1 :plus 0 :alt 1] 100)
@@ -9580,13 +9584,13 @@
         g (assoc g :prop-text-emphasis gen-prop-text-emphasis)
 
         gen-prop-scroll-snap-align
-        (igen/freq [
+        (igen/freq :prop-scroll-snap-align [
           [(get w [:prop-scroll-snap-align :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-scroll-snap-align :alt 1] 100)
-            (igen/freq [
+            (igen/freq :prop-scroll-snap-align [
               [(get w [:prop-scroll-snap-align :alt 1 :alt 0] 100)
-                (igen/freq [
+                (igen/freq :prop-scroll-snap-align [
                   [(get w [:prop-scroll-snap-align :alt 1 :alt 0 :alt 0] 100)
                     (gen/return "none ")]
                   [(get w [:prop-scroll-snap-align :alt 1 :alt 0 :alt 1] 100)
@@ -9597,7 +9601,7 @@
                     (gen/return "center ")]])]
               [(get w [:prop-scroll-snap-align :alt 1 :alt 1] 100)
                 (gen/tuple
-                  (igen/freq [
+                  (igen/freq :prop-scroll-snap-align [
                     [(get w [:prop-scroll-snap-align :alt 1 :alt 1 :cat 0 :alt 0] 100)
                       (gen/return "none ")]
                     [(get w [:prop-scroll-snap-align :alt 1 :alt 1 :cat 0 :alt 1] 100)
@@ -9607,7 +9611,7 @@
                     [(get w [:prop-scroll-snap-align :alt 1 :alt 1 :cat 0 :alt 3] 100)
                       (gen/return "center ")]])
                   (gen/return " ")
-                  (igen/freq [
+                  (igen/freq :prop-scroll-snap-align [
                     [(get w [:prop-scroll-snap-align :alt 1 :alt 1 :cat 2 :alt 0] 100)
                       (gen/return "none ")]
                     [(get w [:prop-scroll-snap-align :alt 1 :alt 1 :cat 2 :alt 1] 100)
@@ -9619,7 +9623,7 @@
         g (assoc g :prop-scroll-snap-align gen-prop-scroll-snap-align)
 
         gen-prop-box-sizing
-        (igen/freq [
+        (igen/freq :prop-box-sizing [
           [(get w [:prop-box-sizing :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-box-sizing :alt 1] 100)
@@ -9629,12 +9633,12 @@
         g (assoc g :prop-box-sizing gen-prop-box-sizing)
 
         gen-prop-border-left
-        (igen/freq [
+        (igen/freq :prop-border-left [
           [(get w [:prop-border-left :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-border-left :alt 1] 100)
             (igen/vector+
-              (igen/freq [
+              (igen/freq :prop-border-left [
                 [(get w [:prop-border-left :alt 1 :plus 0 :alt 0] 100)
                   (:nonprop-line-width g)]
                 [(get w [:prop-border-left :alt 1 :plus 0 :alt 1] 100)
@@ -9644,7 +9648,7 @@
         g (assoc g :prop-border-left gen-prop-border-left)
 
         gen-prop-object-fit
-        (igen/freq [
+        (igen/freq :prop-object-fit [
           [(get w [:prop-object-fit :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-object-fit :alt 1] 100)
@@ -9660,7 +9664,7 @@
         g (assoc g :prop-object-fit gen-prop-object-fit)
 
         gen-prop-scroll-margin-left
-        (igen/freq [
+        (igen/freq :prop-scroll-margin-left [
           [(get w [:prop-scroll-margin-left :alt 0] 100)
             (:nonprop-all g)]
           [(get w [:prop-scroll-margin-left :alt 1] 100)
@@ -9670,7 +9674,7 @@
         g (assoc g :prop-scroll-margin-left gen-prop-scroll-margin-left)
 
         gen-css-known-standard
-        (igen/freq [
+        (igen/freq :css-known-standard [
           [(get w [:css-known-standard :alt 0] 100)
             (gen/tuple
               (gen/return "align-content")
@@ -12007,7 +12011,7 @@
         g (assoc g :nonprop-attr-name gen-nonprop-attr-name)
 
         gen-nonprop-type-or-unit
-        (igen/freq [
+        (igen/freq :nonprop-type-or-unit [
           [(get w [:nonprop-type-or-unit :alt 0] 100)
             (gen/return "string ")]
           [(get w [:nonprop-type-or-unit :alt 1] 100)
@@ -12079,12 +12083,12 @@
           (gen/return "attr ")
           (gen/return "( ")
           (:nonprop-attr-name g)
-          (igen/freq [
+          (igen/freq :func-attr [
             [(get w [:func-attr :cat 3 :opt nil] 100)
               (gen/return "")]
             [(get w [:func-attr :cat 3 :opt 0] 100)
               (:nonprop-type-or-unit g)]])
-          (igen/freq [
+          (igen/freq :func-attr [
             [(get w [:func-attr :cat 4 :opt nil] 100)
               (gen/return "")]
             [(get w [:func-attr :cat 4 :opt 0] 100)
@@ -12100,11 +12104,11 @@
 
         gen-nonprop-ns-prefix
         (gen/tuple
-          (igen/freq [
+          (igen/freq :nonprop-ns-prefix [
             [(get w [:nonprop-ns-prefix :cat 0 :opt nil] 100)
               (gen/return "")]
             [(get w [:nonprop-ns-prefix :cat 0 :opt 0] 100)
-              (igen/freq [
+              (igen/freq :nonprop-ns-prefix [
                 [(get w [:nonprop-ns-prefix :cat 0 :opt 0 :alt 0] 100)
                   (:nonprop-ident-token g)]
                 [(get w [:nonprop-ns-prefix :cat 0 :opt 0 :alt 1] 100)
@@ -12114,7 +12118,7 @@
 
         gen-nonprop-wq-name
         (gen/tuple
-          (igen/freq [
+          (igen/freq :nonprop-wq-name [
             [(get w [:nonprop-wq-name :cat 0 :opt nil] 100)
               (gen/return "")]
             [(get w [:nonprop-wq-name :cat 0 :opt 0] 100)
@@ -12123,12 +12127,12 @@
         g (assoc g :nonprop-wq-name gen-nonprop-wq-name)
 
         gen-nonprop-type-selector
-        (igen/freq [
+        (igen/freq :nonprop-type-selector [
           [(get w [:nonprop-type-selector :alt 0] 100)
             (:nonprop-wq-name g)]
           [(get w [:nonprop-type-selector :alt 1] 100)
             (gen/tuple
-              (igen/freq [
+              (igen/freq :nonprop-type-selector [
                 [(get w [:nonprop-type-selector :alt 1 :cat 0 :opt nil] 100)
                   (gen/return "")]
                 [(get w [:nonprop-type-selector :alt 1 :cat 0 :opt 0] 100)
@@ -12141,7 +12145,7 @@
         g (assoc g :nonprop-function-token gen-nonprop-function-token)
 
         gen-nonprop-pseudo-class-selector
-        (igen/freq [
+        (igen/freq :nonprop-pseudo-class-selector [
           [(get w [:nonprop-pseudo-class-selector :alt 0] 100)
             (gen/tuple
               (gen/return ": ")
@@ -12172,11 +12176,11 @@
 
         gen-nonprop-attr-matcher
         (gen/tuple
-          (igen/freq [
+          (igen/freq :nonprop-attr-matcher [
             [(get w [:nonprop-attr-matcher :cat 0 :opt nil] 100)
               (gen/return "")]
             [(get w [:nonprop-attr-matcher :cat 0 :opt 0] 100)
-              (igen/freq [
+              (igen/freq :nonprop-attr-matcher [
                 [(get w [:nonprop-attr-matcher :cat 0 :opt 0 :alt 0] 100)
                   (gen/return "~ ")]
                 [(get w [:nonprop-attr-matcher :cat 0 :opt 0 :alt 1] 100)
@@ -12191,7 +12195,7 @@
         g (assoc g :nonprop-attr-matcher gen-nonprop-attr-matcher)
 
         gen-nonprop-attr-modifier
-        (igen/freq [
+        (igen/freq :nonprop-attr-modifier [
           [(get w [:nonprop-attr-modifier :alt 0] 100)
             (gen/return "i ")]
           [(get w [:nonprop-attr-modifier :alt 1] 100)
@@ -12203,7 +12207,7 @@
         g (assoc g :nonprop-id-selector gen-nonprop-id-selector)
 
         gen-nonprop-attribute-selector
-        (igen/freq [
+        (igen/freq :nonprop-attribute-selector [
           [(get w [:nonprop-attribute-selector :alt 0] 100)
             (gen/tuple
               (gen/return "[ ")
@@ -12214,12 +12218,12 @@
               (gen/return "[ ")
               (:nonprop-wq-name g)
               (:nonprop-attr-matcher g)
-              (igen/freq [
+              (igen/freq :nonprop-attribute-selector [
                 [(get w [:nonprop-attribute-selector :alt 1 :cat 3 :alt 0] 100)
                   (:nonprop-string-token g)]
                 [(get w [:nonprop-attribute-selector :alt 1 :cat 3 :alt 1] 100)
                   (:nonprop-ident-token g)]])
-              (igen/freq [
+              (igen/freq :nonprop-attribute-selector [
                 [(get w [:nonprop-attribute-selector :alt 1 :cat 4 :opt nil] 100)
                   (gen/return "")]
                 [(get w [:nonprop-attribute-selector :alt 1 :cat 4 :opt 0] 100)
@@ -12228,7 +12232,7 @@
         g (assoc g :nonprop-attribute-selector gen-nonprop-attribute-selector)
 
         gen-nonprop-subclass-selector
-        (igen/freq [
+        (igen/freq :nonprop-subclass-selector [
           [(get w [:nonprop-subclass-selector :alt 0] 100)
             (:nonprop-id-selector g)]
           [(get w [:nonprop-subclass-selector :alt 1] 100)
@@ -12241,25 +12245,25 @@
 
         gen-nonprop-compound-selector
         (gen/tuple
-          (igen/freq [
+          (igen/freq :nonprop-compound-selector [
             [(get w [:nonprop-compound-selector :cat 0 :opt nil] 100)
               (gen/return "")]
             [(get w [:nonprop-compound-selector :cat 0 :opt 0] 100)
               (:nonprop-type-selector g)]])
-          (igen/freq [
+          (igen/freq :nonprop-compound-selector [
             [(get w [:nonprop-compound-selector :cat 1 :star nil] 100)
               (gen/return "")]
             [(get w [:nonprop-compound-selector :cat 1 :star 0] 100)
               (igen/vector+
                 (:nonprop-subclass-selector g))]])
-          (igen/freq [
+          (igen/freq :nonprop-compound-selector [
             [(get w [:nonprop-compound-selector :cat 2 :star nil] 100)
               (gen/return "")]
             [(get w [:nonprop-compound-selector :cat 2 :star 0] 100)
               (igen/vector+
                 (gen/tuple
                   (:nonprop-pseudo-element-selector g)
-                  (igen/freq [
+                  (igen/freq :nonprop-compound-selector [
                     [(get w [:nonprop-compound-selector :cat 2 :star 0 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:nonprop-compound-selector :cat 2 :star 0 :cat 1 :star 0] 100)
@@ -12270,13 +12274,13 @@
         gen-nonprop-complex-selector
         (gen/tuple
           (:nonprop-compound-selector g)
-          (igen/freq [
+          (igen/freq :nonprop-complex-selector [
             [(get w [:nonprop-complex-selector :cat 1 :star nil] 100)
               (gen/return "")]
             [(get w [:nonprop-complex-selector :cat 1 :star 0] 100)
               (igen/vector+
                 (gen/tuple
-                  (igen/freq [
+                  (igen/freq :nonprop-complex-selector [
                     [(get w [:nonprop-complex-selector :cat 1 :star 0 :cat 0 :opt nil] 100)
                       (gen/return "")]
                     [(get w [:nonprop-complex-selector :cat 1 :star 0 :cat 0 :opt 0] 100)
@@ -12286,7 +12290,7 @@
 
         gen-nonprop-relative-selector
         (gen/tuple
-          (igen/freq [
+          (igen/freq :nonprop-relative-selector [
             [(get w [:nonprop-relative-selector :cat 0 :opt nil] 100)
               (gen/return "")]
             [(get w [:nonprop-relative-selector :cat 0 :opt 0] 100)
@@ -12297,7 +12301,7 @@
         gen-nonprop-relative-selector-list
         (gen/tuple
           (:nonprop-relative-selector g)
-          (igen/freq [
+          (igen/freq :nonprop-relative-selector-list [
             [(get w [:nonprop-relative-selector-list :cat 1 :star nil] 100)
               (gen/return "")]
             [(get w [:nonprop-relative-selector-list :cat 1 :star 0] 100)
@@ -12309,7 +12313,7 @@
         g (assoc g :nonprop-relative-selector-list gen-nonprop-relative-selector-list)
 
         gen-nonprop-page-margin-box-type
-        (igen/freq [
+        (igen/freq :nonprop-page-margin-box-type [
           [(get w [:nonprop-page-margin-box-type :alt 0] 100)
             (gen/return "@top-left-corner ")]
           [(get w [:nonprop-page-margin-box-type :alt 1] 100)
@@ -12360,11 +12364,11 @@
         (gen/tuple
           (gen/return "repeating-linear-gradient ")
           (gen/return "( ")
-          (igen/freq [
+          (igen/freq :func-repeating-linear-gradient [
             [(get w [:func-repeating-linear-gradient :cat 2 :opt nil] 100)
               (gen/return "")]
             [(get w [:func-repeating-linear-gradient :cat 2 :opt 0] 100)
-              (igen/freq [
+              (igen/freq :func-repeating-linear-gradient [
                 [(get w [:func-repeating-linear-gradient :cat 2 :opt 0 :alt 0] 100)
                   (:nonprop-angle g)]
                 [(get w [:func-repeating-linear-gradient :cat 2 :opt 0 :alt 1] 100)
@@ -12381,7 +12385,7 @@
         g (assoc g :nonprop-angular-color-hint gen-nonprop-angular-color-hint)
 
         gen-nonprop-color-stop-angle
-        (igen/freq [
+        (igen/freq :nonprop-color-stop-angle [
           [(get w [:nonprop-color-stop-angle :alt 0] 100)
             (:nonprop-angle-percentage g)]
           [(get w [:nonprop-color-stop-angle :alt 1] 100)
@@ -12394,7 +12398,7 @@
         gen-nonprop-angular-color-stop
         (gen/tuple
           (:nonprop-color g)
-          (igen/freq [
+          (igen/freq :nonprop-angular-color-stop [
             [(get w [:nonprop-angular-color-stop :cat 1 :opt nil] 100)
               (gen/return "")]
             [(get w [:nonprop-angular-color-stop :cat 1 :opt 0] 100)
@@ -12405,14 +12409,14 @@
         (gen/tuple
           (gen/tuple
             (:nonprop-angular-color-stop g)
-            (igen/freq [
+            (igen/freq :nonprop-angular-color-stop-list [
               [(get w [:nonprop-angular-color-stop-list :cat 0 :cat 1 :opt nil] 100)
                 (gen/return "")]
               [(get w [:nonprop-angular-color-stop-list :cat 0 :cat 1 :opt 0] 100)
                 (gen/tuple
                   (gen/return ", ")
                   (:nonprop-angular-color-hint g))]]))
-          (igen/freq [
+          (igen/freq :nonprop-angular-color-stop-list [
             [(get w [:nonprop-angular-color-stop-list :cat 1 :star nil] 100)
               (gen/return "")]
             [(get w [:nonprop-angular-color-stop-list :cat 1 :star 0] 100)
@@ -12422,7 +12426,7 @@
                   (gen/return " ")
                   (gen/tuple
                     (:nonprop-angular-color-stop g)
-                    (igen/freq [
+                    (igen/freq :nonprop-angular-color-stop-list [
                       [(get w [:nonprop-angular-color-stop-list :cat 1 :star 0 :cat 2 :cat 1 :opt nil] 100)
                         (gen/return "")]
                       [(get w [:nonprop-angular-color-stop-list :cat 1 :star 0 :cat 2 :cat 1 :opt 0] 100)
@@ -12437,17 +12441,17 @@
         (gen/tuple
           (gen/return "radial-gradient ")
           (gen/return "( ")
-          (igen/freq [
+          (igen/freq :func-radial-gradient [
             [(get w [:func-radial-gradient :cat 2 :opt nil] 100)
               (gen/return "")]
             [(get w [:func-radial-gradient :cat 2 :opt 0] 100)
               (igen/vector+
-                (igen/freq [
+                (igen/freq :func-radial-gradient [
                   [(get w [:func-radial-gradient :cat 2 :opt 0 :plus 0 :alt 0] 100)
                     (:nonprop-ending-shape g)]
                   [(get w [:func-radial-gradient :cat 2 :opt 0 :plus 0 :alt 1] 100)
                     (:nonprop-size g)]]))]])
-          (igen/freq [
+          (igen/freq :func-radial-gradient [
             [(get w [:func-radial-gradient :cat 3 :opt nil] 100)
               (gen/return "")]
             [(get w [:func-radial-gradient :cat 3 :opt 0] 100)
@@ -12463,14 +12467,14 @@
         (gen/tuple
           (gen/return "conic-gradient ")
           (gen/return "( ")
-          (igen/freq [
+          (igen/freq :func-conic-gradient [
             [(get w [:func-conic-gradient :cat 2 :opt nil] 100)
               (gen/return "")]
             [(get w [:func-conic-gradient :cat 2 :opt 0] 100)
               (gen/tuple
                 (gen/return "from ")
                 (:nonprop-angle g))]])
-          (igen/freq [
+          (igen/freq :func-conic-gradient [
             [(get w [:func-conic-gradient :cat 3 :opt nil] 100)
               (gen/return "")]
             [(get w [:func-conic-gradient :cat 3 :opt 0] 100)
@@ -12489,7 +12493,7 @@
         w weights
 
         gen-nonprop-gradient
-        (igen/freq [
+        (igen/freq :nonprop-gradient [
           [(get w [:nonprop-gradient :alt 0] 100)
             (:func-linear-gradient g)]
           [(get w [:nonprop-gradient :alt 1] 100)
@@ -12507,11 +12511,11 @@
         g (assoc g :css-comment gen-css-comment)
 
         gen-css-declaration
-        (igen/freq [
+        (igen/freq :css-declaration [
           [(get w [:css-declaration :alt 0] 100)
             (gen/tuple
               (:css-known-standard g)
-              (igen/freq [
+              (igen/freq :css-declaration [
                 [(get w [:css-declaration :alt 0 :cat 1 :alt 0] 100)
                   (gen/return "")]
                 [(get w [:css-declaration :alt 0 :cat 1 :alt 1] 100)
@@ -12540,7 +12544,7 @@
         g (assoc g :nonprop-supports-decl gen-nonprop-supports-decl)
 
         gen-nonprop-supports-feature
-        (igen/freq [
+        (igen/freq :nonprop-supports-feature [
           [(get w [:nonprop-supports-feature :alt 0] 100)
             (:nonprop-supports-decl g)]
           [(get w [:nonprop-supports-feature :alt 1] 100)
@@ -12548,7 +12552,7 @@
         g (assoc g :nonprop-supports-feature gen-nonprop-supports-feature)
 
         gen-nonprop-general-enclosed
-        (igen/freq [
+        (igen/freq :nonprop-general-enclosed [
           [(get w [:nonprop-general-enclosed :alt 0] 100)
             (gen/tuple
               (:nonprop-function-token g)
@@ -12565,11 +12569,11 @@
         gen-nonprop-supports-condition
         (gen/recursive-gen
           (fn [inner]
-            (igen/freq [
+            (igen/freq :nonprop-supports-condition [
               [(get w [:nonprop-supports-condition :alt 0] 100)
                 (gen/tuple
                   (gen/return "not ")
-                  (igen/freq [
+                  (igen/freq :nonprop-supports-condition [
                     [(get w [:nonprop-supports-condition :alt 0 :cat 1 :alt 0] 100)
                       (gen/tuple
                         (gen/return "( ")
@@ -12581,7 +12585,7 @@
                       (:nonprop-general-enclosed g)]]))]
               [(get w [:nonprop-supports-condition :alt 1] 100)
                 (gen/tuple
-                  (igen/freq [
+                  (igen/freq :nonprop-supports-condition [
                     [(get w [:nonprop-supports-condition :alt 1 :cat 0 :alt 0] 100)
                       (gen/tuple
                         (gen/return "( ")
@@ -12591,14 +12595,14 @@
                       (:nonprop-supports-feature g)]
                     [(get w [:nonprop-supports-condition :alt 1 :cat 0 :alt 2] 100)
                       (:nonprop-general-enclosed g)]])
-                  (igen/freq [
+                  (igen/freq :nonprop-supports-condition [
                     [(get w [:nonprop-supports-condition :alt 1 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:nonprop-supports-condition :alt 1 :cat 1 :star 0] 100)
                       (igen/vector+
                         (gen/tuple
                           (gen/return "and ")
-                          (igen/freq [
+                          (igen/freq :nonprop-supports-condition [
                             [(get w [:nonprop-supports-condition :alt 1 :cat 1 :star 0 :cat 1 :alt 0] 100)
                               (gen/tuple
                                 (gen/return "( ")
@@ -12610,7 +12614,7 @@
                               (:nonprop-general-enclosed g)]])))]]))]
               [(get w [:nonprop-supports-condition :alt 2] 100)
                 (gen/tuple
-                  (igen/freq [
+                  (igen/freq :nonprop-supports-condition [
                     [(get w [:nonprop-supports-condition :alt 2 :cat 0 :alt 0] 100)
                       (gen/tuple
                         (gen/return "( ")
@@ -12620,14 +12624,14 @@
                       (:nonprop-supports-feature g)]
                     [(get w [:nonprop-supports-condition :alt 2 :cat 0 :alt 2] 100)
                       (:nonprop-general-enclosed g)]])
-                  (igen/freq [
+                  (igen/freq :nonprop-supports-condition [
                     [(get w [:nonprop-supports-condition :alt 2 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:nonprop-supports-condition :alt 2 :cat 1 :star 0] 100)
                       (igen/vector+
                         (gen/tuple
                           (gen/return "or ")
-                          (igen/freq [
+                          (igen/freq :nonprop-supports-condition [
                             [(get w [:nonprop-supports-condition :alt 2 :cat 1 :star 0 :cat 1 :alt 0] 100)
                               (gen/tuple
                                 (gen/return "( ")
@@ -12637,49 +12641,49 @@
                               (:nonprop-supports-feature g)]
                             [(get w [:nonprop-supports-condition :alt 2 :cat 1 :star 0 :cat 1 :alt 2] 100)
                               (:nonprop-general-enclosed g)]])))]]))]]))
-          (igen/freq [
+          (igen/freq :nonprop-supports-condition [
             [(get w [:nonprop-supports-condition :alt 0] 100)
               (gen/tuple
                 (gen/return "not ")
-                (igen/freq [
+                (igen/freq :nonprop-supports-condition [
                   [(get w [:nonprop-supports-condition :alt 0 :cat 1 :alt 0] 100)
                     (:nonprop-supports-feature g)]
                   [(get w [:nonprop-supports-condition :alt 0 :cat 1 :alt 1] 100)
                     (:nonprop-general-enclosed g)]]))]
             [(get w [:nonprop-supports-condition :alt 1] 100)
               (gen/tuple
-                (igen/freq [
+                (igen/freq :nonprop-supports-condition [
                   [(get w [:nonprop-supports-condition :alt 1 :cat 0 :alt 0] 100)
                     (:nonprop-supports-feature g)]
                   [(get w [:nonprop-supports-condition :alt 1 :cat 0 :alt 1] 100)
                     (:nonprop-general-enclosed g)]])
-                (igen/freq [
+                (igen/freq :nonprop-supports-condition [
                   [(get w [:nonprop-supports-condition :alt 1 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:nonprop-supports-condition :alt 1 :cat 1 :star 0] 100)
                     (igen/vector+
                       (gen/tuple
                         (gen/return "and ")
-                        (igen/freq [
+                        (igen/freq :nonprop-supports-condition [
                           [(get w [:nonprop-supports-condition :alt 1 :cat 1 :star 0 :cat 1 :alt 0] 100)
                             (:nonprop-supports-feature g)]
                           [(get w [:nonprop-supports-condition :alt 1 :cat 1 :star 0 :cat 1 :alt 1] 100)
                             (:nonprop-general-enclosed g)]])))]]))]
             [(get w [:nonprop-supports-condition :alt 2] 100)
               (gen/tuple
-                (igen/freq [
+                (igen/freq :nonprop-supports-condition [
                   [(get w [:nonprop-supports-condition :alt 2 :cat 0 :alt 0] 100)
                     (:nonprop-supports-feature g)]
                   [(get w [:nonprop-supports-condition :alt 2 :cat 0 :alt 1] 100)
                     (:nonprop-general-enclosed g)]])
-                (igen/freq [
+                (igen/freq :nonprop-supports-condition [
                   [(get w [:nonprop-supports-condition :alt 2 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:nonprop-supports-condition :alt 2 :cat 1 :star 0] 100)
                     (igen/vector+
                       (gen/tuple
                         (gen/return "or ")
-                        (igen/freq [
+                        (igen/freq :nonprop-supports-condition [
                           [(get w [:nonprop-supports-condition :alt 2 :cat 1 :star 0 :cat 1 :alt 0] 100)
                             (:nonprop-supports-feature g)]
                           [(get w [:nonprop-supports-condition :alt 2 :cat 1 :star 0 :cat 1 :alt 1] 100)
@@ -12687,7 +12691,7 @@
         g (assoc g :nonprop-supports-condition gen-nonprop-supports-condition)
 
         gen-nonprop-supports-in-parens
-        (igen/freq [
+        (igen/freq :nonprop-supports-in-parens [
           [(get w [:nonprop-supports-in-parens :alt 0] 100)
             (gen/tuple
               (gen/return "( ")
@@ -12702,7 +12706,7 @@
         gen-nonprop-pseudo-page
         (gen/tuple
           (gen/return ": ")
-          (igen/freq [
+          (igen/freq :nonprop-pseudo-page [
             [(get w [:nonprop-pseudo-page :cat 1 :alt 0] 100)
               (gen/return "left ")]
             [(get w [:nonprop-pseudo-page :cat 1 :alt 1] 100)
@@ -12714,14 +12718,14 @@
         g (assoc g :nonprop-pseudo-page gen-nonprop-pseudo-page)
 
         gen-nonprop-page-selector
-        (igen/freq [
+        (igen/freq :nonprop-page-selector [
           [(get w [:nonprop-page-selector :alt 0] 100)
             (igen/vector+
               (:nonprop-pseudo-page g))]
           [(get w [:nonprop-page-selector :alt 1] 100)
             (gen/tuple
               (:nonprop-ident g)
-              (igen/freq [
+              (igen/freq :nonprop-page-selector [
                 [(get w [:nonprop-page-selector :alt 1 :cat 1 :star nil] 100)
                   (gen/return "")]
                 [(get w [:nonprop-page-selector :alt 1 :cat 1 :star 0] 100)
@@ -12732,11 +12736,11 @@
         gen-nonprop-page-selector-list
         (gen/tuple
           (:nonprop-page-selector g)
-          (igen/freq [
+          (igen/freq :nonprop-page-selector-list [
             [(get w [:nonprop-page-selector-list :cat 1 :opt nil] 100)
               (gen/return "")]
             [(get w [:nonprop-page-selector-list :cat 1 :opt 0] 100)
-              (igen/freq [
+              (igen/freq :nonprop-page-selector-list [
                 [(get w [:nonprop-page-selector-list :cat 1 :opt 0 :star nil] 100)
                   (gen/return "")]
                 [(get w [:nonprop-page-selector-list :cat 1 :opt 0 :star 0] 100)
@@ -12768,7 +12772,7 @@
         gen-nonprop-frequency
         (gen/tuple
           (:any-number g)
-          (igen/freq [
+          (igen/freq :nonprop-frequency [
             [(get w [:nonprop-frequency :cat 1 :alt 0] 100)
               (gen/return "Hz")]
             [(get w [:nonprop-frequency :cat 1 :alt 1] 100)
@@ -12777,7 +12781,7 @@
         g (assoc g :nonprop-frequency gen-nonprop-frequency)
 
         gen-nonprop-frequency-percentage
-        (igen/freq [
+        (igen/freq :nonprop-frequency-percentage [
           [(get w [:nonprop-frequency-percentage :alt 0] 100)
             (:nonprop-frequency g)]
           [(get w [:nonprop-frequency-percentage :alt 1] 100)
@@ -12793,7 +12797,7 @@
         g (assoc g :nonprop-padding gen-nonprop-padding)
 
         gen-nonprop-feature-type
-        (igen/freq [
+        (igen/freq :nonprop-feature-type [
           [(get w [:nonprop-feature-type :alt 0] 100)
             (gen/return "@stylistic ")]
           [(get w [:nonprop-feature-type :alt 1] 100)
@@ -12813,15 +12817,15 @@
         gen-nonprop-media-condition
         (gen/recursive-gen
           (fn [inner]
-            (igen/freq [
+            (igen/freq :nonprop-media-condition [
               [(get w [:nonprop-media-condition :alt 0] 100)
                 (gen/tuple
-                  (igen/freq [
+                  (igen/freq :nonprop-media-condition [
                     [(get w [:nonprop-media-condition :alt 0 :cat 0 :opt nil] 100)
                       (gen/return "")]
                     [(get w [:nonprop-media-condition :alt 0 :cat 0 :opt 0] 100)
                       (gen/return "not ")]])
-                  (igen/freq [
+                  (igen/freq :nonprop-media-condition [
                     [(get w [:nonprop-media-condition :alt 0 :cat 1 :alt 0] 100)
                       (gen/tuple
                         (gen/return "( ")
@@ -12833,7 +12837,7 @@
                       (:nonprop-general-enclosed g)]]))]
               [(get w [:nonprop-media-condition :alt 1] 100)
                 (gen/tuple
-                  (igen/freq [
+                  (igen/freq :nonprop-media-condition [
                     [(get w [:nonprop-media-condition :alt 1 :cat 0 :alt 0] 100)
                       (gen/tuple
                         (gen/return "( ")
@@ -12845,12 +12849,12 @@
                       (:nonprop-general-enclosed g)]])
                   (igen/vector+
                     (gen/tuple
-                      (igen/freq [
+                      (igen/freq :nonprop-media-condition [
                         [(get w [:nonprop-media-condition :alt 1 :cat 1 :plus 0 :cat 0 :alt 0] 100)
                           (gen/return "and ")]
                         [(get w [:nonprop-media-condition :alt 1 :cat 1 :plus 0 :cat 0 :alt 1] 100)
                           (gen/return "or ")]])
-                      (igen/freq [
+                      (igen/freq :nonprop-media-condition [
                         [(get w [:nonprop-media-condition :alt 1 :cat 1 :plus 0 :cat 1 :alt 0] 100)
                           (gen/tuple
                             (gen/return "( ")
@@ -12860,34 +12864,34 @@
                           (:nonprop-media-feature g)]
                         [(get w [:nonprop-media-condition :alt 1 :cat 1 :plus 0 :cat 1 :alt 2] 100)
                           (:nonprop-general-enclosed g)]]))))]]))
-          (igen/freq [
+          (igen/freq :nonprop-media-condition [
             [(get w [:nonprop-media-condition :alt 0] 100)
               (gen/tuple
-                (igen/freq [
+                (igen/freq :nonprop-media-condition [
                   [(get w [:nonprop-media-condition :alt 0 :cat 0 :opt nil] 100)
                     (gen/return "")]
                   [(get w [:nonprop-media-condition :alt 0 :cat 0 :opt 0] 100)
                     (gen/return "not ")]])
-                (igen/freq [
+                (igen/freq :nonprop-media-condition [
                   [(get w [:nonprop-media-condition :alt 0 :cat 1 :alt 0] 100)
                     (:nonprop-media-feature g)]
                   [(get w [:nonprop-media-condition :alt 0 :cat 1 :alt 1] 100)
                     (:nonprop-general-enclosed g)]]))]
             [(get w [:nonprop-media-condition :alt 1] 100)
               (gen/tuple
-                (igen/freq [
+                (igen/freq :nonprop-media-condition [
                   [(get w [:nonprop-media-condition :alt 1 :cat 0 :alt 0] 100)
                     (:nonprop-media-feature g)]
                   [(get w [:nonprop-media-condition :alt 1 :cat 0 :alt 1] 100)
                     (:nonprop-general-enclosed g)]])
                 (igen/vector+
                   (gen/tuple
-                    (igen/freq [
+                    (igen/freq :nonprop-media-condition [
                       [(get w [:nonprop-media-condition :alt 1 :cat 1 :plus 0 :cat 0 :alt 0] 100)
                         (gen/return "and ")]
                       [(get w [:nonprop-media-condition :alt 1 :cat 1 :plus 0 :cat 0 :alt 1] 100)
                         (gen/return "or ")]])
-                    (igen/freq [
+                    (igen/freq :nonprop-media-condition [
                       [(get w [:nonprop-media-condition :alt 1 :cat 1 :plus 0 :cat 1 :alt 0] 100)
                         (:nonprop-media-feature g)]
                       [(get w [:nonprop-media-condition :alt 1 :cat 1 :plus 0 :cat 1 :alt 1] 100)
@@ -12895,7 +12899,7 @@
         g (assoc g :nonprop-media-condition gen-nonprop-media-condition)
 
         gen-nonprop-media-in-parens
-        (igen/freq [
+        (igen/freq :nonprop-media-in-parens [
           [(get w [:nonprop-media-in-parens :alt 0] 100)
             (gen/tuple
               (gen/return "( ")
@@ -12923,7 +12927,7 @@
         g (assoc g :nonprop-media-and gen-nonprop-media-and)
 
         gen-nonprop-media-condition-without-or
-        (igen/freq [
+        (igen/freq :nonprop-media-condition-without-or [
           [(get w [:nonprop-media-condition-without-or :alt 0] 100)
             (:nonprop-media-not g)]
           [(get w [:nonprop-media-condition-without-or :alt 1] 100)
@@ -12937,22 +12941,22 @@
         g (assoc g :nonprop-media-type gen-nonprop-media-type)
 
         gen-nonprop-media-query
-        (igen/freq [
+        (igen/freq :nonprop-media-query [
           [(get w [:nonprop-media-query :alt 0] 100)
             (:nonprop-media-condition g)]
           [(get w [:nonprop-media-query :alt 1] 100)
             (gen/tuple
-              (igen/freq [
+              (igen/freq :nonprop-media-query [
                 [(get w [:nonprop-media-query :alt 1 :cat 0 :opt nil] 100)
                   (gen/return "")]
                 [(get w [:nonprop-media-query :alt 1 :cat 0 :opt 0] 100)
-                  (igen/freq [
+                  (igen/freq :nonprop-media-query [
                     [(get w [:nonprop-media-query :alt 1 :cat 0 :opt 0 :alt 0] 100)
                       (gen/return "not ")]
                     [(get w [:nonprop-media-query :alt 1 :cat 0 :opt 0 :alt 1] 100)
                       (gen/return "only ")]])]])
               (:nonprop-media-type g)
-              (igen/freq [
+              (igen/freq :nonprop-media-query [
                 [(get w [:nonprop-media-query :alt 1 :cat 2 :opt nil] 100)
                   (gen/return "")]
                 [(get w [:nonprop-media-query :alt 1 :cat 2 :opt 0] 100)
@@ -12964,7 +12968,7 @@
         gen-nonprop-media-query-list
         (gen/tuple
           (:nonprop-media-query g)
-          (igen/freq [
+          (igen/freq :nonprop-media-query-list [
             [(get w [:nonprop-media-query-list :cat 1 :star nil] 100)
               (gen/return "")]
             [(get w [:nonprop-media-query-list :cat 1 :star 0] 100)
@@ -12978,12 +12982,12 @@
         gen-prop-AT-import
         (gen/tuple
           (gen/return "@import ")
-          (igen/freq [
+          (igen/freq :prop-AT-import [
             [(get w [:prop-AT-import :cat 1 :alt 0] 100)
               (:nonprop-string g)]
             [(get w [:prop-AT-import :cat 1 :alt 1] 100)
               (:nonprop-url g)]])
-          (igen/freq [
+          (igen/freq :prop-AT-import [
             [(get w [:prop-AT-import :cat 2 :opt nil] 100)
               (gen/return "")]
             [(get w [:prop-AT-import :cat 2 :opt 0] 100)
@@ -13021,7 +13025,7 @@
         (gen/tuple
           (gen/return "@font-feature-values ")
           (:nonprop-family-name g)
-          (igen/freq [
+          (igen/freq :prop-AT-font-feature-values [
             [(get w [:prop-AT-font-feature-values :cat 2 :star nil] 100)
               (gen/return "")]
             [(get w [:prop-AT-font-feature-values :cat 2 :star 0] 100)
@@ -13039,7 +13043,7 @@
         gen-nonprop-keyframe-block
         (gen/tuple
           (:nonprop-keyframe-selector g)
-          (igen/freq [
+          (igen/freq :nonprop-keyframe-block [
             [(get w [:nonprop-keyframe-block :cat 1 :star nil] 100)
               (gen/return "")]
             [(get w [:nonprop-keyframe-block :cat 1 :star 0] 100)
@@ -13064,7 +13068,7 @@
           (fn [inner]
             (gen/tuple
               (chuck/string-from-regex #"U[+](?:[0-9A-Fa-f]{1,4}-[0-9A-Fa-f]{1,4}|[0-9A-Fa-f?]{1,4})")
-              (igen/freq [
+              (igen/freq :nonprop-unicode-range [
                 [(get w [:nonprop-unicode-range :cat 1 :star nil] 100)
                   (gen/return "")]
                 [(get w [:nonprop-unicode-range :cat 1 :star 0] 100)
@@ -13080,11 +13084,11 @@
 
         gen-nonprop-src
         (gen/tuple
-          (igen/freq [
+          (igen/freq :nonprop-src [
             [(get w [:nonprop-src :cat 0 :alt 0] 100)
               (gen/tuple
                 (:nonprop-url g)
-                (igen/freq [
+                (igen/freq :nonprop-src [
                   [(get w [:nonprop-src :cat 0 :alt 0 :cat 1 :opt nil] 100)
                     (gen/return "")]
                   [(get w [:nonprop-src :cat 0 :alt 0 :cat 1 :opt 0] 100)
@@ -13092,7 +13096,7 @@
                       (gen/return "format ")
                       (gen/return "( ")
                       (:nonprop-string g)
-                      (igen/freq [
+                      (igen/freq :nonprop-src [
                         [(get w [:nonprop-src :cat 0 :alt 0 :cat 1 :opt 0 :cat 3 :star nil] 100)
                           (gen/return "")]
                         [(get w [:nonprop-src :cat 0 :alt 0 :cat 1 :opt 0 :cat 3 :star 0] 100)
@@ -13108,7 +13112,7 @@
                 (gen/return "( ")
                 (:nonprop-family-name g)
                 (gen/return ") "))]])
-          (igen/freq [
+          (igen/freq :nonprop-src [
             [(get w [:nonprop-src :cat 1 :star nil] 100)
               (gen/return "")]
             [(get w [:nonprop-src :cat 1 :star 0] 100)
@@ -13116,11 +13120,11 @@
                 (gen/tuple
                   (gen/return ",")
                   (gen/return " ")
-                  (igen/freq [
+                  (igen/freq :nonprop-src [
                     [(get w [:nonprop-src :cat 1 :star 0 :cat 2 :alt 0] 100)
                       (gen/tuple
                         (:nonprop-url g)
-                        (igen/freq [
+                        (igen/freq :nonprop-src [
                           [(get w [:nonprop-src :cat 1 :star 0 :cat 2 :alt 0 :cat 1 :opt nil] 100)
                             (gen/return "")]
                           [(get w [:nonprop-src :cat 1 :star 0 :cat 2 :alt 0 :cat 1 :opt 0] 100)
@@ -13128,7 +13132,7 @@
                               (gen/return "format ")
                               (gen/return "( ")
                               (:nonprop-string g)
-                              (igen/freq [
+                              (igen/freq :nonprop-src [
                                 [(get w [:nonprop-src :cat 1 :star 0 :cat 2 :alt 0 :cat 1 :opt 0 :cat 3 :star nil] 100)
                                   (gen/return "")]
                                 [(get w [:nonprop-src :cat 1 :star 0 :cat 2 :alt 0 :cat 1 :opt 0 :cat 3 :star 0] 100)
@@ -13155,7 +13159,7 @@
         g (assoc g :nonprop-font-variation-settings gen-nonprop-font-variation-settings)
 
         gen-nonprop-font-display
-        (igen/freq [
+        (igen/freq :nonprop-font-display [
           [(get w [:nonprop-font-display :alt 0] 100)
             (gen/return "auto ")]
           [(get w [:nonprop-font-display :alt 1] 100)
@@ -13174,7 +13178,7 @@
           (gen/return "{")
           (gen/return " ")
           (igen/vector+
-            (igen/freq [
+            (igen/freq :prop-AT-font-face [
               [(get w [:prop-AT-font-face :cat 3 :plus 0 :alt 0] 100)
                 (gen/tuple
                   (gen/return "font-family: ")
@@ -13293,7 +13297,7 @@
           (gen/return "{")
           (gen/return " ")
           (igen/vector+
-            (igen/freq [
+            (igen/freq :prop-AT-counter-style [
               [(get w [:prop-AT-counter-style :cat 4 :plus 0 :alt 0] 100)
                 (gen/tuple
                   (gen/return "system: ")
@@ -13358,7 +13362,7 @@
         g (assoc g :prop-AT-media gen-prop-AT-media)
 
         gen-css-at-rule
-        (igen/freq [
+        (igen/freq :css-at-rule [
           [(get w [:css-at-rule :alt 0] 100)
             (:prop-AT-charset g)]
           [(get w [:css-at-rule :alt 1] 100)
@@ -13384,28 +13388,28 @@
         g (assoc g :css-at-rule gen-css-at-rule)
 
         gen-css-simple-selector
-        (igen/freq [
+        (igen/freq :css-simple-selector [
           [(get w [:css-simple-selector :alt 0] 100)
             (gen/tuple
-              (igen/freq [
+              (igen/freq :css-simple-selector [
                 [(get w [:css-simple-selector :alt 0 :cat 0 :opt nil] 100)
                   (gen/return "")]
                 [(get w [:css-simple-selector :alt 0 :cat 0 :opt 0] 100)
-                  (igen/freq [
+                  (igen/freq :css-simple-selector [
                     [(get w [:css-simple-selector :alt 0 :cat 0 :opt 0 :alt 0] 100)
                       (:css-type g)]
                     [(get w [:css-simple-selector :alt 0 :cat 0 :opt 0 :alt 1] 100)
                       (:css-univ g)]])]])
-              (igen/freq [
+              (igen/freq :css-simple-selector [
                 [(get w [:css-simple-selector :alt 0 :cat 1 :star nil] 100)
                   (gen/return "")]
                 [(get w [:css-simple-selector :alt 0 :cat 1 :star 0] 100)
                   (igen/vector+
-                    (igen/freq [
+                    (igen/freq :css-simple-selector [
                       [(get w [:css-simple-selector :alt 0 :cat 1 :star 0 :opt nil] 100)
                         (gen/return "")]
                       [(get w [:css-simple-selector :alt 0 :cat 1 :star 0 :opt 0] 100)
-                        (igen/freq [
+                        (igen/freq :css-simple-selector [
                           [(get w [:css-simple-selector :alt 0 :cat 1 :star 0 :opt 0 :alt 0] 100)
                             (:css-hash g)]
                           [(get w [:css-simple-selector :alt 0 :cat 1 :star 0 :opt 0 :alt 1] 100)
@@ -13418,11 +13422,11 @@
                             (:css-negate g)]])]]))]]))]
           [(get w [:css-simple-selector :alt 1] 100)
             (igen/vector+
-              (igen/freq [
+              (igen/freq :css-simple-selector [
                 [(get w [:css-simple-selector :alt 1 :plus 0 :opt nil] 100)
                   (gen/return "")]
                 [(get w [:css-simple-selector :alt 1 :plus 0 :opt 0] 100)
-                  (igen/freq [
+                  (igen/freq :css-simple-selector [
                     [(get w [:css-simple-selector :alt 1 :plus 0 :opt 0 :alt 0] 100)
                       (:css-hash g)]
                     [(get w [:css-simple-selector :alt 1 :plus 0 :opt 0 :alt 1] 100)
@@ -13436,7 +13440,7 @@
         g (assoc g :css-simple-selector gen-css-simple-selector)
 
         gen-css-combinator
-        (igen/freq [
+        (igen/freq :css-combinator [
           [(get w [:css-combinator :alt 0] 100)
             (gen/return "+ ")]
           [(get w [:css-combinator :alt 1] 100)
@@ -13450,12 +13454,12 @@
         gen-css-selector
         (gen/tuple
           (:css-simple-selector g)
-          (igen/freq [
+          (igen/freq :css-selector [
             [(get w [:css-selector :cat 1 :star nil] 100)
               (gen/return "")]
             [(get w [:css-selector :cat 1 :star 0] 100)
               (igen/vector+
-                (igen/freq [
+                (igen/freq :css-selector [
                   [(get w [:css-selector :cat 1 :star 0 :opt nil] 100)
                     (gen/return "")]
                   [(get w [:css-selector :cat 1 :star 0 :opt 0] 100)
@@ -13465,14 +13469,14 @@
         g (assoc g :css-selector gen-css-selector)
 
         gen-css-assignments
-        (igen/freq [
+        (igen/freq :css-assignments [
           [(get w [:css-assignments :alt 0] 100)
             (gen/return " ")]
           [(get w [:css-assignments :alt 1] 100)
             (gen/tuple
               (:css-declaration g)
               (gen/return " ")
-              (igen/freq [
+              (igen/freq :css-assignments [
                 [(get w [:css-assignments :alt 1 :cat 2 :star nil] 100)
                   (gen/return "")]
                 [(get w [:css-assignments :alt 1 :cat 2 :star 0] 100)
@@ -13482,7 +13486,7 @@
                       (gen/return " ")
                       (:css-declaration g)
                       (gen/return " ")))]])
-              (igen/freq [
+              (igen/freq :css-assignments [
                 [(get w [:css-assignments :alt 1 :cat 3 :star nil] 100)
                   (gen/return "")]
                 [(get w [:css-assignments :alt 1 :cat 3 :star 0] 100)
@@ -13493,12 +13497,12 @@
         gen-css-ruleset
         (gen/tuple
           (:css-selector g)
-          (igen/freq [
+          (igen/freq :css-ruleset [
             [(get w [:css-ruleset :cat 1 :star nil] 100)
               (gen/return "")]
             [(get w [:css-ruleset :cat 1 :star 0] 100)
               (igen/vector+
-                (igen/freq [
+                (igen/freq :css-ruleset [
                   [(get w [:css-ruleset :cat 1 :star 0 :opt nil] 100)
                     (gen/return "")]
                   [(get w [:css-ruleset :cat 1 :star 0 :opt 0] 100)
@@ -13515,12 +13519,12 @@
         gen-stylesheet
         (gen/tuple
           (gen/return " ")
-          (igen/freq [
+          (igen/freq :stylesheet [
             [(get w [:stylesheet :cat 1 :star nil] 100)
               (gen/return "")]
             [(get w [:stylesheet :cat 1 :star 0] 100)
               (igen/vector+
-                (igen/freq [
+                (igen/freq :stylesheet [
                   [(get w [:stylesheet :cat 1 :star 0 :alt 0] 100)
                     (:css-ruleset g)]
                   [(get w [:stylesheet :cat 1 :star 0 :alt 1] 100)
@@ -13534,7 +13538,7 @@
         g (assoc g :url gen-url)
 
         gen-nonprop-outline-radius
-        (igen/freq [
+        (igen/freq :nonprop-outline-radius [
           [(get w [:nonprop-outline-radius :alt 0] 100)
             (:nonprop-length g)]
           [(get w [:nonprop-outline-radius :alt 1] 100)
@@ -13544,7 +13548,7 @@
         gen-nonprop-compound-selector-list
         (gen/tuple
           (:nonprop-compound-selector g)
-          (igen/freq [
+          (igen/freq :nonprop-compound-selector-list [
             [(get w [:nonprop-compound-selector-list :cat 1 :star nil] 100)
               (gen/return "")]
             [(get w [:nonprop-compound-selector-list :cat 1 :star 0] 100)
@@ -13564,7 +13568,7 @@
           (gen/return "max ")
           (gen/return "( ")
           (:nonprop-calc-sum g)
-          (igen/freq [
+          (igen/freq :func-max [
             [(get w [:func-max :cat 3 :star nil] 100)
               (gen/return "")]
             [(get w [:func-max :cat 3 :star 0] 100)
@@ -13580,7 +13584,7 @@
         (gen/tuple
           (gen/return "fit-content ")
           (gen/return "( ")
-          (igen/freq [
+          (igen/freq :func-fit-content [
             [(get w [:func-fit-content :cat 2 :alt 0] 100)
               (:nonprop-length g)]
             [(get w [:func-fit-content :cat 2 :alt 1] 100)
@@ -13594,7 +13598,7 @@
 
         gen-nonprop-cf-mixing-image
         (gen/tuple
-          (igen/freq [
+          (igen/freq :nonprop-cf-mixing-image [
             [(get w [:nonprop-cf-mixing-image :cat 0 :opt nil] 100)
               (gen/return "")]
             [(get w [:nonprop-cf-mixing-image :cat 0 :opt 0] 100)
@@ -13603,7 +13607,7 @@
         g (assoc g :nonprop-cf-mixing-image gen-nonprop-cf-mixing-image)
 
         gen-nonprop-cf-final-image
-        (igen/freq [
+        (igen/freq :nonprop-cf-final-image [
           [(get w [:nonprop-cf-final-image :alt 0] 100)
             (:nonprop-image g)]
           [(get w [:nonprop-cf-final-image :alt 1] 100)
@@ -13616,7 +13620,7 @@
           (gen/return "( ")
           (:nonprop-cf-mixing-image g)
           (gen/return ", ")
-          (igen/freq [
+          (igen/freq :func-cross-fade [
             [(get w [:func-cross-fade :cat 4 :opt nil] 100)
               (gen/return "")]
             [(get w [:func-cross-fade :cat 4 :opt 0] 100)
@@ -13630,7 +13634,7 @@
           (gen/return "( ")
           (:nonprop-custom-ident g)
           (gen/return ", ")
-          (igen/freq [
+          (igen/freq :func-env [
             [(get w [:func-env :cat 4 :opt nil] 100)
               (gen/return "")]
             [(get w [:func-env :cat 4 :opt 0] 100)
@@ -13643,7 +13647,7 @@
           (gen/return "image-set ")
           (gen/return "( ")
           (:nonprop-image-set-option g)
-          (igen/freq [
+          (igen/freq :func-image-set [
             [(get w [:func-image-set :cat 3 :star nil] 100)
               (gen/return "")]
             [(get w [:func-image-set :cat 3 :star 0] 100)
@@ -13697,7 +13701,7 @@
         gen-nonprop-complex-selector-list
         (gen/tuple
           (:nonprop-complex-selector g)
-          (igen/freq [
+          (igen/freq :nonprop-complex-selector-list [
             [(get w [:nonprop-complex-selector-list :cat 1 :star nil] 100)
               (gen/return "")]
             [(get w [:nonprop-complex-selector-list :cat 1 :star 0] 100)
@@ -13713,7 +13717,7 @@
         g (assoc g :mime-type gen-mime-type)
 
         gen-nonprop-time-percentage
-        (igen/freq [
+        (igen/freq :nonprop-time-percentage [
           [(get w [:nonprop-time-percentage :alt 0] 100)
             (:nonprop-time g)]
           [(get w [:nonprop-time-percentage :alt 1] 100)
@@ -13725,7 +13729,7 @@
         g (assoc g :nonprop-name-repeat gen-nonprop-name-repeat)
 
         gen-nonprop-image-tags
-        (igen/freq [
+        (igen/freq :nonprop-image-tags [
           [(get w [:nonprop-image-tags :alt 0] 100)
             (gen/return "ltr ")]
           [(get w [:nonprop-image-tags :alt 1] 100)
@@ -13736,19 +13740,19 @@
         (gen/tuple
           (gen/return "image ")
           (gen/return "( ")
-          (igen/freq [
+          (igen/freq :func-image [
             [(get w [:func-image :cat 2 :opt nil] 100)
               (gen/return "")]
             [(get w [:func-image :cat 2 :opt 0] 100)
               (:nonprop-image-tags g)]])
           (gen/tuple
-            (igen/freq [
+            (igen/freq :func-image [
               [(get w [:func-image :cat 3 :cat 0 :opt nil] 100)
                 (gen/return "")]
               [(get w [:func-image :cat 3 :cat 0 :opt 0] 100)
                 (:nonprop-image-src g)]])
             (gen/return ", ")
-            (igen/freq [
+            (igen/freq :func-image [
               [(get w [:func-image :cat 3 :cat 2 :opt nil] 100)
                 (gen/return "")]
               [(get w [:func-image :cat 3 :cat 2 :opt 0] 100)
@@ -13757,7 +13761,7 @@
         g (assoc g :func-image gen-func-image)
 
         gen-nonprop-compat
-        (igen/freq [
+        (igen/freq :nonprop-compat [
           [(get w [:nonprop-compat :alt 0] 100)
             (gen/return "searchfield ")]
           [(get w [:nonprop-compat :alt 1] 100)
@@ -13791,7 +13795,7 @@
           (gen/return "min ")
           (gen/return "( ")
           (:nonprop-calc-sum g)
-          (igen/freq [
+          (igen/freq :func-min [
             [(get w [:func-min :cat 3 :star nil] 100)
               (gen/return "")]
             [(get w [:func-min :cat 3 :star 0] 100)
@@ -13804,7 +13808,7 @@
         g (assoc g :func-min gen-func-min)
 
         gen-nonprop-composite-style
-        (igen/freq [
+        (igen/freq :nonprop-composite-style [
           [(get w [:nonprop-composite-style :alt 0] 100)
             (gen/return "clear ")]
           [(get w [:nonprop-composite-style :alt 1] 100)
@@ -13831,7 +13835,7 @@
 
         gen-nonprop-line-name-list
         (igen/vector+
-          (igen/freq [
+          (igen/freq :nonprop-line-name-list [
             [(get w [:nonprop-line-name-list :plus 0 :alt 0] 100)
               (:nonprop-line-names g)]
             [(get w [:nonprop-line-name-list :plus 0 :alt 1] 100)
@@ -13840,7 +13844,7 @@
 
         gen-nonprop-mask-position
         (gen/tuple
-          (igen/freq [
+          (igen/freq :nonprop-mask-position [
             [(get w [:nonprop-mask-position :cat 0 :alt 0] 100)
               (:nonprop-length-percentage g)]
             [(get w [:nonprop-mask-position :cat 0 :alt 1] 100)
@@ -13849,11 +13853,11 @@
               (gen/return "center ")]
             [(get w [:nonprop-mask-position :cat 0 :alt 3] 100)
               (gen/return "right ")]])
-          (igen/freq [
+          (igen/freq :nonprop-mask-position [
             [(get w [:nonprop-mask-position :cat 1 :opt nil] 100)
               (gen/return "")]
             [(get w [:nonprop-mask-position :cat 1 :opt 0] 100)
-              (igen/freq [
+              (igen/freq :nonprop-mask-position [
                 [(get w [:nonprop-mask-position :cat 1 :opt 0 :alt 0] 100)
                   (:nonprop-length-percentage g)]
                 [(get w [:nonprop-mask-position :cat 1 :opt 0 :alt 1] 100)
@@ -13870,11 +13874,11 @@
           (gen/return "( ")
           (:nonprop-custom-ident g)
           (gen/return ", ")
-          (igen/freq [
+          (igen/freq :func-counter [
             [(get w [:func-counter :cat 4 :opt nil] 100)
               (gen/return "")]
             [(get w [:func-counter :cat 4 :opt 0] 100)
-              (igen/freq [
+              (igen/freq :func-counter [
                 [(get w [:func-counter :cat 4 :opt 0 :alt 0] 100)
                   (:nonprop-counter-style g)]
                 [(get w [:func-counter :cat 4 :opt 0 :alt 1] 100)
@@ -13883,7 +13887,7 @@
         g (assoc g :func-counter gen-func-counter)
 
         gen-nonprop-color-stop
-        (igen/freq [
+        (igen/freq :nonprop-color-stop [
           [(get w [:nonprop-color-stop :alt 0] 100)
             (:nonprop-color-stop-length g)]
           [(get w [:nonprop-color-stop :alt 1] 100)
@@ -13891,11 +13895,11 @@
         g (assoc g :nonprop-color-stop gen-nonprop-color-stop)
 
         gen-css-assignments-test
-        (igen/freq [
+        (igen/freq :css-assignments-test [
           [(get w [:css-assignments-test :alt 0] 100)
             (gen/tuple
               (:css-declaration g)
-              (igen/freq [
+              (igen/freq :css-assignments-test [
                 [(get w [:css-assignments-test :alt 0 :cat 1 :star nil] 100)
                   (gen/return "")]
                 [(get w [:css-assignments-test :alt 0 :cat 1 :star 0] 100)
@@ -13909,7 +13913,7 @@
         g (assoc g :css-assignments-test gen-css-assignments-test)
 
         gen-nonprop-generic-name
-        (igen/freq [
+        (igen/freq :nonprop-generic-name [
           [(get w [:nonprop-generic-name :alt 0] 100)
             (gen/return "serif ")]
           [(get w [:nonprop-generic-name :alt 1] 100)
@@ -13936,7 +13940,7 @@
         g (assoc g :nonprop-media-or gen-nonprop-media-or)
 
         gen-nonprop-nth
-        (igen/freq [
+        (igen/freq :nonprop-nth [
           [(get w [:nonprop-nth :alt 0] 100)
             (:nonprop-an-plus-b g)]
           [(get w [:nonprop-nth :alt 1] 100)
@@ -13946,7 +13950,7 @@
         g (assoc g :nonprop-nth gen-nonprop-nth)
 
         gen-nonprop-symbol
-        (igen/freq [
+        (igen/freq :nonprop-symbol [
           [(get w [:nonprop-symbol :alt 0] 100)
             (:nonprop-string g)]
           [(get w [:nonprop-symbol :alt 1] 100)
@@ -13977,11 +13981,11 @@
           (:nonprop-string g)
           (gen/return ",")
           (gen/return " ")
-          (igen/freq [
+          (igen/freq :func-counters [
             [(get w [:func-counters :cat 7 :opt nil] 100)
               (gen/return "")]
             [(get w [:func-counters :cat 7 :opt 0] 100)
-              (igen/freq [
+              (igen/freq :func-counters [
                 [(get w [:func-counters :cat 7 :opt 0 :alt 0] 100)
                   (:nonprop-counter-style g)]
                 [(get w [:func-counters :cat 7 :opt 0 :alt 1] 100)

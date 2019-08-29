@@ -12,14 +12,18 @@
   {[:integer] {:tag :nt :keyword :gen/int}
    [:non-negative-integer] {:tag :nt :keyword :gen/nat}
    [:positive-integer] {:tag :nt :keyword :gen/s-pos-int}
-   [:floating-point-number] {:tag :nt :keyword :gen/double}})
+   [:floating-point-number] {:tag :nt :keyword :rgen/floating-point-number}})
 
 (def html5-grammar-updates
   {;; Replace the stub CSS value generator with real one
    [:attr-val-global__style] {:tag :nt :keyword :css-assignments-test}
    ;; Simplify rules that result in lots of noise/unicode
    [:name] {:tag :nt :keyword :rgen/simple-identifier}
-   [:reference] {:tag :string :string "&#x00c9;"}
+   ;; TODO: undo this when https://github.com/servo/servo/issues/24042
+   ;; is fixed
+   [:char-data-test] {:tag :nt :keyword :rgen/wrap-ahem-char}
+   [:reference] {:tag :nt :keyword :rgen/wrap-ahem-ref}
+   ;;[:reference] {:tag :string :string "&#x00c9;"}
    [:comment] {:tag :string :string "<!-- HTML comment -->"}
    [:attribute-data] {:tag :nt :keyword :rgen/simple-identifier}
    [:aria-attribute] {:tag :epsilon}
@@ -27,7 +31,9 @@
    [:event-attribute] {:tag :epsilon}
    [:custom-data-attribute] {:tag :epsilon}
    ;; More with more efficient native generators
-   [:attr-val-img__src] {:tag :nt :keyword :rgen/image-path}})
+   [:attr-val-img__src] {:tag :nt :keyword :rgen/image-path}
+
+   })
 
 (def css3-grammar-updates
   {;; Remove recursive definitions

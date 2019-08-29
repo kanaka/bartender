@@ -116,14 +116,14 @@
      {:tag :cat,
       :parsers ({:tag :string, :string "("} {:tag :nt, :keyword :S})}
      {:tag :nt, :keyword :nonprop-top}
-     {:tag :cat,
-      :parsers ({:tag :string, :string ","} {:tag :nt, :keyword :S})}
+     {:tag :string, :string ","}
+     {:tag :nt, :keyword :S}
      {:tag :nt, :keyword :nonprop-right}
      {:tag :cat,
       :parsers ({:tag :string, :string ","} {:tag :nt, :keyword :S})}
      {:tag :nt, :keyword :nonprop-bottom}
-     {:tag :string, :string ","}
-     {:tag :nt, :keyword :S}
+     {:tag :cat,
+      :parsers ({:tag :string, :string ","} {:tag :nt, :keyword :S})}
      {:tag :nt, :keyword :nonprop-left}
      {:tag :cat,
       :parsers ({:tag :string, :string ")"} {:tag :nt, :keyword :S})})}
@@ -1779,9 +1779,14 @@
        {:tag :string, :string ","}
        {:tag :nt, :keyword :S}
        {:tag :nt, :keyword :nonprop-percentage})}
-     {:tag :cat,
-      :parsers ({:tag :string, :string ","} {:tag :nt, :keyword :S})}
-     {:tag :opt, :parser {:tag :nt, :keyword :nonprop-alpha-value}}
+     {:tag :opt,
+      :parser
+      {:tag :cat,
+       :parsers
+       ({:tag :cat,
+         :parsers
+         ({:tag :string, :string ","} {:tag :nt, :keyword :S})}
+        {:tag :nt, :keyword :nonprop-alpha-value})}}
      {:tag :cat,
       :parsers ({:tag :string, :string ")"} {:tag :nt, :keyword :S})})}
    {:tag :cat,
@@ -1800,9 +1805,14 @@
        {:tag :string, :string ","}
        {:tag :nt, :keyword :S}
        {:tag :nt, :keyword :nonprop-number})}
-     {:tag :cat,
-      :parsers ({:tag :string, :string ","} {:tag :nt, :keyword :S})}
-     {:tag :opt, :parser {:tag :nt, :keyword :nonprop-alpha-value}}
+     {:tag :opt,
+      :parser
+      {:tag :cat,
+       :parsers
+       ({:tag :cat,
+         :parsers
+         ({:tag :string, :string ","} {:tag :nt, :keyword :S})}
+        {:tag :nt, :keyword :nonprop-alpha-value})}}
      {:tag :cat,
       :parsers
       ({:tag :string, :string ")"} {:tag :nt, :keyword :S})})})},
@@ -6277,8 +6287,7 @@
     :parsers ({:tag :string, :string "auto"} {:tag :nt, :keyword :S})}
    {:tag :nt, :keyword :nonprop-length}
    {:tag :nt, :keyword :nonprop-percentage})},
- :lang
- {:tag :regexp, :regexp #"[a-z]+(?:-[A-Za-z]+)?", :comments (" CSS ")},
+ :lang {:tag :regexp, :regexp #"[a-z]+(?:-[A-Za-z]+)?"},
  :nonprop-grid-template-rows
  {:tag :nt, :keyword :prop-grid-template-rows},
  :nonprop-row-gap {:tag :nt, :keyword :prop-row-gap},
@@ -7081,9 +7090,14 @@
        {:tag :string, :string ","}
        {:tag :nt, :keyword :S}
        {:tag :nt, :keyword :nonprop-percentage})}
-     {:tag :cat,
-      :parsers ({:tag :string, :string ","} {:tag :nt, :keyword :S})}
-     {:tag :opt, :parser {:tag :nt, :keyword :nonprop-alpha-value}}
+     {:tag :opt,
+      :parser
+      {:tag :cat,
+       :parsers
+       ({:tag :cat,
+         :parsers
+         ({:tag :string, :string ","} {:tag :nt, :keyword :S})}
+        {:tag :nt, :keyword :nonprop-alpha-value})}}
      {:tag :cat,
       :parsers ({:tag :string, :string ")"} {:tag :nt, :keyword :S})})}
    {:tag :cat,
@@ -7101,9 +7115,14 @@
        {:tag :string, :string ","}
        {:tag :nt, :keyword :S}
        {:tag :nt, :keyword :nonprop-number})}
-     {:tag :cat,
-      :parsers ({:tag :string, :string ","} {:tag :nt, :keyword :S})}
-     {:tag :opt, :parser {:tag :nt, :keyword :nonprop-alpha-value}}
+     {:tag :opt,
+      :parser
+      {:tag :cat,
+       :parsers
+       ({:tag :cat,
+         :parsers
+         ({:tag :string, :string ","} {:tag :nt, :keyword :S})}
+        {:tag :nt, :keyword :nonprop-alpha-value})}}
      {:tag :cat,
       :parsers
       ({:tag :string, :string ")"} {:tag :nt, :keyword :S})})})},
@@ -8512,7 +8531,8 @@
    {:tag :string, :string "in"}
    {:tag :string, :string "pt"}
    {:tag :string, :string "pc"}
-   {:tag :string, :string "mozmm"})},
+   {:tag :string, :string "mozmm"}),
+  :comments (" CSS ")},
  :nonprop-an-plus-b {:tag :string, :string "STUB_an_plus_b"},
  :prop-border-inline-start-width
  {:tag :alt,
@@ -8524,7 +8544,7 @@
   :parsers
   ({:tag :regexp,
     :regexp
-    #"(?:[A-Za-z_]|-[A-Za-z_]|\\[0-9A-F]{1,6})(?:[A-Za-z0-9_-]|\\[0-9A-F]{1,6})+"}
+    #"(?:[A-Za-z_]|-[A-Za-z_]|\\[0-9A-F]{1,6})(?:[A-Za-z0-9_-]|\\[0-9A-F]{1,6})*"}
    {:tag :nt, :keyword :S}),
   :comments
   (" https://developer.mozilla.org/en-US/docs/Web/CSS/custom-ident ")},

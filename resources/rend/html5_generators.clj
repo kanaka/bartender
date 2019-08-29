@@ -12,7 +12,7 @@
         w weights
 
         gen-attr-val-img__sizes
-        (igen/freq [
+        (igen/freq :attr-val-img__sizes [
           [(get w [:attr-val-img__sizes :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-img__sizes :alt 1] 100)
@@ -24,7 +24,7 @@
         g (assoc g :non-negative-integer gen-non-negative-integer)
 
         gen-attr-val-textarea__maxlength
-        (igen/freq [
+        (igen/freq :attr-val-textarea__maxlength [
           [(get w [:attr-val-textarea__maxlength :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-textarea__maxlength :alt 1] 100)
@@ -32,7 +32,7 @@
         g (assoc g :attr-val-textarea__maxlength gen-attr-val-textarea__maxlength)
 
         gen-length-unit
-        (igen/freq [
+        (igen/freq :length-unit [
           [(get w [:length-unit :alt 0] 100)
             (gen/return "em")]
           [(get w [:length-unit :alt 1] 100)
@@ -78,7 +78,7 @@
         g (assoc g :length-unit gen-length-unit)
 
         gen-attr-val-canvas__height
-        (igen/freq [
+        (igen/freq :attr-val-canvas__height [
           [(get w [:attr-val-canvas__height :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-canvas__height :alt 1] 100)
@@ -86,7 +86,7 @@
           [(get w [:attr-val-canvas__height :alt 2] 100)
             (gen/tuple
               (:non-negative-integer g)
-              (igen/freq [
+              (igen/freq :attr-val-canvas__height [
                 [(get w [:attr-val-canvas__height :alt 2 :cat 1 :alt 0] 100)
                   (:length-unit g)]
                 [(get w [:attr-val-canvas__height :alt 2 :cat 1 :alt 1] 100)
@@ -94,7 +94,7 @@
         g (assoc g :attr-val-canvas__height gen-attr-val-canvas__height)
 
         gen-attr-val-img__crossorigin
-        (igen/freq [
+        (igen/freq :attr-val-img__crossorigin [
           [(get w [:attr-val-img__crossorigin :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-img__crossorigin :alt 1] 100)
@@ -108,7 +108,7 @@
         g (assoc g :attribute-data gen-attribute-data)
 
         gen-attr-val-input__dirname
-        (igen/freq [
+        (igen/freq :attr-val-input__dirname [
           [(get w [:attr-val-input__dirname :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-input__dirname :alt 1] 100)
@@ -120,7 +120,7 @@
         g (assoc g :comment gen-comment)
 
         gen-comment-or-space
-        (igen/freq [
+        (igen/freq :comment-or-space [
           [(get w [:comment-or-space :alt 0] 100)
             (:comment g)]
           [(get w [:comment-or-space :alt 1] 100)
@@ -128,7 +128,7 @@
         g (assoc g :comment-or-space gen-comment-or-space)
 
         gen-opt-boolean
-        (igen/freq [
+        (igen/freq :opt-boolean [
           [(get w [:opt-boolean :alt 0] 100)
             (gen/return "")]
           [(get w [:opt-boolean :alt 1] 100)
@@ -140,7 +140,7 @@
         g (assoc g :opt-boolean gen-opt-boolean)
 
         gen-attr-val-keygen__name
-        (igen/freq [
+        (igen/freq :attr-val-keygen__name [
           [(get w [:attr-val-keygen__name :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-keygen__name :alt 1] 100)
@@ -148,7 +148,7 @@
         g (assoc g :attr-val-keygen__name gen-attr-val-keygen__name)
 
         gen-attr-val-global__translate
-        (igen/freq [
+        (igen/freq :attr-val-global__translate [
           [(get w [:attr-val-global__translate :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-global__translate :alt 1] 100)
@@ -162,13 +162,13 @@
         g (assoc g :name gen-name)
 
         gen-attr-val-global__accesskey
-        (igen/freq [
+        (igen/freq :attr-val-global__accesskey [
           [(get w [:attr-val-global__accesskey :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-global__accesskey :alt 1] 100)
             (gen/tuple
               (:name g)
-              (igen/freq [
+              (igen/freq :attr-val-global__accesskey [
                 [(get w [:attr-val-global__accesskey :alt 1 :cat 1 :star nil] 100)
                   (gen/return "")]
                 [(get w [:attr-val-global__accesskey :alt 1 :cat 1 :star 0] 100)
@@ -185,7 +185,7 @@
         g (assoc g :attr-val-global__style gen-attr-val-global__style)
 
         gen-attr-val-global__contenteditable
-        (igen/freq [
+        (igen/freq :attr-val-global__contenteditable [
           [(get w [:attr-val-global__contenteditable :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-global__contenteditable :alt 1] 100)
@@ -195,7 +195,7 @@
         g (assoc g :attr-val-global__contenteditable gen-attr-val-global__contenteditable)
 
         gen-attr-val-global__draggable
-        (igen/freq [
+        (igen/freq :attr-val-global__draggable [
           [(get w [:attr-val-global__draggable :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-global__draggable :alt 1] 100)
@@ -205,7 +205,7 @@
         g (assoc g :attr-val-global__draggable gen-attr-val-global__draggable)
 
         gen-attr-val-global__dir
-        (igen/freq [
+        (igen/freq :attr-val-global__dir [
           [(get w [:attr-val-global__dir :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-global__dir :alt 1] 100)
@@ -217,7 +217,7 @@
         g (assoc g :attr-val-global__dir gen-attr-val-global__dir)
 
         gen-attr-val-global__id
-        (igen/freq [
+        (igen/freq :attr-val-global__id [
           [(get w [:attr-val-global__id :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-global__id :alt 1] 100)
@@ -229,7 +229,7 @@
         g (assoc g :integer gen-integer)
 
         gen-attr-val-global__spellcheck
-        (igen/freq [
+        (igen/freq :attr-val-global__spellcheck [
           [(get w [:attr-val-global__spellcheck :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-global__spellcheck :alt 1] 100)
@@ -243,7 +243,7 @@
         g (assoc g :lang gen-lang)
 
         gen-attr-val-global__title
-        (igen/freq [
+        (igen/freq :attr-val-global__title [
           [(get w [:attr-val-global__title :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-global__title :alt 1] 100)
@@ -255,7 +255,7 @@
         g (assoc g :role-attribute gen-role-attribute)
 
         gen-attr-val-global__lang
-        (igen/freq [
+        (igen/freq :attr-val-global__lang [
           [(get w [:attr-val-global__lang :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-global__lang :alt 1] 100)
@@ -263,7 +263,7 @@
         g (assoc g :attr-val-global__lang gen-attr-val-global__lang)
 
         gen-attr-val-global__dropzone
-        (igen/freq [
+        (igen/freq :attr-val-global__dropzone [
           [(get w [:attr-val-global__dropzone :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-global__dropzone :alt 1] 100)
@@ -271,7 +271,7 @@
           [(get w [:attr-val-global__dropzone :alt 2] 100)
             (gen/tuple
               (:name g)
-              (igen/freq [
+              (igen/freq :attr-val-global__dropzone [
                 [(get w [:attr-val-global__dropzone :alt 2 :cat 1 :star nil] 100)
                   (gen/return "")]
                 [(get w [:attr-val-global__dropzone :alt 2 :cat 1 :star 0] 100)
@@ -286,13 +286,13 @@
         g (assoc g :event-attribute gen-event-attribute)
 
         gen-attr-val-global__class
-        (igen/freq [
+        (igen/freq :attr-val-global__class [
           [(get w [:attr-val-global__class :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-global__class :alt 1] 100)
             (gen/tuple
               (:name g)
-              (igen/freq [
+              (igen/freq :attr-val-global__class [
                 [(get w [:attr-val-global__class :alt 1 :cat 1 :star nil] 100)
                   (gen/return "")]
                 [(get w [:attr-val-global__class :alt 1 :cat 1 :star 0] 100)
@@ -307,7 +307,7 @@
         g (assoc g :aria-attribute gen-aria-attribute)
 
         gen-attr-val-global__tabindex
-        (igen/freq [
+        (igen/freq :attr-val-global__tabindex [
           [(get w [:attr-val-global__tabindex :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-global__tabindex :alt 1] 100)
@@ -319,7 +319,7 @@
         g (assoc g :custom-data-attribute gen-custom-data-attribute)
 
         gen-attr-val-global__contextmenu
-        (igen/freq [
+        (igen/freq :attr-val-global__contextmenu [
           [(get w [:attr-val-global__contextmenu :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-global__contextmenu :alt 1] 100)
@@ -327,7 +327,7 @@
         g (assoc g :attr-val-global__contextmenu gen-attr-val-global__contextmenu)
 
         gen-global-attribute
-        (igen/freq [
+        (igen/freq :global-attribute [
           [(get w [:global-attribute :alt 0] 100)
             (gen/tuple
               (gen/return "hidden")
@@ -421,7 +421,7 @@
         g (assoc g :mime-type gen-mime-type)
 
         gen-url-test
-        (igen/freq [
+        (igen/freq :url-test [
           [(get w [:url-test :alt 0] 100)
             (chuck/string-from-regex #"(?:https:|http:)?//[A-Za-z0-9._\-/&#=,?]+")]
           [(get w [:url-test :alt 1] 100)
@@ -439,7 +439,7 @@
         g (assoc g :url gen-url)
 
         gen-attr-val-track__src
-        (igen/freq [
+        (igen/freq :attr-val-track__src [
           [(get w [:attr-val-track__src :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-track__src :alt 1] 100)
@@ -447,7 +447,7 @@
         g (assoc g :attr-val-track__src gen-attr-val-track__src)
 
         gen-attr-val-img__height
-        (igen/freq [
+        (igen/freq :attr-val-img__height [
           [(get w [:attr-val-img__height :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-img__height :alt 1] 100)
@@ -455,7 +455,7 @@
           [(get w [:attr-val-img__height :alt 2] 100)
             (gen/tuple
               (:non-negative-integer g)
-              (igen/freq [
+              (igen/freq :attr-val-img__height [
                 [(get w [:attr-val-img__height :alt 2 :cat 1 :alt 0] 100)
                   (:length-unit g)]
                 [(get w [:attr-val-img__height :alt 2 :cat 1 :alt 1] 100)
@@ -463,7 +463,7 @@
         g (assoc g :attr-val-img__height gen-attr-val-img__height)
 
         gen-attr-val-input__placeholder
-        (igen/freq [
+        (igen/freq :attr-val-input__placeholder [
           [(get w [:attr-val-input__placeholder :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-input__placeholder :alt 1] 100)
@@ -479,7 +479,7 @@
         g (assoc g :noscript-attribute gen-noscript-attribute)
 
         gen-attr-val-track__srclang
-        (igen/freq [
+        (igen/freq :attr-val-track__srclang [
           [(get w [:attr-val-track__srclang :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-track__srclang :alt 1] 100)
@@ -487,7 +487,7 @@
         g (assoc g :attr-val-track__srclang gen-attr-val-track__srclang)
 
         gen-attr-val-track__kind
-        (igen/freq [
+        (igen/freq :attr-val-track__kind [
           [(get w [:attr-val-track__kind :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-track__kind :alt 1] 100)
@@ -503,7 +503,7 @@
         g (assoc g :attr-val-track__kind gen-attr-val-track__kind)
 
         gen-attr-val-track__label
-        (igen/freq [
+        (igen/freq :attr-val-track__label [
           [(get w [:attr-val-track__label :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-track__label :alt 1] 100)
@@ -511,7 +511,7 @@
         g (assoc g :attr-val-track__label gen-attr-val-track__label)
 
         gen-track-attribute
-        (igen/freq [
+        (igen/freq :track-attribute [
           [(get w [:track-attribute :alt 0] 100)
             (gen/tuple
               (gen/return "default")
@@ -545,7 +545,7 @@
         g (assoc g :section-attribute gen-section-attribute)
 
         gen-attr-val-base__target
-        (igen/freq [
+        (igen/freq :attr-val-base__target [
           [(get w [:attr-val-base__target :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-base__target :alt 1] 100)
@@ -562,7 +562,7 @@
         w weights
 
         gen-attr-val-input__src
-        (igen/freq [
+        (igen/freq :attr-val-input__src [
           [(get w [:attr-val-input__src :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-input__src :alt 1] 100)
@@ -578,7 +578,7 @@
         g (assoc g :h3-attribute gen-h3-attribute)
 
         gen-attr-val-object__name
-        (igen/freq [
+        (igen/freq :attr-val-object__name [
           [(get w [:attr-val-object__name :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-object__name :alt 1] 100)
@@ -590,7 +590,7 @@
         g (assoc g :thead-attribute gen-thead-attribute)
 
         gen-attr-val-button__formmethod
-        (igen/freq [
+        (igen/freq :attr-val-button__formmethod [
           [(get w [:attr-val-button__formmethod :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-button__formmethod :alt 1] 100)
@@ -604,7 +604,7 @@
         g (assoc g :h5-attribute gen-h5-attribute)
 
         gen-attr-val-embed__src
-        (igen/freq [
+        (igen/freq :attr-val-embed__src [
           [(get w [:attr-val-embed__src :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-embed__src :alt 1] 100)
@@ -612,7 +612,7 @@
         g (assoc g :attr-val-embed__src gen-attr-val-embed__src)
 
         gen-attr-val-embed__height
-        (igen/freq [
+        (igen/freq :attr-val-embed__height [
           [(get w [:attr-val-embed__height :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-embed__height :alt 1] 100)
@@ -620,7 +620,7 @@
           [(get w [:attr-val-embed__height :alt 2] 100)
             (gen/tuple
               (:non-negative-integer g)
-              (igen/freq [
+              (igen/freq :attr-val-embed__height [
                 [(get w [:attr-val-embed__height :alt 2 :cat 1 :alt 0] 100)
                   (:length-unit g)]
                 [(get w [:attr-val-embed__height :alt 2 :cat 1 :alt 1] 100)
@@ -628,7 +628,7 @@
         g (assoc g :attr-val-embed__height gen-attr-val-embed__height)
 
         gen-attr-val-embed__width
-        (igen/freq [
+        (igen/freq :attr-val-embed__width [
           [(get w [:attr-val-embed__width :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-embed__width :alt 1] 100)
@@ -636,7 +636,7 @@
           [(get w [:attr-val-embed__width :alt 2] 100)
             (gen/tuple
               (:non-negative-integer g)
-              (igen/freq [
+              (igen/freq :attr-val-embed__width [
                 [(get w [:attr-val-embed__width :alt 2 :cat 1 :alt 0] 100)
                   (:length-unit g)]
                 [(get w [:attr-val-embed__width :alt 2 :cat 1 :alt 1] 100)
@@ -644,7 +644,7 @@
         g (assoc g :attr-val-embed__width gen-attr-val-embed__width)
 
         gen-attr-val-embed__type
-        (igen/freq [
+        (igen/freq :attr-val-embed__type [
           [(get w [:attr-val-embed__type :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-embed__type :alt 1] 100)
@@ -652,7 +652,7 @@
         g (assoc g :attr-val-embed__type gen-attr-val-embed__type)
 
         gen-embed-attribute
-        (igen/freq [
+        (igen/freq :embed-attribute [
           [(get w [:embed-attribute :alt 0] 100)
             (gen/tuple
               (gen/return "height=\"")
@@ -682,7 +682,7 @@
         g (assoc g :p-attribute gen-p-attribute)
 
         gen-attr-val-li__value
-        (igen/freq [
+        (igen/freq :attr-val-li__value [
           [(get w [:attr-val-li__value :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-li__value :alt 1] 100)
@@ -690,7 +690,7 @@
         g (assoc g :attr-val-li__value gen-attr-val-li__value)
 
         gen-attr-val-map__name
-        (igen/freq [
+        (igen/freq :attr-val-map__name [
           [(get w [:attr-val-map__name :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-map__name :alt 1] 100)
@@ -698,7 +698,7 @@
         g (assoc g :attr-val-map__name gen-attr-val-map__name)
 
         gen-map-attribute
-        (igen/freq [
+        (igen/freq :map-attribute [
           [(get w [:map-attribute :alt 0] 100)
             (gen/tuple
               (gen/return "name=\"")
@@ -709,7 +709,7 @@
         g (assoc g :map-attribute gen-map-attribute)
 
         gen-attr-val-label__form
-        (igen/freq [
+        (igen/freq :attr-val-label__form [
           [(get w [:attr-val-label__form :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-label__form :alt 1] 100)
@@ -717,7 +717,7 @@
         g (assoc g :attr-val-label__form gen-attr-val-label__form)
 
         gen-attr-val-time__datetime
-        (igen/freq [
+        (igen/freq :attr-val-time__datetime [
           [(get w [:attr-val-time__datetime :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-time__datetime :alt 1] 100)
@@ -751,7 +751,7 @@
         g (assoc g :small-attribute gen-small-attribute)
 
         gen-attr-val-source__sizes
-        (igen/freq [
+        (igen/freq :attr-val-source__sizes [
           [(get w [:attr-val-source__sizes :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-source__sizes :alt 1] 100)
@@ -759,7 +759,7 @@
         g (assoc g :attr-val-source__sizes gen-attr-val-source__sizes)
 
         gen-attr-val-input__form
-        (igen/freq [
+        (igen/freq :attr-val-input__form [
           [(get w [:attr-val-input__form :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-input__form :alt 1] 100)
@@ -771,7 +771,7 @@
         g (assoc g :wbr-attribute gen-wbr-attribute)
 
         gen-attr-val-ol__start
-        (igen/freq [
+        (igen/freq :attr-val-ol__start [
           [(get w [:attr-val-ol__start :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-ol__start :alt 1] 100)
@@ -779,13 +779,13 @@
         g (assoc g :attr-val-ol__start gen-attr-val-ol__start)
 
         gen-attr-val-output__for
-        (igen/freq [
+        (igen/freq :attr-val-output__for [
           [(get w [:attr-val-output__for :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-output__for :alt 1] 100)
             (gen/tuple
               (:name g)
-              (igen/freq [
+              (igen/freq :attr-val-output__for [
                 [(get w [:attr-val-output__for :alt 1 :cat 1 :star nil] 100)
                   (gen/return "")]
                 [(get w [:attr-val-output__for :alt 1 :cat 1 :star 0] 100)
@@ -798,7 +798,7 @@
         g (assoc g :attr-val-output__for gen-attr-val-output__for)
 
         gen-attr-val-input__maxlength
-        (igen/freq [
+        (igen/freq :attr-val-input__maxlength [
           [(get w [:attr-val-input__maxlength :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-input__maxlength :alt 1] 100)
@@ -806,7 +806,7 @@
         g (assoc g :attr-val-input__maxlength gen-attr-val-input__maxlength)
 
         gen-time-attribute
-        (igen/freq [
+        (igen/freq :time-attribute [
           [(get w [:time-attribute :alt 0] 100)
             (gen/tuple
               (gen/return "datetime=\"")
@@ -821,7 +821,7 @@
         g (assoc g :h6-attribute gen-h6-attribute)
 
         gen-attr-val-input__width
-        (igen/freq [
+        (igen/freq :attr-val-input__width [
           [(get w [:attr-val-input__width :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-input__width :alt 1] 100)
@@ -829,7 +829,7 @@
           [(get w [:attr-val-input__width :alt 2] 100)
             (gen/tuple
               (:non-negative-integer g)
-              (igen/freq [
+              (igen/freq :attr-val-input__width [
                 [(get w [:attr-val-input__width :alt 2 :cat 1 :alt 0] 100)
                   (:length-unit g)]
                 [(get w [:attr-val-input__width :alt 2 :cat 1 :alt 1] 100)
@@ -837,7 +837,7 @@
         g (assoc g :attr-val-input__width gen-attr-val-input__width)
 
         gen-attr-val-video__height
-        (igen/freq [
+        (igen/freq :attr-val-video__height [
           [(get w [:attr-val-video__height :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-video__height :alt 1] 100)
@@ -845,7 +845,7 @@
           [(get w [:attr-val-video__height :alt 2] 100)
             (gen/tuple
               (:non-negative-integer g)
-              (igen/freq [
+              (igen/freq :attr-val-video__height [
                 [(get w [:attr-val-video__height :alt 2 :cat 1 :alt 0] 100)
                   (:length-unit g)]
                 [(get w [:attr-val-video__height :alt 2 :cat 1 :alt 1] 100)
@@ -853,7 +853,7 @@
         g (assoc g :attr-val-video__height gen-attr-val-video__height)
 
         gen-attr-val-ins__datetime
-        (igen/freq [
+        (igen/freq :attr-val-ins__datetime [
           [(get w [:attr-val-ins__datetime :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-ins__datetime :alt 1] 100)
@@ -861,7 +861,7 @@
         g (assoc g :attr-val-ins__datetime gen-attr-val-ins__datetime)
 
         gen-attr-val-button__formtarget
-        (igen/freq [
+        (igen/freq :attr-val-button__formtarget [
           [(get w [:attr-val-button__formtarget :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-button__formtarget :alt 1] 100)
@@ -869,7 +869,7 @@
         g (assoc g :attr-val-button__formtarget gen-attr-val-button__formtarget)
 
         gen-attr-val-button__form
-        (igen/freq [
+        (igen/freq :attr-val-button__form [
           [(get w [:attr-val-button__form :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-button__form :alt 1] 100)
@@ -877,7 +877,7 @@
         g (assoc g :attr-val-button__form gen-attr-val-button__form)
 
         gen-attr-val-button__name
-        (igen/freq [
+        (igen/freq :attr-val-button__name [
           [(get w [:attr-val-button__name :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-button__name :alt 1] 100)
@@ -885,7 +885,7 @@
         g (assoc g :attr-val-button__name gen-attr-val-button__name)
 
         gen-attr-val-button__formaction
-        (igen/freq [
+        (igen/freq :attr-val-button__formaction [
           [(get w [:attr-val-button__formaction :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-button__formaction :alt 1] 100)
@@ -893,7 +893,7 @@
         g (assoc g :attr-val-button__formaction gen-attr-val-button__formaction)
 
         gen-attr-val-button__value
-        (igen/freq [
+        (igen/freq :attr-val-button__value [
           [(get w [:attr-val-button__value :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-button__value :alt 1] 100)
@@ -901,7 +901,7 @@
         g (assoc g :attr-val-button__value gen-attr-val-button__value)
 
         gen-attr-val-button__type
-        (igen/freq [
+        (igen/freq :attr-val-button__type [
           [(get w [:attr-val-button__type :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-button__type :alt 1] 100)
@@ -915,7 +915,7 @@
         g (assoc g :attr-val-button__type gen-attr-val-button__type)
 
         gen-attr-val-button__formenctype
-        (igen/freq [
+        (igen/freq :attr-val-button__formenctype [
           [(get w [:attr-val-button__formenctype :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-button__formenctype :alt 1] 100)
@@ -927,7 +927,7 @@
         g (assoc g :attr-val-button__formenctype gen-attr-val-button__formenctype)
 
         gen-attr-val-button__menu
-        (igen/freq [
+        (igen/freq :attr-val-button__menu [
           [(get w [:attr-val-button__menu :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-button__menu :alt 1] 100)
@@ -935,7 +935,7 @@
         g (assoc g :attr-val-button__menu gen-attr-val-button__menu)
 
         gen-button-attribute
-        (igen/freq [
+        (igen/freq :button-attribute [
           [(get w [:button-attribute :alt 0] 100)
             (gen/tuple
               (gen/return "autofocus")
@@ -998,7 +998,7 @@
         g (assoc g :button-attribute gen-button-attribute)
 
         gen-attr-val-meta__name
-        (igen/freq [
+        (igen/freq :attr-val-meta__name [
           [(get w [:attr-val-meta__name :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-meta__name :alt 1] 100)
@@ -1006,7 +1006,7 @@
         g (assoc g :attr-val-meta__name gen-attr-val-meta__name)
 
         gen-attr-val-object__data
-        (igen/freq [
+        (igen/freq :attr-val-object__data [
           [(get w [:attr-val-object__data :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-object__data :alt 1] 100)
@@ -1018,7 +1018,7 @@
         g (assoc g :samp-attribute gen-samp-attribute)
 
         gen-attr-val-video__width
-        (igen/freq [
+        (igen/freq :attr-val-video__width [
           [(get w [:attr-val-video__width :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-video__width :alt 1] 100)
@@ -1026,7 +1026,7 @@
           [(get w [:attr-val-video__width :alt 2] 100)
             (gen/tuple
               (:non-negative-integer g)
-              (igen/freq [
+              (igen/freq :attr-val-video__width [
                 [(get w [:attr-val-video__width :alt 2 :cat 1 :alt 0] 100)
                   (:length-unit g)]
                 [(get w [:attr-val-video__width :alt 2 :cat 1 :alt 1] 100)
@@ -1038,7 +1038,7 @@
         g (assoc g :attr-val-img__src gen-attr-val-img__src)
 
         gen-attr-val-textarea__form
-        (igen/freq [
+        (igen/freq :attr-val-textarea__form [
           [(get w [:attr-val-textarea__form :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-textarea__form :alt 1] 100)
@@ -1046,7 +1046,7 @@
         g (assoc g :attr-val-textarea__form gen-attr-val-textarea__form)
 
         gen-attr-val-textarea__name
-        (igen/freq [
+        (igen/freq :attr-val-textarea__name [
           [(get w [:attr-val-textarea__name :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-textarea__name :alt 1] 100)
@@ -1058,7 +1058,7 @@
         g (assoc g :h1-attribute gen-h1-attribute)
 
         gen-attr-val-textarea__dirname
-        (igen/freq [
+        (igen/freq :attr-val-textarea__dirname [
           [(get w [:attr-val-textarea__dirname :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-textarea__dirname :alt 1] 100)
@@ -1075,7 +1075,7 @@
         w weights
 
         gen-attr-val-dfn__title
-        (igen/freq [
+        (igen/freq :attr-val-dfn__title [
           [(get w [:attr-val-dfn__title :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-dfn__title :alt 1] 100)
@@ -1083,7 +1083,7 @@
         g (assoc g :attr-val-dfn__title gen-attr-val-dfn__title)
 
         gen-dfn-attribute
-        (igen/freq [
+        (igen/freq :dfn-attribute [
           [(get w [:dfn-attribute :alt 0] 100)
             (gen/tuple
               (gen/return "title=\"")
@@ -1094,7 +1094,7 @@
         g (assoc g :dfn-attribute gen-dfn-attribute)
 
         gen-attr-val-table__border
-        (igen/freq [
+        (igen/freq :attr-val-table__border [
           [(get w [:attr-val-table__border :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-table__border :alt 1] 100)
@@ -1102,11 +1102,11 @@
         g (assoc g :attr-val-table__border gen-attr-val-table__border)
 
         gen-floating-point-number
-        gen/double
+        rgen/floating-point-number
         g (assoc g :floating-point-number gen-floating-point-number)
 
         gen-attr-val-meter__value
-        (igen/freq [
+        (igen/freq :attr-val-meter__value [
           [(get w [:attr-val-meter__value :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-meter__value :alt 1] 100)
@@ -1114,7 +1114,7 @@
         g (assoc g :attr-val-meter__value gen-attr-val-meter__value)
 
         gen-attr-val-colgroup__span
-        (igen/freq [
+        (igen/freq :attr-val-colgroup__span [
           [(get w [:attr-val-colgroup__span :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-colgroup__span :alt 1] 100)
@@ -1122,7 +1122,7 @@
         g (assoc g :attr-val-colgroup__span gen-attr-val-colgroup__span)
 
         gen-attr-val-form__target
-        (igen/freq [
+        (igen/freq :attr-val-form__target [
           [(get w [:attr-val-form__target :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-form__target :alt 1] 100)
@@ -1130,7 +1130,7 @@
         g (assoc g :attr-val-form__target gen-attr-val-form__target)
 
         gen-attr-val-fieldset__name
-        (igen/freq [
+        (igen/freq :attr-val-fieldset__name [
           [(get w [:attr-val-fieldset__name :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-fieldset__name :alt 1] 100)
@@ -1138,7 +1138,7 @@
         g (assoc g :attr-val-fieldset__name gen-attr-val-fieldset__name)
 
         gen-attr-val-iframe__src
-        (igen/freq [
+        (igen/freq :attr-val-iframe__src [
           [(get w [:attr-val-iframe__src :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-iframe__src :alt 1] 100)
@@ -1146,7 +1146,7 @@
         g (assoc g :attr-val-iframe__src gen-attr-val-iframe__src)
 
         gen-attr-val-iframe__name
-        (igen/freq [
+        (igen/freq :attr-val-iframe__name [
           [(get w [:attr-val-iframe__name :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-iframe__name :alt 1] 100)
@@ -1154,7 +1154,7 @@
         g (assoc g :attr-val-iframe__name gen-attr-val-iframe__name)
 
         gen-attr-val-iframe__width
-        (igen/freq [
+        (igen/freq :attr-val-iframe__width [
           [(get w [:attr-val-iframe__width :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-iframe__width :alt 1] 100)
@@ -1162,7 +1162,7 @@
           [(get w [:attr-val-iframe__width :alt 2] 100)
             (gen/tuple
               (:non-negative-integer g)
-              (igen/freq [
+              (igen/freq :attr-val-iframe__width [
                 [(get w [:attr-val-iframe__width :alt 2 :cat 1 :alt 0] 100)
                   (:length-unit g)]
                 [(get w [:attr-val-iframe__width :alt 2 :cat 1 :alt 1] 100)
@@ -1170,7 +1170,7 @@
         g (assoc g :attr-val-iframe__width gen-attr-val-iframe__width)
 
         gen-attr-val-iframe__sandbox
-        (igen/freq [
+        (igen/freq :attr-val-iframe__sandbox [
           [(get w [:attr-val-iframe__sandbox :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-iframe__sandbox :alt 1] 100)
@@ -1190,7 +1190,7 @@
           [(get w [:attr-val-iframe__sandbox :alt 8] 100)
             (gen/tuple
               (:name g)
-              (igen/freq [
+              (igen/freq :attr-val-iframe__sandbox [
                 [(get w [:attr-val-iframe__sandbox :alt 8 :cat 1 :star nil] 100)
                   (gen/return "")]
                 [(get w [:attr-val-iframe__sandbox :alt 8 :cat 1 :star 0] 100)
@@ -1201,7 +1201,7 @@
         g (assoc g :attr-val-iframe__sandbox gen-attr-val-iframe__sandbox)
 
         gen-attr-val-iframe__srcdoc
-        (igen/freq [
+        (igen/freq :attr-val-iframe__srcdoc [
           [(get w [:attr-val-iframe__srcdoc :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-iframe__srcdoc :alt 1] 100)
@@ -1211,7 +1211,7 @@
         g (assoc g :attr-val-iframe__srcdoc gen-attr-val-iframe__srcdoc)
 
         gen-attr-val-iframe__height
-        (igen/freq [
+        (igen/freq :attr-val-iframe__height [
           [(get w [:attr-val-iframe__height :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-iframe__height :alt 1] 100)
@@ -1219,7 +1219,7 @@
           [(get w [:attr-val-iframe__height :alt 2] 100)
             (gen/tuple
               (:non-negative-integer g)
-              (igen/freq [
+              (igen/freq :attr-val-iframe__height [
                 [(get w [:attr-val-iframe__height :alt 2 :cat 1 :alt 0] 100)
                   (:length-unit g)]
                 [(get w [:attr-val-iframe__height :alt 2 :cat 1 :alt 1] 100)
@@ -1227,7 +1227,7 @@
         g (assoc g :attr-val-iframe__height gen-attr-val-iframe__height)
 
         gen-iframe-attribute
-        (igen/freq [
+        (igen/freq :iframe-attribute [
           [(get w [:iframe-attribute :alt 0] 100)
             (gen/tuple
               (gen/return "allowfullscreen")
@@ -1267,7 +1267,7 @@
         g (assoc g :iframe-attribute gen-iframe-attribute)
 
         gen-attr-val-meter__min
-        (igen/freq [
+        (igen/freq :attr-val-meter__min [
           [(get w [:attr-val-meter__min :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-meter__min :alt 1] 100)
@@ -1275,13 +1275,13 @@
         g (assoc g :attr-val-meter__min gen-attr-val-meter__min)
 
         gen-attr-val-area__rel
-        (igen/freq [
+        (igen/freq :attr-val-area__rel [
           [(get w [:attr-val-area__rel :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-area__rel :alt 1] 100)
             (gen/tuple
               (:name g)
-              (igen/freq [
+              (igen/freq :attr-val-area__rel [
                 [(get w [:attr-val-area__rel :alt 1 :cat 1 :star nil] 100)
                   (gen/return "")]
                 [(get w [:attr-val-area__rel :alt 1 :cat 1 :star 0] 100)
@@ -1292,7 +1292,7 @@
         g (assoc g :attr-val-area__rel gen-attr-val-area__rel)
 
         gen-attr-val-area__href
-        (igen/freq [
+        (igen/freq :attr-val-area__href [
           [(get w [:attr-val-area__href :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-area__href :alt 1] 100)
@@ -1300,7 +1300,7 @@
         g (assoc g :attr-val-area__href gen-attr-val-area__href)
 
         gen-attr-val-area__alt
-        (igen/freq [
+        (igen/freq :attr-val-area__alt [
           [(get w [:attr-val-area__alt :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-area__alt :alt 1] 100)
@@ -1308,7 +1308,7 @@
         g (assoc g :attr-val-area__alt gen-attr-val-area__alt)
 
         gen-attr-val-area__target
-        (igen/freq [
+        (igen/freq :attr-val-area__target [
           [(get w [:attr-val-area__target :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-area__target :alt 1] 100)
@@ -1316,7 +1316,7 @@
         g (assoc g :attr-val-area__target gen-attr-val-area__target)
 
         gen-attr-val-area__coords
-        (igen/freq [
+        (igen/freq :attr-val-area__coords [
           [(get w [:attr-val-area__coords :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-area__coords :alt 1] 100)
@@ -1324,7 +1324,7 @@
         g (assoc g :attr-val-area__coords gen-attr-val-area__coords)
 
         gen-attr-val-area__type
-        (igen/freq [
+        (igen/freq :attr-val-area__type [
           [(get w [:attr-val-area__type :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-area__type :alt 1] 100)
@@ -1332,7 +1332,7 @@
         g (assoc g :attr-val-area__type gen-attr-val-area__type)
 
         gen-attr-val-area__shape
-        (igen/freq [
+        (igen/freq :attr-val-area__shape [
           [(get w [:attr-val-area__shape :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-area__shape :alt 1] 100)
@@ -1350,7 +1350,7 @@
         g (assoc g :attr-val-area__download gen-attr-val-area__download)
 
         gen-attr-val-area__hreflang
-        (igen/freq [
+        (igen/freq :attr-val-area__hreflang [
           [(get w [:attr-val-area__hreflang :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-area__hreflang :alt 1] 100)
@@ -1358,7 +1358,7 @@
         g (assoc g :attr-val-area__hreflang gen-attr-val-area__hreflang)
 
         gen-area-attribute
-        (igen/freq [
+        (igen/freq :area-attribute [
           [(get w [:area-attribute :alt 0] 100)
             (gen/tuple
               (gen/return "alt=\"")
@@ -1417,7 +1417,7 @@
         g (assoc g :dt-attribute gen-dt-attribute)
 
         gen-attr-val-select__size
-        (igen/freq [
+        (igen/freq :attr-val-select__size [
           [(get w [:attr-val-select__size :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-select__size :alt 1] 100)
@@ -1429,7 +1429,7 @@
         g (assoc g :summary-attribute gen-summary-attribute)
 
         gen-attr-val-video__preload
-        (igen/freq [
+        (igen/freq :attr-val-video__preload [
           [(get w [:attr-val-video__preload :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-video__preload :alt 1] 100)
@@ -1441,7 +1441,7 @@
         g (assoc g :attr-val-video__preload gen-attr-val-video__preload)
 
         gen-attr-val-output__name
-        (igen/freq [
+        (igen/freq :attr-val-output__name [
           [(get w [:attr-val-output__name :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-output__name :alt 1] 100)
@@ -1449,7 +1449,7 @@
         g (assoc g :attr-val-output__name gen-attr-val-output__name)
 
         gen-attr-val-output__form
-        (igen/freq [
+        (igen/freq :attr-val-output__form [
           [(get w [:attr-val-output__form :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-output__form :alt 1] 100)
@@ -1457,7 +1457,7 @@
         g (assoc g :attr-val-output__form gen-attr-val-output__form)
 
         gen-output-attribute
-        (igen/freq [
+        (igen/freq :output-attribute [
           [(get w [:output-attribute :alt 0] 100)
             (gen/tuple
               (gen/return "for=\"")
@@ -1478,7 +1478,7 @@
         g (assoc g :output-attribute gen-output-attribute)
 
         gen-attr-val-ol__type
-        (igen/freq [
+        (igen/freq :attr-val-ol__type [
           [(get w [:attr-val-ol__type :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-ol__type :alt 1] 100)
@@ -1494,7 +1494,7 @@
         g (assoc g :attr-val-ol__type gen-attr-val-ol__type)
 
         gen-attr-val-a__type
-        (igen/freq [
+        (igen/freq :attr-val-a__type [
           [(get w [:attr-val-a__type :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-a__type :alt 1] 100)
@@ -1502,7 +1502,7 @@
         g (assoc g :attr-val-a__type gen-attr-val-a__type)
 
         gen-attr-val-a__target
-        (igen/freq [
+        (igen/freq :attr-val-a__target [
           [(get w [:attr-val-a__target :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-a__target :alt 1] 100)
@@ -1510,7 +1510,7 @@
         g (assoc g :attr-val-a__target gen-attr-val-a__target)
 
         gen-attr-val-meter__max
-        (igen/freq [
+        (igen/freq :attr-val-meter__max [
           [(get w [:attr-val-meter__max :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-meter__max :alt 1] 100)
@@ -1518,7 +1518,7 @@
         g (assoc g :attr-val-meter__max gen-attr-val-meter__max)
 
         gen-attr-val-option__value
-        (igen/freq [
+        (igen/freq :attr-val-option__value [
           [(get w [:attr-val-option__value :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-option__value :alt 1] 100)
@@ -1526,7 +1526,7 @@
         g (assoc g :attr-val-option__value gen-attr-val-option__value)
 
         gen-attr-val-blockquote__cite
-        (igen/freq [
+        (igen/freq :attr-val-blockquote__cite [
           [(get w [:attr-val-blockquote__cite :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-blockquote__cite :alt 1] 100)
@@ -1534,7 +1534,7 @@
         g (assoc g :attr-val-blockquote__cite gen-attr-val-blockquote__cite)
 
         gen-colgroup-attribute
-        (igen/freq [
+        (igen/freq :colgroup-attribute [
           [(get w [:colgroup-attribute :alt 0] 100)
             (gen/tuple
               (gen/return "span=\"")
@@ -1549,7 +1549,7 @@
         g (assoc g :figure-attribute gen-figure-attribute)
 
         gen-attr-val-td__rowspan
-        (igen/freq [
+        (igen/freq :attr-val-td__rowspan [
           [(get w [:attr-val-td__rowspan :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-td__rowspan :alt 1] 100)
@@ -1557,7 +1557,7 @@
         g (assoc g :attr-val-td__rowspan gen-attr-val-td__rowspan)
 
         gen-attr-val-textarea__wrap
-        (igen/freq [
+        (igen/freq :attr-val-textarea__wrap [
           [(get w [:attr-val-textarea__wrap :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-textarea__wrap :alt 1] 100)
@@ -1571,7 +1571,7 @@
         g (assoc g :i-attribute gen-i-attribute)
 
         gen-attr-val-keygen__form
-        (igen/freq [
+        (igen/freq :attr-val-keygen__form [
           [(get w [:attr-val-keygen__form :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-keygen__form :alt 1] 100)
@@ -1579,7 +1579,7 @@
         g (assoc g :attr-val-keygen__form gen-attr-val-keygen__form)
 
         gen-attr-val-input__title
-        (igen/freq [
+        (igen/freq :attr-val-input__title [
           [(get w [:attr-val-input__title :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-input__title :alt 1] 100)
@@ -1587,7 +1587,7 @@
         g (assoc g :attr-val-input__title gen-attr-val-input__title)
 
         gen-attr-val-th__colspan
-        (igen/freq [
+        (igen/freq :attr-val-th__colspan [
           [(get w [:attr-val-th__colspan :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-th__colspan :alt 1] 100)
@@ -1608,7 +1608,7 @@
         w weights
 
         gen-attr-val-input__list
-        (igen/freq [
+        (igen/freq :attr-val-input__list [
           [(get w [:attr-val-input__list :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-input__list :alt 1] 100)
@@ -1620,7 +1620,7 @@
         g (assoc g :kbd-attribute gen-kbd-attribute)
 
         gen-attr-val-link__media
-        (igen/freq [
+        (igen/freq :attr-val-link__media [
           [(get w [:attr-val-link__media :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-link__media :alt 1] 100)
@@ -1628,7 +1628,7 @@
         g (assoc g :attr-val-link__media gen-attr-val-link__media)
 
         gen-attr-val-keygen__keytype
-        (igen/freq [
+        (igen/freq :attr-val-keygen__keytype [
           [(get w [:attr-val-keygen__keytype :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-keygen__keytype :alt 1] 100)
@@ -1640,7 +1640,7 @@
         g (assoc g :em-attribute gen-em-attribute)
 
         gen-ol-attribute
-        (igen/freq [
+        (igen/freq :ol-attribute [
           [(get w [:ol-attribute :alt 0] 100)
             (gen/tuple
               (gen/return "reversed")
@@ -1660,7 +1660,7 @@
         g (assoc g :ol-attribute gen-ol-attribute)
 
         gen-attr-val-meta__http-equiv
-        (igen/freq [
+        (igen/freq :attr-val-meta__http-equiv [
           [(get w [:attr-val-meta__http-equiv :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-meta__http-equiv :alt 1] 100)
@@ -1668,7 +1668,7 @@
         g (assoc g :attr-val-meta__http-equiv gen-attr-val-meta__http-equiv)
 
         gen-attr-val-label__for
-        (igen/freq [
+        (igen/freq :attr-val-label__for [
           [(get w [:attr-val-label__for :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-label__for :alt 1] 100)
@@ -1676,7 +1676,7 @@
         g (assoc g :attr-val-label__for gen-attr-val-label__for)
 
         gen-label-attribute
-        (igen/freq [
+        (igen/freq :label-attribute [
           [(get w [:label-attribute :alt 0] 100)
             (gen/tuple
               (gen/return "for=\"")
@@ -1692,7 +1692,7 @@
         g (assoc g :label-attribute gen-label-attribute)
 
         gen-attr-val-input__minlength
-        (igen/freq [
+        (igen/freq :attr-val-input__minlength [
           [(get w [:attr-val-input__minlength :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-input__minlength :alt 1] 100)
@@ -1700,7 +1700,7 @@
         g (assoc g :attr-val-input__minlength gen-attr-val-input__minlength)
 
         gen-attr-val-input__inputmode
-        (igen/freq [
+        (igen/freq :attr-val-input__inputmode [
           [(get w [:attr-val-input__inputmode :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-input__inputmode :alt 1] 100)
@@ -1730,7 +1730,7 @@
         g (assoc g :attr-val-input__inputmode gen-attr-val-input__inputmode)
 
         gen-attr-val-input__max
-        (igen/freq [
+        (igen/freq :attr-val-input__max [
           [(get w [:attr-val-input__max :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-input__max :alt 1] 100)
@@ -1738,7 +1738,7 @@
         g (assoc g :attr-val-input__max gen-attr-val-input__max)
 
         gen-attr-val-input__step
-        (igen/freq [
+        (igen/freq :attr-val-input__step [
           [(get w [:attr-val-input__step :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-input__step :alt 1] 100)
@@ -1752,7 +1752,7 @@
         g (assoc g :attr-val-input__pattern gen-attr-val-input__pattern)
 
         gen-attr-val-input__autocomplete
-        (igen/freq [
+        (igen/freq :attr-val-input__autocomplete [
           [(get w [:attr-val-input__autocomplete :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-input__autocomplete :alt 1] 100)
@@ -1868,7 +1868,7 @@
         g (assoc g :attr-val-input__autocomplete gen-attr-val-input__autocomplete)
 
         gen-attr-val-input__formenctype
-        (igen/freq [
+        (igen/freq :attr-val-input__formenctype [
           [(get w [:attr-val-input__formenctype :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-input__formenctype :alt 1] 100)
@@ -1880,7 +1880,7 @@
         g (assoc g :attr-val-input__formenctype gen-attr-val-input__formenctype)
 
         gen-attr-val-input__min
-        (igen/freq [
+        (igen/freq :attr-val-input__min [
           [(get w [:attr-val-input__min :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-input__min :alt 1] 100)
@@ -1888,7 +1888,7 @@
         g (assoc g :attr-val-input__min gen-attr-val-input__min)
 
         gen-attr-val-input__formmethod
-        (igen/freq [
+        (igen/freq :attr-val-input__formmethod [
           [(get w [:attr-val-input__formmethod :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-input__formmethod :alt 1] 100)
@@ -1898,7 +1898,7 @@
         g (assoc g :attr-val-input__formmethod gen-attr-val-input__formmethod)
 
         gen-attr-val-input__value
-        (igen/freq [
+        (igen/freq :attr-val-input__value [
           [(get w [:attr-val-input__value :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-input__value :alt 1] 100)
@@ -1906,7 +1906,7 @@
         g (assoc g :attr-val-input__value gen-attr-val-input__value)
 
         gen-attr-val-input__accept
-        (igen/freq [
+        (igen/freq :attr-val-input__accept [
           [(get w [:attr-val-input__accept :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-input__accept :alt 1] 100)
@@ -1922,7 +1922,7 @@
         g (assoc g :attr-val-input__accept gen-attr-val-input__accept)
 
         gen-attr-val-input__formaction
-        (igen/freq [
+        (igen/freq :attr-val-input__formaction [
           [(get w [:attr-val-input__formaction :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-input__formaction :alt 1] 100)
@@ -1930,7 +1930,7 @@
         g (assoc g :attr-val-input__formaction gen-attr-val-input__formaction)
 
         gen-attr-val-input__height
-        (igen/freq [
+        (igen/freq :attr-val-input__height [
           [(get w [:attr-val-input__height :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-input__height :alt 1] 100)
@@ -1938,7 +1938,7 @@
           [(get w [:attr-val-input__height :alt 2] 100)
             (gen/tuple
               (:non-negative-integer g)
-              (igen/freq [
+              (igen/freq :attr-val-input__height [
                 [(get w [:attr-val-input__height :alt 2 :cat 1 :alt 0] 100)
                   (:length-unit g)]
                 [(get w [:attr-val-input__height :alt 2 :cat 1 :alt 1] 100)
@@ -1946,7 +1946,7 @@
         g (assoc g :attr-val-input__height gen-attr-val-input__height)
 
         gen-attr-val-input__formtarget
-        (igen/freq [
+        (igen/freq :attr-val-input__formtarget [
           [(get w [:attr-val-input__formtarget :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-input__formtarget :alt 1] 100)
@@ -1954,7 +1954,7 @@
         g (assoc g :attr-val-input__formtarget gen-attr-val-input__formtarget)
 
         gen-attr-val-input__alt
-        (igen/freq [
+        (igen/freq :attr-val-input__alt [
           [(get w [:attr-val-input__alt :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-input__alt :alt 1] 100)
@@ -1962,7 +1962,7 @@
         g (assoc g :attr-val-input__alt gen-attr-val-input__alt)
 
         gen-attr-val-input__name
-        (igen/freq [
+        (igen/freq :attr-val-input__name [
           [(get w [:attr-val-input__name :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-input__name :alt 1] 100)
@@ -1970,7 +1970,7 @@
         g (assoc g :attr-val-input__name gen-attr-val-input__name)
 
         gen-attr-val-input__size
-        (igen/freq [
+        (igen/freq :attr-val-input__size [
           [(get w [:attr-val-input__size :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-input__size :alt 1] 100)
@@ -1978,7 +1978,7 @@
         g (assoc g :attr-val-input__size gen-attr-val-input__size)
 
         gen-attr-val-input__type
-        (igen/freq [
+        (igen/freq :attr-val-input__type [
           [(get w [:attr-val-input__type :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-input__type :alt 1] 100)
@@ -2028,7 +2028,7 @@
         g (assoc g :attr-val-input__type gen-attr-val-input__type)
 
         gen-input-attribute
-        (igen/freq [
+        (igen/freq :input-attribute [
           [(get w [:input-attribute :alt 0] 100)
             (gen/tuple
               (gen/return "autofocus")
@@ -2196,7 +2196,7 @@
         g (assoc g :s-attribute gen-s-attribute)
 
         gen-attr-val-menu__type
-        (igen/freq [
+        (igen/freq :attr-val-menu__type [
           [(get w [:attr-val-menu__type :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-menu__type :alt 1] 100)
@@ -2204,7 +2204,7 @@
         g (assoc g :attr-val-menu__type gen-attr-val-menu__type)
 
         gen-attr-val-menu__label
-        (igen/freq [
+        (igen/freq :attr-val-menu__label [
           [(get w [:attr-val-menu__label :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-menu__label :alt 1] 100)
@@ -2212,7 +2212,7 @@
         g (assoc g :attr-val-menu__label gen-attr-val-menu__label)
 
         gen-menu-attribute
-        (igen/freq [
+        (igen/freq :menu-attribute [
           [(get w [:menu-attribute :alt 0] 100)
             (gen/tuple
               (gen/return "label=\"")
@@ -2228,7 +2228,7 @@
         g (assoc g :menu-attribute gen-menu-attribute)
 
         gen-attr-val-keygen__challenge
-        (igen/freq [
+        (igen/freq :attr-val-keygen__challenge [
           [(get w [:attr-val-keygen__challenge :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-keygen__challenge :alt 1] 100)
@@ -2236,7 +2236,7 @@
         g (assoc g :attr-val-keygen__challenge gen-attr-val-keygen__challenge)
 
         gen-keygen-attribute
-        (igen/freq [
+        (igen/freq :keygen-attribute [
           [(get w [:keygen-attribute :alt 0] 100)
             (gen/tuple
               (gen/return "autofocus")
@@ -2270,7 +2270,7 @@
         g (assoc g :keygen-attribute gen-keygen-attribute)
 
         gen-attr-val-data__value
-        (igen/freq [
+        (igen/freq :attr-val-data__value [
           [(get w [:attr-val-data__value :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-data__value :alt 1] 100)
@@ -2278,7 +2278,7 @@
         g (assoc g :attr-val-data__value gen-attr-val-data__value)
 
         gen-attr-val-object__form
-        (igen/freq [
+        (igen/freq :attr-val-object__form [
           [(get w [:attr-val-object__form :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-object__form :alt 1] 100)
@@ -2286,7 +2286,7 @@
         g (assoc g :attr-val-object__form gen-attr-val-object__form)
 
         gen-attr-val-form__autocomplete
-        (igen/freq [
+        (igen/freq :attr-val-form__autocomplete [
           [(get w [:attr-val-form__autocomplete :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-form__autocomplete :alt 1] 100)
@@ -2300,7 +2300,7 @@
         g (assoc g :rt-attribute gen-rt-attribute)
 
         gen-attr-val-del__cite
-        (igen/freq [
+        (igen/freq :attr-val-del__cite [
           [(get w [:attr-val-del__cite :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-del__cite :alt 1] 100)
@@ -2320,7 +2320,7 @@
         g (assoc g :encoding-label gen-encoding-label)
 
         gen-attr-val-script__charset
-        (igen/freq [
+        (igen/freq :attr-val-script__charset [
           [(get w [:attr-val-script__charset :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-script__charset :alt 1] 100)
@@ -2328,7 +2328,7 @@
         g (assoc g :attr-val-script__charset gen-attr-val-script__charset)
 
         gen-attr-val-textarea__minlength
-        (igen/freq [
+        (igen/freq :attr-val-textarea__minlength [
           [(get w [:attr-val-textarea__minlength :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-textarea__minlength :alt 1] 100)
@@ -2336,7 +2336,7 @@
         g (assoc g :attr-val-textarea__minlength gen-attr-val-textarea__minlength)
 
         gen-attr-val-textarea__rows
-        (igen/freq [
+        (igen/freq :attr-val-textarea__rows [
           [(get w [:attr-val-textarea__rows :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-textarea__rows :alt 1] 100)
@@ -2344,7 +2344,7 @@
         g (assoc g :attr-val-textarea__rows gen-attr-val-textarea__rows)
 
         gen-attr-val-optgroup__label
-        (igen/freq [
+        (igen/freq :attr-val-optgroup__label [
           [(get w [:attr-val-optgroup__label :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-optgroup__label :alt 1] 100)
@@ -2352,7 +2352,7 @@
         g (assoc g :attr-val-optgroup__label gen-attr-val-optgroup__label)
 
         gen-optgroup-attribute
-        (igen/freq [
+        (igen/freq :optgroup-attribute [
           [(get w [:optgroup-attribute :alt 0] 100)
             (gen/tuple
               (gen/return "disabled")
@@ -2367,7 +2367,7 @@
         g (assoc g :optgroup-attribute gen-optgroup-attribute)
 
         gen-attr-val-link__sizes
-        (igen/freq [
+        (igen/freq :attr-val-link__sizes [
           [(get w [:attr-val-link__sizes :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-link__sizes :alt 1] 100)
@@ -2375,7 +2375,7 @@
           [(get w [:attr-val-link__sizes :alt 2] 100)
             (gen/tuple
               (:name g)
-              (igen/freq [
+              (igen/freq :attr-val-link__sizes [
                 [(get w [:attr-val-link__sizes :alt 2 :cat 1 :star nil] 100)
                   (gen/return "")]
                 [(get w [:attr-val-link__sizes :alt 2 :cat 1 :star 0] 100)
@@ -2386,7 +2386,7 @@
         g (assoc g :attr-val-link__sizes gen-attr-val-link__sizes)
 
         gen-attr-val-progress__value
-        (igen/freq [
+        (igen/freq :attr-val-progress__value [
           [(get w [:attr-val-progress__value :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-progress__value :alt 1] 100)
@@ -2394,7 +2394,7 @@
         g (assoc g :attr-val-progress__value gen-attr-val-progress__value)
 
         gen-attr-val-progress__max
-        (igen/freq [
+        (igen/freq :attr-val-progress__max [
           [(get w [:attr-val-progress__max :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-progress__max :alt 1] 100)
@@ -2407,7 +2407,7 @@
         w weights
 
         gen-progress-attribute
-        (igen/freq [
+        (igen/freq :progress-attribute [
           [(get w [:progress-attribute :alt 0] 100)
             (gen/tuple
               (gen/return "max=\"")
@@ -2423,7 +2423,7 @@
         g (assoc g :progress-attribute gen-progress-attribute)
 
         gen-attr-val-del__datetime
-        (igen/freq [
+        (igen/freq :attr-val-del__datetime [
           [(get w [:attr-val-del__datetime :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-del__datetime :alt 1] 100)
@@ -2431,7 +2431,7 @@
         g (assoc g :attr-val-del__datetime gen-attr-val-del__datetime)
 
         gen-del-attribute
-        (igen/freq [
+        (igen/freq :del-attribute [
           [(get w [:del-attribute :alt 0] 100)
             (gen/tuple
               (gen/return "cite=\"")
@@ -2455,13 +2455,13 @@
         g (assoc g :rb-attribute gen-rb-attribute)
 
         gen-attr-val-th__headers
-        (igen/freq [
+        (igen/freq :attr-val-th__headers [
           [(get w [:attr-val-th__headers :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-th__headers :alt 1] 100)
             (gen/tuple
               (:name g)
-              (igen/freq [
+              (igen/freq :attr-val-th__headers [
                 [(get w [:attr-val-th__headers :alt 1 :cat 1 :star nil] 100)
                   (gen/return "")]
                 [(get w [:attr-val-th__headers :alt 1 :cat 1 :star 0] 100)
@@ -2474,7 +2474,7 @@
         g (assoc g :attr-val-th__headers gen-attr-val-th__headers)
 
         gen-attr-val-select__name
-        (igen/freq [
+        (igen/freq :attr-val-select__name [
           [(get w [:attr-val-select__name :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-select__name :alt 1] 100)
@@ -2482,7 +2482,7 @@
         g (assoc g :attr-val-select__name gen-attr-val-select__name)
 
         gen-attr-val-style__title
-        (igen/freq [
+        (igen/freq :attr-val-style__title [
           [(get w [:attr-val-style__title :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-style__title :alt 1] 100)
@@ -2490,7 +2490,7 @@
         g (assoc g :attr-val-style__title gen-attr-val-style__title)
 
         gen-attr-val-style__media
-        (igen/freq [
+        (igen/freq :attr-val-style__media [
           [(get w [:attr-val-style__media :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-style__media :alt 1] 100)
@@ -2498,7 +2498,7 @@
         g (assoc g :attr-val-style__media gen-attr-val-style__media)
 
         gen-attr-val-style__nonce
-        (igen/freq [
+        (igen/freq :attr-val-style__nonce [
           [(get w [:attr-val-style__nonce :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-style__nonce :alt 1] 100)
@@ -2506,7 +2506,7 @@
         g (assoc g :attr-val-style__nonce gen-attr-val-style__nonce)
 
         gen-attr-val-style__type
-        (igen/freq [
+        (igen/freq :attr-val-style__type [
           [(get w [:attr-val-style__type :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-style__type :alt 1] 100)
@@ -2514,7 +2514,7 @@
         g (assoc g :attr-val-style__type gen-attr-val-style__type)
 
         gen-style-attribute
-        (igen/freq [
+        (igen/freq :style-attribute [
           [(get w [:style-attribute :alt 0] 100)
             (gen/tuple
               (gen/return "media=\"")
@@ -2540,7 +2540,7 @@
         g (assoc g :style-attribute gen-style-attribute)
 
         gen-attr-val-ins__cite
-        (igen/freq [
+        (igen/freq :attr-val-ins__cite [
           [(get w [:attr-val-ins__cite :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-ins__cite :alt 1] 100)
@@ -2548,7 +2548,7 @@
         g (assoc g :attr-val-ins__cite gen-attr-val-ins__cite)
 
         gen-ins-attribute
-        (igen/freq [
+        (igen/freq :ins-attribute [
           [(get w [:ins-attribute :alt 0] 100)
             (gen/tuple
               (gen/return "cite=\"")
@@ -2568,7 +2568,7 @@
         g (assoc g :picture-attribute gen-picture-attribute)
 
         gen-attr-val-form__method
-        (igen/freq [
+        (igen/freq :attr-val-form__method [
           [(get w [:attr-val-form__method :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-form__method :alt 1] 100)
@@ -2582,7 +2582,7 @@
         g (assoc g :nav-attribute gen-nav-attribute)
 
         gen-attr-val-a__hreflang
-        (igen/freq [
+        (igen/freq :attr-val-a__hreflang [
           [(get w [:attr-val-a__hreflang :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-a__hreflang :alt 1] 100)
@@ -2590,15 +2590,7 @@
         g (assoc g :attr-val-a__hreflang gen-attr-val-a__hreflang)
 
         gen-char-data-test
-        (igen/freq [
-          [(get w [:char-data-test :alt 0] 100)
-            (gen/return " ")]
-          [(get w [:char-data-test :alt 1] 100)
-            (gen/return "p")]
-          [(get w [:char-data-test :alt 2] 100)
-            (gen/return "&#x00c9;")]
-          [(get w [:char-data-test :alt 3] 100)
-            (gen/return "X")]])
+        rgen/wrap-ahem-char
         g (assoc g :char-data-test gen-char-data-test)
 
         gen-rtc-attribute
@@ -2614,7 +2606,7 @@
         g (assoc g :code-attribute gen-code-attribute)
 
         gen-attr-val-abbr__title
-        (igen/freq [
+        (igen/freq :attr-val-abbr__title [
           [(get w [:attr-val-abbr__title :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-abbr__title :alt 1] 100)
@@ -2622,7 +2614,7 @@
         g (assoc g :attr-val-abbr__title gen-attr-val-abbr__title)
 
         gen-abbr-attribute
-        (igen/freq [
+        (igen/freq :abbr-attribute [
           [(get w [:abbr-attribute :alt 0] 100)
             (gen/tuple
               (gen/return "title=\"")
@@ -2633,7 +2625,7 @@
         g (assoc g :abbr-attribute gen-abbr-attribute)
 
         gen-attr-val-object__height
-        (igen/freq [
+        (igen/freq :attr-val-object__height [
           [(get w [:attr-val-object__height :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-object__height :alt 1] 100)
@@ -2641,7 +2633,7 @@
           [(get w [:attr-val-object__height :alt 2] 100)
             (gen/tuple
               (:non-negative-integer g)
-              (igen/freq [
+              (igen/freq :attr-val-object__height [
                 [(get w [:attr-val-object__height :alt 2 :cat 1 :alt 0] 100)
                   (:length-unit g)]
                 [(get w [:attr-val-object__height :alt 2 :cat 1 :alt 1] 100)
@@ -2649,7 +2641,7 @@
         g (assoc g :attr-val-object__height gen-attr-val-object__height)
 
         gen-attr-val-object__width
-        (igen/freq [
+        (igen/freq :attr-val-object__width [
           [(get w [:attr-val-object__width :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-object__width :alt 1] 100)
@@ -2657,7 +2649,7 @@
           [(get w [:attr-val-object__width :alt 2] 100)
             (gen/tuple
               (:non-negative-integer g)
-              (igen/freq [
+              (igen/freq :attr-val-object__width [
                 [(get w [:attr-val-object__width :alt 2 :cat 1 :alt 0] 100)
                   (:length-unit g)]
                 [(get w [:attr-val-object__width :alt 2 :cat 1 :alt 1] 100)
@@ -2665,7 +2657,7 @@
         g (assoc g :attr-val-object__width gen-attr-val-object__width)
 
         gen-attr-val-object__type
-        (igen/freq [
+        (igen/freq :attr-val-object__type [
           [(get w [:attr-val-object__type :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-object__type :alt 1] 100)
@@ -2673,7 +2665,7 @@
         g (assoc g :attr-val-object__type gen-attr-val-object__type)
 
         gen-object-attribute
-        (igen/freq [
+        (igen/freq :object-attribute [
           [(get w [:object-attribute :alt 0] 100)
             (gen/tuple
               (gen/return "typemustmatch")
@@ -2717,7 +2709,7 @@
         g (assoc g :tr-attribute gen-tr-attribute)
 
         gen-attr-val-audio__preload
-        (igen/freq [
+        (igen/freq :attr-val-audio__preload [
           [(get w [:attr-val-audio__preload :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-audio__preload :alt 1] 100)
@@ -2729,7 +2721,7 @@
         g (assoc g :attr-val-audio__preload gen-attr-val-audio__preload)
 
         gen-attr-val-a__href
-        (igen/freq [
+        (igen/freq :attr-val-a__href [
           [(get w [:attr-val-a__href :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-a__href :alt 1] 100)
@@ -2737,11 +2729,11 @@
         g (assoc g :attr-val-a__href gen-attr-val-a__href)
 
         gen-reference
-        (gen/return "&#x00c9;")
+        rgen/wrap-ahem-ref
         g (assoc g :reference gen-reference)
 
         gen-attr-val-textarea__autocomplete
-        (igen/freq [
+        (igen/freq :attr-val-textarea__autocomplete [
           [(get w [:attr-val-textarea__autocomplete :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-textarea__autocomplete :alt 1] 100)
@@ -2749,7 +2741,7 @@
         g (assoc g :attr-val-textarea__autocomplete gen-attr-val-textarea__autocomplete)
 
         gen-attr-val-script__type
-        (igen/freq [
+        (igen/freq :attr-val-script__type [
           [(get w [:attr-val-script__type :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-script__type :alt 1] 100)
@@ -2761,7 +2753,7 @@
         g (assoc g :sup-attribute gen-sup-attribute)
 
         gen-attr-val-th__abbr
-        (igen/freq [
+        (igen/freq :attr-val-th__abbr [
           [(get w [:attr-val-th__abbr :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-th__abbr :alt 1] 100)
@@ -2769,7 +2761,7 @@
         g (assoc g :attr-val-th__abbr gen-attr-val-th__abbr)
 
         gen-attr-val-th__rowspan
-        (igen/freq [
+        (igen/freq :attr-val-th__rowspan [
           [(get w [:attr-val-th__rowspan :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-th__rowspan :alt 1] 100)
@@ -2777,7 +2769,7 @@
         g (assoc g :attr-val-th__rowspan gen-attr-val-th__rowspan)
 
         gen-attr-val-th__scope
-        (igen/freq [
+        (igen/freq :attr-val-th__scope [
           [(get w [:attr-val-th__scope :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-th__scope :alt 1] 100)
@@ -2791,7 +2783,7 @@
         g (assoc g :attr-val-th__scope gen-attr-val-th__scope)
 
         gen-th-attribute
-        (igen/freq [
+        (igen/freq :th-attribute [
           [(get w [:th-attribute :alt 0] 100)
             (gen/tuple
               (gen/return "abbr=\"")
@@ -2822,7 +2814,7 @@
         g (assoc g :th-attribute gen-th-attribute)
 
         gen-attr-val-meter__low
-        (igen/freq [
+        (igen/freq :attr-val-meter__low [
           [(get w [:attr-val-meter__low :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-meter__low :alt 1] 100)
@@ -2830,7 +2822,7 @@
         g (assoc g :attr-val-meter__low gen-attr-val-meter__low)
 
         gen-attr-val-canvas__width
-        (igen/freq [
+        (igen/freq :attr-val-canvas__width [
           [(get w [:attr-val-canvas__width :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-canvas__width :alt 1] 100)
@@ -2838,7 +2830,7 @@
           [(get w [:attr-val-canvas__width :alt 2] 100)
             (gen/tuple
               (:non-negative-integer g)
-              (igen/freq [
+              (igen/freq :attr-val-canvas__width [
                 [(get w [:attr-val-canvas__width :alt 2 :cat 1 :alt 0] 100)
                   (:length-unit g)]
                 [(get w [:attr-val-canvas__width :alt 2 :cat 1 :alt 1] 100)
@@ -2850,7 +2842,7 @@
         g (assoc g :dd-attribute gen-dd-attribute)
 
         gen-attr-val-option__label
-        (igen/freq [
+        (igen/freq :attr-val-option__label [
           [(get w [:attr-val-option__label :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-option__label :alt 1] 100)
@@ -2858,7 +2850,7 @@
         g (assoc g :attr-val-option__label gen-attr-val-option__label)
 
         gen-option-attribute
-        (igen/freq [
+        (igen/freq :option-attribute [
           [(get w [:option-attribute :alt 0] 100)
             (gen/tuple
               (gen/return "disabled")
@@ -2882,7 +2874,7 @@
         g (assoc g :option-attribute gen-option-attribute)
 
         gen-attr-val-select__autocomplete
-        (igen/freq [
+        (igen/freq :attr-val-select__autocomplete [
           [(get w [:attr-val-select__autocomplete :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-select__autocomplete :alt 1] 100)
@@ -2890,7 +2882,7 @@
         g (assoc g :attr-val-select__autocomplete gen-attr-val-select__autocomplete)
 
         gen-attr-val-select__form
-        (igen/freq [
+        (igen/freq :attr-val-select__form [
           [(get w [:attr-val-select__form :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-select__form :alt 1] 100)
@@ -2898,7 +2890,7 @@
         g (assoc g :attr-val-select__form gen-attr-val-select__form)
 
         gen-select-attribute
-        (igen/freq [
+        (igen/freq :select-attribute [
           [(get w [:select-attribute :alt 0] 100)
             (gen/tuple
               (gen/return "autofocus")
@@ -2944,7 +2936,7 @@
         g (assoc g :attr-val-a__download gen-attr-val-a__download)
 
         gen-attr-val-link__title
-        (igen/freq [
+        (igen/freq :attr-val-link__title [
           [(get w [:attr-val-link__title :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-link__title :alt 1] 100)
@@ -2969,7 +2961,7 @@
         g (assoc g :caption-attribute gen-caption-attribute)
 
         gen-attr-val-textarea__placeholder
-        (igen/freq [
+        (igen/freq :attr-val-textarea__placeholder [
           [(get w [:attr-val-textarea__placeholder :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-textarea__placeholder :alt 1] 100)
@@ -2977,13 +2969,13 @@
         g (assoc g :attr-val-textarea__placeholder gen-attr-val-textarea__placeholder)
 
         gen-attr-val-td__headers
-        (igen/freq [
+        (igen/freq :attr-val-td__headers [
           [(get w [:attr-val-td__headers :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-td__headers :alt 1] 100)
             (gen/tuple
               (:name g)
-              (igen/freq [
+              (igen/freq :attr-val-td__headers [
                 [(get w [:attr-val-td__headers :alt 1 :cat 1 :star nil] 100)
                   (gen/return "")]
                 [(get w [:attr-val-td__headers :alt 1 :cat 1 :star 0] 100)
@@ -3000,7 +2992,7 @@
         g (assoc g :tfoot-attribute gen-tfoot-attribute)
 
         gen-attr-val-form__enctype
-        (igen/freq [
+        (igen/freq :attr-val-form__enctype [
           [(get w [:attr-val-form__enctype :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-form__enctype :alt 1] 100)
@@ -3016,7 +3008,7 @@
         g (assoc g :template-attribute gen-template-attribute)
 
         gen-attr-val-q__cite
-        (igen/freq [
+        (igen/freq :attr-val-q__cite [
           [(get w [:attr-val-q__cite :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-q__cite :alt 1] 100)
@@ -3024,7 +3016,7 @@
         g (assoc g :attr-val-q__cite gen-attr-val-q__cite)
 
         gen-attr-val-param__value
-        (igen/freq [
+        (igen/freq :attr-val-param__value [
           [(get w [:attr-val-param__value :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-param__value :alt 1] 100)
@@ -3036,7 +3028,7 @@
         g (assoc g :main-attribute gen-main-attribute)
 
         gen-attr-val-video__poster
-        (igen/freq [
+        (igen/freq :attr-val-video__poster [
           [(get w [:attr-val-video__poster :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-video__poster :alt 1] 100)
@@ -3044,7 +3036,7 @@
         g (assoc g :attr-val-video__poster gen-attr-val-video__poster)
 
         gen-attr-val-video__src
-        (igen/freq [
+        (igen/freq :attr-val-video__src [
           [(get w [:attr-val-video__src :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-video__src :alt 1] 100)
@@ -3052,7 +3044,7 @@
         g (assoc g :attr-val-video__src gen-attr-val-video__src)
 
         gen-attr-val-video__crossorigin
-        (igen/freq [
+        (igen/freq :attr-val-video__crossorigin [
           [(get w [:attr-val-video__crossorigin :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-video__crossorigin :alt 1] 100)
@@ -3062,7 +3054,7 @@
         g (assoc g :attr-val-video__crossorigin gen-attr-val-video__crossorigin)
 
         gen-video-attribute
-        (igen/freq [
+        (igen/freq :video-attribute [
           [(get w [:video-attribute :alt 0] 100)
             (gen/tuple
               (gen/return "autoplay")
@@ -3114,7 +3106,7 @@
         g (assoc g :video-attribute gen-video-attribute)
 
         gen-attr-val-textarea__inputmode
-        (igen/freq [
+        (igen/freq :attr-val-textarea__inputmode [
           [(get w [:attr-val-textarea__inputmode :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-textarea__inputmode :alt 1] 100)
@@ -3144,7 +3136,7 @@
         g (assoc g :attr-val-textarea__inputmode gen-attr-val-textarea__inputmode)
 
         gen-attr-val-textarea__cols
-        (igen/freq [
+        (igen/freq :attr-val-textarea__cols [
           [(get w [:attr-val-textarea__cols :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-textarea__cols :alt 1] 100)
@@ -3152,7 +3144,7 @@
         g (assoc g :attr-val-textarea__cols gen-attr-val-textarea__cols)
 
         gen-textarea-attribute
-        (igen/freq [
+        (igen/freq :textarea-attribute [
           [(get w [:textarea-attribute :alt 0] 100)
             (gen/tuple
               (gen/return "autofocus")
@@ -3229,13 +3221,13 @@
         g (assoc g :textarea-attribute gen-textarea-attribute)
 
         gen-attr-val-a__rel
-        (igen/freq [
+        (igen/freq :attr-val-a__rel [
           [(get w [:attr-val-a__rel :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-a__rel :alt 1] 100)
             (gen/tuple
               (:name g)
-              (igen/freq [
+              (igen/freq :attr-val-a__rel [
                 [(get w [:attr-val-a__rel :alt 1 :cat 1 :star nil] 100)
                   (gen/return "")]
                 [(get w [:attr-val-a__rel :alt 1 :cat 1 :star 0] 100)
@@ -3246,7 +3238,7 @@
         g (assoc g :attr-val-a__rel gen-attr-val-a__rel)
 
         gen-attr-val-link__hreflang
-        (igen/freq [
+        (igen/freq :attr-val-link__hreflang [
           [(get w [:attr-val-link__hreflang :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-link__hreflang :alt 1] 100)
@@ -3254,7 +3246,7 @@
         g (assoc g :attr-val-link__hreflang gen-attr-val-link__hreflang)
 
         gen-attr-val-link__href
-        (igen/freq [
+        (igen/freq :attr-val-link__href [
           [(get w [:attr-val-link__href :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-link__href :alt 1] 100)
@@ -3262,13 +3254,13 @@
         g (assoc g :attr-val-link__href gen-attr-val-link__href)
 
         gen-attr-val-link__rel
-        (igen/freq [
+        (igen/freq :attr-val-link__rel [
           [(get w [:attr-val-link__rel :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-link__rel :alt 1] 100)
             (gen/tuple
               (:name g)
-              (igen/freq [
+              (igen/freq :attr-val-link__rel [
                 [(get w [:attr-val-link__rel :alt 1 :cat 1 :star nil] 100)
                   (gen/return "")]
                 [(get w [:attr-val-link__rel :alt 1 :cat 1 :star 0] 100)
@@ -3279,7 +3271,7 @@
         g (assoc g :attr-val-link__rel gen-attr-val-link__rel)
 
         gen-attr-val-link__crossorigin
-        (igen/freq [
+        (igen/freq :attr-val-link__crossorigin [
           [(get w [:attr-val-link__crossorigin :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-link__crossorigin :alt 1] 100)
@@ -3289,7 +3281,7 @@
         g (assoc g :attr-val-link__crossorigin gen-attr-val-link__crossorigin)
 
         gen-attr-val-link__type
-        (igen/freq [
+        (igen/freq :attr-val-link__type [
           [(get w [:attr-val-link__type :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-link__type :alt 1] 100)
@@ -3297,13 +3289,13 @@
         g (assoc g :attr-val-link__type gen-attr-val-link__type)
 
         gen-attr-val-link__rev
-        (igen/freq [
+        (igen/freq :attr-val-link__rev [
           [(get w [:attr-val-link__rev :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-link__rev :alt 1] 100)
             (gen/tuple
               (:name g)
-              (igen/freq [
+              (igen/freq :attr-val-link__rev [
                 [(get w [:attr-val-link__rev :alt 1 :cat 1 :star nil] 100)
                   (gen/return "")]
                 [(get w [:attr-val-link__rev :alt 1 :cat 1 :star 0] 100)
@@ -3314,7 +3306,7 @@
         g (assoc g :attr-val-link__rev gen-attr-val-link__rev)
 
         gen-link-attribute
-        (igen/freq [
+        (igen/freq :link-attribute [
           [(get w [:link-attribute :alt 0] 100)
             (gen/tuple
               (gen/return "crossorigin=\"")
@@ -3365,7 +3357,7 @@
         g (assoc g :link-attribute gen-link-attribute)
 
         gen-attr-val-base__href
-        (igen/freq [
+        (igen/freq :attr-val-base__href [
           [(get w [:attr-val-base__href :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-base__href :alt 1] 100)
@@ -3373,7 +3365,7 @@
         g (assoc g :attr-val-base__href gen-attr-val-base__href)
 
         gen-base-attribute
-        (igen/freq [
+        (igen/freq :base-attribute [
           [(get w [:base-attribute :alt 0] 100)
             (gen/tuple
               (gen/return "href=\"")
@@ -3397,7 +3389,7 @@
         g (assoc g :hr-attribute gen-hr-attribute)
 
         gen-attr-val-menuitem__command
-        (igen/freq [
+        (igen/freq :attr-val-menuitem__command [
           [(get w [:attr-val-menuitem__command :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-menuitem__command :alt 1] 100)
@@ -3405,7 +3397,7 @@
         g (assoc g :attr-val-menuitem__command gen-attr-val-menuitem__command)
 
         gen-attr-val-audio__crossorigin
-        (igen/freq [
+        (igen/freq :attr-val-audio__crossorigin [
           [(get w [:attr-val-audio__crossorigin :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-audio__crossorigin :alt 1] 100)
@@ -3415,7 +3407,7 @@
         g (assoc g :attr-val-audio__crossorigin gen-attr-val-audio__crossorigin)
 
         gen-attr-val-audio__src
-        (igen/freq [
+        (igen/freq :attr-val-audio__src [
           [(get w [:attr-val-audio__src :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-audio__src :alt 1] 100)
@@ -3423,7 +3415,7 @@
         g (assoc g :attr-val-audio__src gen-attr-val-audio__src)
 
         gen-audio-attribute
-        (igen/freq [
+        (igen/freq :audio-attribute [
           [(get w [:audio-attribute :alt 0] 100)
             (gen/tuple
               (gen/return "autoplay")
@@ -3464,7 +3456,7 @@
         g (assoc g :mark-attribute gen-mark-attribute)
 
         gen-blockquote-attribute
-        (igen/freq [
+        (igen/freq :blockquote-attribute [
           [(get w [:blockquote-attribute :alt 0] 100)
             (gen/tuple
               (gen/return "cite=\"")
@@ -3475,7 +3467,7 @@
         g (assoc g :blockquote-attribute gen-blockquote-attribute)
 
         gen-attr-val-img__usemap
-        (igen/freq [
+        (igen/freq :attr-val-img__usemap [
           [(get w [:attr-val-img__usemap :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-img__usemap :alt 1] 100)
@@ -3483,7 +3475,7 @@
         g (assoc g :attr-val-img__usemap gen-attr-val-img__usemap)
 
         gen-attr-val-bdo__dir
-        (igen/freq [
+        (igen/freq :attr-val-bdo__dir [
           [(get w [:attr-val-bdo__dir :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-bdo__dir :alt 1] 100)
@@ -3497,13 +3489,13 @@
         g (assoc g :h2-attribute gen-h2-attribute)
 
         gen-attr-val-a__rev
-        (igen/freq [
+        (igen/freq :attr-val-a__rev [
           [(get w [:attr-val-a__rev :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-a__rev :alt 1] 100)
             (gen/tuple
               (:name g)
-              (igen/freq [
+              (igen/freq :attr-val-a__rev [
                 [(get w [:attr-val-a__rev :alt 1 :cat 1 :star nil] 100)
                   (gen/return "")]
                 [(get w [:attr-val-a__rev :alt 1 :cat 1 :star 0] 100)
@@ -3514,7 +3506,7 @@
         g (assoc g :attr-val-a__rev gen-attr-val-a__rev)
 
         gen-attr-val-form__name
-        (igen/freq [
+        (igen/freq :attr-val-form__name [
           [(get w [:attr-val-form__name :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-form__name :alt 1] 100)
@@ -3526,7 +3518,7 @@
         g (assoc g :b-attribute gen-b-attribute)
 
         gen-attr-val-script__crossorigin
-        (igen/freq [
+        (igen/freq :attr-val-script__crossorigin [
           [(get w [:attr-val-script__crossorigin :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-script__crossorigin :alt 1] 100)
@@ -3536,7 +3528,7 @@
         g (assoc g :attr-val-script__crossorigin gen-attr-val-script__crossorigin)
 
         gen-details-attribute
-        (igen/freq [
+        (igen/freq :details-attribute [
           [(get w [:details-attribute :alt 0] 100)
             (gen/tuple
               (gen/return "open")
@@ -3546,7 +3538,7 @@
         g (assoc g :details-attribute gen-details-attribute)
 
         gen-attr-val-source__type
-        (igen/freq [
+        (igen/freq :attr-val-source__type [
           [(get w [:attr-val-source__type :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-source__type :alt 1] 100)
@@ -3554,7 +3546,7 @@
         g (assoc g :attr-val-source__type gen-attr-val-source__type)
 
         gen-attr-val-meta__charset
-        (igen/freq [
+        (igen/freq :attr-val-meta__charset [
           [(get w [:attr-val-meta__charset :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-meta__charset :alt 1] 100)
@@ -3562,7 +3554,7 @@
         g (assoc g :attr-val-meta__charset gen-attr-val-meta__charset)
 
         gen-attr-val-meta__content
-        (igen/freq [
+        (igen/freq :attr-val-meta__content [
           [(get w [:attr-val-meta__content :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-meta__content :alt 1] 100)
@@ -3570,7 +3562,7 @@
         g (assoc g :attr-val-meta__content gen-attr-val-meta__content)
 
         gen-meta-attribute
-        (igen/freq [
+        (igen/freq :meta-attribute [
           [(get w [:meta-attribute :alt 0] 100)
             (gen/tuple
               (gen/return "charset=\"")
@@ -3596,7 +3588,7 @@
         g (assoc g :meta-attribute gen-meta-attribute)
 
         gen-attr-val-menuitem__type
-        (igen/freq [
+        (igen/freq :attr-val-menuitem__type [
           [(get w [:attr-val-menuitem__type :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-menuitem__type :alt 1] 100)
@@ -3612,7 +3604,7 @@
         g (assoc g :header-attribute gen-header-attribute)
 
         gen-attr-val-meter__optimum
-        (igen/freq [
+        (igen/freq :attr-val-meter__optimum [
           [(get w [:attr-val-meter__optimum :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-meter__optimum :alt 1] 100)
@@ -3625,7 +3617,7 @@
         w weights
 
         gen-attr-val-meter__high
-        (igen/freq [
+        (igen/freq :attr-val-meter__high [
           [(get w [:attr-val-meter__high :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-meter__high :alt 1] 100)
@@ -3633,7 +3625,7 @@
         g (assoc g :attr-val-meter__high gen-attr-val-meter__high)
 
         gen-meter-attribute
-        (igen/freq [
+        (igen/freq :meter-attribute [
           [(get w [:meter-attribute :alt 0] 100)
             (gen/tuple
               (gen/return "high=\"")
@@ -3673,7 +3665,7 @@
         g (assoc g :br-attribute gen-br-attribute)
 
         gen-attr-val-td__colspan
-        (igen/freq [
+        (igen/freq :attr-val-td__colspan [
           [(get w [:attr-val-td__colspan :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-td__colspan :alt 1] 100)
@@ -3681,7 +3673,7 @@
         g (assoc g :attr-val-td__colspan gen-attr-val-td__colspan)
 
         gen-td-attribute
-        (igen/freq [
+        (igen/freq :td-attribute [
           [(get w [:td-attribute :alt 0] 100)
             (gen/tuple
               (gen/return "colspan=\"")
@@ -3702,7 +3694,7 @@
         g (assoc g :td-attribute gen-td-attribute)
 
         gen-attr-val-img__width
-        (igen/freq [
+        (igen/freq :attr-val-img__width [
           [(get w [:attr-val-img__width :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-img__width :alt 1] 100)
@@ -3710,7 +3702,7 @@
           [(get w [:attr-val-img__width :alt 2] 100)
             (gen/tuple
               (:non-negative-integer g)
-              (igen/freq [
+              (igen/freq :attr-val-img__width [
                 [(get w [:attr-val-img__width :alt 2 :cat 1 :alt 0] 100)
                   (:length-unit g)]
                 [(get w [:attr-val-img__width :alt 2 :cat 1 :alt 1] 100)
@@ -3722,7 +3714,7 @@
         g (assoc g :aside-attribute gen-aside-attribute)
 
         gen-attr-val-form__action
-        (igen/freq [
+        (igen/freq :attr-val-form__action [
           [(get w [:attr-val-form__action :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-form__action :alt 1] 100)
@@ -3730,7 +3722,7 @@
         g (assoc g :attr-val-form__action gen-attr-val-form__action)
 
         gen-attr-val-script__nonce
-        (igen/freq [
+        (igen/freq :attr-val-script__nonce [
           [(get w [:attr-val-script__nonce :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-script__nonce :alt 1] 100)
@@ -3742,7 +3734,7 @@
         g (assoc g :char-data gen-char-data)
 
         gen-content
-        (igen/freq [
+        (igen/freq :content [
           [(get w [:content :alt 0] 100)
             (:char-data g)]
           [(get w [:content :alt 1] 100)
@@ -3752,7 +3744,7 @@
         g (assoc g :content gen-content)
 
         gen-attr-val-menuitem__icon
-        (igen/freq [
+        (igen/freq :attr-val-menuitem__icon [
           [(get w [:attr-val-menuitem__icon :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-menuitem__icon :alt 1] 100)
@@ -3760,7 +3752,7 @@
         g (assoc g :attr-val-menuitem__icon gen-attr-val-menuitem__icon)
 
         gen-attr-val-script__src
-        (igen/freq [
+        (igen/freq :attr-val-script__src [
           [(get w [:attr-val-script__src :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-script__src :alt 1] 100)
@@ -3768,7 +3760,7 @@
         g (assoc g :attr-val-script__src gen-attr-val-script__src)
 
         gen-script-attribute
-        (igen/freq [
+        (igen/freq :script-attribute [
           [(get w [:script-attribute :alt 0] 100)
             (gen/tuple
               (gen/return "async")
@@ -3807,7 +3799,7 @@
         g (assoc g :script-attribute gen-script-attribute)
 
         gen-data-attribute
-        (igen/freq [
+        (igen/freq :data-attribute [
           [(get w [:data-attribute :alt 0] 100)
             (gen/tuple
               (gen/return "value=\"")
@@ -3818,7 +3810,7 @@
         g (assoc g :data-attribute gen-data-attribute)
 
         gen-bdo-attribute
-        (igen/freq [
+        (igen/freq :bdo-attribute [
           [(get w [:bdo-attribute :alt 0] 100)
             (gen/tuple
               (gen/return "dir=\"")
@@ -3829,7 +3821,7 @@
         g (assoc g :bdo-attribute gen-bdo-attribute)
 
         gen-attr-val-param__name
-        (igen/freq [
+        (igen/freq :attr-val-param__name [
           [(get w [:attr-val-param__name :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-param__name :alt 1] 100)
@@ -3837,7 +3829,7 @@
         g (assoc g :attr-val-param__name gen-attr-val-param__name)
 
         gen-attr-val-menuitem__label
-        (igen/freq [
+        (igen/freq :attr-val-menuitem__label [
           [(get w [:attr-val-menuitem__label :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-menuitem__label :alt 1] 100)
@@ -3845,7 +3837,7 @@
         g (assoc g :attr-val-menuitem__label gen-attr-val-menuitem__label)
 
         gen-li-attribute
-        (igen/freq [
+        (igen/freq :li-attribute [
           [(get w [:li-attribute :alt 0] 100)
             (gen/tuple
               (gen/return "value=\"")
@@ -3860,7 +3852,7 @@
         g (assoc g :u-attribute gen-u-attribute)
 
         gen-any-number
-        (igen/freq [
+        (igen/freq :any-number [
           [(get w [:any-number :alt 0] 100)
             (:integer g)]
           [(get w [:any-number :alt 1] 100)
@@ -3870,7 +3862,7 @@
         gen-srcset
         (gen/tuple
           (:url g)
-          (igen/freq [
+          (igen/freq :srcset [
             [(get w [:srcset :cat 1 :opt nil] 100)
               (gen/return "")]
             [(get w [:srcset :cat 1 :opt 0] 100)
@@ -3878,12 +3870,12 @@
                 (gen/return " ")
                 (gen/tuple
                   (:any-number g)
-                  (igen/freq [
+                  (igen/freq :srcset [
                     [(get w [:srcset :cat 1 :opt 0 :cat 1 :cat 1 :alt 0] 100)
                       (gen/return "w")]
                     [(get w [:srcset :cat 1 :opt 0 :cat 1 :cat 1 :alt 1] 100)
                       (gen/return "x")]])))]])
-          (igen/freq [
+          (igen/freq :srcset [
             [(get w [:srcset :cat 2 :star nil] 100)
               (gen/return "")]
             [(get w [:srcset :cat 2 :star 0] 100)
@@ -3892,7 +3884,7 @@
                   (gen/return ",")
                   (gen/return " ")
                   (:url g)
-                  (igen/freq [
+                  (igen/freq :srcset [
                     [(get w [:srcset :cat 2 :star 0 :cat 3 :opt nil] 100)
                       (gen/return "")]
                     [(get w [:srcset :cat 2 :star 0 :cat 3 :opt 0] 100)
@@ -3900,7 +3892,7 @@
                         (gen/return " ")
                         (gen/tuple
                           (:any-number g)
-                          (igen/freq [
+                          (igen/freq :srcset [
                             [(get w [:srcset :cat 2 :star 0 :cat 3 :opt 0 :cat 1 :cat 1 :alt 0] 100)
                               (gen/return "w")]
                             [(get w [:srcset :cat 2 :star 0 :cat 3 :opt 0 :cat 1 :cat 1 :alt 1] 100)
@@ -3908,7 +3900,7 @@
         g (assoc g :srcset gen-srcset)
 
         gen-attr-val-source__srcset
-        (igen/freq [
+        (igen/freq :attr-val-source__srcset [
           [(get w [:attr-val-source__srcset :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-source__srcset :alt 1] 100)
@@ -3916,7 +3908,7 @@
         g (assoc g :attr-val-source__srcset gen-attr-val-source__srcset)
 
         gen-a-attribute
-        (igen/freq [
+        (igen/freq :a-attribute [
           [(get w [:a-attribute :alt 0] 100)
             (gen/tuple
               (gen/return "download=\"")
@@ -3957,7 +3949,7 @@
         g (assoc g :a-attribute gen-a-attribute)
 
         gen-attr-val-form__accept-charset
-        (igen/freq [
+        (igen/freq :attr-val-form__accept-charset [
           [(get w [:attr-val-form__accept-charset :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-form__accept-charset :alt 1] 100)
@@ -3967,7 +3959,7 @@
           [(get w [:attr-val-form__accept-charset :alt 3] 100)
             (gen/tuple
               (:name g)
-              (igen/freq [
+              (igen/freq :attr-val-form__accept-charset [
                 [(get w [:attr-val-form__accept-charset :alt 3 :cat 1 :star nil] 100)
                   (gen/return "")]
                 [(get w [:attr-val-form__accept-charset :alt 3 :cat 1 :star 0] 100)
@@ -3980,7 +3972,7 @@
         g (assoc g :attr-val-form__accept-charset gen-attr-val-form__accept-charset)
 
         gen-attr-val-menuitem__radiogroup
-        (igen/freq [
+        (igen/freq :attr-val-menuitem__radiogroup [
           [(get w [:attr-val-menuitem__radiogroup :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-menuitem__radiogroup :alt 1] 100)
@@ -3988,7 +3980,7 @@
         g (assoc g :attr-val-menuitem__radiogroup gen-attr-val-menuitem__radiogroup)
 
         gen-attr-val-menuitem__title
-        (igen/freq [
+        (igen/freq :attr-val-menuitem__title [
           [(get w [:attr-val-menuitem__title :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-menuitem__title :alt 1] 100)
@@ -3996,7 +3988,7 @@
         g (assoc g :attr-val-menuitem__title gen-attr-val-menuitem__title)
 
         gen-menuitem-attribute
-        (igen/freq [
+        (igen/freq :menuitem-attribute [
           [(get w [:menuitem-attribute :alt 0] 100)
             (gen/tuple
               (gen/return "checked")
@@ -4048,7 +4040,7 @@
         g (assoc g :ruby-attribute gen-ruby-attribute)
 
         gen-attr-val-source__src
-        (igen/freq [
+        (igen/freq :attr-val-source__src [
           [(get w [:attr-val-source__src :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-source__src :alt 1] 100)
@@ -4060,7 +4052,7 @@
         g (assoc g :legend-attribute gen-legend-attribute)
 
         gen-attr-val-img__srcset
-        (igen/freq [
+        (igen/freq :attr-val-img__srcset [
           [(get w [:attr-val-img__srcset :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-img__srcset :alt 1] 100)
@@ -4068,7 +4060,7 @@
         g (assoc g :attr-val-img__srcset gen-attr-val-img__srcset)
 
         gen-attr-val-col__span
-        (igen/freq [
+        (igen/freq :attr-val-col__span [
           [(get w [:attr-val-col__span :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-col__span :alt 1] 100)
@@ -4076,7 +4068,7 @@
         g (assoc g :attr-val-col__span gen-attr-val-col__span)
 
         gen-col-attribute
-        (igen/freq [
+        (igen/freq :col-attribute [
           [(get w [:col-attribute :alt 0] 100)
             (gen/tuple
               (gen/return "span=\"")
@@ -4091,7 +4083,7 @@
         g (assoc g :cite-attribute gen-cite-attribute)
 
         gen-canvas-attribute
-        (igen/freq [
+        (igen/freq :canvas-attribute [
           [(get w [:canvas-attribute :alt 0] 100)
             (gen/tuple
               (gen/return "height=\"")
@@ -4107,7 +4099,7 @@
         g (assoc g :canvas-attribute gen-canvas-attribute)
 
         gen-attr-val-fieldset__form
-        (igen/freq [
+        (igen/freq :attr-val-fieldset__form [
           [(get w [:attr-val-fieldset__form :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-fieldset__form :alt 1] 100)
@@ -4115,7 +4107,7 @@
         g (assoc g :attr-val-fieldset__form gen-attr-val-fieldset__form)
 
         gen-table-attribute
-        (igen/freq [
+        (igen/freq :table-attribute [
           [(get w [:table-attribute :alt 0] 100)
             (gen/tuple
               (gen/return "border=\"")
@@ -4126,7 +4118,7 @@
         g (assoc g :table-attribute gen-table-attribute)
 
         gen-form-attribute
-        (igen/freq [
+        (igen/freq :form-attribute [
           [(get w [:form-attribute :alt 0] 100)
             (gen/tuple
               (gen/return "novalidate")
@@ -4171,7 +4163,7 @@
         g (assoc g :form-attribute gen-form-attribute)
 
         gen-param-attribute
-        (igen/freq [
+        (igen/freq :param-attribute [
           [(get w [:param-attribute :alt 0] 100)
             (gen/tuple
               (gen/return "name=\"")
@@ -4191,7 +4183,7 @@
         g (assoc g :article-attribute gen-article-attribute)
 
         gen-q-attribute
-        (igen/freq [
+        (igen/freq :q-attribute [
           [(get w [:q-attribute :alt 0] 100)
             (gen/tuple
               (gen/return "cite=\"")
@@ -4202,7 +4194,7 @@
         g (assoc g :q-attribute gen-q-attribute)
 
         gen-fieldset-attribute
-        (igen/freq [
+        (igen/freq :fieldset-attribute [
           [(get w [:fieldset-attribute :alt 0] 100)
             (gen/tuple
               (gen/return "disabled")
@@ -4222,7 +4214,7 @@
         g (assoc g :fieldset-attribute gen-fieldset-attribute)
 
         gen-attr-val-img__alt
-        (igen/freq [
+        (igen/freq :attr-val-img__alt [
           [(get w [:attr-val-img__alt :alt 0] 100)
             (gen/return "")]
           [(get w [:attr-val-img__alt :alt 1] 100)
@@ -4230,7 +4222,7 @@
         g (assoc g :attr-val-img__alt gen-attr-val-img__alt)
 
         gen-img-attribute
-        (igen/freq [
+        (igen/freq :img-attribute [
           [(get w [:img-attribute :alt 0] 100)
             (gen/tuple
               (gen/return "ismap")
@@ -4284,7 +4276,7 @@
         g (assoc g :bdi-attribute gen-bdi-attribute)
 
         gen-source-attribute
-        (igen/freq [
+        (igen/freq :source-attribute [
           [(get w [:source-attribute :alt 0] 100)
             (gen/tuple
               (gen/return "sizes=\"")
@@ -4316,11 +4308,11 @@
         gen-element
         (gen/recursive-gen
           (fn [inner]
-            (igen/freq [
+            (igen/freq :element [
               [(get w [:element :alt 0] 100)
                 (gen/tuple
                   (gen/return "<a")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 0 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 0 :cat 1 :star 0] 100)
@@ -4329,12 +4321,12 @@
                           (gen/return " ")
                           (:a-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 0 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 0 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 0 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 0 :cat 3 :star 0 :alt 1] 100)
@@ -4343,7 +4335,7 @@
               [(get w [:element :alt 1] 100)
                 (gen/tuple
                   (gen/return "<abbr")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 1 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 1 :cat 1 :star 0] 100)
@@ -4352,12 +4344,12 @@
                           (gen/return " ")
                           (:abbr-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 1 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 1 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 1 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 1 :cat 3 :star 0 :alt 1] 100)
@@ -4366,7 +4358,7 @@
               [(get w [:element :alt 2] 100)
                 (gen/tuple
                   (gen/return "<address")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 2 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 2 :cat 1 :star 0] 100)
@@ -4375,12 +4367,12 @@
                           (gen/return " ")
                           (:address-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 2 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 2 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 2 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 2 :cat 3 :star 0 :alt 1] 100)
@@ -4389,7 +4381,7 @@
               [(get w [:element :alt 3] 100)
                 (gen/tuple
                   (gen/return "<area")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 3 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 3 :cat 1 :star 0] 100)
@@ -4401,7 +4393,7 @@
               [(get w [:element :alt 4] 100)
                 (gen/tuple
                   (gen/return "<article")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 4 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 4 :cat 1 :star 0] 100)
@@ -4410,12 +4402,12 @@
                           (gen/return " ")
                           (:article-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 4 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 4 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 4 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 4 :cat 3 :star 0 :alt 1] 100)
@@ -4424,7 +4416,7 @@
               [(get w [:element :alt 5] 100)
                 (gen/tuple
                   (gen/return "<aside")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 5 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 5 :cat 1 :star 0] 100)
@@ -4433,12 +4425,12 @@
                           (gen/return " ")
                           (:aside-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 5 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 5 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 5 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 5 :cat 3 :star 0 :alt 1] 100)
@@ -4447,7 +4439,7 @@
               [(get w [:element :alt 6] 100)
                 (gen/tuple
                   (gen/return "<audio")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 6 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 6 :cat 1 :star 0] 100)
@@ -4456,12 +4448,12 @@
                           (gen/return " ")
                           (:audio-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 6 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 6 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 6 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 6 :cat 3 :star 0 :alt 1] 100)
@@ -4470,7 +4462,7 @@
               [(get w [:element :alt 7] 100)
                 (gen/tuple
                   (gen/return "<b")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 7 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 7 :cat 1 :star 0] 100)
@@ -4479,12 +4471,12 @@
                           (gen/return " ")
                           (:b-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 7 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 7 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 7 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 7 :cat 3 :star 0 :alt 1] 100)
@@ -4493,7 +4485,7 @@
               [(get w [:element :alt 8] 100)
                 (gen/tuple
                   (gen/return "<base")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 8 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 8 :cat 1 :star 0] 100)
@@ -4505,7 +4497,7 @@
               [(get w [:element :alt 9] 100)
                 (gen/tuple
                   (gen/return "<bdi")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 9 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 9 :cat 1 :star 0] 100)
@@ -4514,12 +4506,12 @@
                           (gen/return " ")
                           (:bdi-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 9 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 9 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 9 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 9 :cat 3 :star 0 :alt 1] 100)
@@ -4528,7 +4520,7 @@
               [(get w [:element :alt 10] 100)
                 (gen/tuple
                   (gen/return "<bdo")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 10 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 10 :cat 1 :star 0] 100)
@@ -4537,12 +4529,12 @@
                           (gen/return " ")
                           (:bdo-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 10 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 10 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 10 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 10 :cat 3 :star 0 :alt 1] 100)
@@ -4551,7 +4543,7 @@
               [(get w [:element :alt 11] 100)
                 (gen/tuple
                   (gen/return "<blockquote")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 11 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 11 :cat 1 :star 0] 100)
@@ -4560,12 +4552,12 @@
                           (gen/return " ")
                           (:blockquote-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 11 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 11 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 11 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 11 :cat 3 :star 0 :alt 1] 100)
@@ -4574,7 +4566,7 @@
               [(get w [:element :alt 12] 100)
                 (gen/tuple
                   (gen/return "<br")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 12 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 12 :cat 1 :star 0] 100)
@@ -4586,7 +4578,7 @@
               [(get w [:element :alt 13] 100)
                 (gen/tuple
                   (gen/return "<button")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 13 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 13 :cat 1 :star 0] 100)
@@ -4595,12 +4587,12 @@
                           (gen/return " ")
                           (:button-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 13 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 13 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 13 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 13 :cat 3 :star 0 :alt 1] 100)
@@ -4609,7 +4601,7 @@
               [(get w [:element :alt 14] 100)
                 (gen/tuple
                   (gen/return "<canvas")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 14 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 14 :cat 1 :star 0] 100)
@@ -4618,12 +4610,12 @@
                           (gen/return " ")
                           (:canvas-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 14 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 14 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 14 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 14 :cat 3 :star 0 :alt 1] 100)
@@ -4632,7 +4624,7 @@
               [(get w [:element :alt 15] 100)
                 (gen/tuple
                   (gen/return "<caption")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 15 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 15 :cat 1 :star 0] 100)
@@ -4641,12 +4633,12 @@
                           (gen/return " ")
                           (:caption-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 15 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 15 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 15 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 15 :cat 3 :star 0 :alt 1] 100)
@@ -4655,7 +4647,7 @@
               [(get w [:element :alt 16] 100)
                 (gen/tuple
                   (gen/return "<cite")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 16 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 16 :cat 1 :star 0] 100)
@@ -4664,12 +4656,12 @@
                           (gen/return " ")
                           (:cite-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 16 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 16 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 16 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 16 :cat 3 :star 0 :alt 1] 100)
@@ -4678,7 +4670,7 @@
               [(get w [:element :alt 17] 100)
                 (gen/tuple
                   (gen/return "<code")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 17 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 17 :cat 1 :star 0] 100)
@@ -4687,12 +4679,12 @@
                           (gen/return " ")
                           (:code-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 17 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 17 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 17 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 17 :cat 3 :star 0 :alt 1] 100)
@@ -4701,7 +4693,7 @@
               [(get w [:element :alt 18] 100)
                 (gen/tuple
                   (gen/return "<col")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 18 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 18 :cat 1 :star 0] 100)
@@ -4713,7 +4705,7 @@
               [(get w [:element :alt 19] 100)
                 (gen/tuple
                   (gen/return "<colgroup")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 19 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 19 :cat 1 :star 0] 100)
@@ -4722,12 +4714,12 @@
                           (gen/return " ")
                           (:colgroup-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 19 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 19 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 19 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 19 :cat 3 :star 0 :alt 1] 100)
@@ -4736,7 +4728,7 @@
               [(get w [:element :alt 20] 100)
                 (gen/tuple
                   (gen/return "<data")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 20 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 20 :cat 1 :star 0] 100)
@@ -4745,12 +4737,12 @@
                           (gen/return " ")
                           (:data-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 20 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 20 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 20 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 20 :cat 3 :star 0 :alt 1] 100)
@@ -4759,7 +4751,7 @@
               [(get w [:element :alt 21] 100)
                 (gen/tuple
                   (gen/return "<datalist")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 21 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 21 :cat 1 :star 0] 100)
@@ -4768,12 +4760,12 @@
                           (gen/return " ")
                           (:datalist-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 21 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 21 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 21 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 21 :cat 3 :star 0 :alt 1] 100)
@@ -4782,7 +4774,7 @@
               [(get w [:element :alt 22] 100)
                 (gen/tuple
                   (gen/return "<dd")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 22 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 22 :cat 1 :star 0] 100)
@@ -4791,12 +4783,12 @@
                           (gen/return " ")
                           (:dd-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 22 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 22 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 22 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 22 :cat 3 :star 0 :alt 1] 100)
@@ -4805,7 +4797,7 @@
               [(get w [:element :alt 23] 100)
                 (gen/tuple
                   (gen/return "<del")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 23 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 23 :cat 1 :star 0] 100)
@@ -4814,12 +4806,12 @@
                           (gen/return " ")
                           (:del-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 23 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 23 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 23 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 23 :cat 3 :star 0 :alt 1] 100)
@@ -4828,7 +4820,7 @@
               [(get w [:element :alt 24] 100)
                 (gen/tuple
                   (gen/return "<details")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 24 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 24 :cat 1 :star 0] 100)
@@ -4837,12 +4829,12 @@
                           (gen/return " ")
                           (:details-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 24 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 24 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 24 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 24 :cat 3 :star 0 :alt 1] 100)
@@ -4851,7 +4843,7 @@
               [(get w [:element :alt 25] 100)
                 (gen/tuple
                   (gen/return "<dfn")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 25 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 25 :cat 1 :star 0] 100)
@@ -4860,12 +4852,12 @@
                           (gen/return " ")
                           (:dfn-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 25 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 25 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 25 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 25 :cat 3 :star 0 :alt 1] 100)
@@ -4874,7 +4866,7 @@
               [(get w [:element :alt 26] 100)
                 (gen/tuple
                   (gen/return "<div")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 26 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 26 :cat 1 :star 0] 100)
@@ -4883,12 +4875,12 @@
                           (gen/return " ")
                           (:div-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 26 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 26 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 26 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 26 :cat 3 :star 0 :alt 1] 100)
@@ -4897,7 +4889,7 @@
               [(get w [:element :alt 27] 100)
                 (gen/tuple
                   (gen/return "<dl")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 27 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 27 :cat 1 :star 0] 100)
@@ -4906,12 +4898,12 @@
                           (gen/return " ")
                           (:dl-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 27 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 27 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 27 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 27 :cat 3 :star 0 :alt 1] 100)
@@ -4920,7 +4912,7 @@
               [(get w [:element :alt 28] 100)
                 (gen/tuple
                   (gen/return "<dt")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 28 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 28 :cat 1 :star 0] 100)
@@ -4929,12 +4921,12 @@
                           (gen/return " ")
                           (:dt-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 28 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 28 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 28 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 28 :cat 3 :star 0 :alt 1] 100)
@@ -4943,7 +4935,7 @@
               [(get w [:element :alt 29] 100)
                 (gen/tuple
                   (gen/return "<em")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 29 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 29 :cat 1 :star 0] 100)
@@ -4952,12 +4944,12 @@
                           (gen/return " ")
                           (:em-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 29 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 29 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 29 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 29 :cat 3 :star 0 :alt 1] 100)
@@ -4966,7 +4958,7 @@
               [(get w [:element :alt 30] 100)
                 (gen/tuple
                   (gen/return "<embed")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 30 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 30 :cat 1 :star 0] 100)
@@ -4978,7 +4970,7 @@
               [(get w [:element :alt 31] 100)
                 (gen/tuple
                   (gen/return "<fieldset")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 31 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 31 :cat 1 :star 0] 100)
@@ -4987,12 +4979,12 @@
                           (gen/return " ")
                           (:fieldset-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 31 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 31 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 31 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 31 :cat 3 :star 0 :alt 1] 100)
@@ -5001,7 +4993,7 @@
               [(get w [:element :alt 32] 100)
                 (gen/tuple
                   (gen/return "<figcaption")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 32 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 32 :cat 1 :star 0] 100)
@@ -5010,12 +5002,12 @@
                           (gen/return " ")
                           (:figcaption-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 32 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 32 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 32 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 32 :cat 3 :star 0 :alt 1] 100)
@@ -5024,7 +5016,7 @@
               [(get w [:element :alt 33] 100)
                 (gen/tuple
                   (gen/return "<figure")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 33 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 33 :cat 1 :star 0] 100)
@@ -5033,12 +5025,12 @@
                           (gen/return " ")
                           (:figure-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 33 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 33 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 33 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 33 :cat 3 :star 0 :alt 1] 100)
@@ -5047,7 +5039,7 @@
               [(get w [:element :alt 34] 100)
                 (gen/tuple
                   (gen/return "<footer")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 34 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 34 :cat 1 :star 0] 100)
@@ -5056,12 +5048,12 @@
                           (gen/return " ")
                           (:footer-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 34 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 34 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 34 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 34 :cat 3 :star 0 :alt 1] 100)
@@ -5070,7 +5062,7 @@
               [(get w [:element :alt 35] 100)
                 (gen/tuple
                   (gen/return "<form")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 35 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 35 :cat 1 :star 0] 100)
@@ -5079,12 +5071,12 @@
                           (gen/return " ")
                           (:form-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 35 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 35 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 35 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 35 :cat 3 :star 0 :alt 1] 100)
@@ -5093,7 +5085,7 @@
               [(get w [:element :alt 36] 100)
                 (gen/tuple
                   (gen/return "<h1")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 36 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 36 :cat 1 :star 0] 100)
@@ -5102,12 +5094,12 @@
                           (gen/return " ")
                           (:h1-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 36 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 36 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 36 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 36 :cat 3 :star 0 :alt 1] 100)
@@ -5116,7 +5108,7 @@
               [(get w [:element :alt 37] 100)
                 (gen/tuple
                   (gen/return "<h2")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 37 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 37 :cat 1 :star 0] 100)
@@ -5125,12 +5117,12 @@
                           (gen/return " ")
                           (:h2-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 37 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 37 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 37 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 37 :cat 3 :star 0 :alt 1] 100)
@@ -5139,7 +5131,7 @@
               [(get w [:element :alt 38] 100)
                 (gen/tuple
                   (gen/return "<h3")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 38 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 38 :cat 1 :star 0] 100)
@@ -5148,12 +5140,12 @@
                           (gen/return " ")
                           (:h3-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 38 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 38 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 38 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 38 :cat 3 :star 0 :alt 1] 100)
@@ -5162,7 +5154,7 @@
               [(get w [:element :alt 39] 100)
                 (gen/tuple
                   (gen/return "<h4")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 39 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 39 :cat 1 :star 0] 100)
@@ -5171,12 +5163,12 @@
                           (gen/return " ")
                           (:h4-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 39 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 39 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 39 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 39 :cat 3 :star 0 :alt 1] 100)
@@ -5185,7 +5177,7 @@
               [(get w [:element :alt 40] 100)
                 (gen/tuple
                   (gen/return "<h5")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 40 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 40 :cat 1 :star 0] 100)
@@ -5194,12 +5186,12 @@
                           (gen/return " ")
                           (:h5-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 40 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 40 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 40 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 40 :cat 3 :star 0 :alt 1] 100)
@@ -5208,7 +5200,7 @@
               [(get w [:element :alt 41] 100)
                 (gen/tuple
                   (gen/return "<h6")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 41 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 41 :cat 1 :star 0] 100)
@@ -5217,12 +5209,12 @@
                           (gen/return " ")
                           (:h6-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 41 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 41 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 41 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 41 :cat 3 :star 0 :alt 1] 100)
@@ -5231,7 +5223,7 @@
               [(get w [:element :alt 42] 100)
                 (gen/tuple
                   (gen/return "<header")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 42 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 42 :cat 1 :star 0] 100)
@@ -5240,12 +5232,12 @@
                           (gen/return " ")
                           (:header-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 42 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 42 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 42 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 42 :cat 3 :star 0 :alt 1] 100)
@@ -5254,7 +5246,7 @@
               [(get w [:element :alt 43] 100)
                 (gen/tuple
                   (gen/return "<hr")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 43 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 43 :cat 1 :star 0] 100)
@@ -5266,7 +5258,7 @@
               [(get w [:element :alt 44] 100)
                 (gen/tuple
                   (gen/return "<i")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 44 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 44 :cat 1 :star 0] 100)
@@ -5275,12 +5267,12 @@
                           (gen/return " ")
                           (:i-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 44 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 44 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 44 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 44 :cat 3 :star 0 :alt 1] 100)
@@ -5289,7 +5281,7 @@
               [(get w [:element :alt 45] 100)
                 (gen/tuple
                   (gen/return "<iframe")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 45 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 45 :cat 1 :star 0] 100)
@@ -5298,12 +5290,12 @@
                           (gen/return " ")
                           (:iframe-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 45 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 45 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 45 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 45 :cat 3 :star 0 :alt 1] 100)
@@ -5312,7 +5304,7 @@
               [(get w [:element :alt 46] 100)
                 (gen/tuple
                   (gen/return "<img")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 46 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 46 :cat 1 :star 0] 100)
@@ -5324,7 +5316,7 @@
               [(get w [:element :alt 47] 100)
                 (gen/tuple
                   (gen/return "<input")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 47 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 47 :cat 1 :star 0] 100)
@@ -5336,7 +5328,7 @@
               [(get w [:element :alt 48] 100)
                 (gen/tuple
                   (gen/return "<ins")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 48 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 48 :cat 1 :star 0] 100)
@@ -5345,12 +5337,12 @@
                           (gen/return " ")
                           (:ins-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 48 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 48 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 48 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 48 :cat 3 :star 0 :alt 1] 100)
@@ -5359,7 +5351,7 @@
               [(get w [:element :alt 49] 100)
                 (gen/tuple
                   (gen/return "<kbd")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 49 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 49 :cat 1 :star 0] 100)
@@ -5368,12 +5360,12 @@
                           (gen/return " ")
                           (:kbd-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 49 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 49 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 49 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 49 :cat 3 :star 0 :alt 1] 100)
@@ -5382,7 +5374,7 @@
               [(get w [:element :alt 50] 100)
                 (gen/tuple
                   (gen/return "<keygen")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 50 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 50 :cat 1 :star 0] 100)
@@ -5394,7 +5386,7 @@
               [(get w [:element :alt 51] 100)
                 (gen/tuple
                   (gen/return "<label")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 51 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 51 :cat 1 :star 0] 100)
@@ -5403,12 +5395,12 @@
                           (gen/return " ")
                           (:label-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 51 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 51 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 51 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 51 :cat 3 :star 0 :alt 1] 100)
@@ -5417,7 +5409,7 @@
               [(get w [:element :alt 52] 100)
                 (gen/tuple
                   (gen/return "<legend")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 52 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 52 :cat 1 :star 0] 100)
@@ -5426,12 +5418,12 @@
                           (gen/return " ")
                           (:legend-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 52 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 52 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 52 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 52 :cat 3 :star 0 :alt 1] 100)
@@ -5440,7 +5432,7 @@
               [(get w [:element :alt 53] 100)
                 (gen/tuple
                   (gen/return "<li")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 53 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 53 :cat 1 :star 0] 100)
@@ -5449,12 +5441,12 @@
                           (gen/return " ")
                           (:li-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 53 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 53 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 53 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 53 :cat 3 :star 0 :alt 1] 100)
@@ -5463,7 +5455,7 @@
               [(get w [:element :alt 54] 100)
                 (gen/tuple
                   (gen/return "<link")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 54 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 54 :cat 1 :star 0] 100)
@@ -5475,7 +5467,7 @@
               [(get w [:element :alt 55] 100)
                 (gen/tuple
                   (gen/return "<main")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 55 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 55 :cat 1 :star 0] 100)
@@ -5484,12 +5476,12 @@
                           (gen/return " ")
                           (:main-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 55 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 55 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 55 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 55 :cat 3 :star 0 :alt 1] 100)
@@ -5498,7 +5490,7 @@
               [(get w [:element :alt 56] 100)
                 (gen/tuple
                   (gen/return "<map")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 56 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 56 :cat 1 :star 0] 100)
@@ -5507,12 +5499,12 @@
                           (gen/return " ")
                           (:map-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 56 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 56 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 56 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 56 :cat 3 :star 0 :alt 1] 100)
@@ -5521,7 +5513,7 @@
               [(get w [:element :alt 57] 100)
                 (gen/tuple
                   (gen/return "<mark")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 57 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 57 :cat 1 :star 0] 100)
@@ -5530,12 +5522,12 @@
                           (gen/return " ")
                           (:mark-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 57 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 57 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 57 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 57 :cat 3 :star 0 :alt 1] 100)
@@ -5544,7 +5536,7 @@
               [(get w [:element :alt 58] 100)
                 (gen/tuple
                   (gen/return "<menu")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 58 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 58 :cat 1 :star 0] 100)
@@ -5553,12 +5545,12 @@
                           (gen/return " ")
                           (:menu-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 58 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 58 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 58 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 58 :cat 3 :star 0 :alt 1] 100)
@@ -5567,7 +5559,7 @@
               [(get w [:element :alt 59] 100)
                 (gen/tuple
                   (gen/return "<menuitem")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 59 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 59 :cat 1 :star 0] 100)
@@ -5579,7 +5571,7 @@
               [(get w [:element :alt 60] 100)
                 (gen/tuple
                   (gen/return "<meta")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 60 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 60 :cat 1 :star 0] 100)
@@ -5591,7 +5583,7 @@
               [(get w [:element :alt 61] 100)
                 (gen/tuple
                   (gen/return "<meter")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 61 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 61 :cat 1 :star 0] 100)
@@ -5600,12 +5592,12 @@
                           (gen/return " ")
                           (:meter-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 61 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 61 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 61 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 61 :cat 3 :star 0 :alt 1] 100)
@@ -5614,7 +5606,7 @@
               [(get w [:element :alt 62] 100)
                 (gen/tuple
                   (gen/return "<nav")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 62 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 62 :cat 1 :star 0] 100)
@@ -5623,12 +5615,12 @@
                           (gen/return " ")
                           (:nav-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 62 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 62 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 62 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 62 :cat 3 :star 0 :alt 1] 100)
@@ -5637,7 +5629,7 @@
               [(get w [:element :alt 63] 100)
                 (gen/tuple
                   (gen/return "<noscript")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 63 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 63 :cat 1 :star 0] 100)
@@ -5646,12 +5638,12 @@
                           (gen/return " ")
                           (:noscript-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 63 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 63 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 63 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 63 :cat 3 :star 0 :alt 1] 100)
@@ -5660,7 +5652,7 @@
               [(get w [:element :alt 64] 100)
                 (gen/tuple
                   (gen/return "<object")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 64 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 64 :cat 1 :star 0] 100)
@@ -5669,12 +5661,12 @@
                           (gen/return " ")
                           (:object-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 64 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 64 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 64 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 64 :cat 3 :star 0 :alt 1] 100)
@@ -5683,7 +5675,7 @@
               [(get w [:element :alt 65] 100)
                 (gen/tuple
                   (gen/return "<ol")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 65 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 65 :cat 1 :star 0] 100)
@@ -5692,12 +5684,12 @@
                           (gen/return " ")
                           (:ol-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 65 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 65 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 65 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 65 :cat 3 :star 0 :alt 1] 100)
@@ -5706,7 +5698,7 @@
               [(get w [:element :alt 66] 100)
                 (gen/tuple
                   (gen/return "<optgroup")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 66 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 66 :cat 1 :star 0] 100)
@@ -5715,12 +5707,12 @@
                           (gen/return " ")
                           (:optgroup-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 66 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 66 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 66 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 66 :cat 3 :star 0 :alt 1] 100)
@@ -5729,7 +5721,7 @@
               [(get w [:element :alt 67] 100)
                 (gen/tuple
                   (gen/return "<option")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 67 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 67 :cat 1 :star 0] 100)
@@ -5738,12 +5730,12 @@
                           (gen/return " ")
                           (:option-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 67 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 67 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 67 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 67 :cat 3 :star 0 :alt 1] 100)
@@ -5752,7 +5744,7 @@
               [(get w [:element :alt 68] 100)
                 (gen/tuple
                   (gen/return "<output")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 68 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 68 :cat 1 :star 0] 100)
@@ -5761,12 +5753,12 @@
                           (gen/return " ")
                           (:output-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 68 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 68 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 68 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 68 :cat 3 :star 0 :alt 1] 100)
@@ -5775,7 +5767,7 @@
               [(get w [:element :alt 69] 100)
                 (gen/tuple
                   (gen/return "<p")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 69 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 69 :cat 1 :star 0] 100)
@@ -5784,12 +5776,12 @@
                           (gen/return " ")
                           (:p-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 69 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 69 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 69 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 69 :cat 3 :star 0 :alt 1] 100)
@@ -5798,7 +5790,7 @@
               [(get w [:element :alt 70] 100)
                 (gen/tuple
                   (gen/return "<param")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 70 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 70 :cat 1 :star 0] 100)
@@ -5810,7 +5802,7 @@
               [(get w [:element :alt 71] 100)
                 (gen/tuple
                   (gen/return "<picture")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 71 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 71 :cat 1 :star 0] 100)
@@ -5819,12 +5811,12 @@
                           (gen/return " ")
                           (:picture-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 71 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 71 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 71 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 71 :cat 3 :star 0 :alt 1] 100)
@@ -5833,7 +5825,7 @@
               [(get w [:element :alt 72] 100)
                 (gen/tuple
                   (gen/return "<pre")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 72 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 72 :cat 1 :star 0] 100)
@@ -5842,12 +5834,12 @@
                           (gen/return " ")
                           (:pre-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 72 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 72 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 72 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 72 :cat 3 :star 0 :alt 1] 100)
@@ -5856,7 +5848,7 @@
               [(get w [:element :alt 73] 100)
                 (gen/tuple
                   (gen/return "<progress")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 73 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 73 :cat 1 :star 0] 100)
@@ -5865,12 +5857,12 @@
                           (gen/return " ")
                           (:progress-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 73 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 73 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 73 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 73 :cat 3 :star 0 :alt 1] 100)
@@ -5879,7 +5871,7 @@
               [(get w [:element :alt 74] 100)
                 (gen/tuple
                   (gen/return "<q")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 74 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 74 :cat 1 :star 0] 100)
@@ -5888,12 +5880,12 @@
                           (gen/return " ")
                           (:q-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 74 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 74 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 74 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 74 :cat 3 :star 0 :alt 1] 100)
@@ -5902,7 +5894,7 @@
               [(get w [:element :alt 75] 100)
                 (gen/tuple
                   (gen/return "<rb")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 75 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 75 :cat 1 :star 0] 100)
@@ -5911,12 +5903,12 @@
                           (gen/return " ")
                           (:rb-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 75 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 75 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 75 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 75 :cat 3 :star 0 :alt 1] 100)
@@ -5925,7 +5917,7 @@
               [(get w [:element :alt 76] 100)
                 (gen/tuple
                   (gen/return "<rp")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 76 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 76 :cat 1 :star 0] 100)
@@ -5934,12 +5926,12 @@
                           (gen/return " ")
                           (:rp-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 76 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 76 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 76 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 76 :cat 3 :star 0 :alt 1] 100)
@@ -5948,7 +5940,7 @@
               [(get w [:element :alt 77] 100)
                 (gen/tuple
                   (gen/return "<rt")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 77 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 77 :cat 1 :star 0] 100)
@@ -5957,12 +5949,12 @@
                           (gen/return " ")
                           (:rt-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 77 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 77 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 77 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 77 :cat 3 :star 0 :alt 1] 100)
@@ -5971,7 +5963,7 @@
               [(get w [:element :alt 78] 100)
                 (gen/tuple
                   (gen/return "<rtc")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 78 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 78 :cat 1 :star 0] 100)
@@ -5980,12 +5972,12 @@
                           (gen/return " ")
                           (:rtc-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 78 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 78 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 78 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 78 :cat 3 :star 0 :alt 1] 100)
@@ -5994,7 +5986,7 @@
               [(get w [:element :alt 79] 100)
                 (gen/tuple
                   (gen/return "<ruby")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 79 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 79 :cat 1 :star 0] 100)
@@ -6003,12 +5995,12 @@
                           (gen/return " ")
                           (:ruby-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 79 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 79 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 79 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 79 :cat 3 :star 0 :alt 1] 100)
@@ -6017,7 +6009,7 @@
               [(get w [:element :alt 80] 100)
                 (gen/tuple
                   (gen/return "<s")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 80 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 80 :cat 1 :star 0] 100)
@@ -6026,12 +6018,12 @@
                           (gen/return " ")
                           (:s-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 80 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 80 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 80 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 80 :cat 3 :star 0 :alt 1] 100)
@@ -6040,7 +6032,7 @@
               [(get w [:element :alt 81] 100)
                 (gen/tuple
                   (gen/return "<samp")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 81 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 81 :cat 1 :star 0] 100)
@@ -6049,12 +6041,12 @@
                           (gen/return " ")
                           (:samp-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 81 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 81 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 81 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 81 :cat 3 :star 0 :alt 1] 100)
@@ -6063,7 +6055,7 @@
               [(get w [:element :alt 82] 100)
                 (gen/tuple
                   (gen/return "<script")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 82 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 82 :cat 1 :star 0] 100)
@@ -6072,12 +6064,12 @@
                           (gen/return " ")
                           (:script-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 82 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 82 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 82 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 82 :cat 3 :star 0 :alt 1] 100)
@@ -6086,7 +6078,7 @@
               [(get w [:element :alt 83] 100)
                 (gen/tuple
                   (gen/return "<section")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 83 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 83 :cat 1 :star 0] 100)
@@ -6095,12 +6087,12 @@
                           (gen/return " ")
                           (:section-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 83 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 83 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 83 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 83 :cat 3 :star 0 :alt 1] 100)
@@ -6109,7 +6101,7 @@
               [(get w [:element :alt 84] 100)
                 (gen/tuple
                   (gen/return "<select")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 84 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 84 :cat 1 :star 0] 100)
@@ -6118,12 +6110,12 @@
                           (gen/return " ")
                           (:select-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 84 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 84 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 84 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 84 :cat 3 :star 0 :alt 1] 100)
@@ -6132,7 +6124,7 @@
               [(get w [:element :alt 85] 100)
                 (gen/tuple
                   (gen/return "<small")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 85 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 85 :cat 1 :star 0] 100)
@@ -6141,12 +6133,12 @@
                           (gen/return " ")
                           (:small-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 85 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 85 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 85 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 85 :cat 3 :star 0 :alt 1] 100)
@@ -6155,7 +6147,7 @@
               [(get w [:element :alt 86] 100)
                 (gen/tuple
                   (gen/return "<source")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 86 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 86 :cat 1 :star 0] 100)
@@ -6167,7 +6159,7 @@
               [(get w [:element :alt 87] 100)
                 (gen/tuple
                   (gen/return "<span")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 87 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 87 :cat 1 :star 0] 100)
@@ -6176,12 +6168,12 @@
                           (gen/return " ")
                           (:span-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 87 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 87 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 87 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 87 :cat 3 :star 0 :alt 1] 100)
@@ -6190,7 +6182,7 @@
               [(get w [:element :alt 88] 100)
                 (gen/tuple
                   (gen/return "<strong")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 88 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 88 :cat 1 :star 0] 100)
@@ -6199,12 +6191,12 @@
                           (gen/return " ")
                           (:strong-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 88 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 88 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 88 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 88 :cat 3 :star 0 :alt 1] 100)
@@ -6213,7 +6205,7 @@
               [(get w [:element :alt 89] 100)
                 (gen/tuple
                   (gen/return "<style")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 89 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 89 :cat 1 :star 0] 100)
@@ -6222,12 +6214,12 @@
                           (gen/return " ")
                           (:style-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 89 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 89 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 89 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 89 :cat 3 :star 0 :alt 1] 100)
@@ -6236,7 +6228,7 @@
               [(get w [:element :alt 90] 100)
                 (gen/tuple
                   (gen/return "<sub")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 90 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 90 :cat 1 :star 0] 100)
@@ -6245,12 +6237,12 @@
                           (gen/return " ")
                           (:sub-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 90 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 90 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 90 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 90 :cat 3 :star 0 :alt 1] 100)
@@ -6259,7 +6251,7 @@
               [(get w [:element :alt 91] 100)
                 (gen/tuple
                   (gen/return "<summary")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 91 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 91 :cat 1 :star 0] 100)
@@ -6268,12 +6260,12 @@
                           (gen/return " ")
                           (:summary-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 91 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 91 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 91 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 91 :cat 3 :star 0 :alt 1] 100)
@@ -6282,7 +6274,7 @@
               [(get w [:element :alt 92] 100)
                 (gen/tuple
                   (gen/return "<sup")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 92 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 92 :cat 1 :star 0] 100)
@@ -6291,12 +6283,12 @@
                           (gen/return " ")
                           (:sup-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 92 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 92 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 92 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 92 :cat 3 :star 0 :alt 1] 100)
@@ -6305,7 +6297,7 @@
               [(get w [:element :alt 93] 100)
                 (gen/tuple
                   (gen/return "<table")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 93 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 93 :cat 1 :star 0] 100)
@@ -6314,12 +6306,12 @@
                           (gen/return " ")
                           (:table-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 93 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 93 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 93 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 93 :cat 3 :star 0 :alt 1] 100)
@@ -6328,7 +6320,7 @@
               [(get w [:element :alt 94] 100)
                 (gen/tuple
                   (gen/return "<tbody")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 94 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 94 :cat 1 :star 0] 100)
@@ -6337,12 +6329,12 @@
                           (gen/return " ")
                           (:tbody-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 94 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 94 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 94 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 94 :cat 3 :star 0 :alt 1] 100)
@@ -6351,7 +6343,7 @@
               [(get w [:element :alt 95] 100)
                 (gen/tuple
                   (gen/return "<td")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 95 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 95 :cat 1 :star 0] 100)
@@ -6360,12 +6352,12 @@
                           (gen/return " ")
                           (:td-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 95 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 95 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 95 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 95 :cat 3 :star 0 :alt 1] 100)
@@ -6374,7 +6366,7 @@
               [(get w [:element :alt 96] 100)
                 (gen/tuple
                   (gen/return "<template")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 96 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 96 :cat 1 :star 0] 100)
@@ -6383,12 +6375,12 @@
                           (gen/return " ")
                           (:template-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 96 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 96 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 96 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 96 :cat 3 :star 0 :alt 1] 100)
@@ -6397,7 +6389,7 @@
               [(get w [:element :alt 97] 100)
                 (gen/tuple
                   (gen/return "<textarea")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 97 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 97 :cat 1 :star 0] 100)
@@ -6406,12 +6398,12 @@
                           (gen/return " ")
                           (:textarea-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 97 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 97 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 97 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 97 :cat 3 :star 0 :alt 1] 100)
@@ -6420,7 +6412,7 @@
               [(get w [:element :alt 98] 100)
                 (gen/tuple
                   (gen/return "<tfoot")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 98 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 98 :cat 1 :star 0] 100)
@@ -6429,12 +6421,12 @@
                           (gen/return " ")
                           (:tfoot-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 98 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 98 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 98 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 98 :cat 3 :star 0 :alt 1] 100)
@@ -6443,7 +6435,7 @@
               [(get w [:element :alt 99] 100)
                 (gen/tuple
                   (gen/return "<th")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 99 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 99 :cat 1 :star 0] 100)
@@ -6452,12 +6444,12 @@
                           (gen/return " ")
                           (:th-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 99 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 99 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 99 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 99 :cat 3 :star 0 :alt 1] 100)
@@ -6466,7 +6458,7 @@
               [(get w [:element :alt 100] 100)
                 (gen/tuple
                   (gen/return "<thead")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 100 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 100 :cat 1 :star 0] 100)
@@ -6475,12 +6467,12 @@
                           (gen/return " ")
                           (:thead-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 100 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 100 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 100 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 100 :cat 3 :star 0 :alt 1] 100)
@@ -6489,7 +6481,7 @@
               [(get w [:element :alt 101] 100)
                 (gen/tuple
                   (gen/return "<time")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 101 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 101 :cat 1 :star 0] 100)
@@ -6498,12 +6490,12 @@
                           (gen/return " ")
                           (:time-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 101 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 101 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 101 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 101 :cat 3 :star 0 :alt 1] 100)
@@ -6512,7 +6504,7 @@
               [(get w [:element :alt 102] 100)
                 (gen/tuple
                   (gen/return "<tr")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 102 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 102 :cat 1 :star 0] 100)
@@ -6521,12 +6513,12 @@
                           (gen/return " ")
                           (:tr-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 102 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 102 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 102 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 102 :cat 3 :star 0 :alt 1] 100)
@@ -6535,7 +6527,7 @@
               [(get w [:element :alt 103] 100)
                 (gen/tuple
                   (gen/return "<track")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 103 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 103 :cat 1 :star 0] 100)
@@ -6547,7 +6539,7 @@
               [(get w [:element :alt 104] 100)
                 (gen/tuple
                   (gen/return "<u")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 104 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 104 :cat 1 :star 0] 100)
@@ -6556,12 +6548,12 @@
                           (gen/return " ")
                           (:u-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 104 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 104 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 104 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 104 :cat 3 :star 0 :alt 1] 100)
@@ -6570,7 +6562,7 @@
               [(get w [:element :alt 105] 100)
                 (gen/tuple
                   (gen/return "<ul")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 105 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 105 :cat 1 :star 0] 100)
@@ -6579,12 +6571,12 @@
                           (gen/return " ")
                           (:ul-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 105 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 105 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 105 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 105 :cat 3 :star 0 :alt 1] 100)
@@ -6593,7 +6585,7 @@
               [(get w [:element :alt 106] 100)
                 (gen/tuple
                   (gen/return "<var")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 106 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 106 :cat 1 :star 0] 100)
@@ -6602,12 +6594,12 @@
                           (gen/return " ")
                           (:var-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 106 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 106 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 106 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 106 :cat 3 :star 0 :alt 1] 100)
@@ -6616,7 +6608,7 @@
               [(get w [:element :alt 107] 100)
                 (gen/tuple
                   (gen/return "<video")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 107 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 107 :cat 1 :star 0] 100)
@@ -6625,12 +6617,12 @@
                           (gen/return " ")
                           (:video-attribute g)))]])
                   (gen/return ">")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 107 :cat 3 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 107 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq [
+                        (igen/freq :element [
                           [(get w [:element :alt 107 :cat 3 :star 0 :alt 0] 100)
                             inner]
                           [(get w [:element :alt 107 :cat 3 :star 0 :alt 1] 100)
@@ -6639,7 +6631,7 @@
               [(get w [:element :alt 108] 100)
                 (gen/tuple
                   (gen/return "<wbr")
-                  (igen/freq [
+                  (igen/freq :element [
                     [(get w [:element :alt 108 :cat 1 :star nil] 100)
                       (gen/return "")]
                     [(get w [:element :alt 108 :cat 1 :star 0] 100)
@@ -6648,11 +6640,11 @@
                           (gen/return " ")
                           (:wbr-attribute g)))]])
                   (gen/return ">"))]]))
-          (igen/freq [
+          (igen/freq :element [
             [(get w [:element :alt 0] 100)
               (gen/tuple
                 (gen/return "<a")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 0 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 0 :cat 1 :star 0] 100)
@@ -6661,7 +6653,7 @@
                         (gen/return " ")
                         (:a-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 0 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 0 :cat 3 :star 0] 100)
@@ -6671,7 +6663,7 @@
             [(get w [:element :alt 1] 100)
               (gen/tuple
                 (gen/return "<abbr")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 1 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 1 :cat 1 :star 0] 100)
@@ -6680,7 +6672,7 @@
                         (gen/return " ")
                         (:abbr-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 1 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 1 :cat 3 :star 0] 100)
@@ -6690,7 +6682,7 @@
             [(get w [:element :alt 2] 100)
               (gen/tuple
                 (gen/return "<address")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 2 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 2 :cat 1 :star 0] 100)
@@ -6699,7 +6691,7 @@
                         (gen/return " ")
                         (:address-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 2 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 2 :cat 3 :star 0] 100)
@@ -6709,7 +6701,7 @@
             [(get w [:element :alt 3] 100)
               (gen/tuple
                 (gen/return "<area")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 3 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 3 :cat 1 :star 0] 100)
@@ -6721,7 +6713,7 @@
             [(get w [:element :alt 4] 100)
               (gen/tuple
                 (gen/return "<article")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 4 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 4 :cat 1 :star 0] 100)
@@ -6730,7 +6722,7 @@
                         (gen/return " ")
                         (:article-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 4 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 4 :cat 3 :star 0] 100)
@@ -6740,7 +6732,7 @@
             [(get w [:element :alt 5] 100)
               (gen/tuple
                 (gen/return "<aside")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 5 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 5 :cat 1 :star 0] 100)
@@ -6749,7 +6741,7 @@
                         (gen/return " ")
                         (:aside-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 5 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 5 :cat 3 :star 0] 100)
@@ -6759,7 +6751,7 @@
             [(get w [:element :alt 6] 100)
               (gen/tuple
                 (gen/return "<audio")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 6 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 6 :cat 1 :star 0] 100)
@@ -6768,7 +6760,7 @@
                         (gen/return " ")
                         (:audio-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 6 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 6 :cat 3 :star 0] 100)
@@ -6778,7 +6770,7 @@
             [(get w [:element :alt 7] 100)
               (gen/tuple
                 (gen/return "<b")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 7 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 7 :cat 1 :star 0] 100)
@@ -6787,7 +6779,7 @@
                         (gen/return " ")
                         (:b-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 7 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 7 :cat 3 :star 0] 100)
@@ -6797,7 +6789,7 @@
             [(get w [:element :alt 8] 100)
               (gen/tuple
                 (gen/return "<base")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 8 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 8 :cat 1 :star 0] 100)
@@ -6809,7 +6801,7 @@
             [(get w [:element :alt 9] 100)
               (gen/tuple
                 (gen/return "<bdi")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 9 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 9 :cat 1 :star 0] 100)
@@ -6818,7 +6810,7 @@
                         (gen/return " ")
                         (:bdi-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 9 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 9 :cat 3 :star 0] 100)
@@ -6828,7 +6820,7 @@
             [(get w [:element :alt 10] 100)
               (gen/tuple
                 (gen/return "<bdo")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 10 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 10 :cat 1 :star 0] 100)
@@ -6837,7 +6829,7 @@
                         (gen/return " ")
                         (:bdo-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 10 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 10 :cat 3 :star 0] 100)
@@ -6847,7 +6839,7 @@
             [(get w [:element :alt 11] 100)
               (gen/tuple
                 (gen/return "<blockquote")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 11 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 11 :cat 1 :star 0] 100)
@@ -6856,7 +6848,7 @@
                         (gen/return " ")
                         (:blockquote-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 11 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 11 :cat 3 :star 0] 100)
@@ -6866,7 +6858,7 @@
             [(get w [:element :alt 12] 100)
               (gen/tuple
                 (gen/return "<br")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 12 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 12 :cat 1 :star 0] 100)
@@ -6878,7 +6870,7 @@
             [(get w [:element :alt 13] 100)
               (gen/tuple
                 (gen/return "<button")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 13 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 13 :cat 1 :star 0] 100)
@@ -6887,7 +6879,7 @@
                         (gen/return " ")
                         (:button-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 13 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 13 :cat 3 :star 0] 100)
@@ -6897,7 +6889,7 @@
             [(get w [:element :alt 14] 100)
               (gen/tuple
                 (gen/return "<canvas")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 14 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 14 :cat 1 :star 0] 100)
@@ -6906,7 +6898,7 @@
                         (gen/return " ")
                         (:canvas-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 14 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 14 :cat 3 :star 0] 100)
@@ -6916,7 +6908,7 @@
             [(get w [:element :alt 15] 100)
               (gen/tuple
                 (gen/return "<caption")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 15 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 15 :cat 1 :star 0] 100)
@@ -6925,7 +6917,7 @@
                         (gen/return " ")
                         (:caption-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 15 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 15 :cat 3 :star 0] 100)
@@ -6935,7 +6927,7 @@
             [(get w [:element :alt 16] 100)
               (gen/tuple
                 (gen/return "<cite")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 16 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 16 :cat 1 :star 0] 100)
@@ -6944,7 +6936,7 @@
                         (gen/return " ")
                         (:cite-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 16 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 16 :cat 3 :star 0] 100)
@@ -6954,7 +6946,7 @@
             [(get w [:element :alt 17] 100)
               (gen/tuple
                 (gen/return "<code")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 17 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 17 :cat 1 :star 0] 100)
@@ -6963,7 +6955,7 @@
                         (gen/return " ")
                         (:code-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 17 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 17 :cat 3 :star 0] 100)
@@ -6973,7 +6965,7 @@
             [(get w [:element :alt 18] 100)
               (gen/tuple
                 (gen/return "<col")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 18 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 18 :cat 1 :star 0] 100)
@@ -6985,7 +6977,7 @@
             [(get w [:element :alt 19] 100)
               (gen/tuple
                 (gen/return "<colgroup")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 19 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 19 :cat 1 :star 0] 100)
@@ -6994,7 +6986,7 @@
                         (gen/return " ")
                         (:colgroup-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 19 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 19 :cat 3 :star 0] 100)
@@ -7004,7 +6996,7 @@
             [(get w [:element :alt 20] 100)
               (gen/tuple
                 (gen/return "<data")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 20 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 20 :cat 1 :star 0] 100)
@@ -7013,7 +7005,7 @@
                         (gen/return " ")
                         (:data-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 20 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 20 :cat 3 :star 0] 100)
@@ -7023,7 +7015,7 @@
             [(get w [:element :alt 21] 100)
               (gen/tuple
                 (gen/return "<datalist")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 21 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 21 :cat 1 :star 0] 100)
@@ -7032,7 +7024,7 @@
                         (gen/return " ")
                         (:datalist-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 21 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 21 :cat 3 :star 0] 100)
@@ -7042,7 +7034,7 @@
             [(get w [:element :alt 22] 100)
               (gen/tuple
                 (gen/return "<dd")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 22 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 22 :cat 1 :star 0] 100)
@@ -7051,7 +7043,7 @@
                         (gen/return " ")
                         (:dd-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 22 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 22 :cat 3 :star 0] 100)
@@ -7061,7 +7053,7 @@
             [(get w [:element :alt 23] 100)
               (gen/tuple
                 (gen/return "<del")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 23 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 23 :cat 1 :star 0] 100)
@@ -7070,7 +7062,7 @@
                         (gen/return " ")
                         (:del-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 23 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 23 :cat 3 :star 0] 100)
@@ -7080,7 +7072,7 @@
             [(get w [:element :alt 24] 100)
               (gen/tuple
                 (gen/return "<details")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 24 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 24 :cat 1 :star 0] 100)
@@ -7089,7 +7081,7 @@
                         (gen/return " ")
                         (:details-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 24 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 24 :cat 3 :star 0] 100)
@@ -7099,7 +7091,7 @@
             [(get w [:element :alt 25] 100)
               (gen/tuple
                 (gen/return "<dfn")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 25 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 25 :cat 1 :star 0] 100)
@@ -7108,7 +7100,7 @@
                         (gen/return " ")
                         (:dfn-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 25 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 25 :cat 3 :star 0] 100)
@@ -7118,7 +7110,7 @@
             [(get w [:element :alt 26] 100)
               (gen/tuple
                 (gen/return "<div")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 26 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 26 :cat 1 :star 0] 100)
@@ -7127,7 +7119,7 @@
                         (gen/return " ")
                         (:div-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 26 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 26 :cat 3 :star 0] 100)
@@ -7137,7 +7129,7 @@
             [(get w [:element :alt 27] 100)
               (gen/tuple
                 (gen/return "<dl")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 27 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 27 :cat 1 :star 0] 100)
@@ -7146,7 +7138,7 @@
                         (gen/return " ")
                         (:dl-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 27 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 27 :cat 3 :star 0] 100)
@@ -7156,7 +7148,7 @@
             [(get w [:element :alt 28] 100)
               (gen/tuple
                 (gen/return "<dt")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 28 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 28 :cat 1 :star 0] 100)
@@ -7165,7 +7157,7 @@
                         (gen/return " ")
                         (:dt-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 28 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 28 :cat 3 :star 0] 100)
@@ -7175,7 +7167,7 @@
             [(get w [:element :alt 29] 100)
               (gen/tuple
                 (gen/return "<em")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 29 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 29 :cat 1 :star 0] 100)
@@ -7184,7 +7176,7 @@
                         (gen/return " ")
                         (:em-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 29 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 29 :cat 3 :star 0] 100)
@@ -7194,7 +7186,7 @@
             [(get w [:element :alt 30] 100)
               (gen/tuple
                 (gen/return "<embed")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 30 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 30 :cat 1 :star 0] 100)
@@ -7206,7 +7198,7 @@
             [(get w [:element :alt 31] 100)
               (gen/tuple
                 (gen/return "<fieldset")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 31 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 31 :cat 1 :star 0] 100)
@@ -7215,7 +7207,7 @@
                         (gen/return " ")
                         (:fieldset-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 31 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 31 :cat 3 :star 0] 100)
@@ -7225,7 +7217,7 @@
             [(get w [:element :alt 32] 100)
               (gen/tuple
                 (gen/return "<figcaption")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 32 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 32 :cat 1 :star 0] 100)
@@ -7234,7 +7226,7 @@
                         (gen/return " ")
                         (:figcaption-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 32 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 32 :cat 3 :star 0] 100)
@@ -7244,7 +7236,7 @@
             [(get w [:element :alt 33] 100)
               (gen/tuple
                 (gen/return "<figure")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 33 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 33 :cat 1 :star 0] 100)
@@ -7253,7 +7245,7 @@
                         (gen/return " ")
                         (:figure-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 33 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 33 :cat 3 :star 0] 100)
@@ -7263,7 +7255,7 @@
             [(get w [:element :alt 34] 100)
               (gen/tuple
                 (gen/return "<footer")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 34 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 34 :cat 1 :star 0] 100)
@@ -7272,7 +7264,7 @@
                         (gen/return " ")
                         (:footer-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 34 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 34 :cat 3 :star 0] 100)
@@ -7282,7 +7274,7 @@
             [(get w [:element :alt 35] 100)
               (gen/tuple
                 (gen/return "<form")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 35 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 35 :cat 1 :star 0] 100)
@@ -7291,7 +7283,7 @@
                         (gen/return " ")
                         (:form-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 35 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 35 :cat 3 :star 0] 100)
@@ -7301,7 +7293,7 @@
             [(get w [:element :alt 36] 100)
               (gen/tuple
                 (gen/return "<h1")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 36 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 36 :cat 1 :star 0] 100)
@@ -7310,7 +7302,7 @@
                         (gen/return " ")
                         (:h1-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 36 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 36 :cat 3 :star 0] 100)
@@ -7320,7 +7312,7 @@
             [(get w [:element :alt 37] 100)
               (gen/tuple
                 (gen/return "<h2")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 37 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 37 :cat 1 :star 0] 100)
@@ -7329,7 +7321,7 @@
                         (gen/return " ")
                         (:h2-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 37 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 37 :cat 3 :star 0] 100)
@@ -7339,7 +7331,7 @@
             [(get w [:element :alt 38] 100)
               (gen/tuple
                 (gen/return "<h3")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 38 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 38 :cat 1 :star 0] 100)
@@ -7348,7 +7340,7 @@
                         (gen/return " ")
                         (:h3-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 38 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 38 :cat 3 :star 0] 100)
@@ -7358,7 +7350,7 @@
             [(get w [:element :alt 39] 100)
               (gen/tuple
                 (gen/return "<h4")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 39 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 39 :cat 1 :star 0] 100)
@@ -7367,7 +7359,7 @@
                         (gen/return " ")
                         (:h4-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 39 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 39 :cat 3 :star 0] 100)
@@ -7377,7 +7369,7 @@
             [(get w [:element :alt 40] 100)
               (gen/tuple
                 (gen/return "<h5")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 40 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 40 :cat 1 :star 0] 100)
@@ -7386,7 +7378,7 @@
                         (gen/return " ")
                         (:h5-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 40 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 40 :cat 3 :star 0] 100)
@@ -7396,7 +7388,7 @@
             [(get w [:element :alt 41] 100)
               (gen/tuple
                 (gen/return "<h6")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 41 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 41 :cat 1 :star 0] 100)
@@ -7405,7 +7397,7 @@
                         (gen/return " ")
                         (:h6-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 41 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 41 :cat 3 :star 0] 100)
@@ -7415,7 +7407,7 @@
             [(get w [:element :alt 42] 100)
               (gen/tuple
                 (gen/return "<header")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 42 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 42 :cat 1 :star 0] 100)
@@ -7424,7 +7416,7 @@
                         (gen/return " ")
                         (:header-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 42 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 42 :cat 3 :star 0] 100)
@@ -7434,7 +7426,7 @@
             [(get w [:element :alt 43] 100)
               (gen/tuple
                 (gen/return "<hr")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 43 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 43 :cat 1 :star 0] 100)
@@ -7446,7 +7438,7 @@
             [(get w [:element :alt 44] 100)
               (gen/tuple
                 (gen/return "<i")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 44 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 44 :cat 1 :star 0] 100)
@@ -7455,7 +7447,7 @@
                         (gen/return " ")
                         (:i-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 44 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 44 :cat 3 :star 0] 100)
@@ -7465,7 +7457,7 @@
             [(get w [:element :alt 45] 100)
               (gen/tuple
                 (gen/return "<iframe")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 45 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 45 :cat 1 :star 0] 100)
@@ -7474,7 +7466,7 @@
                         (gen/return " ")
                         (:iframe-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 45 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 45 :cat 3 :star 0] 100)
@@ -7484,7 +7476,7 @@
             [(get w [:element :alt 46] 100)
               (gen/tuple
                 (gen/return "<img")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 46 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 46 :cat 1 :star 0] 100)
@@ -7496,7 +7488,7 @@
             [(get w [:element :alt 47] 100)
               (gen/tuple
                 (gen/return "<input")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 47 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 47 :cat 1 :star 0] 100)
@@ -7508,7 +7500,7 @@
             [(get w [:element :alt 48] 100)
               (gen/tuple
                 (gen/return "<ins")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 48 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 48 :cat 1 :star 0] 100)
@@ -7517,7 +7509,7 @@
                         (gen/return " ")
                         (:ins-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 48 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 48 :cat 3 :star 0] 100)
@@ -7527,7 +7519,7 @@
             [(get w [:element :alt 49] 100)
               (gen/tuple
                 (gen/return "<kbd")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 49 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 49 :cat 1 :star 0] 100)
@@ -7536,7 +7528,7 @@
                         (gen/return " ")
                         (:kbd-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 49 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 49 :cat 3 :star 0] 100)
@@ -7546,7 +7538,7 @@
             [(get w [:element :alt 50] 100)
               (gen/tuple
                 (gen/return "<keygen")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 50 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 50 :cat 1 :star 0] 100)
@@ -7558,7 +7550,7 @@
             [(get w [:element :alt 51] 100)
               (gen/tuple
                 (gen/return "<label")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 51 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 51 :cat 1 :star 0] 100)
@@ -7567,7 +7559,7 @@
                         (gen/return " ")
                         (:label-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 51 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 51 :cat 3 :star 0] 100)
@@ -7577,7 +7569,7 @@
             [(get w [:element :alt 52] 100)
               (gen/tuple
                 (gen/return "<legend")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 52 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 52 :cat 1 :star 0] 100)
@@ -7586,7 +7578,7 @@
                         (gen/return " ")
                         (:legend-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 52 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 52 :cat 3 :star 0] 100)
@@ -7596,7 +7588,7 @@
             [(get w [:element :alt 53] 100)
               (gen/tuple
                 (gen/return "<li")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 53 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 53 :cat 1 :star 0] 100)
@@ -7605,7 +7597,7 @@
                         (gen/return " ")
                         (:li-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 53 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 53 :cat 3 :star 0] 100)
@@ -7615,7 +7607,7 @@
             [(get w [:element :alt 54] 100)
               (gen/tuple
                 (gen/return "<link")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 54 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 54 :cat 1 :star 0] 100)
@@ -7627,7 +7619,7 @@
             [(get w [:element :alt 55] 100)
               (gen/tuple
                 (gen/return "<main")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 55 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 55 :cat 1 :star 0] 100)
@@ -7636,7 +7628,7 @@
                         (gen/return " ")
                         (:main-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 55 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 55 :cat 3 :star 0] 100)
@@ -7646,7 +7638,7 @@
             [(get w [:element :alt 56] 100)
               (gen/tuple
                 (gen/return "<map")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 56 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 56 :cat 1 :star 0] 100)
@@ -7655,7 +7647,7 @@
                         (gen/return " ")
                         (:map-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 56 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 56 :cat 3 :star 0] 100)
@@ -7665,7 +7657,7 @@
             [(get w [:element :alt 57] 100)
               (gen/tuple
                 (gen/return "<mark")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 57 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 57 :cat 1 :star 0] 100)
@@ -7674,7 +7666,7 @@
                         (gen/return " ")
                         (:mark-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 57 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 57 :cat 3 :star 0] 100)
@@ -7684,7 +7676,7 @@
             [(get w [:element :alt 58] 100)
               (gen/tuple
                 (gen/return "<menu")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 58 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 58 :cat 1 :star 0] 100)
@@ -7693,7 +7685,7 @@
                         (gen/return " ")
                         (:menu-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 58 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 58 :cat 3 :star 0] 100)
@@ -7703,7 +7695,7 @@
             [(get w [:element :alt 59] 100)
               (gen/tuple
                 (gen/return "<menuitem")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 59 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 59 :cat 1 :star 0] 100)
@@ -7715,7 +7707,7 @@
             [(get w [:element :alt 60] 100)
               (gen/tuple
                 (gen/return "<meta")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 60 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 60 :cat 1 :star 0] 100)
@@ -7727,7 +7719,7 @@
             [(get w [:element :alt 61] 100)
               (gen/tuple
                 (gen/return "<meter")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 61 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 61 :cat 1 :star 0] 100)
@@ -7736,7 +7728,7 @@
                         (gen/return " ")
                         (:meter-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 61 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 61 :cat 3 :star 0] 100)
@@ -7746,7 +7738,7 @@
             [(get w [:element :alt 62] 100)
               (gen/tuple
                 (gen/return "<nav")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 62 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 62 :cat 1 :star 0] 100)
@@ -7755,7 +7747,7 @@
                         (gen/return " ")
                         (:nav-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 62 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 62 :cat 3 :star 0] 100)
@@ -7765,7 +7757,7 @@
             [(get w [:element :alt 63] 100)
               (gen/tuple
                 (gen/return "<noscript")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 63 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 63 :cat 1 :star 0] 100)
@@ -7774,7 +7766,7 @@
                         (gen/return " ")
                         (:noscript-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 63 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 63 :cat 3 :star 0] 100)
@@ -7784,7 +7776,7 @@
             [(get w [:element :alt 64] 100)
               (gen/tuple
                 (gen/return "<object")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 64 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 64 :cat 1 :star 0] 100)
@@ -7793,7 +7785,7 @@
                         (gen/return " ")
                         (:object-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 64 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 64 :cat 3 :star 0] 100)
@@ -7803,7 +7795,7 @@
             [(get w [:element :alt 65] 100)
               (gen/tuple
                 (gen/return "<ol")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 65 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 65 :cat 1 :star 0] 100)
@@ -7812,7 +7804,7 @@
                         (gen/return " ")
                         (:ol-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 65 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 65 :cat 3 :star 0] 100)
@@ -7822,7 +7814,7 @@
             [(get w [:element :alt 66] 100)
               (gen/tuple
                 (gen/return "<optgroup")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 66 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 66 :cat 1 :star 0] 100)
@@ -7831,7 +7823,7 @@
                         (gen/return " ")
                         (:optgroup-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 66 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 66 :cat 3 :star 0] 100)
@@ -7841,7 +7833,7 @@
             [(get w [:element :alt 67] 100)
               (gen/tuple
                 (gen/return "<option")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 67 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 67 :cat 1 :star 0] 100)
@@ -7850,7 +7842,7 @@
                         (gen/return " ")
                         (:option-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 67 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 67 :cat 3 :star 0] 100)
@@ -7860,7 +7852,7 @@
             [(get w [:element :alt 68] 100)
               (gen/tuple
                 (gen/return "<output")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 68 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 68 :cat 1 :star 0] 100)
@@ -7869,7 +7861,7 @@
                         (gen/return " ")
                         (:output-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 68 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 68 :cat 3 :star 0] 100)
@@ -7879,7 +7871,7 @@
             [(get w [:element :alt 69] 100)
               (gen/tuple
                 (gen/return "<p")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 69 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 69 :cat 1 :star 0] 100)
@@ -7888,7 +7880,7 @@
                         (gen/return " ")
                         (:p-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 69 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 69 :cat 3 :star 0] 100)
@@ -7898,7 +7890,7 @@
             [(get w [:element :alt 70] 100)
               (gen/tuple
                 (gen/return "<param")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 70 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 70 :cat 1 :star 0] 100)
@@ -7910,7 +7902,7 @@
             [(get w [:element :alt 71] 100)
               (gen/tuple
                 (gen/return "<picture")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 71 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 71 :cat 1 :star 0] 100)
@@ -7919,7 +7911,7 @@
                         (gen/return " ")
                         (:picture-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 71 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 71 :cat 3 :star 0] 100)
@@ -7929,7 +7921,7 @@
             [(get w [:element :alt 72] 100)
               (gen/tuple
                 (gen/return "<pre")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 72 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 72 :cat 1 :star 0] 100)
@@ -7938,7 +7930,7 @@
                         (gen/return " ")
                         (:pre-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 72 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 72 :cat 3 :star 0] 100)
@@ -7948,7 +7940,7 @@
             [(get w [:element :alt 73] 100)
               (gen/tuple
                 (gen/return "<progress")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 73 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 73 :cat 1 :star 0] 100)
@@ -7957,7 +7949,7 @@
                         (gen/return " ")
                         (:progress-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 73 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 73 :cat 3 :star 0] 100)
@@ -7967,7 +7959,7 @@
             [(get w [:element :alt 74] 100)
               (gen/tuple
                 (gen/return "<q")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 74 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 74 :cat 1 :star 0] 100)
@@ -7976,7 +7968,7 @@
                         (gen/return " ")
                         (:q-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 74 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 74 :cat 3 :star 0] 100)
@@ -7986,7 +7978,7 @@
             [(get w [:element :alt 75] 100)
               (gen/tuple
                 (gen/return "<rb")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 75 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 75 :cat 1 :star 0] 100)
@@ -7995,7 +7987,7 @@
                         (gen/return " ")
                         (:rb-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 75 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 75 :cat 3 :star 0] 100)
@@ -8005,7 +7997,7 @@
             [(get w [:element :alt 76] 100)
               (gen/tuple
                 (gen/return "<rp")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 76 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 76 :cat 1 :star 0] 100)
@@ -8014,7 +8006,7 @@
                         (gen/return " ")
                         (:rp-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 76 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 76 :cat 3 :star 0] 100)
@@ -8024,7 +8016,7 @@
             [(get w [:element :alt 77] 100)
               (gen/tuple
                 (gen/return "<rt")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 77 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 77 :cat 1 :star 0] 100)
@@ -8033,7 +8025,7 @@
                         (gen/return " ")
                         (:rt-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 77 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 77 :cat 3 :star 0] 100)
@@ -8043,7 +8035,7 @@
             [(get w [:element :alt 78] 100)
               (gen/tuple
                 (gen/return "<rtc")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 78 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 78 :cat 1 :star 0] 100)
@@ -8052,7 +8044,7 @@
                         (gen/return " ")
                         (:rtc-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 78 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 78 :cat 3 :star 0] 100)
@@ -8062,7 +8054,7 @@
             [(get w [:element :alt 79] 100)
               (gen/tuple
                 (gen/return "<ruby")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 79 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 79 :cat 1 :star 0] 100)
@@ -8071,7 +8063,7 @@
                         (gen/return " ")
                         (:ruby-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 79 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 79 :cat 3 :star 0] 100)
@@ -8081,7 +8073,7 @@
             [(get w [:element :alt 80] 100)
               (gen/tuple
                 (gen/return "<s")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 80 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 80 :cat 1 :star 0] 100)
@@ -8090,7 +8082,7 @@
                         (gen/return " ")
                         (:s-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 80 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 80 :cat 3 :star 0] 100)
@@ -8100,7 +8092,7 @@
             [(get w [:element :alt 81] 100)
               (gen/tuple
                 (gen/return "<samp")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 81 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 81 :cat 1 :star 0] 100)
@@ -8109,7 +8101,7 @@
                         (gen/return " ")
                         (:samp-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 81 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 81 :cat 3 :star 0] 100)
@@ -8119,7 +8111,7 @@
             [(get w [:element :alt 82] 100)
               (gen/tuple
                 (gen/return "<script")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 82 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 82 :cat 1 :star 0] 100)
@@ -8128,7 +8120,7 @@
                         (gen/return " ")
                         (:script-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 82 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 82 :cat 3 :star 0] 100)
@@ -8138,7 +8130,7 @@
             [(get w [:element :alt 83] 100)
               (gen/tuple
                 (gen/return "<section")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 83 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 83 :cat 1 :star 0] 100)
@@ -8147,7 +8139,7 @@
                         (gen/return " ")
                         (:section-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 83 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 83 :cat 3 :star 0] 100)
@@ -8157,7 +8149,7 @@
             [(get w [:element :alt 84] 100)
               (gen/tuple
                 (gen/return "<select")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 84 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 84 :cat 1 :star 0] 100)
@@ -8166,7 +8158,7 @@
                         (gen/return " ")
                         (:select-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 84 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 84 :cat 3 :star 0] 100)
@@ -8176,7 +8168,7 @@
             [(get w [:element :alt 85] 100)
               (gen/tuple
                 (gen/return "<small")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 85 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 85 :cat 1 :star 0] 100)
@@ -8185,7 +8177,7 @@
                         (gen/return " ")
                         (:small-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 85 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 85 :cat 3 :star 0] 100)
@@ -8195,7 +8187,7 @@
             [(get w [:element :alt 86] 100)
               (gen/tuple
                 (gen/return "<source")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 86 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 86 :cat 1 :star 0] 100)
@@ -8207,7 +8199,7 @@
             [(get w [:element :alt 87] 100)
               (gen/tuple
                 (gen/return "<span")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 87 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 87 :cat 1 :star 0] 100)
@@ -8216,7 +8208,7 @@
                         (gen/return " ")
                         (:span-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 87 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 87 :cat 3 :star 0] 100)
@@ -8226,7 +8218,7 @@
             [(get w [:element :alt 88] 100)
               (gen/tuple
                 (gen/return "<strong")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 88 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 88 :cat 1 :star 0] 100)
@@ -8235,7 +8227,7 @@
                         (gen/return " ")
                         (:strong-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 88 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 88 :cat 3 :star 0] 100)
@@ -8245,7 +8237,7 @@
             [(get w [:element :alt 89] 100)
               (gen/tuple
                 (gen/return "<style")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 89 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 89 :cat 1 :star 0] 100)
@@ -8254,7 +8246,7 @@
                         (gen/return " ")
                         (:style-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 89 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 89 :cat 3 :star 0] 100)
@@ -8264,7 +8256,7 @@
             [(get w [:element :alt 90] 100)
               (gen/tuple
                 (gen/return "<sub")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 90 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 90 :cat 1 :star 0] 100)
@@ -8273,7 +8265,7 @@
                         (gen/return " ")
                         (:sub-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 90 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 90 :cat 3 :star 0] 100)
@@ -8283,7 +8275,7 @@
             [(get w [:element :alt 91] 100)
               (gen/tuple
                 (gen/return "<summary")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 91 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 91 :cat 1 :star 0] 100)
@@ -8292,7 +8284,7 @@
                         (gen/return " ")
                         (:summary-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 91 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 91 :cat 3 :star 0] 100)
@@ -8302,7 +8294,7 @@
             [(get w [:element :alt 92] 100)
               (gen/tuple
                 (gen/return "<sup")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 92 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 92 :cat 1 :star 0] 100)
@@ -8311,7 +8303,7 @@
                         (gen/return " ")
                         (:sup-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 92 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 92 :cat 3 :star 0] 100)
@@ -8321,7 +8313,7 @@
             [(get w [:element :alt 93] 100)
               (gen/tuple
                 (gen/return "<table")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 93 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 93 :cat 1 :star 0] 100)
@@ -8330,7 +8322,7 @@
                         (gen/return " ")
                         (:table-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 93 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 93 :cat 3 :star 0] 100)
@@ -8340,7 +8332,7 @@
             [(get w [:element :alt 94] 100)
               (gen/tuple
                 (gen/return "<tbody")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 94 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 94 :cat 1 :star 0] 100)
@@ -8349,7 +8341,7 @@
                         (gen/return " ")
                         (:tbody-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 94 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 94 :cat 3 :star 0] 100)
@@ -8359,7 +8351,7 @@
             [(get w [:element :alt 95] 100)
               (gen/tuple
                 (gen/return "<td")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 95 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 95 :cat 1 :star 0] 100)
@@ -8368,7 +8360,7 @@
                         (gen/return " ")
                         (:td-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 95 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 95 :cat 3 :star 0] 100)
@@ -8378,7 +8370,7 @@
             [(get w [:element :alt 96] 100)
               (gen/tuple
                 (gen/return "<template")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 96 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 96 :cat 1 :star 0] 100)
@@ -8387,7 +8379,7 @@
                         (gen/return " ")
                         (:template-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 96 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 96 :cat 3 :star 0] 100)
@@ -8397,7 +8389,7 @@
             [(get w [:element :alt 97] 100)
               (gen/tuple
                 (gen/return "<textarea")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 97 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 97 :cat 1 :star 0] 100)
@@ -8406,7 +8398,7 @@
                         (gen/return " ")
                         (:textarea-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 97 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 97 :cat 3 :star 0] 100)
@@ -8416,7 +8408,7 @@
             [(get w [:element :alt 98] 100)
               (gen/tuple
                 (gen/return "<tfoot")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 98 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 98 :cat 1 :star 0] 100)
@@ -8425,7 +8417,7 @@
                         (gen/return " ")
                         (:tfoot-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 98 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 98 :cat 3 :star 0] 100)
@@ -8435,7 +8427,7 @@
             [(get w [:element :alt 99] 100)
               (gen/tuple
                 (gen/return "<th")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 99 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 99 :cat 1 :star 0] 100)
@@ -8444,7 +8436,7 @@
                         (gen/return " ")
                         (:th-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 99 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 99 :cat 3 :star 0] 100)
@@ -8454,7 +8446,7 @@
             [(get w [:element :alt 100] 100)
               (gen/tuple
                 (gen/return "<thead")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 100 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 100 :cat 1 :star 0] 100)
@@ -8463,7 +8455,7 @@
                         (gen/return " ")
                         (:thead-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 100 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 100 :cat 3 :star 0] 100)
@@ -8473,7 +8465,7 @@
             [(get w [:element :alt 101] 100)
               (gen/tuple
                 (gen/return "<time")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 101 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 101 :cat 1 :star 0] 100)
@@ -8482,7 +8474,7 @@
                         (gen/return " ")
                         (:time-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 101 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 101 :cat 3 :star 0] 100)
@@ -8492,7 +8484,7 @@
             [(get w [:element :alt 102] 100)
               (gen/tuple
                 (gen/return "<tr")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 102 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 102 :cat 1 :star 0] 100)
@@ -8501,7 +8493,7 @@
                         (gen/return " ")
                         (:tr-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 102 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 102 :cat 3 :star 0] 100)
@@ -8511,7 +8503,7 @@
             [(get w [:element :alt 103] 100)
               (gen/tuple
                 (gen/return "<track")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 103 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 103 :cat 1 :star 0] 100)
@@ -8523,7 +8515,7 @@
             [(get w [:element :alt 104] 100)
               (gen/tuple
                 (gen/return "<u")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 104 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 104 :cat 1 :star 0] 100)
@@ -8532,7 +8524,7 @@
                         (gen/return " ")
                         (:u-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 104 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 104 :cat 3 :star 0] 100)
@@ -8542,7 +8534,7 @@
             [(get w [:element :alt 105] 100)
               (gen/tuple
                 (gen/return "<ul")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 105 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 105 :cat 1 :star 0] 100)
@@ -8551,7 +8543,7 @@
                         (gen/return " ")
                         (:ul-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 105 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 105 :cat 3 :star 0] 100)
@@ -8561,7 +8553,7 @@
             [(get w [:element :alt 106] 100)
               (gen/tuple
                 (gen/return "<var")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 106 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 106 :cat 1 :star 0] 100)
@@ -8570,7 +8562,7 @@
                         (gen/return " ")
                         (:var-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 106 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 106 :cat 3 :star 0] 100)
@@ -8580,7 +8572,7 @@
             [(get w [:element :alt 107] 100)
               (gen/tuple
                 (gen/return "<video")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 107 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 107 :cat 1 :star 0] 100)
@@ -8589,7 +8581,7 @@
                         (gen/return " ")
                         (:video-attribute g)))]])
                 (gen/return ">")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 107 :cat 3 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 107 :cat 3 :star 0] 100)
@@ -8599,7 +8591,7 @@
             [(get w [:element :alt 108] 100)
               (gen/tuple
                 (gen/return "<wbr")
-                (igen/freq [
+                (igen/freq :element [
                   [(get w [:element :alt 108 :cat 1 :star nil] 100)
                     (gen/return "")]
                   [(get w [:element :alt 108 :cat 1 :star 0] 100)
@@ -8613,7 +8605,7 @@
         gen-body
         (gen/tuple
           (gen/return "<body")
-          (igen/freq [
+          (igen/freq :body [
             [(get w [:body :cat 1 :star nil] 100)
               (gen/return "")]
             [(get w [:body :cat 1 :star 0] 100)
@@ -8622,12 +8614,12 @@
                   (gen/return " ")
                   (:body-attribute g)))]])
           (gen/return ">")
-          (igen/freq [
+          (igen/freq :body [
             [(get w [:body :cat 3 :star nil] 100)
               (gen/return "")]
             [(get w [:body :cat 3 :star 0] 100)
               (igen/vector+
-                (igen/freq [
+                (igen/freq :body [
                   [(get w [:body :cat 3 :star 0 :alt 0] 100)
                     (:element g)]
                   [(get w [:body :cat 3 :star 0 :alt 1] 100)
@@ -8645,7 +8637,7 @@
         g (assoc g :title-attribute gen-title-attribute)
 
         gen-html-attribute
-        (igen/freq [
+        (igen/freq :html-attribute [
           [(get w [:html-attribute :alt 0] 100)
             (gen/tuple
               (gen/return "xmlns=\"")
@@ -8668,7 +8660,7 @@
         gen-link
         (gen/tuple
           (gen/return "<link")
-          (igen/freq [
+          (igen/freq :link [
             [(get w [:link :cat 1 :star nil] 100)
               (gen/return "")]
             [(get w [:link :cat 1 :star 0] 100)
@@ -8682,7 +8674,7 @@
         gen-title
         (gen/tuple
           (gen/return "<title")
-          (igen/freq [
+          (igen/freq :title [
             [(get w [:title :cat 1 :star nil] 100)
               (gen/return "")]
             [(get w [:title :cat 1 :star 0] 100)
@@ -8691,7 +8683,7 @@
                   (gen/return " ")
                   (:title-attribute g)))]])
           (gen/return ">")
-          (igen/freq [
+          (igen/freq :title [
             [(get w [:title :cat 3 :star nil] 100)
               (gen/return "")]
             [(get w [:title :cat 3 :star 0] 100)
@@ -8703,7 +8695,7 @@
         gen-meta
         (gen/tuple
           (gen/return "<meta")
-          (igen/freq [
+          (igen/freq :meta [
             [(get w [:meta :cat 1 :star nil] 100)
               (gen/return "")]
             [(get w [:meta :cat 1 :star 0] 100)
@@ -8715,7 +8707,7 @@
         g (assoc g :meta gen-meta)
 
         gen-head-elements
-        (igen/freq [
+        (igen/freq :head-elements [
           [(get w [:head-elements :alt 0] 100)
             (:title g)]
           [(get w [:head-elements :alt 1] 100)
@@ -8730,7 +8722,7 @@
         (gen/tuple
           (gen/return "<head>")
           (gen/return " ")
-          (igen/freq [
+          (igen/freq :head [
             [(get w [:head :cat 2 :star nil] 100)
               (gen/return "")]
             [(get w [:head :cat 2 :star 0] 100)
@@ -8741,19 +8733,19 @@
 
         gen-html
         (gen/tuple
-          (igen/freq [
+          (igen/freq :html [
             [(get w [:html :cat 0 :opt nil] 100)
               (gen/return "")]
             [(get w [:html :cat 0 :opt 0] 100)
               (:doctype g)]])
-          (igen/freq [
+          (igen/freq :html [
             [(get w [:html :cat 1 :star nil] 100)
               (gen/return "")]
             [(get w [:html :cat 1 :star 0] 100)
               (igen/vector+
                 (:comment-or-space g))]])
           (gen/return "<html")
-          (igen/freq [
+          (igen/freq :html [
             [(get w [:html :cat 3 :star nil] 100)
               (gen/return "")]
             [(get w [:html :cat 3 :star 0] 100)
@@ -8763,7 +8755,7 @@
                   (:html-attribute g)))]])
           (gen/return ">")
           (gen/return " ")
-          (igen/freq [
+          (igen/freq :html [
             [(get w [:html :cat 6 :opt nil] 100)
               (gen/return "")]
             [(get w [:html :cat 6 :opt 0] 100)
@@ -8773,7 +8765,7 @@
         g (assoc g :html gen-html)
 
         gen-S
-        (igen/freq [
+        (igen/freq :S [
           [(get w [:S :star nil] 100)
             (gen/return "")]
           [(get w [:S :star 0] 100)
@@ -8782,7 +8774,7 @@
         g (assoc g :S gen-S)
 
         gen-quoted-string
-        (igen/freq [
+        (igen/freq :quoted-string [
           [(get w [:quoted-string :alt 0] 100)
             (gen/tuple
               (chuck/string-from-regex #"'[\"A-Za-z0-9 .,_:/%=#?+\-^]*'")
@@ -8815,7 +8807,7 @@
         gen-body-test
         (gen/tuple
           (gen/return "<body")
-          (igen/freq [
+          (igen/freq :body-test [
             [(get w [:body-test :cat 1 :star nil] 100)
               (gen/return "")]
             [(get w [:body-test :cat 1 :star 0] 100)
@@ -8825,12 +8817,12 @@
                   (:body-attribute g)))]])
           (gen/return ">")
           (gen/return "x")
-          (igen/freq [
+          (igen/freq :body-test [
             [(get w [:body-test :cat 4 :star nil] 100)
               (gen/return "")]
             [(get w [:body-test :cat 4 :star 0] 100)
               (igen/vector+
-                (igen/freq [
+                (igen/freq :body-test [
                   [(get w [:body-test :cat 4 :star 0 :alt 0] 100)
                     (:element g)]
                   [(get w [:body-test :cat 4 :star 0 :alt 1] 100)
@@ -8841,7 +8833,7 @@
         gen-title-test
         (gen/tuple
           (gen/return "<title")
-          (igen/freq [
+          (igen/freq :title-test [
             [(get w [:title-test :cat 1 :star nil] 100)
               (gen/return "")]
             [(get w [:title-test :cat 1 :star 0] 100)
@@ -8850,7 +8842,7 @@
                   (gen/return " ")
                   (:title-attribute g)))]])
           (gen/return ">")
-          (igen/freq [
+          (igen/freq :title-test [
             [(get w [:title-test :cat 3 :star nil] 100)
               (gen/return "")]
             [(get w [:title-test :cat 3 :star 0] 100)
@@ -8864,7 +8856,7 @@
           (gen/return "<head>")
           (:normalize-css g)
           (:rend-css g)
-          (igen/freq [
+          (igen/freq :head-test [
             [(get w [:head-test :cat 3 :opt nil] 100)
               (gen/return "")]
             [(get w [:head-test :cat 3 :opt 0] 100)
@@ -8874,14 +8866,14 @@
 
         gen-html-test
         (gen/tuple
-          (gen/return "<html>")
+          (gen/return "<!DOCTYPE html><html>")
           (:head-test g)
           (:body-test g)
           (gen/return "</html>"))
         g (assoc g :html-test gen-html-test)
 
         gen-charset
-        (igen/freq [
+        (igen/freq :charset [
           [(get w [:charset :alt 0] 100)
             (gen/return "UTF-8")]
           [(get w [:charset :alt 1] 100)

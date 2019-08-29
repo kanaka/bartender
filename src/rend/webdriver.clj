@@ -15,8 +15,8 @@
   (let [url (io/as-url url)
         desired-caps (walk/stringify-keys capabilities)
         caps (DesiredCapabilities. desired-caps)
-        session (RemoteWebDriver. url caps)]
-    session))
+        driver (RemoteWebDriver. url caps)]
+    driver))
 
 ;; With an array of two numbers returned, Servo complains about:
 ;;   {:type org.openqa.selenium.UnsupportedCommandException
@@ -28,29 +28,37 @@
 (def viewport-margin-height-script
   "return window.outerHeight - document.body.clientHeight;")
 
-(defn set-viewport-size [session w h]
-  (let [mw (.executeScript session viewport-margin-width-script
+
+(defn set-viewport-size [driver w h]
+  (-> driver
+      (.manage)
+      (.window)
+      (.setSize (Dimension. w h))))
+
+(defn get-browser-goal-size [driver w h]
+  ;; Figure out the window border size
+  (set-viewport-size driver w h)
+  (let [mw (.executeScript driver viewport-margin-width-script
                            (into-array Object []))
-        mh (.executeScript session viewport-margin-height-script
+        mh (.executeScript driver viewport-margin-height-script
                            (into-array Object []))]
-    ;;(prn :mw mw :mh mh)
-    (-> session
-        (.manage)
-        (.window)
-        (.setSize (Dimension. (+ w mw) (+ h mh))))))
+    {:goal-width  (+ w mw)
+     :goal-height (if (< mh 0) h (+ h mh))}))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defn init-session [url capabilities]
-  (let [session (init-webdriver url capabilities)]
-    ;;(set-viewport-size session DEFAULT-WIDTH DEFAULT-HEIGHT)
-    session))
+  (let [driver (init-webdriver url capabilities)
+        goal-size (get-browser-goal-size driver DEFAULT-WIDTH DEFAULT-HEIGHT)]
+    (merge
+      goal-size
+      {:driver driver})))
 
-(defn stop-session [session]
-  (.quit session))
+(defn stop-session [{:keys [driver] :as session}]
+  (.quit driver))
 
-(defn load-page [session url]
-  (.get session url))
+(defn load-page [{:keys [driver] :as session} url]
+  (.get driver url))
 
 (defn error-image [path msg]
   (let [eimg (image/error-image DEFAULT-WIDTH DEFAULT-HEIGHT msg)]
@@ -58,17 +66,18 @@
     eimg))
 
 (defn screenshot-page [session path]
-  (try
-    (set-viewport-size session DEFAULT-WIDTH DEFAULT-HEIGHT)
-    (let [sfile (.getScreenshotAs session OutputType/FILE)
-          _ (io/copy sfile (io/file path))
-          img (image/imread path)]
-      (if (= (.width img) 0)
-        (do
-          (println "Screenshot of" session "returned empty image")
-          (error-image path "screenshot error"))
-        img))
-    (catch Exception e
-      (println "Exception:" e)
-      (error-image path "render failure"))))
+  (let [{:keys [driver goal-width goal-height]} session]
+    (try
+      (set-viewport-size driver goal-width goal-height)
+      (let [sfile (.getScreenshotAs driver OutputType/FILE)
+            _ (io/copy sfile (io/file path))
+            img (image/imread path)]
+        (if (= (.width img) 0)
+          (do
+            (println "Screenshot of" driver "returned empty image")
+            (error-image path "screenshot error"))
+          img))
+      (catch Exception e
+        (println "Exception:" e)
+        (error-image path "render failure")))))
 

@@ -6,6 +6,7 @@
             [clojure.pprint :refer [pprint]]
             [clojure.string :as string]
             [clojure.set :as set]
+            [clojure.math.combinatorics :refer [combinations]]
 
             [flatland.ordered.set :refer [ordered-set]]
             [com.rpl.specter :refer [setval transform ALL LAST MAP-VALS]]
@@ -20,9 +21,12 @@
             [rend.image :as image]
             [rend.server]
             [rend.webdriver :as webdriver]
-            ;;[wend.core :as wend]
             [wend.html-mangle :as html-mangle]
-            [mend.parse]))
+            [mend.parse]
+
+            ;; REPL/Debug
+            [clj-yaml.core :as yaml]
+            ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Test state management
@@ -133,33 +137,34 @@
 (defn update-state!
   "Update the test state by merging (shallow) new-state with the
   following special cases:
-    - override :weights with :cfg :weights :fixed weights
+    - decrement :run so that it become the next run
+    - decrement :iteration so that it become the next iteration
     - decrement :current-seed so that it become the next seed"
   [state & [new-state]]
   (printable-state
-    (swap! state #(let [wfixed (-> % :cfg :weights :fixed)
-                        cur-weights (:weights %)
-                        new-weights (:weights new-state)
-                        next-seed (:current-seed new-state)
-                        new-sessions (:sessions new-state)]
+    (swap! state #(let [next-run (:run new-state)
+                        next-iter (:iteration new-state)
+                        next-seed (:current-seed new-state)]
                     (merge
                       %
                       new-state
-                      ;; Fixed weights always override
-                      {:weights (merge cur-weights new-weights wfixed)}
-                      ;; If a seed value is specified we
-                      ;; decrement so that the next seed is the
+                      ;; If these are specified we
+                      ;; decrement them so that the next value is the
                       ;; one specified
+                      (when next-run
+                        {:run (dec next-run)})
+                      (when next-iter
+                        {:iteration (dec next-iter)})
                       (when next-seed
                         {:current-seed (dec next-seed)}))))))
 
 (defn reset-state!
-  "Reset the test state by setting :run and :iteration to -1, emptying
+  "Reset the test state by setting :run and :iteration to 0, emptying
   :sessions and :log, and then call update-state! with the
   new-state"
   [state & [new-state]]
-  (update-state! state (merge {:run       -1
-                               :iteration -1
+  (update-state! state (merge {:run       0
+                               :iteration 0
                                :sessions  {}
                                :log       {}}
                               new-state)))
@@ -256,12 +261,19 @@
                          {}
                          (for [[obrowser oimg] (dissoc imgs browser)]
                            [obrowser (image/diff img oimg comp-alg)]))]))
+            absdiffs (into
+                       {}
+                       (for [[browser img] imgs]
+                         [browser
+                          (into
+                            {}
+                            (for [[obrowser oimg] (dissoc imgs browser)]
+                              [obrowser (image/absdiff img oimg)]))]))
             ;; at least one difference is greater than threshold
             violation (seq (filter comp-fn (mapcat vals (vals diffs))))
             ;; every difference is greater than threshold
             violations (into {} (filter #(every? comp-fn (vals (val %)))
                                         diffs))]
-
         ; (println "Saving thumbnail for each screenshot")
         (doseq [[browser img] imgs]
           (let [thumb (image/thumbnail img)]
@@ -280,30 +292,37 @@
           (image/imwrite (str path-prefix "_avg.png") avg)
           (image/imwrite (str path-prefix "_avg_thumb.png") thumb))
 
-        ; (println "Saving difference pictures")
-        (doseq [[browser img] imgs]
-          (doseq [[obrowser oimg] (dissoc imgs browser)]
-            (let [pre1 (str path-prefix "_diff_" browser "_" obrowser)
-                  pre2 (str path-prefix "_diff_" obrowser "_" browser)]
-              (if (and (.exists (io/as-file
-                                  (str pre2 ".png")))
-                       (not (.exists (io/as-file
-                                       (str pre1 ".png")))))
-                (do
-                  (sh "ln" "-sf"
-                      (str (.getName (io/file pre2)) ".png")
-                      (str pre1 ".png"))
-                  (sh "ln" "-sf"
-                      (str (.getName (io/file pre2)) "_thumb.png")
-                      (str pre1 "_thumb.png")))
-                (let [diff (image/absdiff img oimg)
-                      thumb (image/thumbnail diff)]
-                  (image/imwrite (str pre1 ".png") diff)
-                  (image/imwrite (str pre1 "_thumb.png") thumb))))))
-
         ;; Do the actual check
         (when (not (empty? violations))
           (println "Threshold violations:" (map first violations)))
+
+        ; (println "Saving average difference picture")
+        (let [dimgs (for [[ba bb] (combinations (keys absdiffs) 2)]
+                      (get-in absdiffs [ba bb]))
+              davg (image/average dimgs)
+              dthumb (image/thumbnail davg)]
+          (image/imwrite (str path-prefix "_davg.png") davg)
+          (image/imwrite (str path-prefix "_davg_thumb.png") dthumb))
+
+        ; (println "Saving difference pictures")
+        (doseq [[browser data] absdiffs
+                [obrowser absdiff] data]
+          (let [pre1 (str path-prefix "_diff_" browser "_" obrowser)
+                pre2 (str path-prefix "_diff_" obrowser "_" browser)]
+            (if (and (.exists (io/as-file
+                                (str pre2 ".png")))
+                     (not (.exists (io/as-file
+                                     (str pre1 ".png")))))
+              (do
+                (sh "ln" "-sf"
+                    (str (.getName (io/file pre2)) ".png")
+                    (str pre1 ".png"))
+                (sh "ln" "-sf"
+                    (str (.getName (io/file pre2)) "_thumb.png")
+                    (str pre1 "_thumb.png")))
+              (let [thumb (image/thumbnail absdiff)]
+                (image/imwrite (str pre1 ".png") absdiff)
+                (image/imwrite (str pre1 "_thumb.png") thumb)))))
 
         [(not violation) diffs violations])
       (catch java.lang.ThreadDeath e
@@ -315,56 +334,58 @@
 
 ;; Weight functions
 
-(defn reduce-path-pick? [fixed-weights path]
-  (if (or (contains? fixed-weights path)
-          (#{:S :html :head :body
+(defn reduce-path-pick? [path]
+  (if (or (#{:S :html :head :body
              :css-assignments :css-declaration} (first path))
+          (#{[:global-attribute :alt 11] ;; style attr
+             [:element :alt 26]          ;; div element
+             [:element :alt 87]} path)   ;; span element
           (and (= :element (first path))
                (>= (count path) 5)
                (= [:cat 3] (subvec path 2 4))))
     false
     true))
 
-(defn wrap-reduce-wtrek
-  "Parse the path weights based on the test case. A path is randomly
-  chosen and reduce by half in the overall wtrek. The :weight-dist
-  algorithm picks a path using a weighted random selection with the
-  weighted probability based on the wtrek weight for the path
-  multiplied by the distance into the grammar of the path from the
-  root/start node. reduce-wtrek is called to propagate the reduction
-  if needed.  Returns a wtrek subset of the weights that changed."
-  [parser wtrek text mode pick-pred]
-  (let [grammar (icore/parser->grammar parser)
-        parsed-weights (:wtrek (icore/parse-wtrek parser text mode))
-        final-wtrek (ireduce/reduce-wtrek-with-weights
-                      grammar wtrek parsed-weights
-                      {:pick-mode :weight
-                       ;;:reduce-mode :max-child
-                       :reduce-mode :reducer
-                       :reducer-fn ireduce/reducer-half
-                       :pick-pred pick-pred})]
-    {:parsed-weights parsed-weights
-     :final-wtrek final-wtrek}))
+(def reducible-regex
+  #"^:prop-[\S_-]+$|^:nonprop-[\S_-]+$|^:attr-val-[\S_-]+$|^[\S_-]*-attribute$")
+(defn reduce-path-TAPV-pick? [path]
+  (let [f (first path)
+        fs (str f)]
+    (and (not (#{[:global-attribute :alt 11]          ;; style attr
+                 [:element :alt 26]                   ;; div element
+                 [:element :alt 87]} (take 3 path)))  ;; span element
+         (or (#{:element :css-known-standard} f)
+             (or (re-seq reducible-regex fs))))))
 
 (defn parse-and-reduce
-  "Does wrap-reduce-wtrek for both HTML and CSS part of the HTML test
-  case.  Returns a wtrek subset of the weights that changed."
-  [html-parser css-parser full-wtrek html pick-pred]
-  (let [html-only (html-mangle/extract-html html)
+  "Parse the path weights for both HTML and CSS part of the HTML test
+  case. A path is randomly chosen and reduce by half in the overall
+  wtrek. The :weight-dist algorithm picks a path using a weighted
+  random selection with the weighted probability based on the wtrek
+  weight for the path multiplied by the distance into the grammar of
+  the path from the root/start node. reduce-wtrek is called to
+  propagate the reduction if needed.  Returns a wtrek subset of the
+  weights that changed."
+  [html-parser css-parser full-wtrek html opts]
+  (let [html-grammar (icore/parser->grammar html-parser)
+        css-grammar (icore/parser->grammar css-parser)
+        html-only (html-mangle/extract-html html)
         _ (prn :html-only html-only)
         css-only (html-mangle/extract-inline-css html)
         _ (prn :css-only css-only)
-        red1 (wrap-reduce-wtrek html-parser full-wtrek
-                                html-only :html pick-pred)
-        red2 (wrap-reduce-wtrek css-parser (:final-wtrek red1)
-                                css-only :css pick-pred)
+        html-parsed-weights (:wtrek (icore/parse-wtrek html-parser html-only))
+        css-parsed-weights (:wtrek (icore/parse-wtrek css-parser css-only))
+        wtrek1 (ireduce/reduce-wtrek-with-weights
+                 html-grammar full-wtrek html-parsed-weights opts)
+        wtrek2 (ireduce/reduce-wtrek-with-weights
+                 css-grammar wtrek1 css-parsed-weights opts)
         weight-adjusts (into {} (set/difference
-                                  (set (:final-wtrek red2))
+                                  (set wtrek2)
                                   (set full-wtrek)))]
     {:html-only html-only
      :css-only css-only
-     :html-parsed-weights (:parsed-weights red1)
-     :css-parsed-weights (:parsed-weights red2)
+     :html-parsed-weights html-parsed-weights
+     :css-parsed-weights css-parsed-weights
      :weight-adjusts weight-adjusts}))
 
 (comment
@@ -412,24 +433,28 @@
     (filter #(> (val %) 0) weights)))
 
 
-;; TODO: do we really want base weights? It should be implicit in the
-;; *_generators.clj code.
 (defn load-weights
-  "Load the base (multiple), start, and fixed weights paths. Returns
-  map containing :base, :start, and :fixed."
-  [base-paths fixed-path start-path]
-  {:base  (apply merge
-                 (map #(edn/read-string (slurp %)) base-paths))
-   :start (when start-path (edn/read-string (slurp start-path)))
-   :fixed (when fixed-path (edn/read-string (slurp fixed-path)))})
-
+  "Load the base (multiple) and start weights paths. Returns map
+  containing :base and :start. If start-path is specified, then all
+  :base weights will be set to zero."
+  [base-paths start-path]
+  (let [start (when start-path (edn/read-string (slurp start-path)))
+        base-orig (apply merge
+                         (map #(edn/read-string (slurp %)) base-paths))
+        base  (if start
+                (into {} (zipmap (keys base-orig) (repeat 0)))
+                base-orig)]
+    {:base  base
+     :start start}))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Lower level testing functions (with state changes)
 
+;; SIDE-EFFECTS: updates :run log
 (defn qc-report
   [state test-slug report]
-  (let [{:keys [cfg log weights html-parser css-parser iteration]} @state
+  (let [{:keys [cfg log weights
+                html-parser css-parser iteration current-seed]} @state
         get-smallest #(or (get-in % [:shrunk :smallest 0])
                           (get-in % [:shrinking :smallest 0]))
         html-grammar (icore/parser->grammar html-parser)
@@ -442,13 +467,22 @@
         ;; smallest test case and add weight adjustment info
         r (if (not= prev-html cur-html)
             (let [weights-full (merge (-> cfg :weights :base) weights)
-                  weights-fixed (-> cfg :weights :fixed)
                   red (parse-and-reduce html-parser
                                         css-parser
                                         weights-full
                                         cur-html
-                                        (partial reduce-path-pick?
-                                                 weights-fixed))
+                                        {:pick-mode :weight
+                                         ;;:reduce-mode :max-child
+                                         ;;:reduce-mode :reducer
+                                         ;;:reducer-fn ireduce/reducer-half
+                                         ;;:pick-pred reduce-path-pick?
+
+                                         :reduce-mode :zero
+                                         :reducer-fn (partial ireduce/reducer-div 10)
+                                         :pick-pred reduce-path-TAPV-pick?
+
+                                         :rnd-obj (java.util.Random.
+                                                   current-seed)})
                   parsed-weights (merge-with +
                                              (:html-parsed-weights red)
                                              (:css-parsed-weights red))
@@ -479,23 +513,24 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Test execution API
 
-;; SIDE-EFFECTS: updates state atom :test-slugs, :iteration value, and
-;; :iter log.
+;; SIDE-EFFECTS: updates state atom :test-slugs, :iteration value,
+;; :iter log, and :run log (via qc-report).
 (defn check-page
   "Render and check a test case page. Then output a report file and
   send an update to any browsers currently viewing the page."
-  [state extra-cfg test-slug html]
-  (let [{:keys [cfg sessions]} @state
-        cfg (merge (:cfg @state) extra-cfg)
+  [test-state test-slug html]
+  (let [{:keys [cfg sessions]} @test-state
         test-dir (str (-> cfg :web :dir) "/" test-slug)]
 
     ;; Create and communicate the test directories to the web server
     (io/make-parents (str test-dir "/foo"))
     ;; TODO: combine into a single update
-    (update-state! state {:test-slug test-slug})
-    (swap! state update-in [:test-slugs] conj test-slug)
+    (when (not (get-in @test-state [:test-slugs test-slug]))
+      (update-state! test-state {:iteration 0}))
+    (update-state! test-state {:test-slug test-slug})
+    (swap! test-state update-in [:test-slugs] conj test-slug)
 
-    (let [test-iteration (new-test-iteration! state)
+    (let [test-iteration (new-test-iteration! test-state)
           host-port (str (get-in cfg [:web :host] "localhost")
                          ":" (get-in cfg [:web :port]))
           test-url (str "http://" host-port "/gen/" test-slug)
@@ -512,46 +547,49 @@
                      :result res
                      :diffs diffs
                      :violations violations}
-          state-val (log! state :iter log-entry)]
+          state-val (log! test-state :iter log-entry)]
 
       res)))
 
 
 ;; SIDE-EFFECTS: updates state atom run value, seed value, iteration
-;; value, run log, and weights
+;; value, run log, and weights.
 (defn run-iterations
   "Run the quick check process against the test-state and update the
   test-state progressively as the checking happens. If the test mode
   is set to \"reduce-weights\" then the resulting shrunk test case
   will be used to adjust/reduce the weights in the test state for
   subsequent runs."
-  [test-state extra-cfg]
+  [test-state & {:keys [iterations]}]
   (let [{:keys [cfg test-id weights]} @test-state
-        cfg (util/deep-merge (-> @test-state :cfg) extra-cfg) ;; add extra-cfg
         run (new-test-run! test-state)
         current-seed (new-test-seed! test-state)
         test-slug (str test-id "-" run "-" current-seed)
-        test-dir (str (-> cfg :web :dir) "/" test-slug)]
-    (update-state! test-state {:iteration -1})
+        test-dir (str (-> cfg :web :dir) "/" test-slug)
+        weights-full (merge (-> cfg :weights :base) weights)
+
+        ;; Config and state specific versions of the
+        ;; functions/generators used for the actual check process
+        html-gen (rend.generator/get-html-generator weights-full)
+        check-fn (partial check-page test-state test-slug)
+        report-fn (partial qc-report test-state test-slug)
+        qc-cfg (merge (:quick-check cfg)
+                      {:seed current-seed
+                       :report-fn report-fn}
+                      (when iterations
+                        {:iterations iterations}))]
+    (prn :qc-cfg qc-cfg)
+
+    (update-state! test-state {:iteration 0})
 
     (println "Test State:")
     (pprint (assoc (printable-state @test-state) :cfg :ELIDED))
 
     (icore/save-weights (str test-dir "/weights-start.edn") weights)
 
-    (let [;; Config and state specific versions of the
-          ;; functions/generators used for the actual check process
-          gen-html-fn (rend.generator/get-html-generator weights)
-          check-fn (partial check-page test-state extra-cfg test-slug)
-          report-fn (partial qc-report test-state test-slug)
-
-          start-time (ctime/now)
+    (let [start-time (ctime/now)
           ;; ****** QuickCheck ******
-          qc-res (icore/instacheck check-fn
-                                   gen-html-fn
-                                   (merge (:quick-check cfg)
-                                          {:seed current-seed
-                                           :report-fn report-fn}))
+          qc-res (icore/instacheck check-fn html-gen qc-cfg)
           end-time (ctime/now)
           qc-res (merge qc-res
                         {:current-seed current-seed
@@ -589,18 +627,17 @@
 
 ;; ---
 
-;; SIDE-EFFECTS: updates state atom run value
+;; SIDE-EFFECTS: updates state atom via run-iterations
 (defn run-tests
   "Calls run-iterations the number of times specified in the
   configuration (-> cfg :test :runs)."
-  [test-state extra-cfg]
-  (let [cfg (util/deep-merge (-> @test-state :cfg) extra-cfg)] ;; add extra-cfg
-    ;;(update-state! test-state {:run -1})
+  [test-state & {:keys [runs iterations]}]
+  (let [{:keys [cfg]} @test-state]
     ;; Do the test runs and report
-    (doseq [run-idx (range (-> cfg :test :runs))]
+    (doseq [run-idx (range (or runs (-> cfg :test :runs)))]
       (println "-------------------------------------------------------------")
       (println (str "------ Run index " (inc run-idx) " --------------------"))
-      (run-iterations test-state extra-cfg))))
+      (run-iterations test-state :iterations iterations))))
 
 ;; ---
 
@@ -626,6 +663,15 @@
           (catch Throwable e
             (println "Failed to stop browser session:" e)))))))
 
+(defn browser-connect
+  [state browser]
+  (let [{:keys [cfg]} @state
+        {:keys [url capabilities]} (-> cfg :browsers browser)]
+    (println "Initializing browser session for:" browser)
+    (swap! state update-in [:sessions] assoc browser
+           (webdriver/init-session url (or capabilities {})))
+    true))
+
 (defn init-tester
   "Takes a configuration map (usually loaded from a config.yaml file)
   and returns an initialized the test state atom:
@@ -639,7 +685,7 @@
   (let [user-cfg (util/deep-merge user-cfg extra-cfg) ;; add extra-cfg
         ;; Replace weight paths with loaded weight maps
         weights-map (let [w (-> user-cfg :weights)]
-                      (load-weights (:base w) (:fixed w) (:start w)))
+                      (load-weights (:base w) (:start w)))
         cfg (assoc user-cfg :weights weights-map)
         ;; ws-clients needs to be here early in case client connect
         ;; while parsers are being loaded
@@ -689,74 +735,47 @@
     ;; Create webdriver/selenium sessions to the testing browsers
     ;; TODO: check that all browser IDs are unique
     (try
-      (doseq [[browser {:keys [url capabilities]}] (:browsers cfg)]
-        (println "Initializing browser session for:" browser)
-        (swap! test-state update-in [:sessions] assoc browser
-               (webdriver/init-session url (or capabilities {}))))
-      test-state
+      (doseq [browser (keys (:browsers cfg))]
+        (browser-connect test-state browser))
       (catch Exception e
         (cleanup-fn)
-        (throw e)))))
+        (throw e)))
+    test-state))
 
 (comment
 
 (require '[clojure.test.check.generators :as gen])
 (def weights-map (load-weights ["resources/html5-weights.edn"
-                                "resources/css3-weights.edn"]
-                               "resources/fixed-weights.edn" nil))
+                                "resources/css3-weights.edn"
+                                "resources/default-weights.edn"]
+                               "tmp/7311-weights.edn"))
+(def weights-full (merge (:base weights-map)
+                         (:start weights-map)))
 
-(def gen-html-fn (rend.generator/get-html-generator
-                   (merge (:start weights-map) (:fixed weights-map))))
+(def html-gen (rend.generator/get-html-generator weights-full))
 
-(doseq [s (gen/sample gen-html-fn)] (println s))
+(doseq [s (gen/sample html-gen)] (println s))
 
-(first (drop 19 (gen/sample-seq gen-html-fn 20)))
+(first (drop 19 (gen/sample-seq html-gen 20)))
 
 )
 
 (comment
 
-(require '[clj-yaml.core :as yaml])
 (def file-cfg (yaml/parse-string (slurp "config-dev.yaml")))
 
 (time (def test-state (init-tester file-cfg {:verbose 1})))
 
-(time (def res (run-tests test-state {:test {:runs 2} :quick-check {:iterations 10}})))
+(time (def res (run-tests test-state :runs 2 :iterations 10)))
   ;; OR
-(def res (run-iterations test-state {:quick-check {:iterations 3}}))
+(time (def res (run-iterations test-state :iterations 3)))
   ;; OR
-(check-page test-state {} "test1" "<html><link rel=\"stylesheet\" href=\"/static/normalize.css\"><link rel=\"stylesheet\" href=\"/static/rend.css\"><body>hello</body></html>")
+(check-page test-state "test1" "<html><link rel=\"stylesheet\" href=\"/static/normalize.css\"><link rel=\"stylesheet\" href=\"/static/rend.css\"><body>hello</body></html>")
   ;; OR
-(check-page test-state {} "test1" "<html><link rel=\"stylesheet\" href=\"/static/normalize.css\"><link rel=\"stylesheet\" href=\"/static/rend.css\"><body>hello<button></button></body></html>")
+(check-page test-state "test1" "<html><link rel=\"stylesheet\" href=\"/static/normalize.css\"><link rel=\"stylesheet\" href=\"/static/rend.css\"><body>hello<button></button></body></html>")
 
 ;; Do not use :reload-all or it will break ring/rend.server
 (require 'wend.core 'rend.core :reload)
-
-)
-
-(comment
-
-;; TODO: make this callable in wend
-(require '[instacheck.reduce :as r] '[instacheck.grammar :as g])
-(def hp (mend.parse/load-parser-from-grammar :html))
-(def hg (g/parser->grammar hp))
-(def cp (mend.parse/load-parser-from-grammar :css))
-(def cg (g/parser->grammar cp))
-(def w (read-string (slurp "tmp/smedberg.edn")))
-
-(spit "/tmp/hg.grammar" (g/grammar->ebnf (sort-by (comp str key) hg)))
-(def hg2 (r/prune-grammar hg {:wtrek w}))
-(spit "/tmp/hg2.grammar" (g/grammar->ebnf (sort-by (comp str key) hg2)))
-
-(spit "/tmp/cg.grammar" (g/grammar->ebnf (sort-by (comp str key) cg)))
-(def cg2 (r/prune-grammar cg {:wtrek w}))
-(spit "/tmp/cg2.grammar" (g/grammar->ebnf (sort-by (comp str key) cg2)))
-
-;;(def weights-map (load-weights ["resources/html5-weights.edn" "resources/css3-weights.edn"] "resources/fixed-weights.edn" "tmp/smedberg.edn"))
-;;(def w (merge (:start weights-map) (:fixed weights-map)))
-;;(time (def ctx (r/reduce-weights hg (merge (g/wtrek hg 0) w))))
-;;(def hg3 (r/prune-grammar hg {:wtrek (:wtrek ctx) :removed (:removed ctx)}))
-;;(spit "/tmp/hg3.grammar" (g/grammar->ebnf (sort-by (comp str key) hg3)))
 
 )
 
@@ -771,14 +790,9 @@
     {}
     (for [[slug data] (:log state)
           item (get-in data [:TAP-summary kind])]
-      [item {:slug slug 
+      [item {:slug slug
              :smallest-iter (:smallest-iter data)
              :smallest (-> data :shrunk :smallest)}])))
-
-(defn get-new-weights [state]
-  (let [w (:weights state)
-        wf (-> state :cfg :weights :fixed)]
-    (select-keys w (set/difference (set (keys w)) (set (keys wf))))))
 
 )
 
