@@ -163,33 +163,6 @@ This needs to be greatly expand but here is a very rough outline:
   this is designed to enable shrinking of existing test cases.
 
 
-## Update HTML5 and CSS3 Generators (mend)
-
-Generate Clojure generator source based on the HTML5 EBNF grammar from
-[kanaka/html5-css3-ebnf](https://github.com/kanaka/html5-css3-ebnf):
-
-```
-lein deps
-time lein with-profile mend run --mode html --namespace rend.html5-generators --function html5-generators --weights-output resources/html5-weights.edn --clj-output resources/rend/html5_generators.clj --grammar-output resources/html5.grammar
-```
-
-Generate Clojure generator source based on the CSS3 EBNF grammar
-(warning this requires about 2GB of free memory):
-
-```
-lein deps
-time lein with-profile mend run --mode css --namespace rend.css3-generators --function css3-generators --weights-output resources/css3-weights.edn --clj-output resources/rend/css3_generators.clj --grammar-output resources/css3.grammar
-```
-
-Use the generators from a Clojure REPL:
-
-```
-lein repl
-(require '[rend.generator])
-(in-ns 'rend.generator)
-(clojure.pprint/pprint (gen/sample (get-html-generator) 5))
-```
-
 ## Browser Configuration
 
 Here is example yaml configuration file that connects to Firefox
@@ -258,6 +231,36 @@ browsers:
                      "resolution": "1024x768"}
 ```
 
+
+## Update HTML5 and CSS3 Generators (mend)
+
+Generate Clojure generator source based on the HTML5 and CSS3 EBNF
+grammars from [kanaka/html5-css3-ebnf](https://github.com/kanaka/html5-css3-ebnf).
+You should only need to do the following if manual changes have been
+made to the EBNF grammars or the grammar fixups/mangles in
+`src/mend/grammar.clj`.
+
+```
+lein deps
+time lein with-profile mend run --mode html --namespace rend.html5-generators --function html5-generators --weights-output resources/html5-weights.edn --clj-output resources/rend/html5_generators.clj --grammar-output resources/html5.grammar
+```
+
+Generate Clojure generator source based on the CSS3 EBNF grammar
+(warning this requires about 2GB of free memory):
+
+```
+lein deps
+time lein with-profile mend run --mode css --namespace rend.css3-generators --function css3-generators --weights-output resources/css3-weights.edn --clj-output resources/rend/css3_generators.clj --grammar-output resources/css3.grammar
+```
+
+Use the generators from a Clojure REPL:
+
+```
+lein repl
+(require '[rend.generator])
+(in-ns 'rend.generator)
+(clojure.pprint/pprint (gen/sample (get-html-generator) 5))
+```
 
 ## Images
 
