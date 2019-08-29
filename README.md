@@ -24,7 +24,7 @@ make deps
 * Compile ClojureScript Report page application:
 
 ```
-lein cljsbuild once app
+lein cljsbuild once send
 ```
 
 * Download/build the drivers/browsers that you want to test:
@@ -119,17 +119,16 @@ to view a report/log of the tests as they run.
 
 This needs to be greatly expand but here is a very rough outline:
 
-- [kanaka/html5-css3-ebnf](https://github.com/kanaka/html5-css3-ebnf)
-  provides EBNF grammars for both HTML5 and CSS3.
 - **mend**: The `mend` module (described below) only needs to be
   executed directly when the HTML5 or CSS3 grammars are updated. It
   performs the following:
-  - The HTML5 and CSS3 EBNF grammars are translated to
-    Clojure [test.check](https://github.com/clojure/test.check)
-    generator code using
-    [Instacheck](https://github.com/kanaka/instacheck).
-  - [instaparse](https://github.com/Engelberg/instaparse) grammars
-    for parsing are also cached to `resources/html5.grammar` and
+  - The HTML5 and CSS3 EBNF grammars from
+    [kanaka/html5-css3-ebnf](https://github.com/kanaka/html5-css3-ebnf)
+    are translated to Clojure
+    [test.check](https://github.com/clojure/test.check) generator code
+    using [Instacheck](https://github.com/kanaka/instacheck).
+  - [instaparse](https://github.com/Engelberg/instaparse) grammars for
+    parsing are also cached to `resources/html5.grammar` and
     `resources/css3.grammar`.
 - **rend**: The `rend` module does the following:
   - Load yaml config file specified on the command line
