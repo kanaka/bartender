@@ -1,0 +1,5 @@
+{
+ ;; Increase div and span element frequency
+ [:element :alt 26] 1000, ;; div
+ [:element :alt 87] 500, ;; span
+}

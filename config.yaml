@@ -8,7 +8,8 @@ quick-check:
 weights:
     base: ["resources/html5-weights.edn",
            "resources/css3-weights.edn",
-           "resources/default-weights.edn"]
+           "resources/default-weights.edn"
+           "resources/default-weights-div-span.edn"]
 compare:
     #method: "SQDIFF"
     method: "SQDIFF_NORMED"
