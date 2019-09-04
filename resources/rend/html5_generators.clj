@@ -423,9 +423,9 @@
         gen-url-test
         (igen/freq :url-test [
           [(get w [:url-test :alt 0] 100)
-            (chuck/string-from-regex #"(?:https:|http:)?//[A-Za-z0-9._\-/&#=,?]+")]
+            (chuck/string-from-regex #"(?:https:|http:)?//[A-Za-z0-9._\-/&#=?,]*[A-Za-z0-9._\-/&#=?]")]
           [(get w [:url-test :alt 1] 100)
-            (chuck/string-from-regex #"[A-Za-z0-9._\-/#=]+")]
+            (chuck/string-from-regex #"[A-Za-z0-9._\-/&#=?,]*[A-Za-z0-9._\-/&#=?]")]
           [(get w [:url-test :alt 2] 100)
             (gen/tuple
               (gen/return "data:")

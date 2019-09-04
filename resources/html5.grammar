@@ -381,7 +381,7 @@
     {:tag :cat,
      :parsers
      ({:tag :string, :string ","}
-      {:tag :nt, :keyword :S}
+      {:tag :nt, :keyword :rS}
       {:tag :nt, :keyword :url}
       {:tag :opt,
        :parser
@@ -3572,7 +3572,9 @@
  :attr-val-data__value
  {:tag :alt,
   :parsers ({:tag :epsilon} {:tag :nt, :keyword :attribute-data})},
- :url {:tag :regexp, :regexp #"[A-Za-z0-9$-_@.&+%=;/#?:]+"},
+ :url
+ {:tag :regexp,
+  :regexp #"[A-Za-z0-9$_@.,&+%=;/#?:-]*[A-Za-z0-9$_@.&+%=;/#?:-]"},
  :keygen-attribute
  {:tag :alt,
   :parsers

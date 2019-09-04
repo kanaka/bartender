@@ -8183,7 +8183,9 @@
    {:tag :nt, :keyword :func-opacity}
    {:tag :nt, :keyword :func-saturate}
    {:tag :nt, :keyword :func-sepia})},
- :url {:tag :regexp, :regexp #"[A-Za-z0-9$-_@.&+%=;/#?:]+"},
+ :url
+ {:tag :regexp,
+  :regexp #"[A-Za-z0-9$_@.,&+%=;/#?:-]*[A-Za-z0-9$_@.&+%=;/#?:-]"},
  :prop-scroll-padding-block-start
  {:tag :alt,
   :parsers

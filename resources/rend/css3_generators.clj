@@ -13534,7 +13534,7 @@
         g (assoc g :stylesheet gen-stylesheet)
 
         gen-url
-        (chuck/string-from-regex #"[A-Za-z0-9$-_@.&+%=;/#?:]+")
+        (chuck/string-from-regex #"[A-Za-z0-9$_@.,&+%=;/#?:-]*[A-Za-z0-9$_@.&+%=;/#?:-]")
         g (assoc g :url gen-url)
 
         gen-nonprop-outline-radius

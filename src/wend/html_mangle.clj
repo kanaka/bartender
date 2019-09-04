@@ -373,15 +373,14 @@
 (def text (slurp "test/html/apple.com-20190422-2.html"))
 ;; HTML: '[' in attr val, CSS: url with no quoting
 (def text (slurp "test/html/github.com-20190422.html"))
-;; 14 seconds to extract-html, HTML: success, CSS: @font-face
+;; HTML: success, CSS: success (18 seconds)
 (def text (slurp "test/html/mozilla.com-20190506.html"))
 ;; HTML: itemscope, CSS: -webkit...rgba(
 (def text (slurp "test/html/google.com-20190422.html"))
-;; 14 seconds to extract-html, HTML: success but 15 seconds, CSS: url with no quoting
+;; HTML: success, CSS: url with no quoting
 (def text (slurp "test/html/cnn.com-20190422.html"))
 
 (def text (slurp "test/html/ssllabs.com-20190816.html"))
-(def text (slurp "test/html/7311_clear.html"))
 
 (time (def html    (extract-html text)))
 (time (def css-map (extract-css-map text #(slurp (io/file "test/html" %)))))
