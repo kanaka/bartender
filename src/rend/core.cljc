@@ -229,10 +229,10 @@
 
       ;; Load the page in each browser
       (println "Loading" h-url "in each browser")
-      (doseq [[browser session] sessions]
-        (webdriver/load-page session h-url))
-
-      (Thread/sleep 1000)
+      (doall
+        (pmap (fn [[browser session]]
+                (webdriver/load-page session h-url))
+              sessions))
 
       ;; - Screenshot each browser
       ;; - Bump up each image size to maximum dimension in each
@@ -244,11 +244,13 @@
       ;;   a failed test
       (let [images (into
                      {}
-                     (for [[browser-kw session] sessions]
-                       (let [browser (name browser-kw)
-                             ss-path (str path-prefix "_" browser ".png")
-                             img (webdriver/screenshot-page session ss-path)]
-                         [browser img])))
+                     (pmap
+                       (fn [[browser-kw session]]
+                         (let [browser (name browser-kw)
+                               ss-path (str path-prefix "_" browser ".png")
+                               img (webdriver/screenshot-page session ss-path)]
+                           [browser img]))
+                       sessions))
             imgs (apply assoc {}
                         (interleave (keys images)
                                     (image/normalize-images (vals images))))
