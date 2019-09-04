@@ -206,6 +206,7 @@
     :dupe-attr-mode         - how to handle duplicate attributes name
     :trim-spaces?           - remove extra leading/trailing spaces
     :reindent?              - reindent everything (implies :trim-spaces?)
+    :prune-wrap-ahem?       - remove wrap-ahem span tags
     :prune-tags             - tags to omit by [tag]
     :prune-tags-by-attr     - tags to omit by [tag, attr]
     :prune-tags-by-attr-val - tags to omit by [tag, attr, value]
@@ -213,7 +214,8 @@
     :prune-tag-attrs        - tag attributes to omit by [tag, attr]
     :rewrite-tag-attr-vals  - change attribute value by [tag, attr, val]
   "
-  [TnA & [{:keys [trim-spaces? reindent? prune-tags] :as opts}]]
+  [TnA & [{:keys [trim-spaces? reindent?
+                  prune-wrap-ahem? prune-tags] :as opts}]]
   (assert (= :html (first TnA))
           "Not a valid parsed HTML grammar")
   (let [trim-spaces? (or reindent? trim-spaces?)
@@ -242,6 +244,10 @@
               (= :content (first (second elem)))
               (apply conj res (map maybe-trim (rest (second elem))))
 
+              (and prune-wrap-ahem?
+                   (= :ahem-elem (first (second elem))))
+              res
+
               (= :end-elem (first (second elem)))
               (if (contains? (set prune-tags) (nth (second elem) 2))
                 ;; Drop end tag for prune-tags. Matching start tag is
@@ -265,6 +271,7 @@
       TnA
       {:dupe-attr-mode         :first
        :trim-spaces?           true
+       :prune-wrap-ahem?       true
        :prune-tags             PRUNE-TAGS
        :prune-tags-by-attr     PRUNE-TAGS-BY-ATTRIBUTE
        :prune-tags-by-attr-val PRUNE-TAGS-BY-ATTRIBUTE-VALUE

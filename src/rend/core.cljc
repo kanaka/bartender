@@ -357,7 +357,7 @@
          (or (#{:element :css-known-standard} f)
              (or (re-seq reducible-regex fs))))))
 
-(defn parse-and-reduce
+(defn parse-page
   "Parse the path weights for both HTML and CSS part of the HTML test
   case. A path is randomly chosen and reduce by half in the overall
   wtrek. The :weight-dist algorithm picks a path using a weighted
@@ -366,37 +366,42 @@
   the path from the root/start node. reduce-wtrek is called to
   propagate the reduction if needed.  Returns a wtrek subset of the
   weights that changed."
-  [html-parser css-parser full-wtrek html opts]
-  (let [html-grammar (icore/parser->grammar html-parser)
-        css-grammar (icore/parser->grammar css-parser)
-        html-only (html-mangle/extract-html html)
-        _ (prn :html-only html-only)
-        css-only (html-mangle/extract-inline-css html)
-        _ (prn :css-only css-only)
-        html-parsed-weights (:wtrek (icore/parse-wtrek html-parser html-only))
-        css-parsed-weights (:wtrek (icore/parse-wtrek css-parser css-only))
-        wtrek1 (ireduce/reduce-wtrek-with-weights
-                 html-grammar full-wtrek html-parsed-weights opts)
-        wtrek2 (ireduce/reduce-wtrek-with-weights
-                 css-grammar wtrek1 css-parsed-weights opts)
-        weight-adjusts (into {} (set/difference
-                                  (set wtrek2)
-                                  (set full-wtrek)))]
+  [html-parser css-parser html-text]
+  (let [html-only (html-mangle/extract-html html-text)
+        ;_ (prn :html-only html-only)
+        css-only (html-mangle/extract-inline-css html-text)
+        ;_ (prn :css-only css-only)
+        html-weights (:wtrek (icore/parse-wtrek html-parser html-only))
+        css-weights (:wtrek (icore/parse-wtrek css-parser css-only))]
     {:html-only html-only
      :css-only css-only
-     :html-parsed-weights html-parsed-weights
-     :css-parsed-weights css-parsed-weights
-     :weight-adjusts weight-adjusts}))
+     :parsed-html-weights html-weights
+     :parsed-css-weights css-weights
+     :parsed-weights (merge-with + html-weights css-weights)}))
+
+(defn reduce-wtrek-with-page-weights
+  [html-parser css-parser full-wtrek
+   parsed-html-weights parsed-css-weights opts]
+  (let [html-grammar (icore/parser->grammar html-parser)
+        css-grammar (icore/parser->grammar css-parser)
+        wtrek1 (ireduce/reduce-wtrek-with-weights
+                 html-grammar full-wtrek parsed-html-weights opts)
+        wtrek2 (ireduce/reduce-wtrek-with-weights
+                 css-grammar wtrek1 parsed-css-weights opts)
+        adjusted-weights (into {} (set/difference
+                                    (set wtrek2)
+                                    (set full-wtrek)))]
+    adjusted-weights))
 
 (comment
 
-(def hp (mend.parse/load-parser-from-grammar :html))
-(def cp (mend.parse/load-parser-from-grammar :css))
+(def hp (mend.parse/load-parser-from-grammar :html :parse))
+(def cp (mend.parse/load-parser-from-grammar :css :parse))
 (def hw (icore/wtrek (icore/parser->grammar hp)))
 (def cw (icore/wtrek (icore/parser->grammar cp)))
 (def w (merge hw cw))
 
-(time (def new-w (parse-and-reduce hp cp w "<html><body>x<header>xx</header></body></html>")))
+(time (def new-w (parse-and-reduce hp cp w "<html><body>x<header>xx</header></body></html>" {})))
 
 )
 
@@ -453,6 +458,7 @@
 ;; SIDE-EFFECTS: updates :run log
 (defn qc-report
   [state test-slug report]
+  (println "qc-report type:" (name (:type report)))
   (let [{:keys [cfg log weights
                 html-parser css-parser iteration current-seed]} @state
         get-smallest #(or (get-in % [:shrunk :smallest 0])
@@ -467,45 +473,26 @@
         ;; smallest test case and add weight adjustment info
         r (if (not= prev-html cur-html)
             (let [weights-full (merge (-> cfg :weights :base) weights)
-                  red (parse-and-reduce html-parser
-                                        css-parser
-                                        weights-full
-                                        cur-html
-                                        {:pick-mode :weight
-                                         ;;:reduce-mode :max-child
-                                         ;;:reduce-mode :reducer
-                                         ;;:reducer-fn ireduce/reducer-half
-                                         ;;:pick-pred reduce-path-pick?
-
-                                         :reduce-mode :zero
-                                         :reducer-fn (partial ireduce/reducer-div 10)
-                                         :pick-pred reduce-path-TAPV-pick?
-
-                                         :rnd-obj (java.util.Random.
-                                                   current-seed)})
-                  parsed-weights (merge-with +
-                                             (:html-parsed-weights red)
-                                             (:css-parsed-weights red))
-                  summary (summarize-weights html-grammar
-                                             css-grammar
-                                             parsed-weights)]
+                  pdata (parse-page html-parser css-parser cur-html)
+                  {:keys [parsed-html-weights parsed-css-weights
+                          parsed-weights]} pdata
+                  TAP-summary (summarize-weights html-grammar
+                                                 css-grammar
+                                                 parsed-weights)]
               (when (> (:verbose cfg) 0)
-                (println "parse-and-reduce :html-only"
-                         (pr-str (:html-only red)))
-                (println "parse-and-reduce :css-only"
-                         (pr-str (:css-only red)))
-                (println "qc-report :weight-adjusts"
-                         (pr-str (:weight-adjusts red)))
-                (println "qc-report :TAP-summary"
-                         (pr-str :TAP-summary summary)))
-              (merge r {:smallest-iter iteration
-                        :weight-adjusts (:weight-adjusts red)
-                        :TAP-summary summary}))
+                (println "  :html-only" (pr-str (:html-only pdata)))
+                (println "  :css-only" (pr-str (:css-only pdata)))
+                (println "  :TAP-summary" (pr-str TAP-summary)))
+              (merge r {:parsed-html-weights parsed-html-weights
+                        :parsed-css-weights  parsed-css-weights
+                        :parsed-weights      parsed-weights
+                        :smallest-iter       iteration
+                        :smallest            cur-html
+                        :TAP-summary         TAP-summary}))
             r)]
     ;; Print status report
-    (println "Report type:" (name (:type r)))
     (when (> (:verbose cfg) 1)
-      (println "qc-report :report"
+      (println "  :report"
                (pr-str (assoc r :args :ELIDED :fail :ELIDED))))
     ;; Save the latest report
     (log! state :run r)))
@@ -561,7 +548,7 @@
   will be used to adjust/reduce the weights in the test state for
   subsequent runs."
   [test-state & {:keys [iterations]}]
-  (let [{:keys [cfg test-id weights]} @test-state
+  (let [{:keys [cfg test-id html-parser css-parser weights]} @test-state
         run (new-test-run! test-state)
         current-seed (new-test-seed! test-state)
         test-slug (str test-id "-" run "-" current-seed)
@@ -597,19 +584,35 @@
                          :end-time (.toDate end-time)
                          :elapsed-ms (ctime/in-millis
                                        (ctime/interval start-time end-time))})]
+
       ;; Merge the quick check results into the run log
       (log! test-state :run qc-res)
 
       ;; If requested, adjust weights for next run
       (when (= "reduce-weights" (-> cfg :test :mode))
-        (when (> (:verbose cfg) 0)
-            (println "Final weight-adjusts"
-                     (pr-str (get-in @test-state
-                                     [:log test-slug :weight-adjusts]))))
-        (let [new-weights (merge weights
-                                 (get-in @test-state
-                                         [:log test-slug :weight-adjusts]))]
+        (let [log (get-in @test-state [:log test-slug])
+              {:keys [parsed-html-weights parsed-css-weights]} log
+              adjusts (reduce-wtrek-with-page-weights
+                        html-parser css-parser
+                        weights-full parsed-html-weights parsed-css-weights
+                        {:pick-mode :weight
+                         ;;:reduce-mode :max-child
+                         ;;:reduce-mode :reducer
+                         ;;:reducer-fn ireduce/reducer-half
+                         ;;:pick-pred reduce-path-pick?
+
+                         :reduce-mode :zero
+                         :reducer-fn (partial ireduce/reducer-div 10)
+                         :pick-pred reduce-path-TAPV-pick?
+
+                         :rnd-obj (java.util.Random.
+                                    current-seed)})
+              new-weights (merge weights adjusts)]
+          (when (> (:verbose cfg) 0)
+            (println "Final weight adjustments:"
+                     (pr-str adjusts)))
           (update-state! test-state {:weights new-weights})))
+
       (println "------")
       (println (str "Quick check results:"))
       (pprint qc-res)
