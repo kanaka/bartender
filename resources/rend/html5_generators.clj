@@ -431,7 +431,7 @@
               (gen/return "data:")
               (:mime-type g)
               (gen/return ";base64,")
-              (chuck/string-from-regex #"[A-Za-z0-9+=/]*"))]])
+              (chuck/string-from-regex #"[A-Za-z0-9+=/]+"))]])
         g (assoc g :url-test gen-url-test)
 
         gen-url

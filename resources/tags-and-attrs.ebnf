@@ -10,7 +10,7 @@ elem = script-elem
 script-elem = '<' 'script' attrs S '>' script-data '</script>' S ;
 style-elem  = '<' 'style'  attrs S '>' style-data  '</style>' S ;
 svg-elem    = '<' 'svg'    attrs S '>' svg-data    '</svg>' S ;
-ahem-elem   = '<' 'span'   ahem-attrs S '>' #'.' '</span>' S ;
+ahem-elem   = '<' 'span'   ahem-attrs S '>' ahem-data '</span>' S ;
 start-elem  = '<' tag-name attrs S '>' S;
 end-elem    = '</' tag-name '>' S ;
 content     = char-data
@@ -19,6 +19,7 @@ content     = char-data
 <script-data> = ( #'[^<]*' | !'</script>' #'<' )+ ;
 <style-data>  = ( #'[^<]*' | !'</style>' #'<' )+ ;
 <svg-data>    = ( #'[^<]*' | !'</svg>' #'<' )+ ;
+<ahem-data>   = ( #'.' | '&#x00c9;' ) ;
 
 attrs = attr* ;
 attr = rS attr-name S <'='> attr-val
