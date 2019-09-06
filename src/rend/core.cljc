@@ -63,6 +63,7 @@
          elided-state*
          (transform [:weights]             cnt-elide)
          (setval    [:log MAP-VALS]        :ELIDED)
+         (setval    [:latest-parse-data]   :ELIDED)
          (transform [:cfg :weights :start] cnt-elide))))
 
 (defn new-test-run!
@@ -473,31 +474,32 @@
         r (dissoc report :property)
         ;; If there is a new smallest test case then track iter of
         ;; smallest test case and add weight adjustment info
-        r (if (not= prev-html cur-html)
-            (let [weights-full (merge (-> cfg :weights :base) weights)
-                  pdata (parse-page html-parser css-parser cur-html)
-                  {:keys [parsed-html-weights parsed-css-weights
-                          parsed-weights]} pdata
-                  TAP-summary (summarize-weights html-grammar
-                                                 css-grammar
-                                                 parsed-weights)]
-              (when (> (:verbose cfg) 0)
-                (println "  :html-only" (pr-str (:html-only pdata)))
-                (println "  :css-only" (pr-str (:css-only pdata)))
-                (println "  :TAP-summary" (pr-str TAP-summary)))
-              (merge r {:parsed-html-weights parsed-html-weights
-                        :parsed-css-weights  parsed-css-weights
-                        :parsed-weights      parsed-weights
-                        :smallest-iter       iteration
-                        :smallest            cur-html
-                        :TAP-summary         TAP-summary}))
-            r)]
+        [sdata pdata]
+        ,,, (if (= prev-html cur-html)
+              [nil nil]
+              (let [weights-full (merge (-> cfg :weights :base) weights)
+                    pdata (parse-page html-parser css-parser cur-html)
+                    TAP-summary (summarize-weights html-grammar
+                                                   css-grammar
+                                                   (:parsed-weights pdata))
+                    sdata {:smallest-iter       iteration
+                           :smallest            cur-html
+                           :TAP-summary         TAP-summary}]
+                (when (> (:verbose cfg) 0)
+                  (println "  :html-only" (pr-str (:html-only pdata)))
+                  (println "  :css-only" (pr-str (:css-only pdata)))
+                  (println "  :TAP-summary" (pr-str TAP-summary)))
+                [sdata pdata]))]
     ;; Print status report
     (when (> (:verbose cfg) 1)
       (println "  :report"
-               (pr-str (assoc r :args :ELIDED :fail :ELIDED))))
+               (pr-str (assoc (merge r sdata)
+                              :args :ELIDED
+                              :fail :ELIDED))))
+    (when pdata
+      (update-state! state {:latest-parse-data pdata}))
     ;; Save the latest report
-    (log! state :run r)))
+    (log! state :run (merge r sdata))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Test execution API
@@ -592,8 +594,8 @@
 
       ;; If requested, adjust weights for next run
       (when (= "reduce-weights" (-> cfg :test :mode))
-        (let [log (get-in @test-state [:log test-slug])
-              {:keys [parsed-html-weights parsed-css-weights]} log
+        (let [pdata (:latest-parse-data @test-state)
+              {:keys [parsed-html-weights parsed-css-weights]} pdata
               adjusts (reduce-wtrek-with-page-weights
                         html-parser css-parser
                         weights-full parsed-html-weights parsed-css-weights
