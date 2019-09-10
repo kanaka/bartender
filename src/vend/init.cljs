@@ -5,6 +5,3 @@
 (defn ^:export vend-start []
   (send.init/generic-start
     vrender/main-element (js/document.getElementById "app")))
-
-;(enable-console-print!)
-

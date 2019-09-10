@@ -115,7 +115,7 @@
    ,,, (fn [tk] (apply + (vals (filter #(= :element (first (key %))) tk))))
    })
 
-(def apply-weight-mapping
+(defn apply-weight-mapping
   [wtrek mapping]
   (reduce
     (fn [tk [p v]]
