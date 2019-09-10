@@ -177,8 +177,7 @@
    {:tag :nt, :keyword :name}
    {:tag :string, :string "=\""}
    {:tag :nt, :keyword :attribute-data}
-   {:tag :string, :string "\""}),
-  :comments (" hickory converts '' strings to \"\" ")},
+   {:tag :string, :string "\""})},
  :article-attribute {:tag :nt, :keyword :global-attribute},
  :any-number
  {:tag :alt,
@@ -1698,11 +1697,7 @@
        ({:tag :nt, :keyword :rS, :hide true}
         {:tag :nt, :keyword :script-attribute})}}
      {:tag :string, :string ">"}
-     {:tag :star,
-      :parser
-      {:tag :alt,
-       :parsers
-       ({:tag :nt, :keyword :element} {:tag :nt, :keyword :content})}}
+     {:tag :star, :parser {:tag :nt, :keyword :content}}
      {:tag :string, :string "</script>"})}
    {:tag :cat,
     :parsers
@@ -1804,11 +1799,7 @@
        ({:tag :nt, :keyword :rS, :hide true}
         {:tag :nt, :keyword :style-attribute})}}
      {:tag :string, :string ">"}
-     {:tag :star,
-      :parser
-      {:tag :alt,
-       :parsers
-       ({:tag :nt, :keyword :element} {:tag :nt, :keyword :content})}}
+     {:tag :star, :parser {:tag :nt, :keyword :content}}
      {:tag :string, :string "</style>"})}
    {:tag :cat,
     :parsers
@@ -2500,7 +2491,10 @@
      {:tag :nt, :keyword :attr-val-meter__value}
      {:tag :string, :string "\""})}
    {:tag :nt, :keyword :global-attribute})},
- :attribute-data {:tag :regexp, :regexp #"[^\"]*"},
+ :attribute-data
+ {:tag :regexp,
+  :regexp #"[^\"]*",
+  :comments (" hickory converts '' strings to \"\" ")},
  :attr-val-button__value
  {:tag :alt,
   :parsers ({:tag :epsilon} {:tag :nt, :keyword :attribute-data})},

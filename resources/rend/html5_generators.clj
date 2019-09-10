@@ -6069,11 +6069,7 @@
                       (gen/return "")]
                     [(get w [:element :alt 82 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq :element [
-                          [(get w [:element :alt 82 :cat 3 :star 0 :alt 0] 100)
-                            inner]
-                          [(get w [:element :alt 82 :cat 3 :star 0 :alt 1] 100)
-                            (:content g)]]))]])
+                        (:content g))]])
                   (gen/return "</script>"))]
               [(get w [:element :alt 83] 100)
                 (gen/tuple
@@ -6219,11 +6215,7 @@
                       (gen/return "")]
                     [(get w [:element :alt 89 :cat 3 :star 0] 100)
                       (igen/vector+
-                        (igen/freq :element [
-                          [(get w [:element :alt 89 :cat 3 :star 0 :alt 0] 100)
-                            inner]
-                          [(get w [:element :alt 89 :cat 3 :star 0 :alt 1] 100)
-                            (:content g)]]))]])
+                        (:content g))]])
                   (gen/return "</style>"))]
               [(get w [:element :alt 90] 100)
                 (gen/tuple

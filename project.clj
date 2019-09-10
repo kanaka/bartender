@@ -41,7 +41,7 @@
                  [org.clojure/test.check "0.10.0-alpha3"]
 
                  [kanaka/instacheck "0.8.4"]
-                 [kanaka/html5-css3-ebnf "0.5.9"]
+                 [kanaka/html5-css3-ebnf "0.6.0"]
 
                  ;; send/vend
                  [org.clojure/clojurescript "1.10.520"]
