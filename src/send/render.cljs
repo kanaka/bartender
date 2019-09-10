@@ -2,6 +2,7 @@
   (:require [clojure.math.combinatorics :refer [combinations]]
             [reagent.core :as r]
 
+            [wend.util :refer [strip-wrap-ahem]]
             [send.core :as core]
             [send.net :refer [load-edn]]))
 
@@ -23,9 +24,9 @@
     (when (:smallest shrink)
       (let [start-value (get-in @core/state [:test-state :test-start-value])
             base-size (count start-value)
-            fail (get-in slug-log [:fail 0])
+            fail (strip-wrap-ahem (get-in slug-log [:fail 0]))
             fail-size (count fail)
-            shrunk (get-in shrink [:smallest 0])
+            shrunk (strip-wrap-ahem (get-in shrink [:smallest 0]))
             shrunk-size (count shrunk)]
         ;;(prn :base-size base-size :base-value start-value)
         ;;(prn :fail-size fail-size :fail-value (get-in slug-log [:fail 0]))
@@ -116,7 +117,7 @@
         pass (:result log)
         diffs (:diffs log)
         violations (:violations log)
-        html (:html log)]
+        html (strip-wrap-ahem (:html log))]
     [:tr
      [:td idx]
      [:td

@@ -6,6 +6,7 @@
             [reagent.core :as r]
             [antizer.reagent :as ant]
 
+            [wend.util :refer [strip-wrap-ahem]]
             [send.core :as core]
             [send.render]
             [send.net :refer [load-edn]]))
@@ -118,7 +119,8 @@
                     (let [row-id (IDX (get slug-idx slug))
                           slug-log (get log slug)
                           iter (:smallest-iter slug-log)
-                          html (-> slug-log :shrunk :smallest)]
+                          html (strip-wrap-ahem
+                                 (-> slug-log :shrunk :smallest first))]
                       (modal-table-row row-id iter slug browsers html)))
         cell (fn [row col]
                (let [slugs (get-in row-col-slug-tree [row col])]
