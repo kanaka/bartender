@@ -147,18 +147,22 @@
                             [:th browser])
                           [:th "Average \u0394"]]
                          (doall (map slug->row (sort slugs)))]])]])))]
-    [:table.elem-table {:border "1px"}
+    [:table.elem-table {:class "table-header-rotated" #_#_:border "1px"}
      [:tbody
       [:tr
-       [:td upper-left]
+       [:th
+        [:div
+         [:span upper-left]]]
        (for [col cols]
          ^{:key col}
-         [:th col]
+         [:th {:class "rotate-45"}
+          [:div
+           [:span col]]]
          )]
       (doall (for [row rows]
         ^{:key row}
         [:tr
-         [:th row]
+         [:th {:class "row-header" :nowrap 1} row]
          (doall (for [col cols]
            ^{:key col}
            [:td (cell row col)]))]))]]))
