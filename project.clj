@@ -62,7 +62,7 @@
 
   :cljsbuild
   {:builds {:send
-            {:source-paths ["src/cljs"]
+            {:source-paths ["src", "resources"]
              :compiler
              {:main          "send.init"
               :asset-path    "/static/build/send/out"

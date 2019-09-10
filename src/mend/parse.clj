@@ -14,8 +14,7 @@
           :parse        ["html5.ebnf"]}
    :css  {:gen          ["css3-test.ebnf" "css3.ebnf"]
           :parse        ["css3.ebnf"]
-          :parse-inline ["css3.ebnf"]}
-   :tNa  {:parse        ["tags-and-attrs.ebnf"]}})
+          :parse-inline ["css3.ebnf"]}})
 
 (def GRAMMARs
   {:html "html5.grammar"
@@ -40,8 +39,7 @@
           :parse         :html}
    :css  {:gen           :css-assignments-test
           :parse         :stylesheet
-          :parse-inline  :css-assignments}
-   :tNa  {:parse         :html}})
+          :parse-inline  :css-assignments}})
 
 (defn mangle-parser
   [parser mangles]

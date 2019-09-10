@@ -4,7 +4,7 @@
             [clojure.set :as set]
             [clojure.pprint :refer [pprint]]
             [flatland.ordered.map :refer [ordered-map]]
-            [mend.parse]
+            [instaparse.core :as instaparse]
             [instacheck.core :as icore]))
 
 (def PRUNE-TAGS
@@ -53,7 +53,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Tags and Attrs Method
 
-(def TnA-parser (mend.parse/load-parser :tNa :parse))
+(def TnA-parser
+  (instaparse/parser (slurp (io/resource "tags-and-attrs.ebnf"))))
 
 (defn TnA-parse
   [text]
@@ -370,6 +371,7 @@
 
 (comment
 
+(require '[mend.parse])
 (def hp (mend.parse/load-parser-from-grammar :html :parse))
 (def cp (mend.parse/load-parser-from-grammar :css :parse))
 
