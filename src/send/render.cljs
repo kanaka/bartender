@@ -10,6 +10,10 @@
 (def GREEN "#90f090")
 (def TAN "#ffffd0")
 
+(defn format-html [html-text]
+  (-> html-text
+      strip-wrap-ahem))
+
 (defn mode-bg-style [token]
   {:background-color (get {:complete GREEN
                            true      GREEN
@@ -24,9 +28,9 @@
     (when (:smallest shrink)
       (let [start-value (get-in @core/state [:test-state :test-start-value])
             base-size (count start-value)
-            fail (strip-wrap-ahem (get-in slug-log [:fail 0]))
+            fail (format-html (get-in slug-log [:fail 0]))
             fail-size (count fail)
-            shrunk (strip-wrap-ahem (get-in shrink [:smallest 0]))
+            shrunk (format-html (get-in shrink [:smallest 0]))
             shrunk-size (count shrunk)]
         ;;(prn :base-size base-size :base-value start-value)
         ;;(prn :fail-size fail-size :fail-value (get-in slug-log [:fail 0]))
@@ -117,7 +121,7 @@
         pass (:result log)
         diffs (:diffs log)
         violations (:violations log)
-        html (strip-wrap-ahem (:html log))]
+        html (format-html (:html log))]
     [:tr
      [:td idx]
      [:td
