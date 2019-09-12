@@ -8,7 +8,7 @@
             [clojure.set :as set]
             [clojure.math.combinatorics :refer [combinations]]
 
-            [flatland.ordered.set :refer [ordered-set]]
+            [linked.core :as linked]
             [com.rpl.specter :refer [setval transform ALL LAST MAP-VALS]]
             [clj-time.core :as ctime]
             [differ.core :as differ]
@@ -721,7 +721,7 @@
         cleanup-fn (partial cleanup-tester test-state)]
 
     (reset-state! test-state {:cfg              cfg
-                              :test-slugs       (ordered-set)
+                              :test-slugs       (linked/set) ;; ordered set
                               :test-id          (rand-int 100000)
                               :server           server
                               :html-parser      html-parser

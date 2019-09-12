@@ -3,7 +3,7 @@
             [clojure.string :as S]
             [clojure.set :as set]
             [clojure.pprint :refer [pprint]]
-            [flatland.ordered.map :refer [ordered-map]]
+            [linked.core :as linked]
             [instaparse.core :as instaparse]
             [instacheck.core :as icore]))
 
@@ -90,7 +90,7 @@
 
 (defn- attr-map
   [attrs-elem]
-  (loop [attrs (ordered-map)
+  (loop [attrs (linked/map) ;; ordered map
          attr-elems (rest attrs-elem)]
     (if (seq attr-elems)
       (let [[attr & attr-elems] attr-elems
@@ -152,7 +152,7 @@
                                              [rewr-val]
                                              avals)}]
                       (assoc attrs aname sp-avals))))
-                (ordered-map)
+                (linked/map) ;; ordered map
                 all-attrs)]
     (if (or
           ;; Prune by :prune-tags

@@ -25,7 +25,7 @@
                  ;; rend specific
                  [clj-yaml "0.4.0"]
                  [clj-time "0.14.2"]
-                 [org.flatland/ordered "1.5.7"]
+                 [frankiesardo/linked "1.3.0"]
                  [compojure "1.6.1"]
                  [http-kit "2.3.0"]
                  [ring/ring-core "1.7.1"]
