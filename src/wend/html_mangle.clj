@@ -371,6 +371,7 @@
 
 (comment
 
+(in-ns 'wend.html-mangle)
 (require '[mend.parse])
 (def hp (mend.parse/load-parser-from-grammar :html :parse))
 (def cp (mend.parse/load-parser-from-grammar :css :parse))

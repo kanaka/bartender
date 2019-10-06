@@ -24,7 +24,7 @@ content     = char-data
 attrs = attr* ;
 attr = rS attr-name S <'='> attr-val
      | rS attr-name ;
-ahem-attrs = ahem-attr* ;
+ahem-attrs = ahem-attr+ ;
 ahem-attr = rS ahem-attr-name S <'='> ahem-attr-val ;
 ahem-attr-name = 'class' ;
 ahem-attr-val = S <'"'> 'wrap-ahem' <'"'> ;

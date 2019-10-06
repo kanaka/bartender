@@ -547,9 +547,9 @@
 ;; value, run log, and weights.
 (defn run-iterations
   "Run the quick check process against the test-state and update the
-  test-state progressively as the checking happens. If the test mode
-  is set to \"reduce-weights\" then the resulting shrunk test case
-  will be used to adjust/reduce the weights in the test state for
+  test-state progressively as the checking happens. If
+  (:reduce-weights cfg) is configured then the resulting shrunk test
+  case will be used to adjust/reduce the weights in the test state for
   subsequent runs."
   [test-state & {:keys [iterations]}]
   (let [{:keys [cfg test-id html-parser css-parser weights]} @test-state
@@ -592,25 +592,27 @@
       ;; Merge the quick check results into the run log
       (log! test-state :run qc-res)
 
-      ;; If requested, adjust weights for next run
-      (when (= "reduce-weights" (-> cfg :test :mode))
-        (let [pdata (:latest-parse-data @test-state)
+      ;; If the most recent test failed and reduce-weights is
+      ;; requested then adjust weights for next run
+      (when (and (= false (:result qc-res))
+                 (:reduce-weights cfg))
+        (let [{:keys [pick-mode reduce-mode reducer-div]
+               :or {pick-mode "weight"
+                    reduce-mode "zero"
+                    reducer-div 10}} (:reduce-weights cfg)
+              pdata (:latest-parse-data @test-state)
               {:keys [parsed-html-weights parsed-css-weights]} pdata
               adjusts (reduce-wtrek-with-page-weights
                         html-parser css-parser
                         weights-full parsed-html-weights parsed-css-weights
-                        {:pick-mode :weight
-                         ;;:reduce-mode :max-child
-                         ;;:reduce-mode :reducer
-                         ;;:reducer-fn ireduce/reducer-half
+                        {:pick-mode   (keyword pick-mode)
+                         :reduce-mode (keyword reduce-mode)
+                         :reducer-fn  (partial ireduce/reducer-div
+                                               reducer-div)
+                         :pick-pred reduce-path-TAPV-pick?
                          ;;:pick-pred reduce-path-pick?
 
-                         :reduce-mode :zero
-                         :reducer-fn (partial ireduce/reducer-div 10)
-                         :pick-pred reduce-path-TAPV-pick?
-
-                         :rnd-obj (java.util.Random.
-                                    current-seed)})
+                         :rnd-obj (java.util.Random. current-seed)})
               new-weights (merge weights adjusts)]
           (when (> (:verbose cfg) 0)
             (println "Final weight adjustments:"
@@ -637,11 +639,12 @@
 ;; SIDE-EFFECTS: updates state atom via run-iterations
 (defn run-tests
   "Calls run-iterations the number of times specified in the
-  configuration (-> cfg :test :runs)."
+  configuration (:runs cfg). Supports setting runs and iterations with
+  :runs and/or :iterations parameters."
   [test-state & {:keys [runs iterations]}]
   (let [{:keys [cfg]} @test-state]
     ;; Do the test runs and report
-    (doseq [run-idx (range (or runs (-> cfg :test :runs)))]
+    (doseq [run-idx (range (or runs (-> cfg :runs)))]
       (println "-------------------------------------------------------------")
       (println (str "------ Run index " (inc run-idx) " --------------------"))
       (run-iterations test-state :iterations iterations))))
@@ -689,7 +692,10 @@
   Returns a map containing the config, references the above stateful
   objects, and other settings that are updates as testing progresses."
   [user-cfg & [extra-cfg]]
-  (let [user-cfg (util/deep-merge user-cfg extra-cfg) ;; add extra-cfg
+  (let [user-cfg (util/deep-merge
+                   {:verbose 0} ;; defaults
+                   user-cfg     ;; user config
+                   extra-cfg)   ;; add extra config
         ;; Replace weight paths with loaded weight maps
         weights-map (let [w (-> user-cfg :weights)]
                       (load-weights (:base w) (:start w)))
@@ -755,7 +761,7 @@
 (def weights-map (load-weights ["resources/html5-weights.edn"
                                 "resources/css3-weights.edn"
                                 "resources/default-weights.edn"]
-                               "tmp/7311-weights.edn"))
+                               "tmp/blah-weights.edn"))
 (def weights-full (merge (:base weights-map)
                          (:start weights-map)))
 

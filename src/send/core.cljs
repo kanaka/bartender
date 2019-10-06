@@ -3,7 +3,8 @@
             [differ.core :as differ]
             [cljs.pprint :refer [pprint]]
 
-            [send.net :as net]))
+            [send.net :as net]
+            [rend.util :as util]))
 
 (defonce state
   (r/atom {:connected false
@@ -34,14 +35,8 @@
 
       :merge
       (swap! state (fn [{:keys [test-state] :as cur-state}]
-                     (let [new-log (merge (:log test-state)
-                                          (:log data))
-                           new-slugs (apply conj
-                                            (:test-slugs data)
-                                            (:test-slugs test-state))]
-                       (assoc cur-state :test-state
-                              (merge data {:log new-log
-                                           :test-slugs new-slugs})))))
+                     (assoc cur-state :test-state
+                            (util/merge-test-state cur-state data))))
 
       (println "ignoring msgType" msgType))
     ;; Sync tab state

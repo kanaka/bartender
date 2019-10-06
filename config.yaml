@@ -1,14 +1,16 @@
-test:
-    runs: 10
-    mode: "reduce-weights"
-start-seed: 5
+runs: 10
+reduce-weights:
+    pick-mode: weight  # weight, dist, weight-dist
+    reduce-mode: zero  # zero, max-child, reducer
+    reducer-div: 10
+start-seed: 32
 quick-check:
-    iterations: 20
+    iterations: 25
     max-size: 100
 weights:
     base: ["resources/html5-weights.edn",
            "resources/css3-weights.edn",
-           "resources/default-weights.edn"
+           "resources/default-weights.edn",
            "resources/default-weights-div-span.edn"]
 compare:
     #method: "SQDIFF"

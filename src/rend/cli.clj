@@ -42,14 +42,14 @@
                                   (when (:verbose options)
                                     {:verbse (:verbose options)})
                                   (when start-seed
-                                    {:quick-check {:start-seed start-seed}}))
+                                    {:start-seed start-seed}))
         test-state (core/init-tester user-cfg)]
     (println "Test Configuration:")
     (pprint (:cfg (core/printable-state @test-state)))
     (when (not (:no-interactive options))
       (println "\nPress <Enter> to start tests")
       (read-line))
-    (core/run-tests test-state {})
+    (core/run-tests test-state)
     (println "\n-----------------------------------------------")
     (:cleanup-fn test-state)
     (when (not (:no-interactive options))

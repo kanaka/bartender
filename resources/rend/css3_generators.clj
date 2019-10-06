@@ -13897,19 +13897,19 @@
         gen-css-assignments-test
         (igen/freq :css-assignments-test [
           [(get w [:css-assignments-test :alt 0] 100)
+            (gen/return "")]
+          [(get w [:css-assignments-test :alt 1] 100)
             (gen/tuple
               (:css-declaration g)
               (igen/freq :css-assignments-test [
-                [(get w [:css-assignments-test :alt 0 :cat 1 :star nil] 100)
+                [(get w [:css-assignments-test :alt 1 :cat 1 :star nil] 100)
                   (gen/return "")]
-                [(get w [:css-assignments-test :alt 0 :cat 1 :star 0] 100)
+                [(get w [:css-assignments-test :alt 1 :cat 1 :star 0] 100)
                   (igen/vector+
                     (gen/tuple
                       (gen/return ";")
                       (gen/return " ")
-                      (:css-declaration g)))]]))]
-          [(get w [:css-assignments-test :alt 1] 100)
-            (gen/return "")]])
+                      (:css-declaration g)))]]))]])
         g (assoc g :css-assignments-test gen-css-assignments-test)
 
         gen-nonprop-generic-name

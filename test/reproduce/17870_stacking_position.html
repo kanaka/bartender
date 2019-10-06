@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+<style>
+#stackingcontext {
+  position: absolute;
+  top: 200px;
+  left: 200px;
+  z-index: 2;
+}
+
+#fixed {
+  background: green;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+</style>
+
+<body>
+  <div id="stackingcontext">
+    <div id="fixed"></div>
+  </div>
+</body>
+</html>

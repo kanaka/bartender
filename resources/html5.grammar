@@ -47,7 +47,8 @@
  :source-attribute
  {:tag :alt,
   :parsers
-  ({:tag :cat,
+  ({:tag :nt, :keyword :global-attribute}
+   {:tag :cat,
     :parsers
     ({:tag :string, :string "sizes=\""}
      {:tag :nt, :keyword :attr-val-source__sizes}
@@ -66,8 +67,7 @@
     :parsers
     ({:tag :string, :string "type=\""}
      {:tag :nt, :keyword :attr-val-source__type}
-     {:tag :string, :string "\""})}
-   {:tag :nt, :keyword :global-attribute})},
+     {:tag :string, :string "\""})})},
  :attr-val-select__form
  {:tag :alt, :parsers ({:tag :epsilon} {:tag :nt, :keyword :name})},
  :attr-val-menuitem__title
@@ -80,7 +80,8 @@
  :img-attribute
  {:tag :alt,
   :parsers
-  ({:tag :cat,
+  ({:tag :nt, :keyword :global-attribute}
+   {:tag :cat,
     :parsers
     ({:tag :string, :string "ismap"}
      {:tag :nt, :keyword :opt-boolean})}
@@ -123,8 +124,7 @@
     :parsers
     ({:tag :string, :string "width=\""}
      {:tag :nt, :keyword :attr-val-img__width}
-     {:tag :string, :string "\""})}
-   {:tag :nt, :keyword :global-attribute})},
+     {:tag :string, :string "\""})})},
  :char-ref-dec {:tag :regexp, :regexp #"&#[0-9]{1,7};"},
  :attr-val-iframe__height
  {:tag :alt,
@@ -144,7 +144,8 @@
  :fieldset-attribute
  {:tag :alt,
   :parsers
-  ({:tag :cat,
+  ({:tag :nt, :keyword :global-attribute}
+   {:tag :cat,
     :parsers
     ({:tag :string, :string "disabled"}
      {:tag :nt, :keyword :opt-boolean})}
@@ -157,19 +158,18 @@
     :parsers
     ({:tag :string, :string "name=\""}
      {:tag :nt, :keyword :attr-val-fieldset__name}
-     {:tag :string, :string "\""})}
-   {:tag :nt, :keyword :global-attribute})},
+     {:tag :string, :string "\""})})},
  :attr-val-global__contextmenu
  {:tag :alt, :parsers ({:tag :epsilon} {:tag :nt, :keyword :name})},
  :q-attribute
  {:tag :alt,
   :parsers
-  ({:tag :cat,
+  ({:tag :nt, :keyword :global-attribute}
+   {:tag :cat,
     :parsers
     ({:tag :string, :string "cite=\""}
      {:tag :nt, :keyword :attr-val-q__cite}
-     {:tag :string, :string "\""})}
-   {:tag :nt, :keyword :global-attribute})},
+     {:tag :string, :string "\""})})},
  :custom-data-attribute
  {:tag :cat,
   :parsers
@@ -242,7 +242,8 @@
  :param-attribute
  {:tag :alt,
   :parsers
-  ({:tag :cat,
+  ({:tag :nt, :keyword :global-attribute}
+   {:tag :cat,
     :parsers
     ({:tag :string, :string "name=\""}
      {:tag :nt, :keyword :attr-val-param__name}
@@ -251,8 +252,7 @@
     :parsers
     ({:tag :string, :string "value=\""}
      {:tag :nt, :keyword :attr-val-param__value}
-     {:tag :string, :string "\""})}
-   {:tag :nt, :keyword :global-attribute})},
+     {:tag :string, :string "\""})})},
  :attr-val-video__src
  {:tag :alt, :parsers ({:tag :epsilon} {:tag :nt, :keyword :url})},
  :attr-val-label__for
@@ -265,7 +265,8 @@
  :form-attribute
  {:tag :alt,
   :parsers
-  ({:tag :cat,
+  ({:tag :nt, :keyword :global-attribute}
+   {:tag :cat,
     :parsers
     ({:tag :string, :string "novalidate"}
      {:tag :nt, :keyword :opt-boolean})}
@@ -303,8 +304,7 @@
     :parsers
     ({:tag :string, :string "target=\""}
      {:tag :nt, :keyword :attr-val-form__target}
-     {:tag :string, :string "\""})}
-   {:tag :nt, :keyword :global-attribute})},
+     {:tag :string, :string "\""})})},
  :positive-integer {:tag :regexp, :regexp #"[1-9][0-9]*"},
  :attr-val-area__shape
  {:tag :alt,
@@ -319,12 +319,12 @@
  :table-attribute
  {:tag :alt,
   :parsers
-  ({:tag :cat,
+  ({:tag :nt, :keyword :global-attribute}
+   {:tag :cat,
     :parsers
     ({:tag :string, :string "border=\""}
      {:tag :nt, :keyword :attr-val-table__border}
-     {:tag :string, :string "\""})}
-   {:tag :nt, :keyword :global-attribute})},
+     {:tag :string, :string "\""})})},
  :attr-val-fieldset__form
  {:tag :alt, :parsers ({:tag :epsilon} {:tag :nt, :keyword :name})},
  :attr-val-optgroup__label
@@ -333,7 +333,8 @@
  :canvas-attribute
  {:tag :alt,
   :parsers
-  ({:tag :cat,
+  ({:tag :nt, :keyword :global-attribute}
+   {:tag :cat,
     :parsers
     ({:tag :string, :string "height=\""}
      {:tag :nt, :keyword :attr-val-canvas__height}
@@ -342,8 +343,7 @@
     :parsers
     ({:tag :string, :string "width=\""}
      {:tag :nt, :keyword :attr-val-canvas__width}
-     {:tag :string, :string "\""})}
-   {:tag :nt, :keyword :global-attribute})},
+     {:tag :string, :string "\""})})},
  :attr-val-meta__content
  {:tag :alt,
   :parsers ({:tag :epsilon} {:tag :nt, :keyword :attribute-data})},
@@ -416,12 +416,12 @@
  :col-attribute
  {:tag :alt,
   :parsers
-  ({:tag :cat,
+  ({:tag :nt, :keyword :global-attribute}
+   {:tag :cat,
     :parsers
     ({:tag :string, :string "span=\""}
      {:tag :nt, :keyword :attr-val-col__span}
-     {:tag :string, :string "\""})}
-   {:tag :nt, :keyword :global-attribute})},
+     {:tag :string, :string "\""})})},
  :attr-val-img__srcset
  {:tag :alt, :parsers ({:tag :epsilon} {:tag :nt, :keyword :srcset})},
  :attr-val-audio__crossorigin
@@ -2123,7 +2123,8 @@
  :menuitem-attribute
  {:tag :alt,
   :parsers
-  ({:tag :cat,
+  ({:tag :nt, :keyword :global-attribute}
+   {:tag :cat,
     :parsers
     ({:tag :string, :string "checked"}
      {:tag :nt, :keyword :opt-boolean})}
@@ -2164,8 +2165,7 @@
     :parsers
     ({:tag :string, :string "type=\""}
      {:tag :nt, :keyword :attr-val-menuitem__type}
-     {:tag :string, :string "\""})}
-   {:tag :nt, :keyword :global-attribute})},
+     {:tag :string, :string "\""})})},
  :attr-val-th__scope
  {:tag :alt,
   :parsers
@@ -2210,7 +2210,8 @@
  :a-attribute
  {:tag :alt,
   :parsers
-  ({:tag :cat,
+  ({:tag :nt, :keyword :global-attribute}
+   {:tag :cat,
     :parsers
     ({:tag :string, :string "download=\""}
      {:tag :nt, :keyword :attr-val-a__download}
@@ -2244,8 +2245,7 @@
     :parsers
     ({:tag :string, :string "type=\""}
      {:tag :nt, :keyword :attr-val-a__type}
-     {:tag :string, :string "\""})}
-   {:tag :nt, :keyword :global-attribute})},
+     {:tag :string, :string "\""})})},
  :attr-val-button__menu
  {:tag :alt, :parsers ({:tag :epsilon} {:tag :nt, :keyword :name})},
  :attr-val-source__srcset
@@ -2257,12 +2257,12 @@
  :li-attribute
  {:tag :alt,
   :parsers
-  ({:tag :cat,
+  ({:tag :nt, :keyword :global-attribute}
+   {:tag :cat,
     :parsers
     ({:tag :string, :string "value=\""}
      {:tag :nt, :keyword :attr-val-li__value}
-     {:tag :string, :string "\""})}
-   {:tag :nt, :keyword :global-attribute})},
+     {:tag :string, :string "\""})})},
  :attr-val-menuitem__label
  {:tag :alt,
   :parsers ({:tag :epsilon} {:tag :nt, :keyword :attribute-data})},
@@ -2288,21 +2288,21 @@
  :bdo-attribute
  {:tag :alt,
   :parsers
-  ({:tag :cat,
+  ({:tag :nt, :keyword :global-attribute}
+   {:tag :cat,
     :parsers
     ({:tag :string, :string "dir=\""}
      {:tag :nt, :keyword :attr-val-bdo__dir}
-     {:tag :string, :string "\""})}
-   {:tag :nt, :keyword :global-attribute})},
+     {:tag :string, :string "\""})})},
  :data-attribute
  {:tag :alt,
   :parsers
-  ({:tag :cat,
+  ({:tag :nt, :keyword :global-attribute}
+   {:tag :cat,
     :parsers
     ({:tag :string, :string "value=\""}
      {:tag :nt, :keyword :attr-val-data__value}
-     {:tag :string, :string "\""})}
-   {:tag :nt, :keyword :global-attribute})},
+     {:tag :string, :string "\""})})},
  :mime-type
  {:tag :regexp, :regexp #"[a-z]+/[a-z0-9+-]+", :comments (" HTML ")},
  :attr-val-link__crossorigin
@@ -2317,7 +2317,8 @@
  :script-attribute
  {:tag :alt,
   :parsers
-  ({:tag :cat,
+  ({:tag :nt, :keyword :global-attribute}
+   {:tag :cat,
     :parsers
     ({:tag :string, :string "async"}
      {:tag :nt, :keyword :opt-boolean})}
@@ -2349,8 +2350,7 @@
     :parsers
     ({:tag :string, :string "type=\""}
      {:tag :nt, :keyword :attr-val-script__type}
-     {:tag :string, :string "\""})}
-   {:tag :nt, :keyword :global-attribute})},
+     {:tag :string, :string "\""})})},
  :attr-val-menuitem__icon
  {:tag :alt, :parsers ({:tag :epsilon} {:tag :nt, :keyword :url})},
  :attr-val-input__formenctype
@@ -2434,7 +2434,8 @@
  :td-attribute
  {:tag :alt,
   :parsers
-  ({:tag :cat,
+  ({:tag :nt, :keyword :global-attribute}
+   {:tag :cat,
     :parsers
     ({:tag :string, :string "colspan=\""}
      {:tag :nt, :keyword :attr-val-td__colspan}
@@ -2448,8 +2449,7 @@
     :parsers
     ({:tag :string, :string "rowspan=\""}
      {:tag :nt, :keyword :attr-val-td__rowspan}
-     {:tag :string, :string "\""})}
-   {:tag :nt, :keyword :global-attribute})},
+     {:tag :string, :string "\""})})},
  :attr-val-video__poster
  {:tag :alt, :parsers ({:tag :epsilon} {:tag :nt, :keyword :url})},
  :attr-val-global__lang
@@ -2460,7 +2460,8 @@
  :meter-attribute
  {:tag :alt,
   :parsers
-  ({:tag :cat,
+  ({:tag :nt, :keyword :global-attribute}
+   {:tag :cat,
     :parsers
     ({:tag :string, :string "high=\""}
      {:tag :nt, :keyword :attr-val-meter__high}
@@ -2489,8 +2490,7 @@
     :parsers
     ({:tag :string, :string "value=\""}
      {:tag :nt, :keyword :attr-val-meter__value}
-     {:tag :string, :string "\""})}
-   {:tag :nt, :keyword :global-attribute})},
+     {:tag :string, :string "\""})})},
  :attribute-data
  {:tag :regexp,
   :regexp #"[^\"]*",
@@ -2514,7 +2514,8 @@
  :meta-attribute
  {:tag :alt,
   :parsers
-  ({:tag :cat,
+  ({:tag :nt, :keyword :global-attribute}
+   {:tag :cat,
     :parsers
     ({:tag :string, :string "charset=\""}
      {:tag :nt, :keyword :attr-val-meta__charset}
@@ -2533,8 +2534,7 @@
     :parsers
     ({:tag :string, :string "name=\""}
      {:tag :nt, :keyword :attr-val-meta__name}
-     {:tag :string, :string "\""})}
-   {:tag :nt, :keyword :global-attribute})},
+     {:tag :string, :string "\""})})},
  :attr-val-meta__charset
  {:tag :alt,
   :parsers ({:tag :epsilon} {:tag :nt, :keyword :encoding-label})},
@@ -2544,10 +2544,11 @@
  :details-attribute
  {:tag :alt,
   :parsers
-  ({:tag :cat,
+  ({:tag :nt, :keyword :global-attribute}
+   {:tag :cat,
     :parsers
-    ({:tag :string, :string "open"} {:tag :nt, :keyword :opt-boolean})}
-   {:tag :nt, :keyword :global-attribute})},
+    ({:tag :string, :string "open"}
+     {:tag :nt, :keyword :opt-boolean})})},
  :attr-val-area__target
  {:tag :alt, :parsers ({:tag :epsilon} {:tag :nt, :keyword :name})},
  :attr-val-select__autocomplete
@@ -2637,7 +2638,8 @@
        ({:tag :nt, :keyword :rS, :hide true}
         {:tag :nt, :keyword :name})}})})},
  :h2-attribute {:tag :nt, :keyword :global-attribute},
- :floating-point-number {:tag :regexp, :regexp #"-?[0-9]*[.][0-9]+"},
+ :floating-point-number
+ {:tag :regexp, :regexp #"-?[0-9]*[.][0-9]+(?:[eE]-?[0-9]+)?"},
  :attr-val-button__form
  {:tag :alt, :parsers ({:tag :epsilon} {:tag :nt, :keyword :name})},
  :attr-val-link__hreflang
@@ -2659,12 +2661,12 @@
  :blockquote-attribute
  {:tag :alt,
   :parsers
-  ({:tag :cat,
+  ({:tag :nt, :keyword :global-attribute}
+   {:tag :cat,
     :parsers
     ({:tag :string, :string "cite=\""}
      {:tag :nt, :keyword :attr-val-blockquote__cite}
-     {:tag :string, :string "\""})}
-   {:tag :nt, :keyword :global-attribute})},
+     {:tag :string, :string "\""})})},
  :attr-val-textarea__inputmode
  {:tag :alt,
   :parsers
@@ -2694,7 +2696,8 @@
  :audio-attribute
  {:tag :alt,
   :parsers
-  ({:tag :cat,
+  ({:tag :nt, :keyword :global-attribute}
+   {:tag :cat,
     :parsers
     ({:tag :string, :string "autoplay"}
      {:tag :nt, :keyword :opt-boolean})}
@@ -2723,8 +2726,7 @@
     :parsers
     ({:tag :string, :string "src=\""}
      {:tag :nt, :keyword :attr-val-audio__src}
-     {:tag :string, :string "\""})}
-   {:tag :nt, :keyword :global-attribute})},
+     {:tag :string, :string "\""})})},
  :attr-val-menuitem__command
  {:tag :alt, :parsers ({:tag :epsilon} {:tag :nt, :keyword :name})},
  :hr-attribute {:tag :nt, :keyword :global-attribute},
@@ -2732,7 +2734,8 @@
  :base-attribute
  {:tag :alt,
   :parsers
-  ({:tag :cat,
+  ({:tag :nt, :keyword :global-attribute}
+   {:tag :cat,
     :parsers
     ({:tag :string, :string "href=\""}
      {:tag :nt, :keyword :attr-val-base__href}
@@ -2741,12 +2744,12 @@
     :parsers
     ({:tag :string, :string "target=\""}
      {:tag :nt, :keyword :attr-val-base__target}
-     {:tag :string, :string "\""})}
-   {:tag :nt, :keyword :global-attribute})},
+     {:tag :string, :string "\""})})},
  :link-attribute
  {:tag :alt,
   :parsers
-  ({:tag :cat,
+  ({:tag :nt, :keyword :global-attribute}
+   {:tag :cat,
     :parsers
     ({:tag :string, :string "crossorigin=\""}
      {:tag :nt, :keyword :attr-val-link__crossorigin}
@@ -2790,8 +2793,7 @@
     :parsers
     ({:tag :string, :string "type=\""}
      {:tag :nt, :keyword :attr-val-link__type}
-     {:tag :string, :string "\""})}
-   {:tag :nt, :keyword :global-attribute})},
+     {:tag :string, :string "\""})})},
  :attr-val-a__rel
  {:tag :alt,
   :parsers
@@ -2820,7 +2822,8 @@
  :textarea-attribute
  {:tag :alt,
   :parsers
-  ({:tag :cat,
+  ({:tag :nt, :keyword :global-attribute}
+   {:tag :cat,
     :parsers
     ({:tag :string, :string "autofocus"}
      {:tag :nt, :keyword :opt-boolean})}
@@ -2890,12 +2893,12 @@
     :parsers
     ({:tag :string, :string "wrap=\""}
      {:tag :nt, :keyword :attr-val-textarea__wrap}
-     {:tag :string, :string "\""})}
-   {:tag :nt, :keyword :global-attribute})},
+     {:tag :string, :string "\""})})},
  :video-attribute
  {:tag :alt,
   :parsers
-  ({:tag :cat,
+  ({:tag :nt, :keyword :global-attribute}
+   {:tag :cat,
     :parsers
     ({:tag :string, :string "autoplay"}
      {:tag :nt, :keyword :opt-boolean})}
@@ -2939,8 +2942,7 @@
     :parsers
     ({:tag :string, :string "width=\""}
      {:tag :nt, :keyword :attr-val-video__width}
-     {:tag :string, :string "\""})}
-   {:tag :nt, :keyword :global-attribute})},
+     {:tag :string, :string "\""})})},
  :attr-val-embed__width
  {:tag :alt,
   :parsers
@@ -3066,7 +3068,8 @@
  :select-attribute
  {:tag :alt,
   :parsers
-  ({:tag :cat,
+  ({:tag :nt, :keyword :global-attribute}
+   {:tag :cat,
     :parsers
     ({:tag :string, :string "autofocus"}
      {:tag :nt, :keyword :opt-boolean})}
@@ -3101,8 +3104,7 @@
     :parsers
     ({:tag :string, :string "size=\""}
      {:tag :nt, :keyword :attr-val-select__size}
-     {:tag :string, :string "\""})}
-   {:tag :nt, :keyword :global-attribute})},
+     {:tag :string, :string "\""})})},
  :title
  {:tag :cat,
   :parsers
@@ -3120,7 +3122,8 @@
  :option-attribute
  {:tag :alt,
   :parsers
-  ({:tag :cat,
+  ({:tag :nt, :keyword :global-attribute}
+   {:tag :cat,
     :parsers
     ({:tag :string, :string "disabled"}
      {:tag :nt, :keyword :opt-boolean})}
@@ -3137,8 +3140,7 @@
     :parsers
     ({:tag :string, :string "value=\""}
      {:tag :nt, :keyword :attr-val-option__value}
-     {:tag :string, :string "\""})}
-   {:tag :nt, :keyword :global-attribute})},
+     {:tag :string, :string "\""})})},
  :dd-attribute {:tag :nt, :keyword :global-attribute},
  :attr-val-canvas__width
  {:tag :alt,
@@ -3206,7 +3208,8 @@
  :th-attribute
  {:tag :alt,
   :parsers
-  ({:tag :cat,
+  ({:tag :nt, :keyword :global-attribute}
+   {:tag :cat,
     :parsers
     ({:tag :string, :string "abbr=\""}
      {:tag :nt, :keyword :attr-val-th__abbr}
@@ -3230,8 +3233,7 @@
     :parsers
     ({:tag :string, :string "scope=\""}
      {:tag :nt, :keyword :attr-val-th__scope}
-     {:tag :string, :string "\""})}
-   {:tag :nt, :keyword :global-attribute})},
+     {:tag :string, :string "\""})})},
  :sup-attribute {:tag :nt, :keyword :global-attribute},
  :attr-val-iframe__width
  {:tag :alt,
@@ -3299,7 +3301,8 @@
  :object-attribute
  {:tag :alt,
   :parsers
-  ({:tag :cat,
+  ({:tag :nt, :keyword :global-attribute}
+   {:tag :cat,
     :parsers
     ({:tag :string, :string "typemustmatch"}
      {:tag :nt, :keyword :opt-boolean})}
@@ -3332,8 +3335,7 @@
     :parsers
     ({:tag :string, :string "width=\""}
      {:tag :nt, :keyword :attr-val-object__width}
-     {:tag :string, :string "\""})}
-   {:tag :nt, :keyword :global-attribute})},
+     {:tag :string, :string "\""})})},
  :attr-val-style__title
  {:tag :alt,
   :parsers ({:tag :epsilon} {:tag :nt, :keyword :attribute-data})},
@@ -3341,12 +3343,12 @@
  :abbr-attribute
  {:tag :alt,
   :parsers
-  ({:tag :cat,
+  ({:tag :nt, :keyword :global-attribute}
+   {:tag :cat,
     :parsers
     ({:tag :string, :string "title=\""}
      {:tag :nt, :keyword :attr-val-abbr__title}
-     {:tag :string, :string "\""})}
-   {:tag :nt, :keyword :global-attribute})},
+     {:tag :string, :string "\""})})},
  :code-attribute {:tag :nt, :keyword :global-attribute},
  :datalist-attribute {:tag :nt, :keyword :global-attribute},
  :rtc-attribute {:tag :nt, :keyword :global-attribute},
@@ -3372,7 +3374,8 @@
  :ins-attribute
  {:tag :alt,
   :parsers
-  ({:tag :cat,
+  ({:tag :nt, :keyword :global-attribute}
+   {:tag :cat,
     :parsers
     ({:tag :string, :string "cite=\""}
      {:tag :nt, :keyword :attr-val-ins__cite}
@@ -3381,12 +3384,12 @@
     :parsers
     ({:tag :string, :string "datetime=\""}
      {:tag :nt, :keyword :attr-val-ins__datetime}
-     {:tag :string, :string "\""})}
-   {:tag :nt, :keyword :global-attribute})},
+     {:tag :string, :string "\""})})},
  :style-attribute
  {:tag :alt,
   :parsers
-  ({:tag :cat,
+  ({:tag :nt, :keyword :global-attribute}
+   {:tag :cat,
     :parsers
     ({:tag :string, :string "media=\""}
      {:tag :nt, :keyword :attr-val-style__media}
@@ -3405,8 +3408,7 @@
     :parsers
     ({:tag :string, :string "type=\""}
      {:tag :nt, :keyword :attr-val-style__type}
-     {:tag :string, :string "\""})}
-   {:tag :nt, :keyword :global-attribute})},
+     {:tag :string, :string "\""})})},
  :attr-val-select__name
  {:tag :alt,
   :parsers ({:tag :epsilon} {:tag :nt, :keyword :attribute-data})},
@@ -3443,7 +3445,8 @@
  :del-attribute
  {:tag :alt,
   :parsers
-  ({:tag :cat,
+  ({:tag :nt, :keyword :global-attribute}
+   {:tag :cat,
     :parsers
     ({:tag :string, :string "cite=\""}
      {:tag :nt, :keyword :attr-val-del__cite}
@@ -3452,12 +3455,12 @@
     :parsers
     ({:tag :string, :string "datetime=\""}
      {:tag :nt, :keyword :attr-val-del__datetime}
-     {:tag :string, :string "\""})}
-   {:tag :nt, :keyword :global-attribute})},
+     {:tag :string, :string "\""})})},
  :progress-attribute
  {:tag :alt,
   :parsers
-  ({:tag :cat,
+  ({:tag :nt, :keyword :global-attribute}
+   {:tag :cat,
     :parsers
     ({:tag :string, :string "max=\""}
      {:tag :nt, :keyword :attr-val-progress__max}
@@ -3466,8 +3469,7 @@
     :parsers
     ({:tag :string, :string "value=\""}
      {:tag :nt, :keyword :attr-val-progress__value}
-     {:tag :string, :string "\""})}
-   {:tag :nt, :keyword :global-attribute})},
+     {:tag :string, :string "\""})})},
  :attr-val-link__sizes
  {:tag :alt,
   :parsers
@@ -3492,7 +3494,8 @@
  :optgroup-attribute
  {:tag :alt,
   :parsers
-  ({:tag :cat,
+  ({:tag :nt, :keyword :global-attribute}
+   {:tag :cat,
     :parsers
     ({:tag :string, :string "disabled"}
      {:tag :nt, :keyword :opt-boolean})}
@@ -3500,8 +3503,7 @@
     :parsers
     ({:tag :string, :string "label=\""}
      {:tag :nt, :keyword :attr-val-optgroup__label}
-     {:tag :string, :string "\""})}
-   {:tag :nt, :keyword :global-attribute})},
+     {:tag :string, :string "\""})})},
  :attr-val-textarea__rows
  {:tag :alt,
   :parsers
@@ -3524,11 +3526,7 @@
  :address-attribute {:tag :nt, :keyword :global-attribute},
  :attr-val-del__cite
  {:tag :alt, :parsers ({:tag :epsilon} {:tag :nt, :keyword :url})},
- :comment
- {:tag :regexp,
-  :regexp #"<!--(?:[^-]|-[^-])*-->",
-  :comments
-  ("\nDefinitions for HTML tag attribute values\nThis is lovingly hand-crafted (i.e. hard-coded) based on data\nfrom MDN: https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes\n")},
+ :comment {:tag :regexp, :regexp #"<!--(?:[^-]|-[^-])*-->"},
  :attr-val-global__draggable
  {:tag :alt,
   :parsers
@@ -3554,7 +3552,9 @@
     ({:tag :string, :string "prefix=\""}
      {:tag :regexp, :regexp #"[^\"]*"}
      {:tag :string, :string "\""})}
-   {:tag :nt, :keyword :global-attribute})},
+   {:tag :nt, :keyword :global-attribute}),
+  :comments
+  ("\nDefinitions for HTML tag attribute values\nThis is lovingly hand-crafted (i.e. hard-coded) based on data\nfrom MDN: https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes\n")},
  :attr-val-form__autocomplete
  {:tag :alt,
   :parsers
@@ -3572,7 +3572,8 @@
  :keygen-attribute
  {:tag :alt,
   :parsers
-  ({:tag :cat,
+  ({:tag :nt, :keyword :global-attribute}
+   {:tag :cat,
     :parsers
     ({:tag :string, :string "autofocus"}
      {:tag :nt, :keyword :opt-boolean})}
@@ -3599,8 +3600,7 @@
     :parsers
     ({:tag :string, :string "name=\""}
      {:tag :nt, :keyword :attr-val-keygen__name}
-     {:tag :string, :string "\""})}
-   {:tag :nt, :keyword :global-attribute})},
+     {:tag :string, :string "\""})})},
  :attr-val-global__contenteditable
  {:tag :alt,
   :parsers
@@ -3610,7 +3610,8 @@
  :menu-attribute
  {:tag :alt,
   :parsers
-  ({:tag :cat,
+  ({:tag :nt, :keyword :global-attribute}
+   {:tag :cat,
     :parsers
     ({:tag :string, :string "label=\""}
      {:tag :nt, :keyword :attr-val-menu__label}
@@ -3619,13 +3620,13 @@
     :parsers
     ({:tag :string, :string "type=\""}
      {:tag :nt, :keyword :attr-val-menu__type}
-     {:tag :string, :string "\""})}
-   {:tag :nt, :keyword :global-attribute})},
+     {:tag :string, :string "\""})})},
  :s-attribute {:tag :nt, :keyword :global-attribute},
  :input-attribute
  {:tag :alt,
   :parsers
-  ({:tag :cat,
+  ({:tag :nt, :keyword :global-attribute}
+   {:tag :cat,
     :parsers
     ({:tag :string, :string "autofocus"}
      {:tag :nt, :keyword :opt-boolean})}
@@ -3782,12 +3783,12 @@
     :parsers
     ({:tag :string, :string "width=\""}
      {:tag :nt, :keyword :attr-val-input__width}
-     {:tag :string, :string "\""})}
-   {:tag :nt, :keyword :global-attribute})},
+     {:tag :string, :string "\""})})},
  :label-attribute
  {:tag :alt,
   :parsers
-  ({:tag :cat,
+  ({:tag :nt, :keyword :global-attribute}
+   {:tag :cat,
     :parsers
     ({:tag :string, :string "for=\""}
      {:tag :nt, :keyword :attr-val-label__for}
@@ -3796,15 +3797,15 @@
     :parsers
     ({:tag :string, :string "form=\""}
      {:tag :nt, :keyword :attr-val-label__form}
-     {:tag :string, :string "\""})}
-   {:tag :nt, :keyword :global-attribute})},
+     {:tag :string, :string "\""})})},
  :attr-val-meta__http-equiv
  {:tag :alt,
   :parsers ({:tag :epsilon} {:tag :nt, :keyword :attribute-data})},
  :ol-attribute
  {:tag :alt,
   :parsers
-  ({:tag :cat,
+  ({:tag :nt, :keyword :global-attribute}
+   {:tag :cat,
     :parsers
     ({:tag :string, :string "reversed"}
      {:tag :nt, :keyword :opt-boolean})}
@@ -3817,8 +3818,7 @@
     :parsers
     ({:tag :string, :string "type=\""}
      {:tag :nt, :keyword :attr-val-ol__type}
-     {:tag :string, :string "\""})}
-   {:tag :nt, :keyword :global-attribute})},
+     {:tag :string, :string "\""})})},
  :em-attribute {:tag :nt, :keyword :global-attribute},
  :attr-val-keygen__keytype
  {:tag :alt,
@@ -3898,12 +3898,12 @@
  :colgroup-attribute
  {:tag :alt,
   :parsers
-  ({:tag :cat,
+  ({:tag :nt, :keyword :global-attribute}
+   {:tag :cat,
     :parsers
     ({:tag :string, :string "span=\""}
      {:tag :nt, :keyword :attr-val-colgroup__span}
-     {:tag :string, :string "\""})}
-   {:tag :nt, :keyword :global-attribute})},
+     {:tag :string, :string "\""})})},
  :attr-val-track__srclang
  {:tag :alt, :parsers ({:tag :epsilon} {:tag :nt, :keyword :lang})},
  :attr-val-blockquote__cite
@@ -3952,7 +3952,8 @@
  :output-attribute
  {:tag :alt,
   :parsers
-  ({:tag :cat,
+  ({:tag :nt, :keyword :global-attribute}
+   {:tag :cat,
     :parsers
     ({:tag :string, :string "for=\""}
      {:tag :nt, :keyword :attr-val-output__for}
@@ -3966,8 +3967,7 @@
     :parsers
     ({:tag :string, :string "name=\""}
      {:tag :nt, :keyword :attr-val-output__name}
-     {:tag :string, :string "\""})}
-   {:tag :nt, :keyword :global-attribute})},
+     {:tag :string, :string "\""})})},
  :attr-val-video__preload
  {:tag :alt,
   :parsers
@@ -3987,7 +3987,8 @@
  :area-attribute
  {:tag :alt,
   :parsers
-  ({:tag :cat,
+  ({:tag :nt, :keyword :global-attribute}
+   {:tag :cat,
     :parsers
     ({:tag :string, :string "alt=\""}
      {:tag :nt, :keyword :attr-val-area__alt}
@@ -4031,8 +4032,7 @@
     :parsers
     ({:tag :string, :string "type=\""}
      {:tag :nt, :keyword :attr-val-area__type}
-     {:tag :string, :string "\""})}
-   {:tag :nt, :keyword :global-attribute})},
+     {:tag :string, :string "\""})})},
  :attr-val-meter__min
  {:tag :alt,
   :parsers
@@ -4040,7 +4040,8 @@
  :iframe-attribute
  {:tag :alt,
   :parsers
-  ({:tag :cat,
+  ({:tag :nt, :keyword :global-attribute}
+   {:tag :cat,
     :parsers
     ({:tag :string, :string "allowfullscreen"}
      {:tag :nt, :keyword :opt-boolean})}
@@ -4073,8 +4074,7 @@
     :parsers
     ({:tag :string, :string "width=\""}
      {:tag :nt, :keyword :attr-val-iframe__width}
-     {:tag :string, :string "\""})}
-   {:tag :nt, :keyword :global-attribute})},
+     {:tag :string, :string "\""})})},
  :attr-val-fieldset__name
  {:tag :alt,
   :parsers ({:tag :epsilon} {:tag :nt, :keyword :attribute-data})},
@@ -4093,12 +4093,12 @@
  :dfn-attribute
  {:tag :alt,
   :parsers
-  ({:tag :cat,
+  ({:tag :nt, :keyword :global-attribute}
+   {:tag :cat,
     :parsers
     ({:tag :string, :string "title=\""}
      {:tag :nt, :keyword :attr-val-dfn__title}
-     {:tag :string, :string "\""})}
-   {:tag :nt, :keyword :global-attribute})},
+     {:tag :string, :string "\""})})},
  :h4-attribute {:tag :nt, :keyword :global-attribute},
  :attr-val-textarea__dirname
  {:tag :alt,
@@ -4163,7 +4163,8 @@
  :button-attribute
  {:tag :alt,
   :parsers
-  ({:tag :cat,
+  ({:tag :nt, :keyword :global-attribute}
+   {:tag :cat,
     :parsers
     ({:tag :string, :string "autofocus"}
      {:tag :nt, :keyword :opt-boolean})}
@@ -4219,8 +4220,7 @@
     :parsers
     ({:tag :string, :string "value=\""}
      {:tag :nt, :keyword :attr-val-button__value}
-     {:tag :string, :string "\""})}
-   {:tag :nt, :keyword :global-attribute})},
+     {:tag :string, :string "\""})})},
  :attr-val-ins__datetime
  {:tag :alt,
   :parsers
@@ -4255,12 +4255,12 @@
  :time-attribute
  {:tag :alt,
   :parsers
-  ({:tag :cat,
+  ({:tag :nt, :keyword :global-attribute}
+   {:tag :cat,
     :parsers
     ({:tag :string, :string "datetime=\""}
      {:tag :nt, :keyword :attr-val-time__datetime}
-     {:tag :string, :string "\""})}
-   {:tag :nt, :keyword :global-attribute})},
+     {:tag :string, :string "\""})})},
  :attr-val-input__maxlength
  {:tag :alt,
   :parsers
@@ -4311,19 +4311,20 @@
  :map-attribute
  {:tag :alt,
   :parsers
-  ({:tag :cat,
+  ({:tag :nt, :keyword :global-attribute}
+   {:tag :cat,
     :parsers
     ({:tag :string, :string "name=\""}
      {:tag :nt, :keyword :attr-val-map__name}
-     {:tag :string, :string "\""})}
-   {:tag :nt, :keyword :global-attribute})},
+     {:tag :string, :string "\""})})},
  :attr-val-li__value
  {:tag :alt, :parsers ({:tag :epsilon} {:tag :nt, :keyword :integer})},
  :p-attribute {:tag :nt, :keyword :global-attribute},
  :embed-attribute
  {:tag :alt,
   :parsers
-  ({:tag :cat,
+  ({:tag :nt, :keyword :global-attribute}
+   {:tag :cat,
     :parsers
     ({:tag :string, :string "height=\""}
      {:tag :nt, :keyword :attr-val-embed__height}
@@ -4342,8 +4343,7 @@
     :parsers
     ({:tag :string, :string "width=\""}
      {:tag :nt, :keyword :attr-val-embed__width}
-     {:tag :string, :string "\""})}
-   {:tag :nt, :keyword :global-attribute})},
+     {:tag :string, :string "\""})})},
  :h5-attribute {:tag :nt, :keyword :global-attribute},
  :attr-val-button__formmethod
  {:tag :alt,
@@ -4450,7 +4450,8 @@
  :track-attribute
  {:tag :alt,
   :parsers
-  ({:tag :cat,
+  ({:tag :nt, :keyword :global-attribute}
+   {:tag :cat,
     :parsers
     ({:tag :string, :string "default"}
      {:tag :nt, :keyword :opt-boolean})}
@@ -4473,8 +4474,7 @@
     :parsers
     ({:tag :string, :string "srclang=\""}
      {:tag :nt, :keyword :attr-val-track__srclang}
-     {:tag :string, :string "\""})}
-   {:tag :nt, :keyword :global-attribute})},
+     {:tag :string, :string "\""})})},
  :noscript-attribute {:tag :nt, :keyword :global-attribute},
  :rp-attribute {:tag :nt, :keyword :global-attribute},
  :attr-val-input__placeholder

@@ -1,6 +1,7 @@
 (ns wend.cli
   (:require [clojure.tools.cli :refer [parse-opts]]
             [clojure.java.io :as io]
+            [clojure.string :refer [ends-with?]]
             [clojure.pprint :refer [pprint]]
 
             [instacheck.core :as instacheck]
@@ -94,19 +95,23 @@
    [:body-test :cat 4 :star 0 :alt 0] [:body :cat 3 :star 0 :alt 0]
    [:body-test :cat 4 :star 0 :alt 1] [:body :cat 3 :star 0 :alt 1]
 
-   ;; Order is swapped (TODO: fix in grammar)
-   [:css-assignments-test :alt 0]     [:css-assignments :alt 1]
-   [:css-assignments-test :alt 1]     [:css-assignments :alt 0]
-   [:css-assignments-test :alt 0 :cat 1 :star nil]
-   ,,, [:css-assignments :alt 1 :cat 2 :star nil]
-   [:css-assignments-test :alt 0 :cat 1 :star 0]
-   ,,, [:css-assignments :alt 1 :cat 2 :star 0]
+   [:css-assignments-test :alt 0]     [:css-assignments :alt 0]
+   [:css-assignments-test :alt 1]     [:css-assignments :alt 1]
+   [:css-assignments-test :alt 1 :cat 1 :star nil]
+   ,,,                                [:css-assignments :alt 1 :cat 2 :star nil]
+   [:css-assignments-test :alt 1 :cat 1 :star 0]
+   ,,,                                [:css-assignments :alt 1 :cat 2 :star 0]
 
    ;; No great match, but use the closest elements
    [:char-data-test :alt 0]           [:content :alt 0]
    [:char-data-test :alt 1]           [:content :alt 0]
    [:char-data-test :alt 2]           [:content :alt 1]
    [:char-data-test :alt 3]           [:content :alt 0]
+
+   ;; Just use even weights for url types
+   [:url-test :alt 0]                 100
+   [:url-test :alt 1]                 100
+   [:url-test :alt 2]                 100
 
    ;; Increase style attr since style and linked stylesheets are not
    ;; used in gen mode. Sum the :element weights to get a decently
@@ -129,12 +134,70 @@
     wtrek
     mapping))
 
+;;(defn mangle-wtrek
+;;  [orig-wtrek multiplier]
+;;  (let [;; Apply the gen-weight-mapping transforms
+;;        wtrek1 (apply-weight-mapping orig-wtrek gen-weight-mapping)
+;;        ;; Multiply weights by multiplier factor
+;;        wtrek2 (into {} (for [[p w] wtrek1]
+;;                          [p (* w multiplier)]))
+;;        ;; Make sure that global attributes have weight so that style
+;;        ;; will appear since style and linked stylesheets are not used
+;;        ;; in gen mode.
+;;        paths (reduce
+;;                (fn [ps [p w]]
+;;                  (cond
+;;                    (and (ends-with? (first p) "-attribute")
+;;                         (not= :global-attribute (first p)))
+;;                    (conj ps [(first p) :alt 0])
+;;                    :else
+;;                    ps))
+;;                #{}
+;;                wtrek2)
+;;        wtrek3 (reduce (fn [tk p]
+;;                         (assoc tk p 77 #_(max 100 (or (get tk p) 0))))
+;;                       wtrek2
+;;                       paths)]
+;;    wtrek3))
+
+(defn mangle-wtrek
+  [html-grammar orig-wtrek multiplier]
+  (let [;; Apply the gen-weight-mapping transforms
+        wtrek1 (apply-weight-mapping orig-wtrek gen-weight-mapping)
+        ;; Multiply weights by multiplier factor
+        wtrek2 (into {} (for [[p w] wtrek1]
+                          [p (* w multiplier)]))
+        ;; Make sure that global attributes have weight so that style
+        ;; will appear since style and linked stylesheets are not used
+        ;; in gen mode.
+        wtrek3 (reduce
+                 (fn [tk [p w]]
+                   (if (and (= 3 (count p))
+                            (= [:element :alt] (take 2 p)))
+                     (let [attr (-> (igrammar/get-in-grammar html-grammar p)
+                                    :parsers
+                                    (nth 0)
+                                    :string
+                                    (subs 1)
+                                    (str "-attribute")
+                                    keyword)]
+                       (assoc tk
+                              [:element :alt (nth p 2) :cat 1 :star 0] 77
+                              [attr :alt 0] 78))
+                     tk))
+                 wtrek2
+                 wtrek2)]
+    wtrek3))
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Command line usage of wend
 
 (def cli-options
   [[nil "--debug" "Add debug comments to generated code"]
    [nil "--verbose" "Verbose output during execution"]
+   [nil "--multiplier MULTIPLIER" "Multiply parsed weights by MULTIPLIER"
+    :default 100]
    [nil "--weights-output WEIGHTS-OUTPUT" "Write all resulting frequency weights to WEIGHTS-OUTPUT"]
    [nil "--parse-output PARSE-OUTPUT" "Write resulting parse data to PARSE-OUTPUT"]
    [nil "--html-ebnf-output HTML-EBNF-OUTPUT" "Write pruned HTML EBNF grammar to HTML-EBNF-OUTPUT"]
@@ -154,7 +217,7 @@
   [& args]
   (let [opts (opt-errors (parse-opts args
                                      cli-options :in-order true))
-        {:keys [parse-output weights-output
+        {:keys [multiplier parse-output weights-output
                 html-ebnf-output css-ebnf-output]} (:options opts)
         [& files] (:arguments opts)
         _ (pr-err "Loading HTML parser")
@@ -162,21 +225,22 @@
         _ (pr-err "Loading CSS parser")
         css-parser (mend.parse/load-parser-from-grammar :css :parse)
         parse-data (parse-files html-parser css-parser files)
-        wtrek (:full-wtrek parse-data)
-        gen-wtrek (apply-weight-mapping wtrek gen-weight-mapping)]
+        gen-wtrek (mangle-wtrek (:grammar html-parser)
+                                (:full-wtrek parse-data)
+                                multiplier)]
     (pr-err (str "Combined and filtered weights: "
-                 (count wtrek)))
+                 (count gen-wtrek)))
     (when parse-output
       (pr-err (str "Saving parse data to: '" parse-output "'"))
       (spit parse-output parse-data))
     (when html-ebnf-output
       (pr-err (str "Generating pruned HTML EBNF"))
-      (let [ebnf (parser-wtrek->ebnf html-parser wtrek)]
+      (let [ebnf (parser-wtrek->ebnf html-parser gen-wtrek)]
         (pr-err (str "Saving pruned HTML EBNF to: '" html-ebnf-output "'"))
         (spit html-ebnf-output ebnf)))
     (when css-ebnf-output
       (pr-err (str "Generating pruned CSS EBNF"))
-      (let [ebnf (parser-wtrek->ebnf css-parser wtrek)]
+      (let [ebnf (parser-wtrek->ebnf css-parser gen-wtrek)]
         (pr-err (str "Saving pruned CSS EBNF to: '" css-ebnf-output "'"))
         (spit css-ebnf-output ebnf)))
     (when weights-output

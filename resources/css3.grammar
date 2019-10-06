@@ -3982,7 +3982,8 @@
          {:tag :nt, :keyword :S})})})})},
  :nonprop-column-rule-style
  {:tag :nt, :keyword :prop-column-rule-style},
- :floating-point-number {:tag :regexp, :regexp #"-?[0-9]*[.][0-9]+"},
+ :floating-point-number
+ {:tag :regexp, :regexp #"-?[0-9]*[.][0-9]+(?:[eE]-?[0-9]+)?"},
  :nonprop-attribute-selector
  {:tag :alt,
   :parsers
@@ -6287,7 +6288,8 @@
     :parsers ({:tag :string, :string "auto"} {:tag :nt, :keyword :S})}
    {:tag :nt, :keyword :nonprop-length}
    {:tag :nt, :keyword :nonprop-percentage})},
- :lang {:tag :regexp, :regexp #"[a-z]+(?:-[A-Za-z]+)?"},
+ :lang
+ {:tag :regexp, :regexp #"[a-z]+(?:-[A-Za-z]+)?", :comments (" CSS ")},
  :nonprop-grid-template-rows
  {:tag :nt, :keyword :prop-grid-template-rows},
  :nonprop-row-gap {:tag :nt, :keyword :prop-row-gap},
@@ -8533,8 +8535,7 @@
    {:tag :string, :string "in"}
    {:tag :string, :string "pt"}
    {:tag :string, :string "pc"}
-   {:tag :string, :string "mozmm"}),
-  :comments (" CSS ")},
+   {:tag :string, :string "mozmm"})},
  :nonprop-an-plus-b {:tag :string, :string "STUB_an_plus_b"},
  :prop-border-inline-start-width
  {:tag :alt,

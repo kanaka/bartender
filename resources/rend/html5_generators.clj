@@ -513,31 +513,31 @@
         gen-track-attribute
         (igen/freq :track-attribute [
           [(get w [:track-attribute :alt 0] 100)
+            (:global-attribute g)]
+          [(get w [:track-attribute :alt 1] 100)
             (gen/tuple
               (gen/return "default")
               (:opt-boolean g))]
-          [(get w [:track-attribute :alt 1] 100)
+          [(get w [:track-attribute :alt 2] 100)
             (gen/tuple
               (gen/return "kind=\"")
               (:attr-val-track__kind g)
               (gen/return "\""))]
-          [(get w [:track-attribute :alt 2] 100)
+          [(get w [:track-attribute :alt 3] 100)
             (gen/tuple
               (gen/return "label=\"")
               (:attr-val-track__label g)
               (gen/return "\""))]
-          [(get w [:track-attribute :alt 3] 100)
+          [(get w [:track-attribute :alt 4] 100)
             (gen/tuple
               (gen/return "src=\"")
               (:attr-val-track__src g)
               (gen/return "\""))]
-          [(get w [:track-attribute :alt 4] 100)
+          [(get w [:track-attribute :alt 5] 100)
             (gen/tuple
               (gen/return "srclang=\"")
               (:attr-val-track__srclang g)
-              (gen/return "\""))]
-          [(get w [:track-attribute :alt 5] 100)
-            (:global-attribute g)]])
+              (gen/return "\""))]])
         g (assoc g :track-attribute gen-track-attribute)
 
         gen-section-attribute
@@ -654,27 +654,27 @@
         gen-embed-attribute
         (igen/freq :embed-attribute [
           [(get w [:embed-attribute :alt 0] 100)
+            (:global-attribute g)]
+          [(get w [:embed-attribute :alt 1] 100)
             (gen/tuple
               (gen/return "height=\"")
               (:attr-val-embed__height g)
               (gen/return "\""))]
-          [(get w [:embed-attribute :alt 1] 100)
+          [(get w [:embed-attribute :alt 2] 100)
             (gen/tuple
               (gen/return "src=\"")
               (:attr-val-embed__src g)
               (gen/return "\""))]
-          [(get w [:embed-attribute :alt 2] 100)
+          [(get w [:embed-attribute :alt 3] 100)
             (gen/tuple
               (gen/return "type=\"")
               (:attr-val-embed__type g)
               (gen/return "\""))]
-          [(get w [:embed-attribute :alt 3] 100)
+          [(get w [:embed-attribute :alt 4] 100)
             (gen/tuple
               (gen/return "width=\"")
               (:attr-val-embed__width g)
-              (gen/return "\""))]
-          [(get w [:embed-attribute :alt 4] 100)
-            (:global-attribute g)]])
+              (gen/return "\""))]])
         g (assoc g :embed-attribute gen-embed-attribute)
 
         gen-p-attribute
@@ -700,12 +700,12 @@
         gen-map-attribute
         (igen/freq :map-attribute [
           [(get w [:map-attribute :alt 0] 100)
+            (:global-attribute g)]
+          [(get w [:map-attribute :alt 1] 100)
             (gen/tuple
               (gen/return "name=\"")
               (:attr-val-map__name g)
-              (gen/return "\""))]
-          [(get w [:map-attribute :alt 1] 100)
-            (:global-attribute g)]])
+              (gen/return "\""))]])
         g (assoc g :map-attribute gen-map-attribute)
 
         gen-attr-val-label__form
@@ -808,12 +808,12 @@
         gen-time-attribute
         (igen/freq :time-attribute [
           [(get w [:time-attribute :alt 0] 100)
+            (:global-attribute g)]
+          [(get w [:time-attribute :alt 1] 100)
             (gen/tuple
               (gen/return "datetime=\"")
               (:attr-val-time__datetime g)
-              (gen/return "\""))]
-          [(get w [:time-attribute :alt 1] 100)
-            (:global-attribute g)]])
+              (gen/return "\""))]])
         g (assoc g :time-attribute gen-time-attribute)
 
         gen-h6-attribute
@@ -937,64 +937,64 @@
         gen-button-attribute
         (igen/freq :button-attribute [
           [(get w [:button-attribute :alt 0] 100)
+            (:global-attribute g)]
+          [(get w [:button-attribute :alt 1] 100)
             (gen/tuple
               (gen/return "autofocus")
               (:opt-boolean g))]
-          [(get w [:button-attribute :alt 1] 100)
+          [(get w [:button-attribute :alt 2] 100)
             (gen/tuple
               (gen/return "disabled")
               (:opt-boolean g))]
-          [(get w [:button-attribute :alt 2] 100)
+          [(get w [:button-attribute :alt 3] 100)
             (gen/tuple
               (gen/return "formnovalidate")
               (:opt-boolean g))]
-          [(get w [:button-attribute :alt 3] 100)
+          [(get w [:button-attribute :alt 4] 100)
             (gen/tuple
               (gen/return "form=\"")
               (:attr-val-button__form g)
               (gen/return "\""))]
-          [(get w [:button-attribute :alt 4] 100)
+          [(get w [:button-attribute :alt 5] 100)
             (gen/tuple
               (gen/return "formaction=\"")
               (:attr-val-button__formaction g)
               (gen/return "\""))]
-          [(get w [:button-attribute :alt 5] 100)
+          [(get w [:button-attribute :alt 6] 100)
             (gen/tuple
               (gen/return "formenctype=\"")
               (:attr-val-button__formenctype g)
               (gen/return "\""))]
-          [(get w [:button-attribute :alt 6] 100)
+          [(get w [:button-attribute :alt 7] 100)
             (gen/tuple
               (gen/return "formmethod=\"")
               (:attr-val-button__formmethod g)
               (gen/return "\""))]
-          [(get w [:button-attribute :alt 7] 100)
+          [(get w [:button-attribute :alt 8] 100)
             (gen/tuple
               (gen/return "formtarget=\"")
               (:attr-val-button__formtarget g)
               (gen/return "\""))]
-          [(get w [:button-attribute :alt 8] 100)
+          [(get w [:button-attribute :alt 9] 100)
             (gen/tuple
               (gen/return "menu=\"")
               (:attr-val-button__menu g)
               (gen/return "\""))]
-          [(get w [:button-attribute :alt 9] 100)
+          [(get w [:button-attribute :alt 10] 100)
             (gen/tuple
               (gen/return "name=\"")
               (:attr-val-button__name g)
               (gen/return "\""))]
-          [(get w [:button-attribute :alt 10] 100)
+          [(get w [:button-attribute :alt 11] 100)
             (gen/tuple
               (gen/return "type=\"")
               (:attr-val-button__type g)
               (gen/return "\""))]
-          [(get w [:button-attribute :alt 11] 100)
+          [(get w [:button-attribute :alt 12] 100)
             (gen/tuple
               (gen/return "value=\"")
               (:attr-val-button__value g)
-              (gen/return "\""))]
-          [(get w [:button-attribute :alt 12] 100)
-            (:global-attribute g)]])
+              (gen/return "\""))]])
         g (assoc g :button-attribute gen-button-attribute)
 
         gen-attr-val-meta__name
@@ -1085,12 +1085,12 @@
         gen-dfn-attribute
         (igen/freq :dfn-attribute [
           [(get w [:dfn-attribute :alt 0] 100)
+            (:global-attribute g)]
+          [(get w [:dfn-attribute :alt 1] 100)
             (gen/tuple
               (gen/return "title=\"")
               (:attr-val-dfn__title g)
-              (gen/return "\""))]
-          [(get w [:dfn-attribute :alt 1] 100)
-            (:global-attribute g)]])
+              (gen/return "\""))]])
         g (assoc g :dfn-attribute gen-dfn-attribute)
 
         gen-attr-val-table__border
@@ -1229,41 +1229,41 @@
         gen-iframe-attribute
         (igen/freq :iframe-attribute [
           [(get w [:iframe-attribute :alt 0] 100)
+            (:global-attribute g)]
+          [(get w [:iframe-attribute :alt 1] 100)
             (gen/tuple
               (gen/return "allowfullscreen")
               (:opt-boolean g))]
-          [(get w [:iframe-attribute :alt 1] 100)
+          [(get w [:iframe-attribute :alt 2] 100)
             (gen/tuple
               (gen/return "height=\"")
               (:attr-val-iframe__height g)
               (gen/return "\""))]
-          [(get w [:iframe-attribute :alt 2] 100)
+          [(get w [:iframe-attribute :alt 3] 100)
             (gen/tuple
               (gen/return "name=\"")
               (:attr-val-iframe__name g)
               (gen/return "\""))]
-          [(get w [:iframe-attribute :alt 3] 100)
+          [(get w [:iframe-attribute :alt 4] 100)
             (gen/tuple
               (gen/return "sandbox=\"")
               (:attr-val-iframe__sandbox g)
               (gen/return "\""))]
-          [(get w [:iframe-attribute :alt 4] 100)
+          [(get w [:iframe-attribute :alt 5] 100)
             (gen/tuple
               (gen/return "src=\"")
               (:attr-val-iframe__src g)
               (gen/return "\""))]
-          [(get w [:iframe-attribute :alt 5] 100)
+          [(get w [:iframe-attribute :alt 6] 100)
             (gen/tuple
               (gen/return "srcdoc=\"")
               (:attr-val-iframe__srcdoc g)
               (gen/return "\""))]
-          [(get w [:iframe-attribute :alt 6] 100)
+          [(get w [:iframe-attribute :alt 7] 100)
             (gen/tuple
               (gen/return "width=\"")
               (:attr-val-iframe__width g)
-              (gen/return "\""))]
-          [(get w [:iframe-attribute :alt 7] 100)
-            (:global-attribute g)]])
+              (gen/return "\""))]])
         g (assoc g :iframe-attribute gen-iframe-attribute)
 
         gen-attr-val-meter__min
@@ -1360,52 +1360,52 @@
         gen-area-attribute
         (igen/freq :area-attribute [
           [(get w [:area-attribute :alt 0] 100)
+            (:global-attribute g)]
+          [(get w [:area-attribute :alt 1] 100)
             (gen/tuple
               (gen/return "alt=\"")
               (:attr-val-area__alt g)
               (gen/return "\""))]
-          [(get w [:area-attribute :alt 1] 100)
+          [(get w [:area-attribute :alt 2] 100)
             (gen/tuple
               (gen/return "coords=\"")
               (:attr-val-area__coords g)
               (gen/return "\""))]
-          [(get w [:area-attribute :alt 2] 100)
+          [(get w [:area-attribute :alt 3] 100)
             (gen/tuple
               (gen/return "download=\"")
               (:attr-val-area__download g)
               (gen/return "\""))]
-          [(get w [:area-attribute :alt 3] 100)
+          [(get w [:area-attribute :alt 4] 100)
             (gen/tuple
               (gen/return "href=\"")
               (:attr-val-area__href g)
               (gen/return "\""))]
-          [(get w [:area-attribute :alt 4] 100)
+          [(get w [:area-attribute :alt 5] 100)
             (gen/tuple
               (gen/return "hreflang=\"")
               (:attr-val-area__hreflang g)
               (gen/return "\""))]
-          [(get w [:area-attribute :alt 5] 100)
+          [(get w [:area-attribute :alt 6] 100)
             (gen/tuple
               (gen/return "rel=\"")
               (:attr-val-area__rel g)
               (gen/return "\""))]
-          [(get w [:area-attribute :alt 6] 100)
+          [(get w [:area-attribute :alt 7] 100)
             (gen/tuple
               (gen/return "shape=\"")
               (:attr-val-area__shape g)
               (gen/return "\""))]
-          [(get w [:area-attribute :alt 7] 100)
+          [(get w [:area-attribute :alt 8] 100)
             (gen/tuple
               (gen/return "target=\"")
               (:attr-val-area__target g)
               (gen/return "\""))]
-          [(get w [:area-attribute :alt 8] 100)
+          [(get w [:area-attribute :alt 9] 100)
             (gen/tuple
               (gen/return "type=\"")
               (:attr-val-area__type g)
-              (gen/return "\""))]
-          [(get w [:area-attribute :alt 9] 100)
-            (:global-attribute g)]])
+              (gen/return "\""))]])
         g (assoc g :area-attribute gen-area-attribute)
 
         gen-tbody-attribute
@@ -1459,22 +1459,22 @@
         gen-output-attribute
         (igen/freq :output-attribute [
           [(get w [:output-attribute :alt 0] 100)
+            (:global-attribute g)]
+          [(get w [:output-attribute :alt 1] 100)
             (gen/tuple
               (gen/return "for=\"")
               (:attr-val-output__for g)
               (gen/return "\""))]
-          [(get w [:output-attribute :alt 1] 100)
+          [(get w [:output-attribute :alt 2] 100)
             (gen/tuple
               (gen/return "form=\"")
               (:attr-val-output__form g)
               (gen/return "\""))]
-          [(get w [:output-attribute :alt 2] 100)
+          [(get w [:output-attribute :alt 3] 100)
             (gen/tuple
               (gen/return "name=\"")
               (:attr-val-output__name g)
-              (gen/return "\""))]
-          [(get w [:output-attribute :alt 3] 100)
-            (:global-attribute g)]])
+              (gen/return "\""))]])
         g (assoc g :output-attribute gen-output-attribute)
 
         gen-attr-val-ol__type
@@ -1536,12 +1536,12 @@
         gen-colgroup-attribute
         (igen/freq :colgroup-attribute [
           [(get w [:colgroup-attribute :alt 0] 100)
+            (:global-attribute g)]
+          [(get w [:colgroup-attribute :alt 1] 100)
             (gen/tuple
               (gen/return "span=\"")
               (:attr-val-colgroup__span g)
-              (gen/return "\""))]
-          [(get w [:colgroup-attribute :alt 1] 100)
-            (:global-attribute g)]])
+              (gen/return "\""))]])
         g (assoc g :colgroup-attribute gen-colgroup-attribute)
 
         gen-figure-attribute
@@ -1642,21 +1642,21 @@
         gen-ol-attribute
         (igen/freq :ol-attribute [
           [(get w [:ol-attribute :alt 0] 100)
+            (:global-attribute g)]
+          [(get w [:ol-attribute :alt 1] 100)
             (gen/tuple
               (gen/return "reversed")
               (:opt-boolean g))]
-          [(get w [:ol-attribute :alt 1] 100)
+          [(get w [:ol-attribute :alt 2] 100)
             (gen/tuple
               (gen/return "start=\"")
               (:attr-val-ol__start g)
               (gen/return "\""))]
-          [(get w [:ol-attribute :alt 2] 100)
+          [(get w [:ol-attribute :alt 3] 100)
             (gen/tuple
               (gen/return "type=\"")
               (:attr-val-ol__type g)
-              (gen/return "\""))]
-          [(get w [:ol-attribute :alt 3] 100)
-            (:global-attribute g)]])
+              (gen/return "\""))]])
         g (assoc g :ol-attribute gen-ol-attribute)
 
         gen-attr-val-meta__http-equiv
@@ -1678,17 +1678,17 @@
         gen-label-attribute
         (igen/freq :label-attribute [
           [(get w [:label-attribute :alt 0] 100)
+            (:global-attribute g)]
+          [(get w [:label-attribute :alt 1] 100)
             (gen/tuple
               (gen/return "for=\"")
               (:attr-val-label__for g)
               (gen/return "\""))]
-          [(get w [:label-attribute :alt 1] 100)
+          [(get w [:label-attribute :alt 2] 100)
             (gen/tuple
               (gen/return "form=\"")
               (:attr-val-label__form g)
-              (gen/return "\""))]
-          [(get w [:label-attribute :alt 2] 100)
-            (:global-attribute g)]])
+              (gen/return "\""))]])
         g (assoc g :label-attribute gen-label-attribute)
 
         gen-attr-val-input__minlength
@@ -2030,165 +2030,165 @@
         gen-input-attribute
         (igen/freq :input-attribute [
           [(get w [:input-attribute :alt 0] 100)
+            (:global-attribute g)]
+          [(get w [:input-attribute :alt 1] 100)
             (gen/tuple
               (gen/return "autofocus")
               (:opt-boolean g))]
-          [(get w [:input-attribute :alt 1] 100)
+          [(get w [:input-attribute :alt 2] 100)
             (gen/tuple
               (gen/return "checked")
               (:opt-boolean g))]
-          [(get w [:input-attribute :alt 2] 100)
+          [(get w [:input-attribute :alt 3] 100)
             (gen/tuple
               (gen/return "disabled")
               (:opt-boolean g))]
-          [(get w [:input-attribute :alt 3] 100)
+          [(get w [:input-attribute :alt 4] 100)
             (gen/tuple
               (gen/return "formnovalidate")
               (:opt-boolean g))]
-          [(get w [:input-attribute :alt 4] 100)
+          [(get w [:input-attribute :alt 5] 100)
             (gen/tuple
               (gen/return "multiple")
               (:opt-boolean g))]
-          [(get w [:input-attribute :alt 5] 100)
+          [(get w [:input-attribute :alt 6] 100)
             (gen/tuple
               (gen/return "readonly")
               (:opt-boolean g))]
-          [(get w [:input-attribute :alt 6] 100)
+          [(get w [:input-attribute :alt 7] 100)
             (gen/tuple
               (gen/return "required")
               (:opt-boolean g))]
-          [(get w [:input-attribute :alt 7] 100)
+          [(get w [:input-attribute :alt 8] 100)
             (gen/tuple
               (gen/return "accept=\"")
               (:attr-val-input__accept g)
               (gen/return "\""))]
-          [(get w [:input-attribute :alt 8] 100)
+          [(get w [:input-attribute :alt 9] 100)
             (gen/tuple
               (gen/return "alt=\"")
               (:attr-val-input__alt g)
               (gen/return "\""))]
-          [(get w [:input-attribute :alt 9] 100)
+          [(get w [:input-attribute :alt 10] 100)
             (gen/tuple
               (gen/return "autocomplete=\"")
               (:attr-val-input__autocomplete g)
               (gen/return "\""))]
-          [(get w [:input-attribute :alt 10] 100)
+          [(get w [:input-attribute :alt 11] 100)
             (gen/tuple
               (gen/return "dirname=\"")
               (:attr-val-input__dirname g)
               (gen/return "\""))]
-          [(get w [:input-attribute :alt 11] 100)
+          [(get w [:input-attribute :alt 12] 100)
             (gen/tuple
               (gen/return "form=\"")
               (:attr-val-input__form g)
               (gen/return "\""))]
-          [(get w [:input-attribute :alt 12] 100)
+          [(get w [:input-attribute :alt 13] 100)
             (gen/tuple
               (gen/return "formaction=\"")
               (:attr-val-input__formaction g)
               (gen/return "\""))]
-          [(get w [:input-attribute :alt 13] 100)
+          [(get w [:input-attribute :alt 14] 100)
             (gen/tuple
               (gen/return "formenctype=\"")
               (:attr-val-input__formenctype g)
               (gen/return "\""))]
-          [(get w [:input-attribute :alt 14] 100)
+          [(get w [:input-attribute :alt 15] 100)
             (gen/tuple
               (gen/return "formmethod=\"")
               (:attr-val-input__formmethod g)
               (gen/return "\""))]
-          [(get w [:input-attribute :alt 15] 100)
+          [(get w [:input-attribute :alt 16] 100)
             (gen/tuple
               (gen/return "formtarget=\"")
               (:attr-val-input__formtarget g)
               (gen/return "\""))]
-          [(get w [:input-attribute :alt 16] 100)
+          [(get w [:input-attribute :alt 17] 100)
             (gen/tuple
               (gen/return "height=\"")
               (:attr-val-input__height g)
               (gen/return "\""))]
-          [(get w [:input-attribute :alt 17] 100)
+          [(get w [:input-attribute :alt 18] 100)
             (gen/tuple
               (gen/return "inputmode=\"")
               (:attr-val-input__inputmode g)
               (gen/return "\""))]
-          [(get w [:input-attribute :alt 18] 100)
+          [(get w [:input-attribute :alt 19] 100)
             (gen/tuple
               (gen/return "list=\"")
               (:attr-val-input__list g)
               (gen/return "\""))]
-          [(get w [:input-attribute :alt 19] 100)
+          [(get w [:input-attribute :alt 20] 100)
             (gen/tuple
               (gen/return "max=\"")
               (:attr-val-input__max g)
               (gen/return "\""))]
-          [(get w [:input-attribute :alt 20] 100)
+          [(get w [:input-attribute :alt 21] 100)
             (gen/tuple
               (gen/return "maxlength=\"")
               (:attr-val-input__maxlength g)
               (gen/return "\""))]
-          [(get w [:input-attribute :alt 21] 100)
+          [(get w [:input-attribute :alt 22] 100)
             (gen/tuple
               (gen/return "min=\"")
               (:attr-val-input__min g)
               (gen/return "\""))]
-          [(get w [:input-attribute :alt 22] 100)
+          [(get w [:input-attribute :alt 23] 100)
             (gen/tuple
               (gen/return "minlength=\"")
               (:attr-val-input__minlength g)
               (gen/return "\""))]
-          [(get w [:input-attribute :alt 23] 100)
+          [(get w [:input-attribute :alt 24] 100)
             (gen/tuple
               (gen/return "name=\"")
               (:attr-val-input__name g)
               (gen/return "\""))]
-          [(get w [:input-attribute :alt 24] 100)
+          [(get w [:input-attribute :alt 25] 100)
             (gen/tuple
               (gen/return "pattern=\"")
               (:attr-val-input__pattern g)
               (gen/return "\""))]
-          [(get w [:input-attribute :alt 25] 100)
+          [(get w [:input-attribute :alt 26] 100)
             (gen/tuple
               (gen/return "placeholder=\"")
               (:attr-val-input__placeholder g)
               (gen/return "\""))]
-          [(get w [:input-attribute :alt 26] 100)
+          [(get w [:input-attribute :alt 27] 100)
             (gen/tuple
               (gen/return "size=\"")
               (:attr-val-input__size g)
               (gen/return "\""))]
-          [(get w [:input-attribute :alt 27] 100)
+          [(get w [:input-attribute :alt 28] 100)
             (gen/tuple
               (gen/return "src=\"")
               (:attr-val-input__src g)
               (gen/return "\""))]
-          [(get w [:input-attribute :alt 28] 100)
+          [(get w [:input-attribute :alt 29] 100)
             (gen/tuple
               (gen/return "step=\"")
               (:attr-val-input__step g)
               (gen/return "\""))]
-          [(get w [:input-attribute :alt 29] 100)
+          [(get w [:input-attribute :alt 30] 100)
             (gen/tuple
               (gen/return "title=\"")
               (:attr-val-input__title g)
               (gen/return "\""))]
-          [(get w [:input-attribute :alt 30] 100)
+          [(get w [:input-attribute :alt 31] 100)
             (gen/tuple
               (gen/return "type=\"")
               (:attr-val-input__type g)
               (gen/return "\""))]
-          [(get w [:input-attribute :alt 31] 100)
+          [(get w [:input-attribute :alt 32] 100)
             (gen/tuple
               (gen/return "value=\"")
               (:attr-val-input__value g)
               (gen/return "\""))]
-          [(get w [:input-attribute :alt 32] 100)
+          [(get w [:input-attribute :alt 33] 100)
             (gen/tuple
               (gen/return "width=\"")
               (:attr-val-input__width g)
-              (gen/return "\""))]
-          [(get w [:input-attribute :alt 33] 100)
-            (:global-attribute g)]])
+              (gen/return "\""))]])
         g (assoc g :input-attribute gen-input-attribute)
 
         gen-s-attribute
@@ -2214,17 +2214,17 @@
         gen-menu-attribute
         (igen/freq :menu-attribute [
           [(get w [:menu-attribute :alt 0] 100)
+            (:global-attribute g)]
+          [(get w [:menu-attribute :alt 1] 100)
             (gen/tuple
               (gen/return "label=\"")
               (:attr-val-menu__label g)
               (gen/return "\""))]
-          [(get w [:menu-attribute :alt 1] 100)
+          [(get w [:menu-attribute :alt 2] 100)
             (gen/tuple
               (gen/return "type=\"")
               (:attr-val-menu__type g)
-              (gen/return "\""))]
-          [(get w [:menu-attribute :alt 2] 100)
-            (:global-attribute g)]])
+              (gen/return "\""))]])
         g (assoc g :menu-attribute gen-menu-attribute)
 
         gen-attr-val-keygen__challenge
@@ -2238,35 +2238,35 @@
         gen-keygen-attribute
         (igen/freq :keygen-attribute [
           [(get w [:keygen-attribute :alt 0] 100)
+            (:global-attribute g)]
+          [(get w [:keygen-attribute :alt 1] 100)
             (gen/tuple
               (gen/return "autofocus")
               (:opt-boolean g))]
-          [(get w [:keygen-attribute :alt 1] 100)
+          [(get w [:keygen-attribute :alt 2] 100)
             (gen/tuple
               (gen/return "disabled")
               (:opt-boolean g))]
-          [(get w [:keygen-attribute :alt 2] 100)
+          [(get w [:keygen-attribute :alt 3] 100)
             (gen/tuple
               (gen/return "challenge=\"")
               (:attr-val-keygen__challenge g)
               (gen/return "\""))]
-          [(get w [:keygen-attribute :alt 3] 100)
+          [(get w [:keygen-attribute :alt 4] 100)
             (gen/tuple
               (gen/return "form=\"")
               (:attr-val-keygen__form g)
               (gen/return "\""))]
-          [(get w [:keygen-attribute :alt 4] 100)
+          [(get w [:keygen-attribute :alt 5] 100)
             (gen/tuple
               (gen/return "keytype=\"")
               (:attr-val-keygen__keytype g)
               (gen/return "\""))]
-          [(get w [:keygen-attribute :alt 5] 100)
+          [(get w [:keygen-attribute :alt 6] 100)
             (gen/tuple
               (gen/return "name=\"")
               (:attr-val-keygen__name g)
-              (gen/return "\""))]
-          [(get w [:keygen-attribute :alt 6] 100)
-            (:global-attribute g)]])
+              (gen/return "\""))]])
         g (assoc g :keygen-attribute gen-keygen-attribute)
 
         gen-attr-val-data__value
@@ -2354,16 +2354,16 @@
         gen-optgroup-attribute
         (igen/freq :optgroup-attribute [
           [(get w [:optgroup-attribute :alt 0] 100)
+            (:global-attribute g)]
+          [(get w [:optgroup-attribute :alt 1] 100)
             (gen/tuple
               (gen/return "disabled")
               (:opt-boolean g))]
-          [(get w [:optgroup-attribute :alt 1] 100)
+          [(get w [:optgroup-attribute :alt 2] 100)
             (gen/tuple
               (gen/return "label=\"")
               (:attr-val-optgroup__label g)
-              (gen/return "\""))]
-          [(get w [:optgroup-attribute :alt 2] 100)
-            (:global-attribute g)]])
+              (gen/return "\""))]])
         g (assoc g :optgroup-attribute gen-optgroup-attribute)
 
         gen-attr-val-link__sizes
@@ -2409,17 +2409,17 @@
         gen-progress-attribute
         (igen/freq :progress-attribute [
           [(get w [:progress-attribute :alt 0] 100)
+            (:global-attribute g)]
+          [(get w [:progress-attribute :alt 1] 100)
             (gen/tuple
               (gen/return "max=\"")
               (:attr-val-progress__max g)
               (gen/return "\""))]
-          [(get w [:progress-attribute :alt 1] 100)
+          [(get w [:progress-attribute :alt 2] 100)
             (gen/tuple
               (gen/return "value=\"")
               (:attr-val-progress__value g)
-              (gen/return "\""))]
-          [(get w [:progress-attribute :alt 2] 100)
-            (:global-attribute g)]])
+              (gen/return "\""))]])
         g (assoc g :progress-attribute gen-progress-attribute)
 
         gen-attr-val-del__datetime
@@ -2433,17 +2433,17 @@
         gen-del-attribute
         (igen/freq :del-attribute [
           [(get w [:del-attribute :alt 0] 100)
+            (:global-attribute g)]
+          [(get w [:del-attribute :alt 1] 100)
             (gen/tuple
               (gen/return "cite=\"")
               (:attr-val-del__cite g)
               (gen/return "\""))]
-          [(get w [:del-attribute :alt 1] 100)
+          [(get w [:del-attribute :alt 2] 100)
             (gen/tuple
               (gen/return "datetime=\"")
               (:attr-val-del__datetime g)
-              (gen/return "\""))]
-          [(get w [:del-attribute :alt 2] 100)
-            (:global-attribute g)]])
+              (gen/return "\""))]])
         g (assoc g :del-attribute gen-del-attribute)
 
         gen-span-attribute
@@ -2516,27 +2516,27 @@
         gen-style-attribute
         (igen/freq :style-attribute [
           [(get w [:style-attribute :alt 0] 100)
+            (:global-attribute g)]
+          [(get w [:style-attribute :alt 1] 100)
             (gen/tuple
               (gen/return "media=\"")
               (:attr-val-style__media g)
               (gen/return "\""))]
-          [(get w [:style-attribute :alt 1] 100)
+          [(get w [:style-attribute :alt 2] 100)
             (gen/tuple
               (gen/return "nonce=\"")
               (:attr-val-style__nonce g)
               (gen/return "\""))]
-          [(get w [:style-attribute :alt 2] 100)
+          [(get w [:style-attribute :alt 3] 100)
             (gen/tuple
               (gen/return "title=\"")
               (:attr-val-style__title g)
               (gen/return "\""))]
-          [(get w [:style-attribute :alt 3] 100)
+          [(get w [:style-attribute :alt 4] 100)
             (gen/tuple
               (gen/return "type=\"")
               (:attr-val-style__type g)
-              (gen/return "\""))]
-          [(get w [:style-attribute :alt 4] 100)
-            (:global-attribute g)]])
+              (gen/return "\""))]])
         g (assoc g :style-attribute gen-style-attribute)
 
         gen-attr-val-ins__cite
@@ -2550,17 +2550,17 @@
         gen-ins-attribute
         (igen/freq :ins-attribute [
           [(get w [:ins-attribute :alt 0] 100)
+            (:global-attribute g)]
+          [(get w [:ins-attribute :alt 1] 100)
             (gen/tuple
               (gen/return "cite=\"")
               (:attr-val-ins__cite g)
               (gen/return "\""))]
-          [(get w [:ins-attribute :alt 1] 100)
+          [(get w [:ins-attribute :alt 2] 100)
             (gen/tuple
               (gen/return "datetime=\"")
               (:attr-val-ins__datetime g)
-              (gen/return "\""))]
-          [(get w [:ins-attribute :alt 2] 100)
-            (:global-attribute g)]])
+              (gen/return "\""))]])
         g (assoc g :ins-attribute gen-ins-attribute)
 
         gen-picture-attribute
@@ -2616,12 +2616,12 @@
         gen-abbr-attribute
         (igen/freq :abbr-attribute [
           [(get w [:abbr-attribute :alt 0] 100)
+            (:global-attribute g)]
+          [(get w [:abbr-attribute :alt 1] 100)
             (gen/tuple
               (gen/return "title=\"")
               (:attr-val-abbr__title g)
-              (gen/return "\""))]
-          [(get w [:abbr-attribute :alt 1] 100)
-            (:global-attribute g)]])
+              (gen/return "\""))]])
         g (assoc g :abbr-attribute gen-abbr-attribute)
 
         gen-attr-val-object__height
@@ -2667,41 +2667,41 @@
         gen-object-attribute
         (igen/freq :object-attribute [
           [(get w [:object-attribute :alt 0] 100)
+            (:global-attribute g)]
+          [(get w [:object-attribute :alt 1] 100)
             (gen/tuple
               (gen/return "typemustmatch")
               (:opt-boolean g))]
-          [(get w [:object-attribute :alt 1] 100)
+          [(get w [:object-attribute :alt 2] 100)
             (gen/tuple
               (gen/return "data=\"")
               (:attr-val-object__data g)
               (gen/return "\""))]
-          [(get w [:object-attribute :alt 2] 100)
+          [(get w [:object-attribute :alt 3] 100)
             (gen/tuple
               (gen/return "form=\"")
               (:attr-val-object__form g)
               (gen/return "\""))]
-          [(get w [:object-attribute :alt 3] 100)
+          [(get w [:object-attribute :alt 4] 100)
             (gen/tuple
               (gen/return "height=\"")
               (:attr-val-object__height g)
               (gen/return "\""))]
-          [(get w [:object-attribute :alt 4] 100)
+          [(get w [:object-attribute :alt 5] 100)
             (gen/tuple
               (gen/return "name=\"")
               (:attr-val-object__name g)
               (gen/return "\""))]
-          [(get w [:object-attribute :alt 5] 100)
+          [(get w [:object-attribute :alt 6] 100)
             (gen/tuple
               (gen/return "type=\"")
               (:attr-val-object__type g)
               (gen/return "\""))]
-          [(get w [:object-attribute :alt 6] 100)
+          [(get w [:object-attribute :alt 7] 100)
             (gen/tuple
               (gen/return "width=\"")
               (:attr-val-object__width g)
-              (gen/return "\""))]
-          [(get w [:object-attribute :alt 7] 100)
-            (:global-attribute g)]])
+              (gen/return "\""))]])
         g (assoc g :object-attribute gen-object-attribute)
 
         gen-tr-attribute
@@ -2785,32 +2785,32 @@
         gen-th-attribute
         (igen/freq :th-attribute [
           [(get w [:th-attribute :alt 0] 100)
+            (:global-attribute g)]
+          [(get w [:th-attribute :alt 1] 100)
             (gen/tuple
               (gen/return "abbr=\"")
               (:attr-val-th__abbr g)
               (gen/return "\""))]
-          [(get w [:th-attribute :alt 1] 100)
+          [(get w [:th-attribute :alt 2] 100)
             (gen/tuple
               (gen/return "colspan=\"")
               (:attr-val-th__colspan g)
               (gen/return "\""))]
-          [(get w [:th-attribute :alt 2] 100)
+          [(get w [:th-attribute :alt 3] 100)
             (gen/tuple
               (gen/return "headers=\"")
               (:attr-val-th__headers g)
               (gen/return "\""))]
-          [(get w [:th-attribute :alt 3] 100)
+          [(get w [:th-attribute :alt 4] 100)
             (gen/tuple
               (gen/return "rowspan=\"")
               (:attr-val-th__rowspan g)
               (gen/return "\""))]
-          [(get w [:th-attribute :alt 4] 100)
+          [(get w [:th-attribute :alt 5] 100)
             (gen/tuple
               (gen/return "scope=\"")
               (:attr-val-th__scope g)
-              (gen/return "\""))]
-          [(get w [:th-attribute :alt 5] 100)
-            (:global-attribute g)]])
+              (gen/return "\""))]])
         g (assoc g :th-attribute gen-th-attribute)
 
         gen-attr-val-meter__low
@@ -2852,25 +2852,25 @@
         gen-option-attribute
         (igen/freq :option-attribute [
           [(get w [:option-attribute :alt 0] 100)
+            (:global-attribute g)]
+          [(get w [:option-attribute :alt 1] 100)
             (gen/tuple
               (gen/return "disabled")
               (:opt-boolean g))]
-          [(get w [:option-attribute :alt 1] 100)
+          [(get w [:option-attribute :alt 2] 100)
             (gen/tuple
               (gen/return "selected")
               (:opt-boolean g))]
-          [(get w [:option-attribute :alt 2] 100)
+          [(get w [:option-attribute :alt 3] 100)
             (gen/tuple
               (gen/return "label=\"")
               (:attr-val-option__label g)
               (gen/return "\""))]
-          [(get w [:option-attribute :alt 3] 100)
+          [(get w [:option-attribute :alt 4] 100)
             (gen/tuple
               (gen/return "value=\"")
               (:attr-val-option__value g)
-              (gen/return "\""))]
-          [(get w [:option-attribute :alt 4] 100)
-            (:global-attribute g)]])
+              (gen/return "\""))]])
         g (assoc g :option-attribute gen-option-attribute)
 
         gen-attr-val-select__autocomplete
@@ -2892,43 +2892,43 @@
         gen-select-attribute
         (igen/freq :select-attribute [
           [(get w [:select-attribute :alt 0] 100)
+            (:global-attribute g)]
+          [(get w [:select-attribute :alt 1] 100)
             (gen/tuple
               (gen/return "autofocus")
               (:opt-boolean g))]
-          [(get w [:select-attribute :alt 1] 100)
+          [(get w [:select-attribute :alt 2] 100)
             (gen/tuple
               (gen/return "disabled")
               (:opt-boolean g))]
-          [(get w [:select-attribute :alt 2] 100)
+          [(get w [:select-attribute :alt 3] 100)
             (gen/tuple
               (gen/return "multiple")
               (:opt-boolean g))]
-          [(get w [:select-attribute :alt 3] 100)
+          [(get w [:select-attribute :alt 4] 100)
             (gen/tuple
               (gen/return "required")
               (:opt-boolean g))]
-          [(get w [:select-attribute :alt 4] 100)
+          [(get w [:select-attribute :alt 5] 100)
             (gen/tuple
               (gen/return "autocomplete=\"")
               (:attr-val-select__autocomplete g)
               (gen/return "\""))]
-          [(get w [:select-attribute :alt 5] 100)
+          [(get w [:select-attribute :alt 6] 100)
             (gen/tuple
               (gen/return "form=\"")
               (:attr-val-select__form g)
               (gen/return "\""))]
-          [(get w [:select-attribute :alt 6] 100)
+          [(get w [:select-attribute :alt 7] 100)
             (gen/tuple
               (gen/return "name=\"")
               (:attr-val-select__name g)
               (gen/return "\""))]
-          [(get w [:select-attribute :alt 7] 100)
+          [(get w [:select-attribute :alt 8] 100)
             (gen/tuple
               (gen/return "size=\"")
               (:attr-val-select__size g)
-              (gen/return "\""))]
-          [(get w [:select-attribute :alt 8] 100)
-            (:global-attribute g)]])
+              (gen/return "\""))]])
         g (assoc g :select-attribute gen-select-attribute)
 
         gen-attr-val-a__download
@@ -3056,53 +3056,53 @@
         gen-video-attribute
         (igen/freq :video-attribute [
           [(get w [:video-attribute :alt 0] 100)
+            (:global-attribute g)]
+          [(get w [:video-attribute :alt 1] 100)
             (gen/tuple
               (gen/return "autoplay")
               (:opt-boolean g))]
-          [(get w [:video-attribute :alt 1] 100)
+          [(get w [:video-attribute :alt 2] 100)
             (gen/tuple
               (gen/return "controls")
               (:opt-boolean g))]
-          [(get w [:video-attribute :alt 2] 100)
+          [(get w [:video-attribute :alt 3] 100)
             (gen/tuple
               (gen/return "loop")
               (:opt-boolean g))]
-          [(get w [:video-attribute :alt 3] 100)
+          [(get w [:video-attribute :alt 4] 100)
             (gen/tuple
               (gen/return "muted")
               (:opt-boolean g))]
-          [(get w [:video-attribute :alt 4] 100)
+          [(get w [:video-attribute :alt 5] 100)
             (gen/tuple
               (gen/return "crossorigin=\"")
               (:attr-val-video__crossorigin g)
               (gen/return "\""))]
-          [(get w [:video-attribute :alt 5] 100)
+          [(get w [:video-attribute :alt 6] 100)
             (gen/tuple
               (gen/return "height=\"")
               (:attr-val-video__height g)
               (gen/return "\""))]
-          [(get w [:video-attribute :alt 6] 100)
+          [(get w [:video-attribute :alt 7] 100)
             (gen/tuple
               (gen/return "poster=\"")
               (:attr-val-video__poster g)
               (gen/return "\""))]
-          [(get w [:video-attribute :alt 7] 100)
+          [(get w [:video-attribute :alt 8] 100)
             (gen/tuple
               (gen/return "preload=\"")
               (:attr-val-video__preload g)
               (gen/return "\""))]
-          [(get w [:video-attribute :alt 8] 100)
+          [(get w [:video-attribute :alt 9] 100)
             (gen/tuple
               (gen/return "src=\"")
               (:attr-val-video__src g)
               (gen/return "\""))]
-          [(get w [:video-attribute :alt 9] 100)
+          [(get w [:video-attribute :alt 10] 100)
             (gen/tuple
               (gen/return "width=\"")
               (:attr-val-video__width g)
-              (gen/return "\""))]
-          [(get w [:video-attribute :alt 10] 100)
-            (:global-attribute g)]])
+              (gen/return "\""))]])
         g (assoc g :video-attribute gen-video-attribute)
 
         gen-attr-val-textarea__inputmode
@@ -3146,78 +3146,78 @@
         gen-textarea-attribute
         (igen/freq :textarea-attribute [
           [(get w [:textarea-attribute :alt 0] 100)
+            (:global-attribute g)]
+          [(get w [:textarea-attribute :alt 1] 100)
             (gen/tuple
               (gen/return "autofocus")
               (:opt-boolean g))]
-          [(get w [:textarea-attribute :alt 1] 100)
+          [(get w [:textarea-attribute :alt 2] 100)
             (gen/tuple
               (gen/return "disabled")
               (:opt-boolean g))]
-          [(get w [:textarea-attribute :alt 2] 100)
+          [(get w [:textarea-attribute :alt 3] 100)
             (gen/tuple
               (gen/return "readonly")
               (:opt-boolean g))]
-          [(get w [:textarea-attribute :alt 3] 100)
+          [(get w [:textarea-attribute :alt 4] 100)
             (gen/tuple
               (gen/return "required")
               (:opt-boolean g))]
-          [(get w [:textarea-attribute :alt 4] 100)
+          [(get w [:textarea-attribute :alt 5] 100)
             (gen/tuple
               (gen/return "autocomplete=\"")
               (:attr-val-textarea__autocomplete g)
               (gen/return "\""))]
-          [(get w [:textarea-attribute :alt 5] 100)
+          [(get w [:textarea-attribute :alt 6] 100)
             (gen/tuple
               (gen/return "cols=\"")
               (:attr-val-textarea__cols g)
               (gen/return "\""))]
-          [(get w [:textarea-attribute :alt 6] 100)
+          [(get w [:textarea-attribute :alt 7] 100)
             (gen/tuple
               (gen/return "dirname=\"")
               (:attr-val-textarea__dirname g)
               (gen/return "\""))]
-          [(get w [:textarea-attribute :alt 7] 100)
+          [(get w [:textarea-attribute :alt 8] 100)
             (gen/tuple
               (gen/return "form=\"")
               (:attr-val-textarea__form g)
               (gen/return "\""))]
-          [(get w [:textarea-attribute :alt 8] 100)
+          [(get w [:textarea-attribute :alt 9] 100)
             (gen/tuple
               (gen/return "inputmode=\"")
               (:attr-val-textarea__inputmode g)
               (gen/return "\""))]
-          [(get w [:textarea-attribute :alt 9] 100)
+          [(get w [:textarea-attribute :alt 10] 100)
             (gen/tuple
               (gen/return "maxlength=\"")
               (:attr-val-textarea__maxlength g)
               (gen/return "\""))]
-          [(get w [:textarea-attribute :alt 10] 100)
+          [(get w [:textarea-attribute :alt 11] 100)
             (gen/tuple
               (gen/return "minlength=\"")
               (:attr-val-textarea__minlength g)
               (gen/return "\""))]
-          [(get w [:textarea-attribute :alt 11] 100)
+          [(get w [:textarea-attribute :alt 12] 100)
             (gen/tuple
               (gen/return "name=\"")
               (:attr-val-textarea__name g)
               (gen/return "\""))]
-          [(get w [:textarea-attribute :alt 12] 100)
+          [(get w [:textarea-attribute :alt 13] 100)
             (gen/tuple
               (gen/return "placeholder=\"")
               (:attr-val-textarea__placeholder g)
               (gen/return "\""))]
-          [(get w [:textarea-attribute :alt 13] 100)
+          [(get w [:textarea-attribute :alt 14] 100)
             (gen/tuple
               (gen/return "rows=\"")
               (:attr-val-textarea__rows g)
               (gen/return "\""))]
-          [(get w [:textarea-attribute :alt 14] 100)
+          [(get w [:textarea-attribute :alt 15] 100)
             (gen/tuple
               (gen/return "wrap=\"")
               (:attr-val-textarea__wrap g)
-              (gen/return "\""))]
-          [(get w [:textarea-attribute :alt 15] 100)
-            (:global-attribute g)]])
+              (gen/return "\""))]])
         g (assoc g :textarea-attribute gen-textarea-attribute)
 
         gen-attr-val-a__rel
@@ -3308,52 +3308,52 @@
         gen-link-attribute
         (igen/freq :link-attribute [
           [(get w [:link-attribute :alt 0] 100)
+            (:global-attribute g)]
+          [(get w [:link-attribute :alt 1] 100)
             (gen/tuple
               (gen/return "crossorigin=\"")
               (:attr-val-link__crossorigin g)
               (gen/return "\""))]
-          [(get w [:link-attribute :alt 1] 100)
+          [(get w [:link-attribute :alt 2] 100)
             (gen/tuple
               (gen/return "href=\"")
               (:attr-val-link__href g)
               (gen/return "\""))]
-          [(get w [:link-attribute :alt 2] 100)
+          [(get w [:link-attribute :alt 3] 100)
             (gen/tuple
               (gen/return "hreflang=\"")
               (:attr-val-link__hreflang g)
               (gen/return "\""))]
-          [(get w [:link-attribute :alt 3] 100)
+          [(get w [:link-attribute :alt 4] 100)
             (gen/tuple
               (gen/return "media=\"")
               (:attr-val-link__media g)
               (gen/return "\""))]
-          [(get w [:link-attribute :alt 4] 100)
+          [(get w [:link-attribute :alt 5] 100)
             (gen/tuple
               (gen/return "rel=\"")
               (:attr-val-link__rel g)
               (gen/return "\""))]
-          [(get w [:link-attribute :alt 5] 100)
+          [(get w [:link-attribute :alt 6] 100)
             (gen/tuple
               (gen/return "rev=\"")
               (:attr-val-link__rev g)
               (gen/return "\""))]
-          [(get w [:link-attribute :alt 6] 100)
+          [(get w [:link-attribute :alt 7] 100)
             (gen/tuple
               (gen/return "sizes=\"")
               (:attr-val-link__sizes g)
               (gen/return "\""))]
-          [(get w [:link-attribute :alt 7] 100)
+          [(get w [:link-attribute :alt 8] 100)
             (gen/tuple
               (gen/return "title=\"")
               (:attr-val-link__title g)
               (gen/return "\""))]
-          [(get w [:link-attribute :alt 8] 100)
+          [(get w [:link-attribute :alt 9] 100)
             (gen/tuple
               (gen/return "type=\"")
               (:attr-val-link__type g)
-              (gen/return "\""))]
-          [(get w [:link-attribute :alt 9] 100)
-            (:global-attribute g)]])
+              (gen/return "\""))]])
         g (assoc g :link-attribute gen-link-attribute)
 
         gen-attr-val-base__href
@@ -3367,17 +3367,17 @@
         gen-base-attribute
         (igen/freq :base-attribute [
           [(get w [:base-attribute :alt 0] 100)
+            (:global-attribute g)]
+          [(get w [:base-attribute :alt 1] 100)
             (gen/tuple
               (gen/return "href=\"")
               (:attr-val-base__href g)
               (gen/return "\""))]
-          [(get w [:base-attribute :alt 1] 100)
+          [(get w [:base-attribute :alt 2] 100)
             (gen/tuple
               (gen/return "target=\"")
               (:attr-val-base__target g)
-              (gen/return "\""))]
-          [(get w [:base-attribute :alt 2] 100)
-            (:global-attribute g)]])
+              (gen/return "\""))]])
         g (assoc g :base-attribute gen-base-attribute)
 
         gen-dl-attribute
@@ -3417,38 +3417,38 @@
         gen-audio-attribute
         (igen/freq :audio-attribute [
           [(get w [:audio-attribute :alt 0] 100)
+            (:global-attribute g)]
+          [(get w [:audio-attribute :alt 1] 100)
             (gen/tuple
               (gen/return "autoplay")
               (:opt-boolean g))]
-          [(get w [:audio-attribute :alt 1] 100)
+          [(get w [:audio-attribute :alt 2] 100)
             (gen/tuple
               (gen/return "controls")
               (:opt-boolean g))]
-          [(get w [:audio-attribute :alt 2] 100)
+          [(get w [:audio-attribute :alt 3] 100)
             (gen/tuple
               (gen/return "loop")
               (:opt-boolean g))]
-          [(get w [:audio-attribute :alt 3] 100)
+          [(get w [:audio-attribute :alt 4] 100)
             (gen/tuple
               (gen/return "muted")
               (:opt-boolean g))]
-          [(get w [:audio-attribute :alt 4] 100)
+          [(get w [:audio-attribute :alt 5] 100)
             (gen/tuple
               (gen/return "crossorigin=\"")
               (:attr-val-audio__crossorigin g)
               (gen/return "\""))]
-          [(get w [:audio-attribute :alt 5] 100)
+          [(get w [:audio-attribute :alt 6] 100)
             (gen/tuple
               (gen/return "preload=\"")
               (:attr-val-audio__preload g)
               (gen/return "\""))]
-          [(get w [:audio-attribute :alt 6] 100)
+          [(get w [:audio-attribute :alt 7] 100)
             (gen/tuple
               (gen/return "src=\"")
               (:attr-val-audio__src g)
-              (gen/return "\""))]
-          [(get w [:audio-attribute :alt 7] 100)
-            (:global-attribute g)]])
+              (gen/return "\""))]])
         g (assoc g :audio-attribute gen-audio-attribute)
 
         gen-mark-attribute
@@ -3458,12 +3458,12 @@
         gen-blockquote-attribute
         (igen/freq :blockquote-attribute [
           [(get w [:blockquote-attribute :alt 0] 100)
+            (:global-attribute g)]
+          [(get w [:blockquote-attribute :alt 1] 100)
             (gen/tuple
               (gen/return "cite=\"")
               (:attr-val-blockquote__cite g)
-              (gen/return "\""))]
-          [(get w [:blockquote-attribute :alt 1] 100)
-            (:global-attribute g)]])
+              (gen/return "\""))]])
         g (assoc g :blockquote-attribute gen-blockquote-attribute)
 
         gen-attr-val-img__usemap
@@ -3530,11 +3530,11 @@
         gen-details-attribute
         (igen/freq :details-attribute [
           [(get w [:details-attribute :alt 0] 100)
+            (:global-attribute g)]
+          [(get w [:details-attribute :alt 1] 100)
             (gen/tuple
               (gen/return "open")
-              (:opt-boolean g))]
-          [(get w [:details-attribute :alt 1] 100)
-            (:global-attribute g)]])
+              (:opt-boolean g))]])
         g (assoc g :details-attribute gen-details-attribute)
 
         gen-attr-val-source__type
@@ -3564,27 +3564,27 @@
         gen-meta-attribute
         (igen/freq :meta-attribute [
           [(get w [:meta-attribute :alt 0] 100)
+            (:global-attribute g)]
+          [(get w [:meta-attribute :alt 1] 100)
             (gen/tuple
               (gen/return "charset=\"")
               (:attr-val-meta__charset g)
               (gen/return "\""))]
-          [(get w [:meta-attribute :alt 1] 100)
+          [(get w [:meta-attribute :alt 2] 100)
             (gen/tuple
               (gen/return "content=\"")
               (:attr-val-meta__content g)
               (gen/return "\""))]
-          [(get w [:meta-attribute :alt 2] 100)
+          [(get w [:meta-attribute :alt 3] 100)
             (gen/tuple
               (gen/return "http-equiv=\"")
               (:attr-val-meta__http-equiv g)
               (gen/return "\""))]
-          [(get w [:meta-attribute :alt 3] 100)
+          [(get w [:meta-attribute :alt 4] 100)
             (gen/tuple
               (gen/return "name=\"")
               (:attr-val-meta__name g)
-              (gen/return "\""))]
-          [(get w [:meta-attribute :alt 4] 100)
-            (:global-attribute g)]])
+              (gen/return "\""))]])
         g (assoc g :meta-attribute gen-meta-attribute)
 
         gen-attr-val-menuitem__type
@@ -3627,37 +3627,37 @@
         gen-meter-attribute
         (igen/freq :meter-attribute [
           [(get w [:meter-attribute :alt 0] 100)
+            (:global-attribute g)]
+          [(get w [:meter-attribute :alt 1] 100)
             (gen/tuple
               (gen/return "high=\"")
               (:attr-val-meter__high g)
               (gen/return "\""))]
-          [(get w [:meter-attribute :alt 1] 100)
+          [(get w [:meter-attribute :alt 2] 100)
             (gen/tuple
               (gen/return "low=\"")
               (:attr-val-meter__low g)
               (gen/return "\""))]
-          [(get w [:meter-attribute :alt 2] 100)
+          [(get w [:meter-attribute :alt 3] 100)
             (gen/tuple
               (gen/return "max=\"")
               (:attr-val-meter__max g)
               (gen/return "\""))]
-          [(get w [:meter-attribute :alt 3] 100)
+          [(get w [:meter-attribute :alt 4] 100)
             (gen/tuple
               (gen/return "min=\"")
               (:attr-val-meter__min g)
               (gen/return "\""))]
-          [(get w [:meter-attribute :alt 4] 100)
+          [(get w [:meter-attribute :alt 5] 100)
             (gen/tuple
               (gen/return "optimum=\"")
               (:attr-val-meter__optimum g)
               (gen/return "\""))]
-          [(get w [:meter-attribute :alt 5] 100)
+          [(get w [:meter-attribute :alt 6] 100)
             (gen/tuple
               (gen/return "value=\"")
               (:attr-val-meter__value g)
-              (gen/return "\""))]
-          [(get w [:meter-attribute :alt 6] 100)
-            (:global-attribute g)]])
+              (gen/return "\""))]])
         g (assoc g :meter-attribute gen-meter-attribute)
 
         gen-br-attribute
@@ -3675,22 +3675,22 @@
         gen-td-attribute
         (igen/freq :td-attribute [
           [(get w [:td-attribute :alt 0] 100)
+            (:global-attribute g)]
+          [(get w [:td-attribute :alt 1] 100)
             (gen/tuple
               (gen/return "colspan=\"")
               (:attr-val-td__colspan g)
               (gen/return "\""))]
-          [(get w [:td-attribute :alt 1] 100)
+          [(get w [:td-attribute :alt 2] 100)
             (gen/tuple
               (gen/return "headers=\"")
               (:attr-val-td__headers g)
               (gen/return "\""))]
-          [(get w [:td-attribute :alt 2] 100)
+          [(get w [:td-attribute :alt 3] 100)
             (gen/tuple
               (gen/return "rowspan=\"")
               (:attr-val-td__rowspan g)
-              (gen/return "\""))]
-          [(get w [:td-attribute :alt 3] 100)
-            (:global-attribute g)]])
+              (gen/return "\""))]])
         g (assoc g :td-attribute gen-td-attribute)
 
         gen-attr-val-img__width
@@ -3762,62 +3762,62 @@
         gen-script-attribute
         (igen/freq :script-attribute [
           [(get w [:script-attribute :alt 0] 100)
+            (:global-attribute g)]
+          [(get w [:script-attribute :alt 1] 100)
             (gen/tuple
               (gen/return "async")
               (:opt-boolean g))]
-          [(get w [:script-attribute :alt 1] 100)
+          [(get w [:script-attribute :alt 2] 100)
             (gen/tuple
               (gen/return "defer")
               (:opt-boolean g))]
-          [(get w [:script-attribute :alt 2] 100)
+          [(get w [:script-attribute :alt 3] 100)
             (gen/tuple
               (gen/return "charset=\"")
               (:attr-val-script__charset g)
               (gen/return "\""))]
-          [(get w [:script-attribute :alt 3] 100)
+          [(get w [:script-attribute :alt 4] 100)
             (gen/tuple
               (gen/return "crossorigin=\"")
               (:attr-val-script__crossorigin g)
               (gen/return "\""))]
-          [(get w [:script-attribute :alt 4] 100)
+          [(get w [:script-attribute :alt 5] 100)
             (gen/tuple
               (gen/return "nonce=\"")
               (:attr-val-script__nonce g)
               (gen/return "\""))]
-          [(get w [:script-attribute :alt 5] 100)
+          [(get w [:script-attribute :alt 6] 100)
             (gen/tuple
               (gen/return "src=\"")
               (:attr-val-script__src g)
               (gen/return "\""))]
-          [(get w [:script-attribute :alt 6] 100)
+          [(get w [:script-attribute :alt 7] 100)
             (gen/tuple
               (gen/return "type=\"")
               (:attr-val-script__type g)
-              (gen/return "\""))]
-          [(get w [:script-attribute :alt 7] 100)
-            (:global-attribute g)]])
+              (gen/return "\""))]])
         g (assoc g :script-attribute gen-script-attribute)
 
         gen-data-attribute
         (igen/freq :data-attribute [
           [(get w [:data-attribute :alt 0] 100)
+            (:global-attribute g)]
+          [(get w [:data-attribute :alt 1] 100)
             (gen/tuple
               (gen/return "value=\"")
               (:attr-val-data__value g)
-              (gen/return "\""))]
-          [(get w [:data-attribute :alt 1] 100)
-            (:global-attribute g)]])
+              (gen/return "\""))]])
         g (assoc g :data-attribute gen-data-attribute)
 
         gen-bdo-attribute
         (igen/freq :bdo-attribute [
           [(get w [:bdo-attribute :alt 0] 100)
+            (:global-attribute g)]
+          [(get w [:bdo-attribute :alt 1] 100)
             (gen/tuple
               (gen/return "dir=\"")
               (:attr-val-bdo__dir g)
-              (gen/return "\""))]
-          [(get w [:bdo-attribute :alt 1] 100)
-            (:global-attribute g)]])
+              (gen/return "\""))]])
         g (assoc g :bdo-attribute gen-bdo-attribute)
 
         gen-attr-val-param__name
@@ -3839,12 +3839,12 @@
         gen-li-attribute
         (igen/freq :li-attribute [
           [(get w [:li-attribute :alt 0] 100)
+            (:global-attribute g)]
+          [(get w [:li-attribute :alt 1] 100)
             (gen/tuple
               (gen/return "value=\"")
               (:attr-val-li__value g)
-              (gen/return "\""))]
-          [(get w [:li-attribute :alt 1] 100)
-            (:global-attribute g)]])
+              (gen/return "\""))]])
         g (assoc g :li-attribute gen-li-attribute)
 
         gen-u-attribute
@@ -3910,42 +3910,42 @@
         gen-a-attribute
         (igen/freq :a-attribute [
           [(get w [:a-attribute :alt 0] 100)
+            (:global-attribute g)]
+          [(get w [:a-attribute :alt 1] 100)
             (gen/tuple
               (gen/return "download=\"")
               (:attr-val-a__download g)
               (gen/return "\""))]
-          [(get w [:a-attribute :alt 1] 100)
+          [(get w [:a-attribute :alt 2] 100)
             (gen/tuple
               (gen/return "href=\"")
               (:attr-val-a__href g)
               (gen/return "\""))]
-          [(get w [:a-attribute :alt 2] 100)
+          [(get w [:a-attribute :alt 3] 100)
             (gen/tuple
               (gen/return "hreflang=\"")
               (:attr-val-a__hreflang g)
               (gen/return "\""))]
-          [(get w [:a-attribute :alt 3] 100)
+          [(get w [:a-attribute :alt 4] 100)
             (gen/tuple
               (gen/return "rel=\"")
               (:attr-val-a__rel g)
               (gen/return "\""))]
-          [(get w [:a-attribute :alt 4] 100)
+          [(get w [:a-attribute :alt 5] 100)
             (gen/tuple
               (gen/return "rev=\"")
               (:attr-val-a__rev g)
               (gen/return "\""))]
-          [(get w [:a-attribute :alt 5] 100)
+          [(get w [:a-attribute :alt 6] 100)
             (gen/tuple
               (gen/return "target=\"")
               (:attr-val-a__target g)
               (gen/return "\""))]
-          [(get w [:a-attribute :alt 6] 100)
+          [(get w [:a-attribute :alt 7] 100)
             (gen/tuple
               (gen/return "type=\"")
               (:attr-val-a__type g)
-              (gen/return "\""))]
-          [(get w [:a-attribute :alt 7] 100)
-            (:global-attribute g)]])
+              (gen/return "\""))]])
         g (assoc g :a-attribute gen-a-attribute)
 
         gen-attr-val-form__accept-charset
@@ -3990,49 +3990,49 @@
         gen-menuitem-attribute
         (igen/freq :menuitem-attribute [
           [(get w [:menuitem-attribute :alt 0] 100)
+            (:global-attribute g)]
+          [(get w [:menuitem-attribute :alt 1] 100)
             (gen/tuple
               (gen/return "checked")
               (:opt-boolean g))]
-          [(get w [:menuitem-attribute :alt 1] 100)
+          [(get w [:menuitem-attribute :alt 2] 100)
             (gen/tuple
               (gen/return "default")
               (:opt-boolean g))]
-          [(get w [:menuitem-attribute :alt 2] 100)
+          [(get w [:menuitem-attribute :alt 3] 100)
             (gen/tuple
               (gen/return "disabled")
               (:opt-boolean g))]
-          [(get w [:menuitem-attribute :alt 3] 100)
+          [(get w [:menuitem-attribute :alt 4] 100)
             (gen/tuple
               (gen/return "command=\"")
               (:attr-val-menuitem__command g)
               (gen/return "\""))]
-          [(get w [:menuitem-attribute :alt 4] 100)
+          [(get w [:menuitem-attribute :alt 5] 100)
             (gen/tuple
               (gen/return "icon=\"")
               (:attr-val-menuitem__icon g)
               (gen/return "\""))]
-          [(get w [:menuitem-attribute :alt 5] 100)
+          [(get w [:menuitem-attribute :alt 6] 100)
             (gen/tuple
               (gen/return "label=\"")
               (:attr-val-menuitem__label g)
               (gen/return "\""))]
-          [(get w [:menuitem-attribute :alt 6] 100)
+          [(get w [:menuitem-attribute :alt 7] 100)
             (gen/tuple
               (gen/return "radiogroup=\"")
               (:attr-val-menuitem__radiogroup g)
               (gen/return "\""))]
-          [(get w [:menuitem-attribute :alt 7] 100)
+          [(get w [:menuitem-attribute :alt 8] 100)
             (gen/tuple
               (gen/return "title=\"")
               (:attr-val-menuitem__title g)
               (gen/return "\""))]
-          [(get w [:menuitem-attribute :alt 8] 100)
+          [(get w [:menuitem-attribute :alt 9] 100)
             (gen/tuple
               (gen/return "type=\"")
               (:attr-val-menuitem__type g)
-              (gen/return "\""))]
-          [(get w [:menuitem-attribute :alt 9] 100)
-            (:global-attribute g)]])
+              (gen/return "\""))]])
         g (assoc g :menuitem-attribute gen-menuitem-attribute)
 
         gen-ruby-attribute
@@ -4070,12 +4070,12 @@
         gen-col-attribute
         (igen/freq :col-attribute [
           [(get w [:col-attribute :alt 0] 100)
+            (:global-attribute g)]
+          [(get w [:col-attribute :alt 1] 100)
             (gen/tuple
               (gen/return "span=\"")
               (:attr-val-col__span g)
-              (gen/return "\""))]
-          [(get w [:col-attribute :alt 1] 100)
-            (:global-attribute g)]])
+              (gen/return "\""))]])
         g (assoc g :col-attribute gen-col-attribute)
 
         gen-cite-attribute
@@ -4085,17 +4085,17 @@
         gen-canvas-attribute
         (igen/freq :canvas-attribute [
           [(get w [:canvas-attribute :alt 0] 100)
+            (:global-attribute g)]
+          [(get w [:canvas-attribute :alt 1] 100)
             (gen/tuple
               (gen/return "height=\"")
               (:attr-val-canvas__height g)
               (gen/return "\""))]
-          [(get w [:canvas-attribute :alt 1] 100)
+          [(get w [:canvas-attribute :alt 2] 100)
             (gen/tuple
               (gen/return "width=\"")
               (:attr-val-canvas__width g)
-              (gen/return "\""))]
-          [(get w [:canvas-attribute :alt 2] 100)
-            (:global-attribute g)]])
+              (gen/return "\""))]])
         g (assoc g :canvas-attribute gen-canvas-attribute)
 
         gen-attr-val-fieldset__form
@@ -4109,73 +4109,73 @@
         gen-table-attribute
         (igen/freq :table-attribute [
           [(get w [:table-attribute :alt 0] 100)
+            (:global-attribute g)]
+          [(get w [:table-attribute :alt 1] 100)
             (gen/tuple
               (gen/return "border=\"")
               (:attr-val-table__border g)
-              (gen/return "\""))]
-          [(get w [:table-attribute :alt 1] 100)
-            (:global-attribute g)]])
+              (gen/return "\""))]])
         g (assoc g :table-attribute gen-table-attribute)
 
         gen-form-attribute
         (igen/freq :form-attribute [
           [(get w [:form-attribute :alt 0] 100)
+            (:global-attribute g)]
+          [(get w [:form-attribute :alt 1] 100)
             (gen/tuple
               (gen/return "novalidate")
               (:opt-boolean g))]
-          [(get w [:form-attribute :alt 1] 100)
+          [(get w [:form-attribute :alt 2] 100)
             (gen/tuple
               (gen/return "accept-charset=\"")
               (:attr-val-form__accept-charset g)
               (gen/return "\""))]
-          [(get w [:form-attribute :alt 2] 100)
+          [(get w [:form-attribute :alt 3] 100)
             (gen/tuple
               (gen/return "action=\"")
               (:attr-val-form__action g)
               (gen/return "\""))]
-          [(get w [:form-attribute :alt 3] 100)
+          [(get w [:form-attribute :alt 4] 100)
             (gen/tuple
               (gen/return "autocomplete=\"")
               (:attr-val-form__autocomplete g)
               (gen/return "\""))]
-          [(get w [:form-attribute :alt 4] 100)
+          [(get w [:form-attribute :alt 5] 100)
             (gen/tuple
               (gen/return "enctype=\"")
               (:attr-val-form__enctype g)
               (gen/return "\""))]
-          [(get w [:form-attribute :alt 5] 100)
+          [(get w [:form-attribute :alt 6] 100)
             (gen/tuple
               (gen/return "method=\"")
               (:attr-val-form__method g)
               (gen/return "\""))]
-          [(get w [:form-attribute :alt 6] 100)
+          [(get w [:form-attribute :alt 7] 100)
             (gen/tuple
               (gen/return "name=\"")
               (:attr-val-form__name g)
               (gen/return "\""))]
-          [(get w [:form-attribute :alt 7] 100)
+          [(get w [:form-attribute :alt 8] 100)
             (gen/tuple
               (gen/return "target=\"")
               (:attr-val-form__target g)
-              (gen/return "\""))]
-          [(get w [:form-attribute :alt 8] 100)
-            (:global-attribute g)]])
+              (gen/return "\""))]])
         g (assoc g :form-attribute gen-form-attribute)
 
         gen-param-attribute
         (igen/freq :param-attribute [
           [(get w [:param-attribute :alt 0] 100)
+            (:global-attribute g)]
+          [(get w [:param-attribute :alt 1] 100)
             (gen/tuple
               (gen/return "name=\"")
               (:attr-val-param__name g)
               (gen/return "\""))]
-          [(get w [:param-attribute :alt 1] 100)
+          [(get w [:param-attribute :alt 2] 100)
             (gen/tuple
               (gen/return "value=\"")
               (:attr-val-param__value g)
-              (gen/return "\""))]
-          [(get w [:param-attribute :alt 2] 100)
-            (:global-attribute g)]])
+              (gen/return "\""))]])
         g (assoc g :param-attribute gen-param-attribute)
 
         gen-article-attribute
@@ -4185,32 +4185,32 @@
         gen-q-attribute
         (igen/freq :q-attribute [
           [(get w [:q-attribute :alt 0] 100)
+            (:global-attribute g)]
+          [(get w [:q-attribute :alt 1] 100)
             (gen/tuple
               (gen/return "cite=\"")
               (:attr-val-q__cite g)
-              (gen/return "\""))]
-          [(get w [:q-attribute :alt 1] 100)
-            (:global-attribute g)]])
+              (gen/return "\""))]])
         g (assoc g :q-attribute gen-q-attribute)
 
         gen-fieldset-attribute
         (igen/freq :fieldset-attribute [
           [(get w [:fieldset-attribute :alt 0] 100)
+            (:global-attribute g)]
+          [(get w [:fieldset-attribute :alt 1] 100)
             (gen/tuple
               (gen/return "disabled")
               (:opt-boolean g))]
-          [(get w [:fieldset-attribute :alt 1] 100)
+          [(get w [:fieldset-attribute :alt 2] 100)
             (gen/tuple
               (gen/return "form=\"")
               (:attr-val-fieldset__form g)
               (gen/return "\""))]
-          [(get w [:fieldset-attribute :alt 2] 100)
+          [(get w [:fieldset-attribute :alt 3] 100)
             (gen/tuple
               (gen/return "name=\"")
               (:attr-val-fieldset__name g)
-              (gen/return "\""))]
-          [(get w [:fieldset-attribute :alt 3] 100)
-            (:global-attribute g)]])
+              (gen/return "\""))]])
         g (assoc g :fieldset-attribute gen-fieldset-attribute)
 
         gen-attr-val-img__alt
@@ -4224,51 +4224,51 @@
         gen-img-attribute
         (igen/freq :img-attribute [
           [(get w [:img-attribute :alt 0] 100)
+            (:global-attribute g)]
+          [(get w [:img-attribute :alt 1] 100)
             (gen/tuple
               (gen/return "ismap")
               (:opt-boolean g))]
-          [(get w [:img-attribute :alt 1] 100)
+          [(get w [:img-attribute :alt 2] 100)
             (gen/tuple
               (gen/return "alt=\"")
               (:attr-val-img__alt g)
               (gen/return "\""))]
-          [(get w [:img-attribute :alt 2] 100)
+          [(get w [:img-attribute :alt 3] 100)
             (gen/tuple
               (gen/return "crossorigin=\"")
               (:attr-val-img__crossorigin g)
               (gen/return "\""))]
-          [(get w [:img-attribute :alt 3] 100)
+          [(get w [:img-attribute :alt 4] 100)
             (gen/tuple
               (gen/return "height=\"")
               (:attr-val-img__height g)
               (gen/return "\""))]
-          [(get w [:img-attribute :alt 4] 100)
+          [(get w [:img-attribute :alt 5] 100)
             (gen/tuple
               (gen/return "sizes=\"")
               (:attr-val-img__sizes g)
               (gen/return "\""))]
-          [(get w [:img-attribute :alt 5] 100)
+          [(get w [:img-attribute :alt 6] 100)
             (gen/tuple
               (gen/return "src=\"")
               (:attr-val-img__src g)
               (gen/return "\""))]
-          [(get w [:img-attribute :alt 6] 100)
+          [(get w [:img-attribute :alt 7] 100)
             (gen/tuple
               (gen/return "srcset=\"")
               (:attr-val-img__srcset g)
               (gen/return "\""))]
-          [(get w [:img-attribute :alt 7] 100)
+          [(get w [:img-attribute :alt 8] 100)
             (gen/tuple
               (gen/return "usemap=\"")
               (:attr-val-img__usemap g)
               (gen/return "\""))]
-          [(get w [:img-attribute :alt 8] 100)
+          [(get w [:img-attribute :alt 9] 100)
             (gen/tuple
               (gen/return "width=\"")
               (:attr-val-img__width g)
-              (gen/return "\""))]
-          [(get w [:img-attribute :alt 9] 100)
-            (:global-attribute g)]])
+              (gen/return "\""))]])
         g (assoc g :img-attribute gen-img-attribute)
 
         gen-bdi-attribute
@@ -4278,27 +4278,27 @@
         gen-source-attribute
         (igen/freq :source-attribute [
           [(get w [:source-attribute :alt 0] 100)
+            (:global-attribute g)]
+          [(get w [:source-attribute :alt 1] 100)
             (gen/tuple
               (gen/return "sizes=\"")
               (:attr-val-source__sizes g)
               (gen/return "\""))]
-          [(get w [:source-attribute :alt 1] 100)
+          [(get w [:source-attribute :alt 2] 100)
             (gen/tuple
               (gen/return "src=\"")
               (:attr-val-source__src g)
               (gen/return "\""))]
-          [(get w [:source-attribute :alt 2] 100)
+          [(get w [:source-attribute :alt 3] 100)
             (gen/tuple
               (gen/return "srcset=\"")
               (:attr-val-source__srcset g)
               (gen/return "\""))]
-          [(get w [:source-attribute :alt 3] 100)
+          [(get w [:source-attribute :alt 4] 100)
             (gen/tuple
               (gen/return "type=\"")
               (:attr-val-source__type g)
-              (gen/return "\""))]
-          [(get w [:source-attribute :alt 4] 100)
-            (:global-attribute g)]])
+              (gen/return "\""))]])
         g (assoc g :source-attribute gen-source-attribute)
 
         gen-div-attribute
