@@ -1,9 +1,9 @@
 (ns rend.generator
   (:require [clojure.string :as string]
             [clojure.test.check.generators :as gen]
-            [wend.html-mangle :as html-mangle]
 
             [instacheck.util :as util]
+            [html5-css3-ebnf.html-mangle :as html-mangle]
             [rend.css3-generators :as css3-gen]
             [rend.html5-generators :as html5-gen]))
 

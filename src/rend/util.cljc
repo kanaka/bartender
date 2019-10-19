@@ -1,4 +1,5 @@
-(ns rend.util)
+(ns rend.util
+  (:require [clj-time.core :as ctime]))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -21,3 +22,31 @@
       (if (seq rest-states)
         (recur cur-state rest-states)
         cur-state))))
+
+(defn summarize-state
+  [state]
+  (let [log (:log state)
+        start-time (:start-time (val (first (sort-by key log))))
+        end-time (:end-time (val (last (sort-by key log))))
+        elapsed-mses (for [[s run] log] (:elapsed-ms run))
+        elapsed-ms (apply + elapsed-mses)
+        ;; iter counts per run
+        iter-counts (for [[s run] log] (count (:iter-log run)))
+        ;; slugs of no-failure runs
+        successes (for [[s l] log :when (:result l)] s)
+        ;; largest html size for each run
+        largest-htmls (for [[s l] log]
+                        (apply max (for [[i il] (:iter-log l)]
+                                     (count (:html il)))))
+        ;; largest html size of each no-failure runs
+        largest-success-htmls (for [[s l] log :when (:result l)]
+                                (apply max (for [[i il] (:iter-log l)]
+                                             (count (:html il)))))]
+    {:start-time start-time
+     :end-time end-time
+     :elapsed-ms elapsed-ms
+     :elapsed-hours (float (/ elapsed-ms 3600000))
+     :iter-count (apply + iter-counts)
+     :successes (count successes)
+     :largest-html (apply max largest-htmls)
+     :iters-per-ms (float (/ (/ elapsed-ms 1000) (apply + iter-counts)))}))

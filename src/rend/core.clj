@@ -21,7 +21,7 @@
             [rend.image :as image]
             [rend.server]
             [rend.webdriver :as webdriver]
-            [wend.html-mangle :as html-mangle]
+            [html5-css3-ebnf.html-mangle :as html-mangle]
             [mend.parse]
 
             ;; REPL/Debug
@@ -214,7 +214,8 @@
 
 (defn check-page*
   "Utility function for check-page. See check-page."
-  [sessions comp-method comp-thresh test-dir test-url iteration html-text]
+  [sessions comp-method comp-thresh comp-target
+   test-dir test-url iteration html-text]
   (let [path-prefix (str test-dir "/" iteration)
         url-prefix (str test-url "/" iteration)
         h-path (str path-prefix ".html")
@@ -272,11 +273,21 @@
                             {}
                             (for [[obrowser oimg] (dissoc imgs browser)]
                               [obrowser (image/absdiff img oimg)]))]))
-            ;; at least one difference is greater than threshold
-            violation (seq (filter comp-fn (mapcat vals (vals diffs))))
-            ;; every difference is greater than threshold
+            ;; every difference that is greater than threshold
             violations (into {} (filter #(every? comp-fn (vals (val %)))
-                                        diffs))]
+                                        diffs))
+            success? (if comp-target
+                       ;; target is only browser with differences
+                       (if (and (= #{comp-target}
+                                   (set (keys violations)))
+                                (= (dec (count sessions))
+                                   (count (get violations comp-target))))
+                         ;; target is only violation
+                         false
+                         ;; target is not only violation
+                         true)
+                       ;; no differences greater than threshold
+                       (empty? violations))]
         ; (println "Saving thumbnail for each screenshot")
         (doseq [[browser img] imgs]
           (let [thumb (image/thumbnail img)]
@@ -295,9 +306,20 @@
           (image/imwrite (str path-prefix "_avg.png") avg)
           (image/imwrite (str path-prefix "_avg_thumb.png") thumb))
 
-        ;; Do the actual check
+        ;; Report the reason for the status
         (when (not (empty? violations))
-          (println "Threshold violations:" (map first violations)))
+          (println
+            (str
+              "Threshold violations: " (keys violations)
+              (cond
+                (and comp-target success?)
+                (str ", but not failure ( " comp-target " target is not only violator)")
+
+                comp-target
+                (str ", failure (" comp-target " target is only violator)")
+
+                :else
+                ", failure."))))
 
         ; (println "Saving average difference picture")
         (let [dimgs (for [[ba bb] (combinations (keys absdiffs) 2)]
@@ -327,7 +349,7 @@
                 (image/imwrite (str pre1 ".png") absdiff)
                 (image/imwrite (str pre1 "_thumb.png") thumb)))))
 
-        [(not violation) diffs violations])
+        [success? diffs violations])
       (catch java.lang.ThreadDeath e
         (throw e))
       (catch Throwable t
@@ -527,9 +549,11 @@
           test-url (str "http://" host-port "/gen/" test-slug)
           comp-method (get-in cfg [:compare :method])
           comp-threshold (get-in cfg [:compare :threshold])
+          comp-target (get-in cfg [:compare :target])
           [res diffs violations] (check-page* sessions
                                               comp-method
                                               comp-threshold
+                                              comp-target
                                               test-dir
                                               test-url
                                               test-iteration

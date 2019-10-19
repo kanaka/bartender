@@ -3,9 +3,6 @@
             [clojure.string :as string]
             [clojure.pprint :refer [pprint]]
             [clojure.set :as set]
-            [hickory.core]
-            [hickory.render]
-            [hickory.select :as s]
 
             [instacheck.core :as instacheck]))
 
@@ -26,13 +23,12 @@
                          :comment   :comment-test
                          :url       :url-test}
           :parse        {}}
-   :css  {:gen          {}
-          :parse        {:nonprop-group-rule-body  :stylesheet
-                         :prop-group-rule-body     :css-ruleset
-                         :nonprop-declaration-list :css-assignments}
-          :parse-inline {:nonprop-group-rule-body  :stylesheet
-                         :prop-group-rule-body     :css-ruleset
-                         :nonprop-declaration-list :css-assignments}}})
+   ;; Remove mutually recursive defintions
+   :css  {:gen          {:nonprop-group-rule-body  "STUB_nonprop_group_rule_body"
+                         :prop-group-rule-body     "STUB_prop_group_rule_body"
+                         :nonprop-declaration-list "STUB_declaration_list"}
+          :parse        {}
+          :parse-inline {}}})
 
 (def START-RULES
   {:html {:gen           :html-test
@@ -44,7 +40,9 @@
 (defn mangle-parser
   [parser mangles]
   (reduce (fn [p [k v]] (assoc-in p [:grammar k]
-                                  {:tag :nt, :keyword v}))
+                                  (cond
+                                    (string? v) {:tag :string, :string v}
+                                    (keyword? v) {:tag :nt, :keyword v})))
           parser mangles))
 
 (defn load-parser* [paths mangles]

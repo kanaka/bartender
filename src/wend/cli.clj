@@ -4,76 +4,22 @@
             [clojure.string :refer [ends-with?]]
             [clojure.pprint :refer [pprint]]
 
-            [instacheck.core :as instacheck]
+            [instacheck.core :as icore]
             [instacheck.grammar :as igrammar]
             [instacheck.reduce :as ireduce]
-            [mend.parse]
-            [wend.html-mangle :as wend]))
+            [html5-css3-ebnf.parse]
+            [html5-css3-ebnf.html-mangle :as html-mangle]
+            [mend.parse]))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; This extends html5-css3-ebnf.parse to add mapping of weights from
+;; a parse grammar to a generator grammar.
 
 (defn pr-err
   [& args]
   (binding [*out* *err*]
     (apply println args)
     (flush)))
-
-(defn filter-parse-data
-  "Filter out the zero weights from the :parts :wtrek and :full-wtrek
-  data."
-  [data]
-  {:parts (for [p (:parts data)]
-            (assoc p :wtrek
-                   (into {} (filter #(not= 0 (val %))
-                                    (:wtrek p)))))
-   :full-wtrek (into {} (filter #(not= 0 (val %))
-                                (:full-wtrek data)))})
-
-(defn parse-files
-  [html-parser css-parser files]
-  (loop [data {:parts []
-               :full {}}
-         files files]
-    (let [[file & rest-files] files
-          _ (pr-err (str "Processing: '" file "'"))
-          fdir (.getParent (io/file file))
-          text (slurp file)
-          html (wend/extract-html text)
-          css-map (wend/extract-css-map text #(slurp (io/file fdir %)))
-          _ (pr-err "  - parsing HTML")
-          html-data-all (instacheck/parse-wtreks
-                          html-parser [[html file]])
-          html-data (filter-parse-data html-data-all)
-          _ (pr-err (str "  - HTML weights: "
-                         (count (:full-wtrek html-data)) "/"
-                         (count (:full-wtrek html-data-all))))
-          _ (pr-err "  - parsing CSS")
-          css-data-all (instacheck/parse-wtreks
-                         css-parser (for [[k v] css-map] [v k]))
-          css-data (filter-parse-data css-data-all)
-          _ (pr-err (str "  - CSS weights: "
-                         (count (:full-wtrek css-data)) "/"
-                         (count (:full-wtrek css-data-all))))
-          new-data {:parts (vec (concat (:parts data)
-                                        (:parts html-data)
-                                        (:parts css-data)))
-                    :full-wtrek (merge-with +
-                                            (:full-wtrek data)
-                                            (:full-wtrek html-data)
-                                            (:full-wtrek css-data))}]
-      (if (seq rest-files)
-        (recur new-data rest-files)
-        new-data))))
-
-;; The minimal set that can be removed to prevent mutually recursive
-;; cycles. Will be added back in at the beginning of the sorted rules.
-(def CYCLE-SET #{:stylesheet})
-
-(defn parser-wtrek->ebnf
-  [parser wtrek]
-  (let [grammar (igrammar/parser->grammar parser)]
-    (ireduce/prune-grammar->sorted-ebnf grammar {:wtrek wtrek
-                                                 :cycle-set CYCLE-SET})))
 
 ;; Default values to use for generator specific weights in order to
 ;; create a usable generator weight map from a parsed one. Can be
@@ -133,32 +79,6 @@
           tk)))
     wtrek
     mapping))
-
-;;(defn mangle-wtrek
-;;  [orig-wtrek multiplier]
-;;  (let [;; Apply the gen-weight-mapping transforms
-;;        wtrek1 (apply-weight-mapping orig-wtrek gen-weight-mapping)
-;;        ;; Multiply weights by multiplier factor
-;;        wtrek2 (into {} (for [[p w] wtrek1]
-;;                          [p (* w multiplier)]))
-;;        ;; Make sure that global attributes have weight so that style
-;;        ;; will appear since style and linked stylesheets are not used
-;;        ;; in gen mode.
-;;        paths (reduce
-;;                (fn [ps [p w]]
-;;                  (cond
-;;                    (and (ends-with? (first p) "-attribute")
-;;                         (not= :global-attribute (first p)))
-;;                    (conj ps [(first p) :alt 0])
-;;                    :else
-;;                    ps))
-;;                #{}
-;;                wtrek2)
-;;        wtrek3 (reduce (fn [tk p]
-;;                         (assoc tk p 77 #_(max 100 (or (get tk p) 0))))
-;;                       wtrek2
-;;                       paths)]
-;;    wtrek3))
 
 (defn mangle-wtrek
   [html-grammar orig-wtrek multiplier]
@@ -224,7 +144,8 @@
         html-parser (mend.parse/load-parser-from-grammar :html :parse)
         _ (pr-err "Loading CSS parser")
         css-parser (mend.parse/load-parser-from-grammar :css :parse)
-        parse-data (parse-files html-parser css-parser files)
+        parse-data (html5-css3-ebnf.parse/parse-files
+                     html-parser css-parser files)
         gen-wtrek (mangle-wtrek (:grammar html-parser)
                                 (:full-wtrek parse-data)
                                 multiplier)]
@@ -235,14 +156,17 @@
       (spit parse-output parse-data))
     (when html-ebnf-output
       (pr-err (str "Generating pruned HTML EBNF"))
-      (let [ebnf (parser-wtrek->ebnf html-parser gen-wtrek)]
+      (let [ebnf (html5-css3-ebnf.parse/parser-wtrek->ebnf
+                   html-parser gen-wtrek)]
         (pr-err (str "Saving pruned HTML EBNF to: '" html-ebnf-output "'"))
         (spit html-ebnf-output ebnf)))
     (when css-ebnf-output
       (pr-err (str "Generating pruned CSS EBNF"))
-      (let [ebnf (parser-wtrek->ebnf css-parser gen-wtrek)]
+      (let [ebnf (html5-css3-ebnf.parse/parser-wtrek->ebnf
+                   css-parser gen-wtrek)]
         (pr-err (str "Saving pruned CSS EBNF to: '" css-ebnf-output "'"))
         (spit css-ebnf-output ebnf)))
     (when weights-output
       (pr-err (str "Saving merged weights to: '" weights-output "'"))
-      (instacheck/save-weights weights-output gen-wtrek))))
+      (icore/save-weights weights-output gen-wtrek))))
+

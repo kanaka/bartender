@@ -58,23 +58,6 @@
     {:tag :string :string (str " ")}
     x))
 
-
-(defn reduce-strings
-  "Combine strings and spaces that immediately follow each other in
-  a concatenation."
-  [x]
-  (if (and (= :cat (:tag x))
-           (:parsers x)
-           (-> x :parsers last :tag (= :string)))
-    (let [rps (reverse (:parsers x))
-          strs (reverse (take-while #(= :string (:tag %)) rps))
-          new-ps (reverse (conj (drop (count strs) rps)
-                                {:tag :string
-                                 :string (string/join "" (map :string strs))}))]
-;;       (prn :ps (:parsers x) :new-ps new-ps)
-      (assoc x :parsers new-ps))
-    x))
-
 (defn gen-grammar-update
   [grammar mode]
   (as-> grammar g
@@ -83,9 +66,8 @@
                                       :html html5-grammar-updates
                                       :css css3-grammar-updates))
     (postwalk replace-spaces g)
-    (postwalk reduce-strings g)))
+    (grammar/combine-strings g)))
 
 (defn parse-grammar-update
-  [grammar mode]
-  (as-> grammar g
-    (postwalk reduce-strings g)))
+  [grammar]
+  (grammar/combine-strings grammar))

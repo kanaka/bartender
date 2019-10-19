@@ -29,8 +29,6 @@
         :validate [#(get #{"html" "css"} %) "Must be 'html' or 'css'"]]
        [nil "--clj-output CLJ-OUTPUT"
         "Write Clojure code to path."]
-       [nil "--grammar-output GRAMMAR-OUTPUT"
-        "Write EDN grammar tree to path."]
        [nil "--namespace NAMESPACE"
         "Name of namespace to generate"]
        [nil "--function FUNCTION"
@@ -45,25 +43,15 @@
 
 
         ;; The following each take 4-6 seconds
-        _ (println "Loading" mode "parser grammar")
-        parse-grammar (instacheck/parser->grammar
-                            (mend.parse/load-parser mode :parse))
         _ (println "Loading" mode "generator grammar")
         gen-grammar (instacheck/parser->grammar
                           (mend.parse/load-parser mode :gen))
-        _ (println "Applying updates to parser grammar")
-        mangled-parse-grammar (mend.grammar/parse-grammar-update
-                                parse-grammar mode)
         _ (println "Applying updates to generator grammar")
         mangled-gen-grammar   (mend.grammar/gen-grammar-update
                                 gen-grammar mode)
         _ (println "Converting generator grammar to clojure generators")
         ns-str (instacheck/grammar->ns
                  ctx mangled-gen-grammar "[rend.misc-generators :as rgen]")]
-
-    (when-let [gfile (:grammar-output opts)]
-      (println "Saving parser grammar to" gfile)
-      (spit gfile (with-out-str (pprint mangled-parse-grammar))))
 
     (when-let [wfile (:weights-output opts)]
       (println "Saving generator weights to" wfile)
