@@ -1,4 +1,4 @@
-(defproject bartender "0.3.0"
+(defproject bartender "0.3.1"
   :description "Property based testing of browser rendering engines."
   :url "http://example.com/FIXME"
   :license {:name "Mozilla Public License version 2"
@@ -6,6 +6,8 @@
 
   :plugins [[lein-localrepo "0.5.3"]
             [lein-cljsbuild "1.1.7"]]
+
+  ;;:jvm-opts ["-Xms1g" "-Xmx5g"]
 
   :injections [(clojure.lang.RT/loadLibrary org.opencv.core.Core/NATIVE_LIBRARY_NAME)]
 
