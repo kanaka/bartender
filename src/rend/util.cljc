@@ -32,8 +32,10 @@
         elapsed-ms (apply + elapsed-mses)
         ;; iter counts per run
         iter-counts (for [[s run] log] (count (:iter-log run)))
-        ;; slugs of no-failure runs
-        successes (for [[s l] log :when (:result l)] s)
+        ;; no-failure runs
+        successes (filter :result (vals log))
+        ;; failure runs
+        failures (filter (complement :result) (vals log))
         ;; largest html size for each run
         largest-htmls (for [[s l] log]
                         (apply max (for [[i il] (:iter-log l)]
@@ -48,5 +50,7 @@
      :elapsed-hours (float (/ elapsed-ms 3600000))
      :iter-count (apply + iter-counts)
      :successes (count successes)
+     :failures (count failures)
+     :unique-failures (count (frequencies (map :smallest failures)))
      :largest-html (apply max largest-htmls)
      :iters-per-ms (float (/ (/ elapsed-ms 1000) (apply + iter-counts)))}))
