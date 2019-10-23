@@ -46,3 +46,8 @@
 .show-html {
   border: 1px solid #444;
 }
+
+.tapv-summary {
+  font-size: 10px;
+  list-style: none;
+}

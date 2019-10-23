@@ -1,0 +1,27 @@
+@font-face {
+    font-family: Ahem;
+    src: url(Ahem.ttf);
+}
+
+/* Hide window scrollbars in Chrome */
+::-webkit-scrollbar {
+    display: none;
+}
+
+html {
+    background: #1289af;
+}
+
+body {
+    background: #1289af;
+    font: 25px/1 Ahem;
+}
+
+/* TODO: undo this when https://github.com/servo/servo/issues/24042 is
+   fixed */
+.wrap-ahem {
+    font: 25px/1 Ahem;
+    margin: 0px;
+    background: currentColor; /* match font color */
+}
+

@@ -20,6 +20,10 @@
   border-bottom: 1px solid #dddddd;
 }
 
+.ant-modal {
+  min-width: 700px;
+}
+
 .ant-tooltip {
   max-width: 80%;
   min-width: 600px;
