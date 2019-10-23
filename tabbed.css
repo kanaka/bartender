@@ -1,0 +1,140 @@
+/* Tabbed content style from MIT license example at: https://codepen.io/oknoblich/pen/tfjFl */
+
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,600,700');
+
+*,*::before,*::after{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+html,body{
+  height:100vh;
+}
+
+body{
+  /*display:flex;*/ /* Does not allow bottom to grow */
+  /*align-items:center;*/
+  justify-content:center;
+  padding:20px;
+  font:14px/1.5 'Open Sans',sans-serif;
+  color:#345;
+  background:#f0f2f4;
+}
+
+p:not(:last-child) {
+  margin: 0 0 20px;
+}
+
+#app {
+  /*max-width: 800px;*/
+  min-width: 100%;
+  padding: 10px;
+  border: 1px solid rgba(0,0,0,.2);
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0,0,0,.1);
+  float: left;
+}
+
+main {
+  padding: 0px;
+  margin: 0px;
+}
+
+section {
+  display: none;
+  /*padding: 0 0 0;*/
+  padding: 10px 0 0;
+  border-top: 1px solid #abc;
+}
+
+/*input {*/
+.tabButton {
+  display: none;
+}
+
+label {
+  display: inline-block;
+  margin: 0 0 -1px;
+  padding: 12px 15px;
+  font-weight: 600;
+  text-align: center;
+  color: #abc;
+  border: 1px solid transparent;
+}
+
+label:hover {
+  color: #789;
+  cursor: pointer;
+}
+
+.tabButton:checked + label {
+  color: #0af;
+  border: 1px solid #abc;
+  border-top: 2px solid #0af;
+  border-bottom: 1px solid #fff;
+}
+
+/*
+label:before {
+  font-family: fontawesome;
+  font-weight: normal;
+  margin-right: 10px;
+}
+
+label[for*='1']:before { content: '\f1cb'; }
+label[for*='2']:before { content: '\f17d'; }
+label[for*='3']:before { content: '\f16c'; }
+label[for*='4']:before { content: '\f171'; }
+label[for*='5']:before { content: '\f172'; }
+*/
+
+#tab0:checked ~ #content0,
+#tab1:checked ~ #content1,
+#tab2:checked ~ #content2,
+#tab3:checked ~ #content3,
+#tab4:checked ~ #content4,
+#tab5:checked ~ #content5,
+#tab6:checked ~ #content6,
+#tab7:checked ~ #content7,
+#tab8:checked ~ #content8,
+#tab9:checked ~ #content9,
+#tab10:checked ~ #content10,
+#tab11:checked ~ #content11,
+#tab12:checked ~ #content12,
+#tab13:checked ~ #content13,
+#tab14:checked ~ #content14,
+#tab15:checked ~ #content15,
+#tab16:checked ~ #content16,
+#tab17:checked ~ #content17,
+#tab18:checked ~ #content18,
+#tab19:checked ~ #content19,
+#tab30:checked ~ #content20,
+#tab31:checked ~ #content31,
+#tab32:checked ~ #content32,
+#tab33:checked ~ #content33,
+#tab34:checked ~ #content34,
+#tab35:checked ~ #content35,
+#tab36:checked ~ #content36,
+#tab37:checked ~ #content37,
+#tab38:checked ~ #content38,
+#tab39:checked ~ #content39,
+#tab40:checked ~ #content40 {
+  display: block;
+}
+
+@media screen and (max-width: 800px) {
+  label {
+    font-size: 0;
+  }
+  label:before {
+    margin: 0;
+    font-size: 18px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  label {
+    padding: 15px;
+  }
+}

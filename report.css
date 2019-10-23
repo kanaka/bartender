@@ -1,0 +1,48 @@
+.summary {
+  background-color: #dddddd;
+  width: 100%;
+}
+
+.connect-icon {
+  margin-right: 10px;
+}
+
+.connected {
+  margin-right: 10px;
+  color: #4d4;
+}
+
+.disconnected {
+  margin-right: 10px;
+  color: #d44;
+  background: linear-gradient(to right top, transparent 40%, currentColor 50%, currentColor 50%, transparent 60%);
+}
+
+
+/* https://www.fontsquirrel.com/fonts/heydings-controls */
+
+@font-face {
+  font-family: 'heydings';
+  src: url('heydings_controls.ttf');
+}
+
+.heydings {
+  font-family: heydings;
+  font-weight: normal;
+}
+
+.heydings-red {
+  font-family: heydings;
+  font-weight: normal;
+  color: #d44;
+}
+
+.heydings-green {
+  font-family: heydings;
+  font-weight: normal;
+  color: #4d4;
+}
+
+.show-html {
+  border: 1px solid #444;
+}
