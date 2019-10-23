@@ -1,5 +1,4 @@
-(ns rend.util
-  (:require [clj-time.core :as ctime]))
+(ns rend.util)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

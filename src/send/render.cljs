@@ -39,7 +39,7 @@
          [:a {:href (str "/gen/" slug "/" (:failing-size slug-log) ".html.txt")
               :title (str fail)}
           (- fail-size base-size)]
-         " \u2192 " ;; &rarr;
+         [:span.heydings " > "]
          [:a {:href (str "/gen/" slug "/" (:smallest-iter slug-log) ".html.txt")
               :title (str shrunk)}
           (- shrunk-size base-size)]
@@ -103,16 +103,16 @@
 
 (defn report-table-header [browsers]
   [:tr [:th "Iteration"] [:th "Result"] [:th "Html"]
-   [:th "\u00a0"] ;; &nbsp;
+   [:th "\u000a"] ;; &nbsp;
    (for [browser browsers]
      ^{:key browser}
      [:th browser])
-   [:th "\u00a0"] ;; &nbsp;
+   [:th "\u000a"] ;; &nbsp;
    (for [[ba bb] (combinations browsers 2)]
      ^{:key (str ba bb)}
      [:th (str ba "\u0394" bb)]) ;; &Delta;
-   [:th "\u00a0"] ;; &nbsp;
-   [:th "\u0394Average"]])
+   [:th "\u000a"] ;; &nbsp;
+   [:th "\u0394 Avg"]])
 
 (defn report-table-row [idx slug browsers log thumbs?]
   (let [url-fn (fn [& suffix]
@@ -135,7 +135,7 @@
       [:a {:href (url-fn ".html.txt")
            :title html}
        "txt"]]
-     [:td "\u00a0"] ;; &nbsp;
+     [:td "\u000a"] ;; &nbsp;
      (for [browser browsers]
        ^{:key browser}
        [:td
@@ -154,7 +154,7 @@
          [:img.thumb {:style {:display thumb-display}
                       :src (url-fn "_" browser
                                    "_thumb.png")}]]])
-     [:td "\u00a0"] ;; &nbsp;
+     [:td "\u000a"] ;; &nbsp;
      (for [[ba bb] (combinations browsers 2)
            :let [odiff (get-in diffs [ba bb])]]
        ^{:key (str ba bb)}
@@ -173,7 +173,7 @@
                                    "_" bb "_thumb.png")}]
          [:br.thumb {:style {:display thumb-display}}]
          (.toFixed odiff 6)]])
-     [:td "\u00a0"] ;; &nbsp;
+     [:td "\u000a"] ;; &nbsp;
      [:td {:style {:vertical-align "top"}}
       [:a {:href (url-fn "_davg.png")}
        (when (not thumbs?)
@@ -203,9 +203,9 @@
 (defn tab-label-main [idx connected?]
   [:label {:for (str "tab" idx)}
    (if connected?
-     [:span.connected.fontawesome.fa-exchange]
-     [:span.disconnected.fontawesome.fa-exchange])
-   [:span.fontawesome
+     [:span.heydings-green "O "]
+     [:span.heydings-red "O "])
+   [:span
     "Bartender"]])
 
 (defn tab-content-main [idx indexed-slugs log connected?]
@@ -218,7 +218,7 @@
       [:th "Test"]
       [:th "Iterations"]
       [:th "Mode"]
-      [:th "\u0394Average"]
+      [:th "\u0394 Avg"]
       [:th "Info"]]
      (for [[idx slug] indexed-slugs
            :let [slug-log (-> log (get slug))]]
@@ -227,13 +227,13 @@
 (defn tab-label-slug [idx slug]
   [:label {:for (str "tab" idx)}
    slug
-   [:span.fontawesome-red
+   [:span.heydings-red
     {:onClick (fn [evt]
                 (swap! core/state assoc-in [:tabs slug :visible] false)
                 (js/setTimeout #(let [input (js/document.getElementById "tab0")]
                                   (set! (.-checked input) true))
                                100))}
-    "\uf057"]])
+    " X"]])
 
 (defn tab-content-slug [idx slug browsers slug-log thumbs?]
   (let [iter-log (-> slug-log :iter-log)]
@@ -242,7 +242,7 @@
      [report-table slug browsers iter-log thumbs?]]))
 
 
-(defn main-element []
+(defn monitor-element []
   (let [{:keys [test-state tabs connected]} @core/state
         {:keys [cfg log test-slugs]} test-state
         browsers (map name (-> cfg :browsers keys))
@@ -266,3 +266,7 @@
                    thumbs? (get-in tabs [slug :thumbs])]]
          ^{:key idx} [tab-content-slug idx slug browsers slug-log thumbs?]))]))
 
+
+(defn intro-element []
+  [:main
+   "This dynamic entry point is unused. See static page in gh-pages"])

@@ -2,6 +2,10 @@
   (:require [send.init]
             [vend.render :as vrender]))
 
-(defn ^:export vend-start []
+(defn ^:export tapv-tables-start []
   (send.init/generic-start
-    vrender/main-element (js/document.getElementById "app")))
+    vrender/tapv-tables-element (js/document.getElementById "app")))
+
+(defn ^:export flat-table-start []
+  (send.init/generic-start
+    vrender/flat-table-element (js/document.getElementById "app")))

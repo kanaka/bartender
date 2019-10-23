@@ -38,7 +38,7 @@
                                (println "channel" ch "received data:" data)))))
 
         routes (compojure.core/routes
-                 (GET "/" [] (redirect "/static/index.html"))
+                 (GET "/" [] (redirect "/static/send.html"))
                  (GET "/ws" [] ws-handler)
                  (route/files "/gen" {:root gen-dir})
                  (route/files "/static" {:root "static"})

@@ -63,15 +63,24 @@
              :send.core {:main send.core}}
 
   :cljsbuild
-  {:builds {:send
+  {:builds {:dev
             {:source-paths ["src", "resources"]
              :compiler
-             {:main          "send.init"
-              :asset-path    "/static/build/send/out"
-              :output-to     "static/build/send/app.js"
-              :output-dir    "static/build/send/out"
+             {:main          "send.keeps"
+              :asset-path    "dev/out"
+              :output-to     "static/dev/app.js"
+              :output-dir    "static/dev/out"
               :source-map    true
               :optimizations :none
-              :pretty-print  true}}}}
+              :pretty-print  true}}
+            :dist
+            {:source-paths ["src", "resources"]
+             :compiler
+             {:main          "send.keeps"
+              :asset-path    "dist/out"
+              :output-to     "static/dist/app.js"
+              :output-dir    "static/dist/out"
+              :source-map    "static/dist/app.js.map"
+              :optimizations :advanced}}}}
 
   :main rend.cli)
