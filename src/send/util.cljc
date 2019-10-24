@@ -106,6 +106,6 @@
 (time (def edns (map (comp read-string slurp) res-files)))
 (time (def s (apply rend.util/merge-test-state edns)))
 
-(copy-web-files s "./" "../bartender-gh-pages/")
+(time (copy-web-files s "./" "../bartender-gh-pages/"))
 
 )

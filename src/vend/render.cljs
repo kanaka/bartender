@@ -192,17 +192,25 @@
         [:a {:href "https://github.com/kanaka/bartender"} "Bartender"] ". "
         "A flat linear representation of the same data is available "
         [:a {:href (str "flat.html" (:search config))} "here"] "."]
-       [:p
-        "The data is organized into two tables. "
-        "The first table organizes test cases by tag names and tag attributes that appear in the test case. "
-        "The second table organizes test cases by tag names and CSS property names that appear in the test case. "
-        "Each cell with a matching test case will have a button with the number of test cases that match that cell. "
-        "Clicking on a cell button will open a modal dialog showing details for all the test cases that match that cell. "
-        "Every test case occurs in both tables at least once and can appear more than once in each table. "
-        "Each unique test case has an ID that can be used to correlate it with occurences of the test case either in the same table or in the other table. "
+       [:p [:b "Notes:"]
+       [:ul {:style {:margin-inline-start "30px"}}
+        [:li
+         "The data is organized into two tables. "
+         "The first table organizes test cases by tag names and tag attributes that appear in the test case. "
+         "The second table organizes test cases by tag names and CSS property names that appear in the test case. "]
+        [:li "Every test case occurs in both tables at least once and can appear more than once in each table. "
+        "Each unique test case has an ID that can be used to correlate it with occurences of the test case either in the same table, in the other table, and on the "
+         [:a {:href (str "flat.html" (:search config))} "flat representation"] ". "]
+        [:li
+         "Each cell with a matching test case will have a button with the number of test cases that match that cell. "
+         "Clicking on a cell button will open a modal dialog showing details for all the test cases that match that cell. "]
+        [:li
         "The 'BODY' tag is for tag attributes or property names that occur in the body tag. "
         "The '[None]' attribute means the test cases in the row do not have attributes (apart from the 'style' attribute). "
         "The '[None]' CSS property name means the test case in the row do not have any CSS styles. "]
+        [:li
+         "Test cases occur more frequently under the 'div' and 'span' tags because they are weighted more heavily in the grammar used to generate the test cases. "
+         ]]]
        ]]
      [:h2 "Rendering Differences Arranged Tags & Attributes"]
      (make-tapv-table test-state config :TnA "\u000a" attrs-tags)
