@@ -12,8 +12,12 @@
                          [(keyword k) v]))
         gen-dir (if (re-seq #"/static/" js/location.pathname)
                   "/gen/"
-                  "gen/")]
-    (swap! core/state assoc :config (assoc query :gen-dir gen-dir))
+                  "gen/")
+        config (merge
+                 query
+                 {:gen-dir gen-dir
+                  :search js/location.search})]
+    (swap! core/state assoc :config config)
     (if (:files query)
       (core/connect-or-load :files (S/split (:files query) #","))
       (core/connect-or-load :ws-url (str "ws://" js/location.host "/ws")))

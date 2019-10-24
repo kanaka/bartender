@@ -40,6 +40,13 @@
   padding: 2px;
 }
 
+.info-button {
+  float: right;
+  background-color: #ffefa8;
+  padding: 1px;
+  height: unset;
+}
+
 /* Rotated table headers
   Reference: https://www.jimmybonney.com/articles/column_header_rotation_css/ */
 
