@@ -14,8 +14,8 @@
       (<b>B</b>rowser <b>A</b>utomated <b>R</b>ender <b>T</b>esti<b>n</b>g <b>D</b>riv<b>er</b>)
     </p>
     <ul style="list-style: none;">
-      <li><a href="flat.html?files=gen/data.edn" title="TAPV Tables">Flat List of Rendering Differences</a></li>
-      <li><a href="tapv.html?files=gen/data.edn" title="TAPV Tables">Rendering Differences Arranged by Tags/Attributes and Tags/Properties</a></li>
+      <li><a href="flat.html?files=gen/servo.edn" title="TAPV Tables">Flat List of Rendering Differences</a></li>
+      <li><a href="tapv.html?files=gen/servo.edn" title="TAPV Tables">Rendering Differences Arranged by Tags/Attributes and Tags/Properties</a></li>
     </ul>
     <br>
     <p>
@@ -23,17 +23,17 @@
       (git hash <a href="https://github.com/gterzian/servo/commit/9451a0070aa21dcaddb7d1f64e642fbd9b8e692d">9451a00</a>,
       issue <a href="https://github.com/servo/servo/issues/23905">23905</a>)
       with Google Chrome 75.0.3770.142 and Mozilla Firefox 68.0. This
-      data was generated from 800 test runs with a maximum of 25 trial
+      data was generated from 1000 test runs with a maximum of 25 trial
       iterations per run and a maximum generator size parameter of
-      100. The consensus algorithm was configured to only report Servo
+      50. The consensus algorithm was configured to only report Servo
       specific differences (Servo differences considered non-different
-      if Chrome and Firefox also disagree). Out of the 800 test runs,
-      237 runs resulted in rendering differences which were
+      if Chrome and Firefox also disagree). Out of the 1000 test runs,
+      257 runs resulted in rendering differences which were
       then shrunk to more minimal test cases that still induce
-      rendering differences. All 237 shrunk test cases are unique.  In
-      total 99,892 iterations (page loads) were performed (trial
+      rendering differences. All 257 shrunk test cases are unique.  In
+      total 112,073 iterations (page loads) were performed (trial
       iterations + shrink iterations) over a period of 
-      53 hours on a single 8 CPU 3.2GHz Intel i7 system.
+      60 hours on a single 8 CPU 3.2GHz Intel i7 system.
     </p>
     <p>
       Bartender uses several techniques to increase efficiency and
