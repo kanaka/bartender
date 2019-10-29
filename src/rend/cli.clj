@@ -17,7 +17,7 @@
     (doall (map pr-err (:errors opts)))
     (System/exit 2))
   (when (or (-> opts :options :help)
-            (-> opts :arguments count (> 1)))
+            (-> opts :arguments count (= 0)))
     (println (:summary opts))
     (System/exit 2))
   opts)
@@ -25,6 +25,8 @@
 (def cli-options
   [["-?" "--help" "Show usage"
     :default false]
+   [nil "--mode MODE" "Testing mode (tests, check-page)"
+    :default "tests"]
    ["-v" "--verbose" "Verbose output"
     :default false]
    ["-s" "--seed SEED" "Test random seed (overrides config file)"
@@ -44,12 +46,16 @@
                                   (when start-seed
                                     {:start-seed start-seed}))
         test-state (core/init-tester user-cfg)]
+    (println "Test Mode:" (:mode options))
     (println "Test Configuration:")
     (pprint (:cfg (core/printable-state @test-state)))
     (when (not (:no-interactive options))
-      (println "\nPress <Enter> to start tests")
+      (println "\nPress <Enter> to start" (:mod options))
       (read-line))
-    (core/run-tests test-state)
+    (condp = (:mode options)
+      "tests" (core/run-tests test-state)
+      "check-page" (core/check-page
+                     test-state "check-page" (slurp (second arguments))))
     (println "\n-----------------------------------------------")
     (:cleanup-fn test-state)
     (when (not (:no-interactive options))

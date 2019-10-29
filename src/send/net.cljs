@@ -15,6 +15,17 @@
       (prn :body-count (count edn))
         (callback edn))))
 
+(defn load-transit [path callback]
+  (go
+    (let [{:keys [body status]} (<! (http/get path))
+          rdr (transit/reader :json)
+          data (if (string? body)
+                (transit/read rdr body)
+                body)]
+      (prn :status status)
+      (prn :body-count (count body))
+      (callback data))))
+
 
 (defn ws-connect [state uri msg-handler]
   (let [ws (js/WebSocket. uri)

@@ -1,4 +1,4 @@
-(defproject bartender "0.3.1"
+(defproject kanaka/bartender "0.3.2"
   :description "Property based testing of browser rendering engines."
   :url "http://example.com/FIXME"
   :license {:name "Mozilla Public License version 2"
@@ -52,7 +52,7 @@
                  [reagent "0.8.1"]
                  [antizer "0.3.1"]
                  [cljs-http "0.1.46"]
-                 [com.cognitect/transit-clj "0.8.313"]
+                 [com.cognitect/transit-clj "0.8.319"]
                  [com.cognitect/transit-cljs "0.8.256"]
                  [differ "0.3.2"]]
 
@@ -83,4 +83,4 @@
               :source-map    "static/dist/app.js.map"
               :optimizations :advanced}}}}
 
-  :main rend.cli)
+  :main bartender.cli)

@@ -1,5 +1,5 @@
 (ns wend.cli
-  (:require [clojure.tools.cli :refer [parse-opts]]
+  (:require [clojure.tools.cli :refer [parse-opts summarize]]
             [clojure.java.io :as io]
             [clojure.string :refer [ends-with?]]
             [clojure.pprint :refer [pprint]]
@@ -113,8 +113,14 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Command line usage of wend
 
+(defn usage [data]
+  (str "Usage: parse [OPTS] <FILE>..."
+       (summarize data)))
+
 (def cli-options
-  [[nil "--debug" "Add debug comments to generated code"]
+  [["-?" "--help" "Show usage"
+    :default false]
+   [nil "--debug" "Add debug comments to generated code"]
    [nil "--verbose" "Verbose output during execution"]
    [nil "--multiplier MULTIPLIER" "Multiply parsed weights by MULTIPLIER"
     :default 100]
@@ -127,16 +133,17 @@
   (when (:errors opts)
     (doall (map pr-err (:errors opts)))
     (System/exit 2))
+  (when (or (-> opts :options :help)
+            (-> opts :arguments count (= 0)))
+    (println (:summary opts))
+    (System/exit 2))
   opts)
-
-(defn usage []
-  (pr-err "[OPTS] <FILE>...")
-  (System/exit 2))
 
 (defn -main
   [& args]
-  (let [opts (opt-errors (parse-opts args
-                                     cli-options :in-order true))
+  (let [opts (opt-errors (parse-opts args cli-options
+                                     :in-order true
+                                     :summary-fn usage))
         {:keys [multiplier parse-output weights-output
                 html-ebnf-output css-ebnf-output]} (:options opts)
         [& files] (:arguments opts)

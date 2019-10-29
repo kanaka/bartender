@@ -51,8 +51,11 @@
   (prn :files files :ws-url ws-url)
   (cond
     files (doseq [file files]
-            (net/load-edn file
-                          #(msg-handler state {:msgType :merge :data %})))
+            (if (re-seq #"\.transit$" file)
+              (net/load-transit file
+                                #(msg-handler state {:msgType :merge :data %}))
+              (net/load-edn file
+                            #(msg-handler state {:msgType :merge :data %}))))
     ws-url (net/ws-connect state ws-url msg-handler)
     :else (throw (ex-info "connect-or-load requires files or ws-url" {}))))
 

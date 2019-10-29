@@ -84,7 +84,7 @@ lein cljsbuild once send
 
 * Start a test run:
 ```
-lein run config.yaml
+lein run tests config.yaml
 ```
 
 Monitor results at `http://localhost:3000` (3000 is the :web :port
@@ -94,7 +94,7 @@ specified in config.yaml).
 ## Extract/parse weights from an existing web page (wend)
 
 ```
-time lein with-profile wend run --weights-output data/my-page.edn my-page.html
+time lein run parse --weights-output data/my-page.edn my-page.html
 ```
 
 This can then be used to generate and test with similarly weighted
@@ -108,7 +108,7 @@ weights:
 ```
 
 ```
-lein run config.yaml
+lein run tests config.yaml
 ```
 
 You can then connect to `http://localhost:3000` (config file default)
