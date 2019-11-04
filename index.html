@@ -13,28 +13,49 @@
       The following reports were generated using <a href="https://github.com/kanaka/bartender">Bartender</a>
       (<b>B</b>rowser <b>A</b>utomated <b>R</b>ender <b>T</b>esti<b>n</b>g <b>D</b>riv<b>er</b>)
     </p>
-    <ul style="list-style: none;">
-      <li><a href="flat.html?files=gen/servo.edn" title="TAPV Tables">Flat List of Rendering Differences</a></li>
-      <li><a href="tapv.html?files=gen/servo.edn" title="TAPV Tables">Rendering Differences Arranged by Tags/Attributes and Tags/Properties</a></li>
+    <p>
+      The testing below was performed using Mozilla Firefox 68.0,
+      Google Chrome 75.0.3770.142, and Servo
+      (git hash <a href="https://github.com/gterzian/servo/commit/9451a0070aa21dcaddb7d1f64e642fbd9b8e692d">9451a00</a>,
+      issue <a href="https://github.com/servo/servo/issues/23905">23905</a>).
+      Bartender was configured to run each test with a maximum of 25
+      trial iterations per run and a maximum generator size parameter
+      of 50. A rendering difference found during a test run was then
+      shrunk to more minimal test cases that still induce rendering
+      differences and the shrunk test cases are the ones reported
+      below. All the tests were run on a 8 CPU 3.2GHz Intel i7
+      system running Ubuntu 16.04.
+    </p>
+    <h3>Firefox compared to Chrome</h3>
+    <p>
+      This data was generated from 5000 test runs comparing
+      Firefox and Chrome. Out of the 5000 test runs, 1805 runs
+      resulted in rendering differences, out of which 1695 are
+      distinct test cases. In total 712,193 iterations (page loads)
+      were performed (trial iterations + shrink iterations) over
+      a period of 89 hours.
+    </p>
+    <ul style="margin-inline-start: 30px;">
+      <li><a href="flat.html?files=gen/firefox-chrome.transit" title="TAPV Tables">Flat List of Rendering Differences</a></li>
+      <li><a href="tapv.html?files=gen/firefox-chrome.transit" title="TAPV Tables">Rendering Differences Arranged by Tags/Attributes and Tags/Properties</a></li>
     </ul>
     <br>
+
+    <h3>Servo compared against Firefox+Chrome</h3>
     <p>
-      The testing was done by comparing Servo
-      (git hash <a href="https://github.com/gterzian/servo/commit/9451a0070aa21dcaddb7d1f64e642fbd9b8e692d">9451a00</a>,
-      issue <a href="https://github.com/servo/servo/issues/23905">23905</a>)
-      with Google Chrome 75.0.3770.142 and Mozilla Firefox 68.0. This
-      data was generated from 1000 test runs with a maximum of 25 trial
-      iterations per run and a maximum generator size parameter of
-      50. The consensus algorithm was configured to only report Servo
-      specific differences (Servo differences considered non-different
-      if Chrome and Firefox also disagree). Out of the 1000 test runs,
-      257 runs resulted in rendering differences which were
-      then shrunk to more minimal test cases that still induce
-      rendering differences. All 257 shrunk test cases are unique.  In
-      total 112,073 iterations (page loads) were performed (trial
-      iterations + shrink iterations) over a period of 
-      60 hours on a single 8 CPU 3.2GHz Intel i7 system.
+      This data was generated from 1000 test runs comparing
+      Firefox and Chrome. Out of the 1000 test runs, 257 runs
+      resulted in rendering differences, all of which were distinct.
+      In total 112,073 iterations (page loads) were performed (trial
+      iterations + shrink iterations) over a period of 60 hours.
     </p>
+    <ul style="margin-inline-start: 30px;">
+      <li><a href="flat.html?files=gen/servo.transit" title="TAPV Tables">Flat List of Rendering Differences</a></li>
+      <li><a href="tapv.html?files=gen/servo.transit" title="TAPV Tables">Rendering Differences Arranged by Tags/Attributes and Tags/Properties</a></li>
+    </ul>
+    <br>
+
+    <h3>General Notes</h3>
     <p>
       Bartender uses several techniques to increase efficiency and
       minimize noise from normal browser rendering differences

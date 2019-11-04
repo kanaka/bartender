@@ -29,19 +29,24 @@
   min-width: 600px;
 }
 
-.modal-table tr {
-  border-bottom: 1px solid black;
-  border-collapse: collapse;
+.ant-btn {
+    background-color: #ffb088;
+    padding: 1px;
+    height: unset;
 }
-.modal-table th {
-  text-align: center;
+
+.controls {
+  float: right;
 }
-.modal-table td {
-  padding: 2px;
+
+.controls span button {
+  margin-right: 10px;
+}
+.controls span span {
+  margin-right: 10px;
 }
 
 .info-button {
-  float: right;
   background-color: #ffefa8;
   padding: 1px;
   height: unset;
@@ -94,3 +99,4 @@
   text-align: left;
   /* white-space: nowrap; *//*whether to display in one line or not*/
 }
+
