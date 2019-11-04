@@ -1,4 +1,4 @@
-(defproject kanaka/bartender "0.3.2"
+(defproject kanaka/bartender "0.3.3"
   :description "Property based testing of browser rendering engines."
   :url "http://example.com/FIXME"
   :license {:name "Mozilla Public License version 2"
