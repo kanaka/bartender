@@ -35,8 +35,18 @@
     height: unset;
 }
 
-.info-button {
+.controls {
   float: right;
+}
+
+.controls span button {
+  margin-right: 10px;
+}
+.controls span span {
+  margin-right: 10px;
+}
+
+.info-button {
   background-color: #ffefa8;
   padding: 1px;
   height: unset;

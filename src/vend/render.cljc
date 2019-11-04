@@ -2,6 +2,7 @@
   (:require [clojure.math.combinatorics :refer [combinations]]
             [clojure.pprint :refer [pprint]]
             [clojure.string :as S]
+            [cemerick.url :refer [url]]
 
             #?(:cljs [reagent.core :as r])
 
@@ -10,6 +11,8 @@
             [send.util :refer [get-TAP-tree]]))
 
 (def MAX-FLAT-LENGTH 100)
+
+(def history #?(:cljs js/history :clj nil))
 
 (defn ^:export print-log
   [slug]
@@ -30,8 +33,7 @@
     (prn :tags-attrs)
     (pprint tags-attrs)
     (prn :tags-props)
-    (pprint tags-props)
-    ))
+    (pprint tags-props)))
 
 
 (def modal-states (#?(:cljs r/atom :clj atom) {}))
@@ -39,15 +41,21 @@
 ;; general elements
 
 (defn mangle-state
-  [top-state]
+  [top-state mode]
   (let [{:keys [test-state config]} top-state
         {:keys [log]} test-state
+        {:keys [start] :or {start 0}} config
+        start (int start)
         log (into {} (filter (fn [[s d]] (not (:result d))) log))
         browsers (map name (-> test-state :cfg :browsers keys))
         slugs (sort (keys log))
         ;; TODO: Workaround weird initial state
         slugs (if (= [nil] slugs) nil slugs)
+        slug-count (count slugs)
         slug-idx (zipmap slugs (map str (range)))
+        slugs (condp = mode
+                :tapv slugs
+                :flat (take MAX-FLAT-LENGTH (drop start slugs)))
         slug-smallest (into {} (for [[slug slug-log] log]
                                  [slug (strip-wrap-ahem
                                          (-> slug-log
@@ -56,28 +64,56 @@
                                              first))]))]
     {:test-state (assoc test-state :log log)
      :config (merge config
-                    {:browsers browsers
+                    {:mode mode
+                     :browsers browsers
+                     :start start
+                     :slug-count slug-count
                      :slug-idx slug-idx
                      :slug-smallest slug-smallest})
      :slugs slugs}))
 
+(defn update-start
+  [config up-down]
+  (let [{:keys [url start slug-count]} config
+        {:keys [query]} url
+        try-start (+ (* up-down MAX-FLAT-LENGTH) start)
+        new-start (if (or (< try-start 0)
+                          (> try-start slug-count))
+                    start
+                    try-start)
+        new-query (assoc query "start" new-start)
+        new-url (str (assoc url :query new-query))]
+    (swap! core/state assoc-in [:config :start] new-start)
+    (.replaceState history nil "" new-url)))
+
+
 (defn info-modal
-  [title content]
-  [:div
-   [:button {:class "info-button"
-             :on-click #(swap! modal-states
-                               assoc :info true)}
-    "Page Info"]
-   [:div {:style (when (-> @modal-states (get :info) not)
-                   {:display "none"})
-          :class "modal"}
-    [:button {:class "close-button"
-              :on-click #(swap! modal-states
-                                dissoc :info)}
-     "X"]
-    [:div {:class "modal-guts"}
-     [:h1 title]
-     content]]])
+  [config title content]
+  (let [{:keys [mode url start slug-count]} config
+        {:keys [query]} url]
+    [:div
+     [:div {:class "controls"}
+      (when (= :flat mode)
+        [:span
+         [:button {:on-click #(update-start config -1)} "<-Prev"]
+         [:span (str start "-" (dec (min slug-count
+                                         (+ MAX-FLAT-LENGTH start)))
+                     " of " (dec slug-count))]
+         [:button {:on-click #(update-start config 1)} "Next->"]])
+      [:button {:class "info-button"
+                :on-click #(swap! modal-states
+                                  assoc :info true)}
+       "Page Info"]]
+     [:div {:style (when (-> @modal-states (get :info) not)
+                     {:display "none"})
+            :class "modal"}
+      [:button {:class "close-button"
+                :on-click #(swap! modal-states
+                                  dissoc :info)}
+       "X"]
+      [:div {:class "modal-guts"}
+       [:h1 title]
+       content]]]))
 
 (defn result-row
   [test-state config slug]
@@ -225,14 +261,14 @@
 
 (defn tapv-tables-element []
   #_(print-summaries)
-  (let [{:keys [test-state config slugs]} (mangle-state @core/state)
+  (let [{:keys [test-state config slugs]} (mangle-state @core/state :tapv)
         attrs-tags (get-TAP-tree test-state :attrs :tags "[None]" "BODY")
         props-tags (get-TAP-tree test-state :props :tags "[None]" "BODY")]
     (if (not slugs)
       [:main
        "Loading..."]
       [:main
-       (info-modal "Page Info" (tapv-info-content config))
+       (info-modal config "Page Info" (tapv-info-content config))
        [:h2 "Rendering Differences Arranged Tags & Attributes"]
        (make-tapv-table test-state config :TnA "\u000a" attrs-tags)
        [:br]
@@ -261,15 +297,13 @@
               (result-table test-state config "result-table" slugs)]]))]])))
 
 (defn flat-table-element []
-  (let [{:keys [test-state config slugs]} (mangle-state @core/state)
-        {:keys [start] :or {start 0}} config
-        start (int start)
-        slugs (take MAX-FLAT-LENGTH (drop start slugs))]
+  (let [{:keys [test-state config slugs]} (mangle-state @core/state :flat)
+        {:keys [start]} config]
     (if (not slugs)
       [:main
        "Loading..."]
       [:main
-       (info-modal "Page Info" (flat-info-content config))
+       (info-modal config "Page Info" (flat-info-content config))
        [:h2 "Flat List of Rendering Differences"]
        (result-table test-state config "result-table" slugs)
        [:div {:style (when (empty? @modal-states)

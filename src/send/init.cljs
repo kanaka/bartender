@@ -9,14 +9,16 @@
 
 (defn generic-start [reagent-elem dom-elem]
   (prn :starting reagent-elem dom-elem)
-  (let [query (into {} (for [[k v] (:query (url js/location.href))]
+  (let [url (url js/location.href)
+        query (into {} (for [[k v] (:query url)]
                          [(keyword k) v]))
         gen-dir (if (re-seq #"/static/" js/location.pathname)
                   "/gen/"
                   "gen/")
         config (merge
                  query
-                 {:gen-dir gen-dir
+                 {:url url
+                  :gen-dir gen-dir
                   :search js/location.search})]
     (swap! core/state assoc :config config)
     (if (:files query)
