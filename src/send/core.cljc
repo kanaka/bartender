@@ -1,15 +1,15 @@
 (ns send.core
-  (:require [reagent.core :as r]
-            [differ.core :as differ]
-            [cljs.pprint :refer [pprint]]
+  (:require [differ.core :as differ]
+            [clojure.pprint :refer [pprint]]
 
-            [send.net :as net]
+            #?(:cljs [reagent.core :as r])
             [rend.util :as util]))
 
 (defonce state
-  (r/atom {:connected false
-           :tabs {}
-           :test-state nil}))
+  (#?(:cljs r/atom :clj atom)
+    {:connected false
+     :tabs {}
+     :test-state nil}))
 
 (defn update-tabs [state-val]
   (let [cur-tabs (:tabs state-val)
@@ -41,23 +41,6 @@
       (println "ignoring msgType" msgType))
     ;; Sync tab state
     (swap! state update-tabs)))
-
-(defn connect-or-load
-  [& {:keys [files ws-url]}]
-  ;; If files is specified as a query parameter, then we load the
-  ;; top-level EDN data for the files via a GET requests. Otherwise,
-  ;; we connect via WebSockets to the server to get both the current
-  ;; state and state deltas over time.
-  (prn :files files :ws-url ws-url)
-  (cond
-    files (doseq [file files]
-            (if (re-seq #"\.transit$" file)
-              (net/load-transit file
-                                #(msg-handler state {:msgType :merge :data %}))
-              (net/load-edn file
-                            #(msg-handler state {:msgType :merge :data %}))))
-    ws-url (net/ws-connect state ws-url msg-handler)
-    :else (throw (ex-info "connect-or-load requires files or ws-url" {}))))
 
 (defn ^:export print-log-state []
     (pprint (assoc-in @state [:test-state :log] :ELIDED)))

@@ -11,7 +11,7 @@
 (def DEFAULT-HEIGHT 300)
 
 (defn init-webdriver [url capabilities]
-  (prn :url url :capabilities capabilities)
+  ;(prn :url url :capabilities capabilities)
   (let [url (io/as-url url)
         desired-caps (walk/stringify-keys capabilities)
         caps (DesiredCapabilities. desired-caps)

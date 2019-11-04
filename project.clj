@@ -42,7 +42,7 @@
 
                  [org.clojure/test.check "0.10.0-alpha3"]
 
-                 [kanaka/instacheck "0.8.8"]
+                 [kanaka/instacheck "0.8.9"]
                  [kanaka/html5-css3-ebnf "0.6.2"]
 
                  ;; send/vend
@@ -50,7 +50,6 @@
                  [org.clojure/core.async "0.4.500"]
                  [com.cemerick/url "0.1.1"]
                  [reagent "0.8.1"]
-                 [antizer "0.3.1"]
                  [cljs-http "0.1.46"]
                  [com.cognitect/transit-clj "0.8.319"]
                  [com.cognitect/transit-cljs "0.8.256"]

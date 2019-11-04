@@ -51,3 +51,23 @@
   font-size: 10px;
   list-style: none;
 }
+
+.result-table {
+  min-width: 700px;
+}
+
+.result-table tr {
+  border-bottom: 1px solid black;
+  border-collapse: collapse;
+}
+.result-table th {
+  text-align: center;
+}
+.result-table td {
+  padding: 2px;
+}
+.summary-td {
+  text-align: left;
+  width: 25%;
+}
+

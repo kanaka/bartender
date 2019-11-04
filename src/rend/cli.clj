@@ -31,6 +31,10 @@
     :default false]
    ["-s" "--seed SEED" "Test random seed (overrides config file)"
     :parse-fn #(Integer. %)]
+   [nil  "--runs RUNS" "Number of test runs (overrides config file)"
+    :parse-fn #(Integer. %)]
+   [nil  "--iterations ITERATIONS" "Number of iterations per run (overrides config file)"
+    :parse-fn #(Integer. %)]
    ["-y" "--no-interactive" "Do not pause for user confirmation before starting tests and before exiting."
     :default false]])
 
@@ -43,6 +47,10 @@
         user-cfg (util/deep-merge file-cfg
                                   (when (:verbose options)
                                     {:verbse (:verbose options)})
+                                  (when (:runs options)
+                                    {:runs (:runs options)})
+                                  (when (:iterations options)
+                                    {:quick-check {:iterations (:iterations options)}})
                                   (when start-seed
                                     {:start-seed start-seed}))
         test-state (core/init-tester user-cfg)]
@@ -50,7 +58,7 @@
     (println "Test Configuration:")
     (pprint (:cfg (core/printable-state @test-state)))
     (when (not (:no-interactive options))
-      (println "\nPress <Enter> to start" (:mod options))
+      (println "\nPress <Enter> to start" (:mode options))
       (read-line))
     (condp = (:mode options)
       "tests" (core/run-tests test-state)

@@ -17,6 +17,7 @@
       "wend"       (apply wend.cli/-main args)
       "tests"      (apply rend.cli/-main (concat args ["--mode" "tests"]))
       "check-page" (apply rend.cli/-main (concat args ["--mode" "check-page"]))
+      "translate"  (apply mend.cli/-main args)
       "mend"       (apply mend.cli/-main args)
       "--help"     (usage)
       (usage))))

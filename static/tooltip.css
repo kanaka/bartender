@@ -1,0 +1,53 @@
+/* From: https://cssreset.com/create-a-simple-yet-stylish-tooltip-using-css/ */
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted grey;
+  color: #005050;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  position: absolute;
+  min-width: 600px;
+  max-width: 100%;
+  background-color: #555;
+  color: #fff;
+  text-align: left;
+  font-size: 0.8em;
+  padding: 2px;
+  border-radius: 5px;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity .6s;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+
+.tooltip-top {
+  bottom: 90%;
+  margin-left: -60px;
+}
+
+.tooltip-left {
+  top: -5px;
+  right: 128%;
+}
+
+.tooltip-bottom {
+  top: 100% margin-left: -60px;
+}
+
+.tooltip-right {
+  top: -5px;
+  left: 125%;
+}
+
+.tooltip-mid {
+  top: 75%;
+  left: 75%;
+}

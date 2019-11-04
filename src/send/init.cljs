@@ -4,6 +4,7 @@
             [cemerick.url :refer [url]]
 
             [send.core :as core]
+            [send.net :as net]
             [send.render :as render]))
 
 (defn generic-start [reagent-elem dom-elem]
@@ -19,8 +20,8 @@
                   :search js/location.search})]
     (swap! core/state assoc :config config)
     (if (:files query)
-      (core/connect-or-load :files (S/split (:files query) #","))
-      (core/connect-or-load :ws-url (str "ws://" js/location.host "/ws")))
+      (net/connect-or-load :files (S/split (:files query) #","))
+      (net/connect-or-load :ws-url (str "ws://" js/location.host "/ws")))
     (r/render [reagent-elem] dom-elem)))
 
 (defn ^:export send-monitor-start []

@@ -2,7 +2,8 @@
   (:require [clojure.edn :as edn]
             [cljs.core.async :refer [<!]]
             [cljs-http.client :as http]
-            [cognitect.transit :as transit])
+            [cognitect.transit :as transit]
+            [send.core :as core])
   (:require-macros [cljs.core.async.macros :refer [go]]))
 
 (defn load-edn [path callback]
@@ -45,4 +46,21 @@
                        (:msgType msg)
                        "with" (count (.-data event)) "bytes")
               (msg-handler state msg))))))
+
+(defn connect-or-load
+  [& {:keys [files ws-url]}]
+  ;; If files is specified as a query parameter, then we load the
+  ;; top-level EDN data for the files via a GET requests. Otherwise,
+  ;; we connect via WebSockets to the server to get both the current
+  ;; state and state deltas over time.
+  (prn :files files :ws-url ws-url)
+  (cond
+    files (doseq [file files]
+            (if (re-seq #"\.transit$" file)
+              (load-transit
+                file #(core/msg-handler core/state {:msgType :merge :data %}))
+              (load-edn
+                file #(core/msg-handler core/state {:msgType :merge :data %}))))
+    ws-url (ws-connect core/state ws-url core/msg-handler)
+    :else (throw (ex-info "connect-or-load requires files or ws-url" {}))))
 

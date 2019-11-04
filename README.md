@@ -241,16 +241,14 @@ made to the EBNF grammars or the grammar fixups/mangles in
 `src/mend/grammar.clj`.
 
 ```
-lein deps
-time lein with-profile mend run --mode html --namespace rend.html5-generators --function html5-generators --weights-output resources/html5-weights.edn --clj-output resources/rend/html5_generators.clj
+time lein run translate --mode html --namespace rend.html5-generators --function html5-generators --weights-output resources/html5-weights.edn --clj-output resources/rend/html5_generators.clj
 ```
 
 Generate Clojure generator source based on the CSS3 EBNF grammar
 (warning this requires about 2GB of free memory):
 
 ```
-lein deps
-time lein with-profile mend run --mode css --namespace rend.css3-generators --function css3-generators --weights-output resources/css3-weights.edn --clj-output resources/rend/css3_generators.clj
+time lein run translate --mode css --namespace rend.css3-generators --function css3-generators --weights-output resources/css3-weights.edn --clj-output resources/rend/css3_generators.clj
 ```
 
 Use the generators from a Clojure REPL:

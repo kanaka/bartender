@@ -593,7 +593,6 @@
                        :report-fn report-fn}
                       (when iterations
                         {:iterations iterations}))]
-    (prn :qc-cfg qc-cfg)
 
     (update-state! test-state {:iteration 0})
 
@@ -670,7 +669,7 @@
     ;; Do the test runs and report
     (doseq [run-idx (range (or runs (-> cfg :runs)))]
       (println "-------------------------------------------------------------")
-      (println (str "------ Run index " (inc run-idx) " --------------------"))
+      (println (str "------ Run index " run-idx " --------------------"))
       (run-iterations test-state :iterations iterations))))
 
 ;; ---

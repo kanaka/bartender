@@ -1,6 +1,5 @@
 (ns send.render
   (:require [clojure.math.combinatorics :refer [combinations]]
-            [reagent.core :as r]
 
             [wend.util :refer [strip-wrap-ahem]]
             [send.core :as core]
@@ -128,13 +127,17 @@
       {:style (mode-bg-style pass)}
       (if pass "PASS" "FAIL")]
      [:td
-      [:a {:href (url-fn ".html")
-           :title html}
-       "html"]
+      [:span.tooltip
+       [:a {:href (url-fn ".html")}
+        "html"]
+       [:span.tooltiptext.tooltip-mid
+        html]]
       " / "
-      [:a {:href (url-fn ".html.txt")
-           :title html}
-       "txt"]]
+      [:span.tooltip
+       [:a {:href (url-fn ".html.txt")}
+        "txt"]
+       [:span.tooltiptext.tooltip-mid
+        html]]]
      [:td "\u000a"] ;; &nbsp;
      (for [browser browsers]
        ^{:key browser}
