@@ -40,11 +40,15 @@
 }
 
 .controls span button {
-  margin-right: 10px;
+  margin-right: 5px;
 }
 .controls span span {
-  margin-right: 10px;
+  margin-right: 5px;
 }
+.controls span input {
+  margin-right: 5px;
+}
+
 
 .info-button {
   background-color: #ffefa8;
