@@ -2,6 +2,7 @@
   (:require [clojure.math.combinatorics :refer [combinations]]
             [clojure.pprint :refer [pprint]]
             [clojure.string :as S]
+            [clojure.set :as set]
             [cemerick.url :refer [url]]
 
             #?(:cljs [reagent.core :as r])
@@ -11,6 +12,8 @@
             [send.util :refer [get-TAP-tree]]))
 
 (def MAX-FLAT-LENGTH 100)
+;(def FAIL "#f09090")
+(def FAIL "")
 
 (def history #?(:cljs js/history :clj nil))
 
@@ -44,15 +47,23 @@
   [top-state mode]
   (let [{:keys [test-state config]} top-state
         {:keys [log]} test-state
-        {:keys [start] :or {start 0}} config
+        {:keys [start q] :or {start 0}} config
         start (int start)
         log (into {} (filter (fn [[s d]] (not (:result d))) log))
         browsers (map name (-> test-state :cfg :browsers keys))
         slugs (sort (keys log))
         ;; TODO: Workaround weird initial state
         slugs (if (= [nil] slugs) nil slugs)
-        slug-count (count slugs)
         slug-idx (zipmap slugs (map str (range)))
+        slugs (if (not (empty? q))
+                (for [slug slugs
+                      :let [tsum (get-in log [slug :TAP-summary])
+                            sums (apply set/union (vals tsum))]
+                      :when (contains? sums q)]
+                  slug)
+                slugs)
+        slug-count (count slugs)
+        start (if (>= start slug-count) 0 start)
         slugs (condp = mode
                 :tapv slugs
                 :flat (take MAX-FLAT-LENGTH (drop start slugs)))
@@ -86,34 +97,31 @@
     (swap! core/state assoc-in [:config :start] new-start)
     (.replaceState history nil "" new-url)))
 
+(defn update-search
+  [config event]
+  (let [{:keys [url]} config
+        {:keys [query]} url
+        input (.-currentTarget event)
+        q (.-value input)
+        new-url (str (assoc url :query (assoc query "q" q)))]
+    (swap! core/state #(-> %
+                           (assoc-in [:config :q] q)
+                           (assoc-in [:config :start] 0)))
+    (.replaceState history nil "" new-url)))
+
 
 (defn info-modal
   [config title content]
-  (let [{:keys [mode url start slug-count]} config
-        {:keys [query]} url]
-    [:div
-     [:div {:class "controls"}
-      (when (= :flat mode)
-        [:span
-         [:button {:on-click #(update-start config -1)} "<-Prev"]
-         [:span (str start "-" (dec (min slug-count
-                                         (+ MAX-FLAT-LENGTH start)))
-                     " of " (dec slug-count))]
-         [:button {:on-click #(update-start config 1)} "Next->"]])
-      [:button {:class "info-button"
-                :on-click #(swap! modal-states
-                                  assoc :info true)}
-       "Page Info"]]
-     [:div {:style (when (-> @modal-states (get :info) not)
-                     {:display "none"})
-            :class "modal"}
-      [:button {:class "close-button"
-                :on-click #(swap! modal-states
-                                  dissoc :info)}
-       "X"]
-      [:div {:class "modal-guts"}
-       [:h1 title]
-       content]]]))
+  [:div {:style (when (-> @modal-states (get :info) not)
+                  {:display "none"})
+         :class "modal"}
+   [:button {:class "close-button"
+             :on-click #(swap! modal-states
+                               dissoc :info)}
+    "X"]
+   [:div {:class "modal-guts"}
+    [:h1 title]
+    content]])
 
 (defn result-row
   [test-state config slug]
@@ -123,6 +131,7 @@
         slug-log (get log slug)
         iter (:smallest-iter slug-log)
         summary (:TAP-summary slug-log)
+        violations (:smallest-violations slug-log)
         html (get slug-smallest slug)
         url-fn (fn [& suffix]
                  (apply str gen-dir slug "/" iter suffix))]
@@ -130,16 +139,11 @@
     [:tr
      [:td row-id]
      [:td
-      (if links
-        [:span.tooltip
-         [:a {:href (url-fn ".html")}
-          "html"]
-         [:span.tooltiptext.tooltip-mid
-          html]]
-        [:span.tooltip
-         "html"
-         [:span.tooltiptext.tooltip-mid
-          html]])
+      [:span.tooltip
+       [:a {:href (url-fn ".html")}
+        "html"]
+       [:span.tooltiptext.tooltip-mid
+        html]]
       (when links
         " / ")
       (when links
@@ -156,8 +160,13 @@
      (for [browser browsers]
        ^{:key browser}
        [:td
-        {:style {:vertical-align "top"
-                 :text-align "center"}}
+        (if (= (disj (set browsers) browser)
+               (set (keys (get violations browser))))
+          {:style {:vertical-align "top"
+                   :text-align "center"
+                   :background-color FAIL}}
+          {:style {:vertical-align "top"
+                   :text-align "center"}})
         (if links
           [:a {:style {:padding-left "2px"
                        :padding-right "2px"}
@@ -180,7 +189,7 @@
      [:tbody
       [:tr
        [:th "ID"]
-       [:th "Html"]
+       [:th "HTML"]
        [:th "Summary"]
        (for [browser browsers]
          ^{:key browser}
@@ -237,24 +246,36 @@
 
 (defn tapv-info-content
   [config]
-  [:div
-   [:p "This data was generated by " [:a {:href "https://github.com/kanaka/bartender"} "Bartender"] ". A flat linear representation of the same data is available " [:a {:href (str "flat.html" (:search config))} "here"] "."]
-   [:p [:b "Notes:"]]
-   [:ul {:style {:margin-inline-start "30px"}}
-    [:li "The data is organized into two tables. The first table organizes test cases by tag names and tag attributes that appear in the test case. The second table organizes test cases by tag names and CSS property names that appear in the test case. "]
-    [:li "Every test case occurs in both tables at least once and can appear more than once in each table. Each unique test case has an ID that can be used to correlate it with occurences of the test case either in the same table, in the other table, and on the " [:a {:href (str "flat.html" (:search config))} "flat representation"] "."]
-    [:li "Each cell with a matching test case will have a button with the number of test cases that match that cell. Clicking on a cell button will open a modal dialog showing details for all the test cases that match that cell."]
-    [:li "The 'BODY' tag is for tag attributes or property names that occur in the body tag. The '[None]' attribute means the test cases in the row do not have attributes (apart from the 'style' attribute). The '[None]' CSS property name means the test case in the row do not have any CSS styles."]
-    [:li "Test cases occur more frequently under the 'div' and 'span' tags because they are weighted more heavily in the grammar used to generate the test cases. "]]])
+  (let [{:keys [url]} config
+        {:keys [path query]} url
+        flat-url (str (assoc url
+                             :path (S/replace path #"tapv\.html" "flat.html")
+                             :query (dissoc query "q" "start")))]
+    (prn :url url :flat-url flat-url)
+    [:div
+     [:p "This data was generated by " [:a {:href "https://github.com/kanaka/bartender"} "Bartender"] ". A flat linear representation of the same data is available " [:a {:href flat-url} "here"] "."]
+     [:p [:b "Notes:"]]
+     [:ul {:style {:margin-inline-start "30px"}}
+      [:li "The data is organized into two tables. The first table organizes test cases by tag names and tag attributes that appear in the test case. The second table organizes test cases by tag names and CSS property names that appear in the test case. "]
+      [:li "Every test case occurs in both tables at least once and can appear more than once in each table. Each unique test case has an ID that can be used to correlate it with occurences of the test case either in the same table, in the other table, and on the " [:a {:href flat-url} "flat representation"] "."]
+      [:li "Each cell with a matching test case will have a button with the number of test cases that match that cell. Clicking on a cell button will open a modal dialog showing details for all the test cases that match that cell."]
+      [:li "The 'BODY' tag is for tag attributes or property names that occur in the body tag. The '[None]' attribute means the test cases in the row do not have attributes (apart from the 'style' attribute). The '[None]' CSS property name means the test case in the row do not have any CSS styles."]
+      [:li "Test cases occur more frequently under the 'div' and 'span' tags because they are weighted more heavily in the grammar used to generate the test cases. "]]]))
 
 
 ;; flat specific elements
 
 (defn flat-info-content
   [config]
-  [:div
-   [:p "This data was generated by " [:a {:href "https://github.com/kanaka/bartender"} "Bartender"] ". A representation of the same data grouped by HTML tags, attributes and CSS properties is available " [:a {:href (str "tapv.html" (:search config))} "here"] "."]
-   [:p "The Html column has a 'button' that will show the raw HTML text of the test case when the mouse rolls over it. The summary column lists the tag names, tag attributes, and CSS style property names that occur in the test case. "]])
+  (let [{:keys [url]} config
+        {:keys [path query]} url
+        tapv-url (str (assoc url
+                             :path (S/replace path #"flat\.html" "tapv.html")
+                             :query (dissoc query "q" "start")))]
+    (prn :url url :tapv-url tapv-url)
+    [:div
+     [:p "This data was generated by " [:a {:href "https://github.com/kanaka/bartender"} "Bartender"] ". A representation of the same data grouped by HTML tags, attributes and CSS properties is available " [:a {:href tapv-url} "here"] "."]
+     [:p "The 'HTML' column links to the web page test case (hover over to show a the raw HTML text). The 'Summary' column lists the tag names, tag attributes, and CSS style property names that occur in the test case. If you type the full name of an HTML tag, attribute or CSS property name and press enter, the list will be filtered to matching test cases."]]))
 
 
 ;; top-level start elements
@@ -264,49 +285,77 @@
   (let [{:keys [test-state config slugs]} (mangle-state @core/state :tapv)
         attrs-tags (get-TAP-tree test-state :attrs :tags "[None]" "BODY")
         props-tags (get-TAP-tree test-state :props :tags "[None]" "BODY")]
-    (if (not slugs)
-      [:main
-       "Loading..."]
-      [:main
-       (info-modal config "Page Info" (tapv-info-content config))
-       [:h2 "Rendering Differences Arranged Tags & Attributes"]
-       (make-tapv-table test-state config :TnA "\u000a" attrs-tags)
-       [:br]
-       [:h2 "Rendering Differences Arranged Tags & Properties"]
-       (make-tapv-table test-state config :TnP "\u000a" props-tags)
+    [:div
+     [:nav.controls
+      [:span.controls-left
+       [:button {:class "info-button"
+                 :on-click #(swap! modal-states assoc :info true)}
+        "Page Info"]]]
+     [:div#tab
+      (if (not slugs)
+        [:main
+         "Loading..."]
+        [:main
+         (info-modal config "Page Info" (tapv-info-content config))
+         [:h2 "Rendering Differences Arranged Tags & Attributes"]
+         (make-tapv-table test-state config :TnA "\u000a" attrs-tags)
+         [:br]
+         [:h2 "Rendering Differences Arranged Tags & Properties"]
+         (make-tapv-table test-state config :TnP "\u000a" props-tags)
 
-       ;; The modal dialog that will contain the table for the cell
-       ;; that was clicked.
-       [:div {:style (when (empty? @modal-states)
-                       {:display "none"})
-              :class "modal-overlay"
-              :on-click #(reset! modal-states {})}
-        (when-let [[tid row col :as cell] (get @modal-states :cell)]
-          (let [slugs (condp = tid
-                        ":TnA" (get-in attrs-tags [row col])
-                        ":TnP" (get-in props-tags [row col]))]
-            [:div {:style (when (not cell)
-                            {:display "none"})
-                   :class "modal"
-                   :on-click #(.stopPropagation %)}
-             [:button {:class "close-button"
-                       :on-click #(reset! modal-states {})}
-              "X"]
-             [:div {:class "modal-guts"}
-              [:h1 (str col " + " row)]
-              (result-table test-state config "result-table" slugs)]]))]])))
+         ;; The modal dialog that will contain the table for the cell
+         ;; that was clicked.
+         [:div {:style (when (empty? @modal-states)
+                         {:display "none"})
+                :class "modal-overlay"
+                :on-click #(reset! modal-states {})}
+          (when-let [[tid row col :as cell] (get @modal-states :cell)]
+            (let [slugs (condp = tid
+                          ":TnA" (get-in attrs-tags [row col])
+                          ":TnP" (get-in props-tags [row col]))]
+              [:div {:style (when (not cell)
+                              {:display "none"})
+                     :class "modal"
+                     :on-click #(.stopPropagation %)}
+               [:button {:class "close-button"
+                         :on-click #(reset! modal-states {})}
+                "X"]
+               [:div {:class "modal-guts"}
+                [:h1 (str col " + " row)]
+                (result-table test-state config "result-table" slugs)]]))]])]]))
 
 (defn flat-table-element []
   (let [{:keys [test-state config slugs]} (mangle-state @core/state :flat)
-        {:keys [start]} config]
-    (if (not slugs)
-      [:main
-       "Loading..."]
-      [:main
-       (info-modal config "Page Info" (flat-info-content config))
-       [:h2 "Flat List of Rendering Differences"]
-       (result-table test-state config "result-table" slugs)
-       [:div {:style (when (empty? @modal-states)
-                       {:display "none"})
-              :class "modal-overlay"
-              :on-click #(reset! modal-states {})}]])))
+        {:keys [mode url start slug-count]} config]
+    [:div
+     [:nav.controls
+      [:span.controls-left
+       [:button {:class "info-button"
+                 :on-click #(swap! modal-states assoc :info true)}
+        "Page Info"]]
+      [:span.controls-right
+       [:input {:type :text
+                :size 15
+                :default-value (when (:q config)
+                                 (:q config))
+                :placeholder "tag/attr/prop filter"
+                :on-blur #(update-search config %)
+                :on-key-up #(when (= 13 (.-keyCode %))
+                              (update-search config %))}]
+       [:button {:on-click #(update-start config -1)} "<-"]
+       [:span (str start "-" (dec (min slug-count
+                                       (+ MAX-FLAT-LENGTH start)))
+                   " of " (dec slug-count))]
+       [:button {:on-click #(update-start config 1)} "->"]]]
+     [:div#tab
+      (if (not slugs)
+        [:main
+         "Loading..."]
+        [:main
+         (info-modal config "Page Info" (flat-info-content config))
+         [:h2 "Flat List of Rendering Differences"]
+         (result-table test-state config "result-table" slugs)
+         [:div {:style (when (empty? @modal-states)
+                         {:display "none"})
+                :class "modal-overlay"
+                :on-click #(reset! modal-states {})}]])]]))

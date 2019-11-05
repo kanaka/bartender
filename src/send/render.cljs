@@ -253,21 +253,22 @@
                            (sort test-slugs))
         indexed-tabs (map vector (drop 1 (range))
                           (sort-by key (filter (comp :visible val) tabs)))]
-    [:main
-     (list
-       ^{:key :input} [tab-input 0]
-       ^{:key :label} [tab-label-main 0 connected]
-       (for [[idx [slug tab]] indexed-tabs]
-         ^{:key idx}
-         (list
-           ^{:key :input} [tab-input idx]
-           ^{:key :label} [tab-label-slug idx slug]))
+    [:div#tab
+     [:main
+      (list
+        ^{:key :input} [tab-input 0]
+        ^{:key :label} [tab-label-main 0 connected]
+        (for [[idx [slug tab]] indexed-tabs]
+          ^{:key idx}
+          (list
+            ^{:key :input} [tab-input idx]
+            ^{:key :label} [tab-label-slug idx slug]))
 
-       ^{:key :content-main} [tab-content-main 0 indexed-slugs log connected]
-       (for [[idx [slug tab]] indexed-tabs
-             :let [slug-log (-> log (get slug))
-                   thumbs? (get-in tabs [slug :thumbs])]]
-         ^{:key idx} [tab-content-slug idx slug browsers slug-log thumbs?]))]))
+        ^{:key :content-main} [tab-content-main 0 indexed-slugs log connected]
+        (for [[idx [slug tab]] indexed-tabs
+              :let [slug-log (-> log (get slug))
+                    thumbs? (get-in tabs [slug :thumbs])]]
+          ^{:key idx} [tab-content-slug idx slug browsers slug-log thumbs?]))]]))
 
 
 (defn intro-element []
