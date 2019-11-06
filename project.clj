@@ -1,4 +1,4 @@
-(defproject kanaka/bartender "0.3.3"
+(defproject kanaka/bartender "0.3.4"
   :description "Property based testing of browser rendering engines."
   :url "http://example.com/FIXME"
   :license {:name "Mozilla Public License version 2"
@@ -42,8 +42,8 @@
 
                  [org.clojure/test.check "0.10.0-alpha3"]
 
-                 [kanaka/instacheck "0.8.9"]
-                 [kanaka/html5-css3-ebnf "0.6.2"]
+                 [kanaka/instacheck "0.9.0"]
+                 [kanaka/html5-css3-ebnf "0.6.3"]
 
                  ;; send/vend
                  [org.clojure/clojurescript "1.10.520"]
