@@ -72,11 +72,10 @@
         <li>Wrapping each font glyph with a 'wrap-ahem' span to
           mitigate Servo issue
           <a href="https://github.com/servo/servo/issues/24042">#24042</a></li>
-        <li>Using HTML/CSS grammar weights that are prepopulated from
-          separate tests that compared just Firefox and Chrome. HTML
-          and CSS elements that caused differences between Firefox and
-          Chrome have weights/probabilities that are lowered
-          significantly.</li>
+        <li>The Servo tests use HTML/CSS grammar weights that are resulted from
+          the Firefox/Chrome tests. This reduces the probability of
+          testing HTML and CSS elements that already caused
+          differences between Firefox and Chrome.</li>
       </ul>
     </p>
     <p>
