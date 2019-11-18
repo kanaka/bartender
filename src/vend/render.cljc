@@ -297,10 +297,10 @@
          "Loading..."]
         [:main
          (info-modal config "Page Info" (tapv-info-content config))
-         [:h2 "Rendering Differences Arranged Tags & Attributes"]
+         [:h2 "Rendering Differences Arranged by Tags & Attributes"]
          (make-tapv-table test-state config :TnA "\u000a" attrs-tags)
          [:br]
-         [:h2 "Rendering Differences Arranged Tags & Properties"]
+         [:h2 "Rendering Differences Arranged by Tags & Properties"]
          (make-tapv-table test-state config :TnP "\u000a" props-tags)
 
          ;; The modal dialog that will contain the table for the cell
